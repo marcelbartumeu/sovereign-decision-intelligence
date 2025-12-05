@@ -5,7 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Andorra V1.0</title>
     <meta name="description" content="Advanced Scenario Modeling & Impact Assessment">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="scenarioData.js?v=2025-10-29-01"></script>
     <style>
         * {
             margin: 0;
@@ -33,6 +37,14 @@
             --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
+
+        .kpi-card canvas {
+  transition: filter .2s ease, transform .2s ease;
+}
+.kpi-card:hover canvas {
+  filter: drop-shadow(0 0 10px rgba(255,255,255,.08));
+}
+
         body {
             background: var(--background);
             color: var(--foreground);
@@ -57,6 +69,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 2rem;
+            flex-wrap: wrap;
         }
 
         .header h1 {
@@ -102,6 +116,22 @@
 
         .slider-container {
             width: 16rem;
+        }
+        
+        .time-slider .slider-container {
+            width: 28rem;
+        }
+        
+        .time-slider .slider-labels {
+            font-size: 0.65rem;
+            gap: 0;
+            justify-content: space-between;
+        }
+        
+        .time-slider .slider-labels span {
+            flex: 1 1 0;
+            text-align: center;
+            min-width: 0;
         }
 
         .slider {
@@ -221,6 +251,55 @@
             height: 100%;
             object-fit: cover;
         }
+        
+        /* Image Dashboard Section */
+        .image-dashboard {
+            margin-top: 3rem;
+            padding: 2rem 0 0 0;
+        }
+        
+        .image-dashboard-header {
+            margin-bottom: 1.5rem;
+        }
+        
+        .image-dashboard-header h2 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .image-dashboard-header p {
+            font-size: 0.875rem;
+            color: var(--muted-foreground);
+        }
+        
+        .image-display-container {
+            background: var(--gradient-panel);
+            border: 1px solid var(--panel-border);
+            border-radius: 0.75rem;
+            overflow: visible;
+            box-shadow: var(--shadow-panel);
+            min-height: 1000px;
+            height: auto;
+            width: 100%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        
+        .image-display-container img,
+        .image-display-container video {
+            max-width: 100%;
+            max-height: none;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            display: block;
+            position: relative;
+        }
 
         /* KPI Cards */
         .kpi-card {
@@ -230,12 +309,20 @@
             padding: 1.5rem;
             box-shadow: var(--shadow-panel);
             transition: var(--transition-smooth);
+            opacity: 1;
         }
+        
 
         .kpi-card:hover {
             transform: scale(1.02);
             border-color: hsl(0, 0%, 70%, 0.5);
         }
+
+        /* Hover-expand behavior */
+        .kpi-grid { position: relative; }
+        .kpi-card { transition: transform 0.25s ease, filter 0.25s ease, z-index 0.25s ease; }
+        .kpi-grid.is-hovering .kpi-card { transform: scale(0.88); filter: brightness(0.9) saturate(0.95); }
+        .kpi-grid.is-hovering .kpi-card.is-active { transform: scale(1.28); z-index: 5; filter: none; }
 
         .kpi-card .title {
             font-size: 0.875rem;
@@ -342,20 +429,37 @@
                 <div>
                     <h1>ANDORRA V1.0</h1>
                     <p>Advanced Scenario Modeling & Impact Assessment</p>
+                    <button id="arduino-connect-btn" onclick="toggleArduinoConnection()" style="margin-top: 0.5rem; padding: 0.5rem 1rem; background: var(--secondary); border: 1px solid var(--border); border-radius: 0.25rem; color: var(--foreground); cursor: pointer; font-size: 0.75rem; transition: var(--transition-smooth);">
+                        🔌 Connect Arduino
+                    </button>
+                    <span id="arduino-status" style="margin-left: 0.5rem; font-size: 0.75rem; color: var(--muted-foreground);">Disconnected</span>
                 </div>
                 <div class="scenario-slider">
                     <div class="scenario-info">
                         <p class="label">Scenario</p>
-                        <p class="name" id="scenario-name">Current</p>
+                        <p class="name" id="scenario-name">Historical</p>
                         <p class="description" id="scenario-description">Present-day balanced development</p>
                     </div>
                     <div class="slider-container">
                         <input type="range" min="0" max="3" value="0" class="slider" id="scenario-slider">
                         <div class="slider-labels">
-                            <span class="active" data-scenario="0">Current</span>
+                            <span class="active" data-scenario="0">Historical</span>
                             <span data-scenario="1">Overgrowth</span>
                             <span data-scenario="2">Degrowth</span>
                             <span data-scenario="3">Continuity</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="time-slider">
+                    <div class="scenario-info">
+                        <p class="label">Year</p>
+                        <p class="name" id="year-display">2024</p>
+                        <p class="description" id="year-range">2014 - 2024</p>
+                    </div>
+                    <div class="slider-container">
+                        <input type="range" min="2014" max="2024" value="2024" class="slider" id="time-slider" step="1">
+                        <div class="slider-labels" id="time-labels">
+                            <span>2014</span><span>2015</span><span>2016</span><span>2017</span><span>2018</span><span>2019</span><span>2020</span><span>2021</span><span>2022</span><span>2023</span><span>2024</span>
                         </div>
                     </div>
                 </div>
@@ -368,7 +472,8 @@
         <div class="container">
             <!-- Tab Navigation -->
             <div class="tab-nav">
-                <button class="tab-button active" data-tab="economic">ECONOMIC MATRIX</button>
+                <button class="tab-button active" data-tab="main">MAIN</button>
+                <button class="tab-button" data-tab="economic">ECONOMIC MATRIX</button>
                 <button class="tab-button" data-tab="social">SOCIAL SYSTEMS</button>
                 <button class="tab-button" data-tab="environmental">ENVIRONMENTAL GRID</button>
             </div>
@@ -376,6 +481,17 @@
             <!-- KPI Grid -->
             <div class="kpi-grid" id="kpi-grid">
                 <!-- Content will be dynamically generated -->
+            </div>
+            
+            <!-- Scenario Visualization -->
+            <div class="image-dashboard">
+                <div class="image-dashboard-header">
+                    <h2>Scenario Visualization</h2>
+                    <p>Year-by-year progression visualization</p>
+                </div>
+                <div class="image-display-container" id="image-display-container">
+                    <!-- Year-based images will be displayed here -->
+                </div>
             </div>
         </div>
     </div>
@@ -393,59 +509,1044 @@
     <script>
         // Data and configuration
         const scenarios = [
-    // Data and configuration
+    { id: "current", name: "Historical", description: "Present-day balanced development", image: "./Public/Andorra1.mp4" },
+            { id: "overgrowth", name: "Overgrowth", description: "Rapid urban expansion", image: "./Public/overgrowth.png" },
+            { id: "degrowth", name: "Degrowth", description: "Sustainable rural communities", image: "./Public/degrowth.png" },
+            { id: "continuity", name: "Continuity", description: "Steady green progression", image: "./Public/continuity.png" }
+        ];
 
-    { id: "current", name: "Current", description: "Present-day balanced development", image: "./Public/Andorra1.mp4" },
-    { id: "overgrowth", name: "Overgrowth",   description: "Rapid urban expansion",       image: "./Public/overgrowth.png" },
-    { id: "degrowth",   name: "Degrowth",     description: "Sustainable rural communities",  image: "./Public/degrowth.png" },
-    { id: "continuity", name: "Continuity",   description: "Steady green progression",       image: "./Public/continuity.png" }
-];
+        // Hover glow + crosshair plugin (registered once)
+        (function registerHoverGlow(){
+            if (typeof Chart === 'undefined') return;
+            if (Chart.registry.plugins.get('hoverGlow')) return;
+            const HoverGlowPlugin = {
+                id: 'hoverGlow',
+                afterEvent(chart, args){ chart.$evt = args.event; },
+                afterDatasetsDraw(chart){
+                    const evt = chart.$evt; if (!evt) return;
+                    const { ctx, chartArea, scales } = chart; if (!chartArea) return;
+                    const xScale = scales.x || scales.r || null;
+                    const yScale = scales.y || scales.r || null;
+                    const active = chart.tooltip?.getActiveElements?.() || []; if (!active.length) return;
+                    const a = active[0]; const el = a.element; if (!el) return;
+                    const x = (el.x !== undefined) ? el.x : null;
+                    ctx.save();
+                    if (x !== null && xScale && yScale && x >= chartArea.left && x <= chartArea.right) {
+                        ctx.beginPath(); ctx.setLineDash([4,4]); ctx.lineWidth = 1; ctx.strokeStyle = 'rgba(255,255,255,0.25)';
+                        ctx.moveTo(x, chartArea.top); ctx.lineTo(x, chartArea.bottom); ctx.stroke(); ctx.setLineDash([]);
+                    }
+                    const glowX = (el.x !== undefined) ? el.x : chartArea.left + (chartArea.right - chartArea.left)/2;
+                    const glowY = (el.y !== undefined) ? el.y : chartArea.top + (chartArea.bottom - chartArea.top)/2;
+                    const dsIdx = a.datasetIndex ?? 0; const ds = chart.data?.datasets?.[dsIdx];
+                    const baseColor = (ds && (ds.borderColor || ds.backgroundColor)) || '#FFFFFF';
+                    ctx.globalAlpha = 0.18; ctx.beginPath(); ctx.arc(glowX, glowY, 18, 0, Math.PI*2);
+                    ctx.fillStyle = Array.isArray(baseColor) ? baseColor[0] : baseColor; ctx.shadowColor = ctx.fillStyle; ctx.shadowBlur = 20; ctx.fill();
+                    ctx.globalAlpha = 0.35; ctx.shadowBlur = 0; ctx.beginPath(); ctx.arc(glowX, glowY, 6, 0, Math.PI*2);
+                    ctx.fillStyle = 'rgba(255,255,255,0.6)'; ctx.fill();
+                    ctx.restore();
+                }
+            };
+            Chart.register(HoverGlowPlugin);
+        })();
 
-// KPI values for the Current scenario (static numbers from JSON)
-const kpiData = {
+        // Function to generate KPI data from scenarioData.js
+        function generateKpiData(scenarioIndex) {
+            const scenarioNames = ['current', 'overgrowth', 'degrowth', 'continuity'];
+            const scenarioName = scenarioNames[scenarioIndex];
+            const data = scenarioData[scenarioName];
+            const currentData = scenarioData['current']; // Always have access to historical scenario for 2024 baseline
+            
+            if (!data) return { economic: [], social: [], environmental: [] };
+            
+            // Helper function to format numbers
+            const formatNumber = (value, decimals = 0) => {
+                if (typeof value === 'number') {
+                    return value.toLocaleString('en-US', { 
+                        minimumFractionDigits: decimals, 
+                        maximumFractionDigits: decimals 
+                    });
+                }
+                return value.toString();
+            };
+            
+            // Helper function to get historical series data
+            const getHistoricalSeries = (key) => {
+                // Special case: Calculate CO2_total series from CO2pc * Pop
+                if (key === 'CO2_total') {
+                    const co2pcSeries = scenarioName === 'current' && data.historicalData && data.historicalData['CO2pc'] 
+                        ? data.historicalData['CO2pc'].series
+                        : (data.timeseriesData && data.timeseriesData['CO2pc'] ? data.timeseriesData['CO2pc'].series : null);
+                    const popSeries = scenarioName === 'current' && data.historicalData && data.historicalData['Pop']
+                        ? data.historicalData['Pop'].series
+                        : (data.timeseriesData && data.timeseriesData['Pop'] ? data.timeseriesData['Pop'].series : null);
+                    
+                    if (co2pcSeries && popSeries && Array.isArray(co2pcSeries) && Array.isArray(popSeries)) {
+                        // Calculate CO2_total = CO2pc * Pop for each year
+                        return co2pcSeries.map((co2pc, i) => co2pc * popSeries[i]);
+                    }
+                    return null;
+                }
+                
+                // Special case: Calculate sForeignBorn series from ForeignBorn / Pop
+                if (key === 'sForeignBorn') {
+                    let foreignBornSeries, popSeries;
+                    
+                    if (scenarioName === 'current' && data.historicalData) {
+                        foreignBornSeries = data.historicalData['ForeignBorn']?.series;
+                        popSeries = data.historicalData['Pop']?.series;
+                    } else if (data.timeseriesData) {
+                        foreignBornSeries = data.timeseriesData['ForeignBorn']?.series;
+                        popSeries = data.timeseriesData['Pop']?.series;
+                        
+                        // For future scenarios, prepend 2024 baseline from historical scenario
+                        if (foreignBornSeries && popSeries && currentData && currentData.historicalData) {
+                            const currentForeignBorn = currentData.historicalData['ForeignBorn']?.series;
+                            const currentPop = currentData.historicalData['Pop']?.series;
+                            if (currentForeignBorn && currentPop && currentForeignBorn.length > 0 && currentPop.length > 0) {
+                                // Get 2024 values (last item in historical scenario series)
+                                const lastIndex = currentForeignBorn.length - 1;
+                                foreignBornSeries = [currentForeignBorn[lastIndex], ...foreignBornSeries];
+                                popSeries = [currentPop[lastIndex], ...popSeries];
+                            }
+                        }
+                    }
+                    
+                    if (foreignBornSeries && popSeries && Array.isArray(foreignBornSeries) && Array.isArray(popSeries)) {
+                        // Ensure both series have the same length
+                        const minLength = Math.min(foreignBornSeries.length, popSeries.length);
+                        // Calculate sForeignBorn = ForeignBorn / Pop for each year
+                        return foreignBornSeries.slice(0, minLength).map((foreignBorn, i) => {
+                            if (popSeries[i] > 0) {
+                                return foreignBorn / popSeries[i];
+                            }
+                            return 0;
+                        });
+                    }
+                    return null;
+                }
+                
+                if (scenarioName === 'current' && data.historicalData && data.historicalData[key]) {
+                    // For Historical scenario, return full series (might be 2010-2024 or 2014-2024)
+                    return data.historicalData[key].series;
+                } else if (data.timeseriesData && data.timeseriesData[key]) {
+                    return data.timeseriesData[key].series;
+                }
+                return null;
+            };
+            
+            // Helper function to get value for selected year
+            const getValueForYear = (key) => {
+                // Special case: Calculate CO2_total from CO2pc * Pop for all scenarios
+                if (key === 'CO2_total') {
+                    const co2pcSeries = getHistoricalSeries('CO2pc');
+                    const popSeries = getHistoricalSeries('Pop');
+                    if (co2pcSeries && popSeries && Array.isArray(co2pcSeries) && Array.isArray(popSeries)) {
+                        let startYear;
+                        if (scenarioName === 'current') {
+                            startYear = popSeries.length === 15 ? 2010 : 2014;
+                        } else {
+                            // For future scenarios, timeseries starts at 2025, but slider can start at 2024
+                            // Use 2024 as base if we're at 2024, otherwise 2025
+                            startYear = 2025;
+                        }
+                        
+                        let yearIndex = selectedYear - startYear;
+                        
+                        // Handle 2024 for future scenarios (use first data point)
+                        if (scenarioName !== 'current' && selectedYear === 2024) {
+                            yearIndex = 0;
+                        }
+                        
+                        if (yearIndex >= 0 && yearIndex < co2pcSeries.length && yearIndex < popSeries.length) {
+                            // Calculate CO2_total = CO2pc (t/capita) * Pop (people)
+                            return co2pcSeries[yearIndex] * popSeries[yearIndex];
+                        }
+                    }
+                    return null;
+                }
+                
+                // Special case: Calculate sForeignBorn from ForeignBorn / Pop for all scenarios
+                if (key === 'sForeignBorn') {
+                    // Get the series directly from data (not through getHistoricalSeries to avoid recursion)
+                    let foreignBornSeries, popSeries;
+                    
+                    if (scenarioName === 'current' && data.historicalData) {
+                        foreignBornSeries = data.historicalData['ForeignBorn']?.series;
+                        popSeries = data.historicalData['Pop']?.series;
+                    } else if (data.timeseriesData) {
+                        foreignBornSeries = data.timeseriesData['ForeignBorn']?.series;
+                        popSeries = data.timeseriesData['Pop']?.series;
+                        
+                        // For future scenarios, prepend 2024 baseline from historical scenario
+                        if (foreignBornSeries && popSeries && currentData && currentData.historicalData) {
+                            const currentForeignBorn = currentData.historicalData['ForeignBorn']?.series;
+                            const currentPop = currentData.historicalData['Pop']?.series;
+                            if (currentForeignBorn && currentPop && currentForeignBorn.length > 0 && currentPop.length > 0) {
+                                // Get 2024 values (last item in historical scenario series)
+                                const lastIndex = currentForeignBorn.length - 1;
+                                foreignBornSeries = [currentForeignBorn[lastIndex], ...foreignBornSeries];
+                                popSeries = [currentPop[lastIndex], ...popSeries];
+                            }
+                        }
+                    }
+                    
+                    if (foreignBornSeries && popSeries && Array.isArray(foreignBornSeries) && Array.isArray(popSeries)) {
+                        let startYear;
+                        if (scenarioName === 'current') {
+                            startYear = popSeries.length === 15 ? 2010 : 2014;
+                        } else {
+                            // For future scenarios, series now starts at 2024 (after prepending)
+                            startYear = 2024;
+                        }
+                        
+                        let yearIndex = selectedYear - startYear;
+                        
+                        if (yearIndex >= 0 && yearIndex < foreignBornSeries.length && yearIndex < popSeries.length) {
+                            // Calculate sForeignBorn = ForeignBorn / Pop
+                            const share = foreignBornSeries[yearIndex] / popSeries[yearIndex];
+                            return share;
+                        }
+                    }
+                    return null;
+                }
+                
+                const series = getHistoricalSeries(key);
+                if (!series || !Array.isArray(series)) return null;
+                
+                let startYear;
+                if (scenarioName === 'current') {
+                    startYear = series.length === 15 ? 2010 : 2014;
+                } else {
+                    startYear = 2025;
+                }
+                
+                let yearIndex = selectedYear - startYear;
+                
+                // Handle 2024 for future scenarios (use first data point)
+                if (scenarioName !== 'current' && selectedYear === 2024) {
+                    yearIndex = 0;
+                }
+                
+                if (yearIndex >= 0 && yearIndex < series.length) {
+                    return series[yearIndex];
+                }
+                return null;
+            };
+            
+            return {
+    main: [
+                    { 
+                        title: "Population", 
+                        value: formatNumber(getValueForYear('Pop') || data.Pop), 
+                        unit: "People", 
+                        trend: "up", 
+                        trendValue: "+0.02%", 
+                        chartType: "area", 
+                        maxValue: 200000, 
+                        color: "#0088FE", 
+                        secondaryColor: "#82CA9D",
+                        series: getHistoricalSeries('Pop')
+                    },
+                    { 
+                        title: "Forest Coverage", 
+                        value: formatNumber((getValueForYear('NatCov') || data.NatCov) * 100, 2), 
+                        unit: "%", 
+                        trend: "down", 
+                        trendValue: "-0.7%", 
+                        chartType: "area", 
+                        maxValue: 100, 
+                        color: "#00C49F", 
+                        secondaryColor: "#8DD1E1",
+                        series: getHistoricalSeries('NatCov')?.map(val => val * 100)
+                    },
+                    { 
+                        title: "Total GDP", 
+                        value: formatNumber((getValueForYear('GDP') || data.GDP) / 1000000, 1), 
+                        unit: "M$", 
+                        trend: "up", 
+                        trendValue: "+3.2%", 
+                        chartType: "area", 
+                        maxValue: 15000, 
+                        color: "#0088FE", 
+                        secondaryColor: "#00C49F",
+                        series: getHistoricalSeries('GDP')?.map(val => val / 1000000)
+                    },
+                    { 
+                        title: "Monthly Salary", 
+                        value: formatNumber(getValueForYear('Salary') || data.Salary, 0), 
+                        unit: "$", 
+                        trend: "up", 
+                        trendValue: "+2.8%", 
+                        chartType: "line", 
+                        maxValue: 8000, 
+                        color: "#0088FE", 
+                        secondaryColor: "#00C49F",
+                        series: getHistoricalSeries('Salary')
+                    },
+                    { 
+                        title: "Total CO₂ Emissions", 
+                        value: formatNumber((getValueForYear('CO2_total') || data.CO2_total) / 1000, 0), 
+                        unit: "kt", 
+                        trend: "down", 
+                        trendValue: "-1.8%", 
+                        chartType: "area", 
+                        maxValue: 1000, 
+                        color: "#FF8042", 
+                        secondaryColor: "#FFBB28",
+                        series: getHistoricalSeries('CO2_total')?.map(val => val / 1000)
+                    },
+                    { 
+                        title: "Tourist Arrivals", 
+                        value: formatNumber(getValueForYear('Tour') || data.Tour), 
+                        unit: "", 
+                        trend: "up", 
+                        trendValue: "+7.5%", 
+                        chartType: "line", 
+                        maxValue: 15000000, 
+                        color: "#8884D8", 
+                        secondaryColor: "#82CA9D",
+                        series: getHistoricalSeries('Tour')
+                    },
+                    { 
+                        title: "Buildings Count", 
+                        value: formatNumber(getValueForYear('B') || data.B), 
+                        unit: "", 
+                        trend: "up", 
+                        trendValue: "+3.2%", 
+                        chartType: "area", 
+                        maxValue: 25000, 
+                        color: "#8884D8", 
+                        secondaryColor: "#82CA9D",
+                        series: getHistoricalSeries('B')
+                    },
+                    { 
+                        title: "Housing Affordability", 
+                        value: (() => {
+                            const affordValue = getValueForYear('Afford') || data.Afford;
+                            // If value is already a percentage (>= 1), use as-is; otherwise multiply by 100
+                            const percentageValue = affordValue >= 1 ? affordValue : affordValue * 100;
+                            return formatNumber(percentageValue, 1);
+                        })(), 
+                        unit: "%", 
+                        trend: "down", 
+                        trendValue: "-0.5%", 
+                        chartType: "bar", 
+                        maxValue: 100, 
+                        color: "#FF8042", 
+                        secondaryColor: "#FFBB28",
+                        series: getHistoricalSeries('Afford')?.map(val => val >= 1 ? val : val * 100)
+                    },
+                    { 
+                        title: "Business Formation", 
+                        value: formatNumber(getValueForYear('BusinessFormation') || data.BusinessFormation), 
+                        unit: "/year", 
+                        trend: "up", 
+                        trendValue: "+3.3%", 
+                        chartType: "bar", 
+                        maxValue: 5000, 
+                        color: "#FFBB28", 
+                        secondaryColor: "#FF8042",
+                        series: getHistoricalSeries('BusinessFormation')
+                    },
+                    { 
+                        title: "Foreign-born Share", 
+                        value: formatNumber((getValueForYear('sForeignBorn') || data.sForeignBorn) * 100, 1), 
+                        unit: "%", 
+                        trend: "up", 
+                        trendValue: "+0.5%", 
+                        chartType: "bar", 
+                        maxValue: 100, 
+                        color: "#8884D8", 
+                        secondaryColor: "#82CA9D",
+                        series: getHistoricalSeries('sForeignBorn')?.map(val => val * 100)
+                    }
+                ],
     economic: [
-        { title: "GDP per Capita",         value: "42,852.96",         unit: "$",  trend: "up", trendValue: "+2.5%", chartType: "area", maxValue: 80000, color: "#00C49F", secondaryColor: "#82CA9D" , series: [34367.24,34897.13,35054.21,35795.94,35507.64,32775.49,34346.57,35443.59,36342.49,39347.8,41134.37,42852.96]},
-        { title: "Income spent on Housing",value: "14.4",              unit: "%",  trend: "down",trendValue: "-.5%", chartType: "bar",  maxValue: 100,   color: "#FF8042", secondaryColor: "#FFBB28",  series: [15.6,16.23,15.49,15.5,15.7,16.05,16.24,17.0,15.29,15.6,14.39] },
-        { title: "Tourist Arrivals",       value: "9,646,656",         unit: "",    trend: "up", trendValue: "+7.5%",chartType: "line", maxValue: 15,     color: "#8884D8", secondaryColor: "#82CA9D", series: [7796770.0,7850411.0,8025265.0,8152148.0,8328254.0,5206632.0,5422415.0,8234993.0,8426708.0,9367696.0,9646656.0]},
-        { title: "Monthly Salary",         value: "2,571",             unit: "$",  trend: "up", trendValue: "+2.8%", chartType: "line", maxValue: 8000,   color: "#0088FE", secondaryColor: "#00C49F", series: [2073.0,2071.0,2127.0,2143.0,2162.0,2193.0,2303.0,2440.0,2571.0, 2604.0] },
-        { title: "Employment Rate",        value: "98.52",             unit: "%",  trend: "up", trendValue: "+0.7%", chartType: "pentagon",maxValue: 100,  color: "#00C49F", secondaryColor: "#8DD1E1"},
-        { title: "Business Formation",     value: "1,450",             unit: "/year",trend: "up", trendValue: "+3.3%", chartType: "bar",  maxValue: 5000,  color: "#FFBB28", secondaryColor: "#FF8042", series: [840.0,886.0,778.0,801.0,682.0,641.0,1306.0,1349.0,1245.0,1450.0,1452,] },
-        { title: "Buildings Count",        value: "10,645",            unit: "",    trend: "up", trendValue: "+3.2%", chartType: "area", maxValue: 200,   color: "#8884D8", secondaryColor: "#82CA9D", series: [9861.33333333333,9949.83333333333,10038.3333333333,10126.8333333333,10215.3333333333,10303.8333333333,10392.3333333333,10468.0,10595.0,10645.0,] }
+                    { 
+                        title: "GDP per Capita", 
+                        value: formatNumber(getValueForYear('GDPpc') || data.GDPpc, 2), 
+                        unit: "$", 
+                        trend: "up", 
+                        trendValue: "+2.5%", 
+                        chartType: "area", 
+                        maxValue: 80000, 
+                        color: "#00C49F", 
+                        secondaryColor: "#82CA9D",
+                        series: getHistoricalSeries('GDPpc')
+                    },
+                    { 
+                        title: "Total GDP", 
+                        value: formatNumber((getValueForYear('GDP') || data.GDP) / 1000000, 1), 
+                        unit: "M$", 
+                        trend: "up", 
+                        trendValue: "+3.2%", 
+                        chartType: "area", 
+                        maxValue: 15000, 
+                        color: "#0088FE", 
+                        secondaryColor: "#00C49F",
+                        series: getHistoricalSeries('GDP')?.map(val => val / 1000000)
+                    },
+                    { 
+                        title: "Annual Income", 
+                        value: formatNumber(data.Income, 0), 
+                        unit: "$", 
+                        trend: "up", 
+                        trendValue: "+2.8%", 
+                        chartType: "line", 
+                        maxValue: 100000, 
+                        color: "#8884D8", 
+                        secondaryColor: "#82CA9D",
+                        series: getHistoricalSeries('Income')
+                    },
+                    { 
+                        title: "Monthly Salary", 
+                        value: formatNumber(getValueForYear('Salary') || data.Salary, 0), 
+                        unit: "$", 
+                        trend: "up", 
+                        trendValue: "+2.8%", 
+                        chartType: "line", 
+                        maxValue: 8000, 
+                        color: "#0088FE", 
+                        secondaryColor: "#00C49F",
+                        series: getHistoricalSeries('Salary')
+                    },
+                    { 
+                        title: "Housing Affordability", 
+                        value: (() => {
+                            const affordValue = getValueForYear('Afford') || data.Afford;
+                            // If value is already a percentage (>= 1), use as-is; otherwise multiply by 100
+                            const percentageValue = affordValue >= 1 ? affordValue : affordValue * 100;
+                            return formatNumber(percentageValue, 1);
+                        })(), 
+                        unit: "%", 
+                        trend: "down", 
+                        trendValue: "-0.5%", 
+                        chartType: "bar", 
+                        maxValue: 100, 
+                        color: "#FF8042", 
+                        secondaryColor: "#FFBB28",
+                        series: getHistoricalSeries('Afford')?.map(val => val >= 1 ? val : val * 100)
+                    },
+                    { 
+                        title: "Housing Price", 
+                        value: formatNumber(getValueForYear('HPrice') || data.HPrice, 0), 
+                        unit: "$/month", 
+                        trend: "up", 
+                        trendValue: "+2.1%", 
+                        chartType: "line", 
+                        maxValue: 50000, 
+                        color: "#FFBB28", 
+                        secondaryColor: "#FF8042",
+                        series: getHistoricalSeries('HPrice')
+                    },
+                    { 
+                        title: "Employment Rate", 
+                        value: formatNumber((getValueForYear('Emp') || data.Emp) * 100, 2), 
+                        unit: "%", 
+                        trend: "up", 
+                        trendValue: "+0.7%", 
+                        chartType: "pentagon", 
+                        maxValue: 100, 
+                        color: "#00C49F", 
+                        secondaryColor: "#8DD1E1",
+                        series: getHistoricalSeries('Emp')?.map(val => val * 100)
+                    },
+                    { 
+                        title: "Business Formation", 
+                        value: formatNumber(getValueForYear('BusinessFormation') || data.BusinessFormation), 
+                        unit: "/year", 
+                        trend: "up", 
+                        trendValue: "+3.3%", 
+                        chartType: "bar", 
+                        maxValue: 5000, 
+                        color: "#FFBB28", 
+                        secondaryColor: "#FF8042",
+                        series: getHistoricalSeries('BusinessFormation')
+                    },
+                    { 
+                        title: "Tourist Arrivals", 
+                        value: formatNumber(getValueForYear('Tour') || data.Tour), 
+                        unit: "", 
+                        trend: "up", 
+                        trendValue: "+7.5%", 
+                        chartType: "line", 
+                        maxValue: 15000000, 
+                        color: "#8884D8", 
+                        secondaryColor: "#82CA9D",
+                        series: getHistoricalSeries('Tour')
+                    },
+                    { 
+                        title: "Buildings Count", 
+                        value: formatNumber(getValueForYear('B') || data.B), 
+                        unit: "", 
+                        trend: "up", 
+                        trendValue: "+3.2%", 
+                        chartType: "area", 
+                        maxValue: 25000, 
+                        color: "#8884D8", 
+                        secondaryColor: "#82CA9D",
+                        series: getHistoricalSeries('B')
+                    }
     ],
     social: [
-        { title: "Population Growth",   value: "87,097",         unit: "People",    trend: "up",   trendValue: "+0.02%", chartType: "area",    maxValue: 5,   color: "#0088FE", secondaryColor: "#82CA9D", series: [70570.0,71732.0,73105.0,74794.0,76177.0,77543.0,78015.0,79535.0,81588.0,85101.0,87097.0]}, // 2015-2024 
-        { title: "Life Expectancy",     value: "84.5",           unit: "Years",trend: "stable",   trendValue: "+0.3%", chartType: "bar",     maxValue: 100, color: "#00C49F", secondaryColor: "#8DD1E1", series: [83.1,83.2,83.4,83.6,83.3,84.1,82.5,83.7,83.5,84.6,84.5]},
-        { title: "Family Stability",    value: "30.96",          unit: "%",    trend: "stable",trendValue: "±0.3%",chartType: "line",    maxValue: 100, color: "#00C49F", secondaryColor: "#8884D8", series: [37.27, 43.86, 45.76, 20.00, 52.56, 41.85, 42.04, 40.56, 38.37, 30.34,] },
-        { title: "Access to Health",    value: "92.2",           unit: "%",    trend: "up",   trendValue: "+0.5%", chartType: "bar",     maxValue: 100, color: "#8884D8", secondaryColor: "#82CA9D", series: [92.00, 90.80, 89.50, 90.10, 91.40, 93.20, 93.50, 93.60, 92.80, 92.20]  },
-        { title: "Lisure Time",         value: "62.5",           unit: "%",  trend: "down",   trendValue: "+0.4%", chartType: "pentagon",maxValue: 10,  color: "#0088FE", secondaryColor: "#00C49F", series: [6.357,6.346,6.336,6.325,6.314,6.304,6.293,6.282,6.271,6.261,6.25] },
-        { title: "Life Satisfaction",   value: "7.8",            unit: "/10",  trend: "up",   trendValue: "+0.2%", chartType: "pentagon",maxValue: 10,  color: "#8884D8", secondaryColor: "#82CA9D" },
-        { title: "Civic Trust",         value: "68",             unit: "%",    trend: "down", trendValue: "-2.1%",chartType: "radial",  maxValue: 100, color: "#FF8042", secondaryColor: "#FFBB28" },
-        { title: "Foreign-born",        value: "47,627",         unit: "People",    trend: "stable",trendValue: "±0.1%",chartType: "pie",     maxValue: 100, color: "#FFBB28", secondaryColor: "#FF8042" },
-       
-    ],
-    
+                    { 
+                        title: "Population", 
+                        value: formatNumber(getValueForYear('Pop') || data.Pop), 
+                        unit: "People", 
+                        trend: "up", 
+                        trendValue: "+0.02%", 
+                        chartType: "area", 
+                        maxValue: 200000, 
+                        color: "#0088FE", 
+                        secondaryColor: "#82CA9D",
+                        series: getHistoricalSeries('Pop')
+                    },
+                    { 
+                        title: "Foreign-born Population", 
+                        value: formatNumber(getValueForYear('ForeignBorn') || data.ForeignBorn), 
+                        unit: "People", 
+                        trend: "stable", 
+                        trendValue: "±0.1%", 
+                        chartType: "area", 
+                        maxValue: 200000, 
+                        color: "#FFBB28", 
+                        secondaryColor: "#FF8042",
+                        series: getHistoricalSeries('ForeignBorn')
+                    },
+                    { 
+                        title: "Foreign-born Share", 
+                        value: formatNumber((getValueForYear('sForeignBorn') || data.sForeignBorn) * 100, 1), 
+                        unit: "%", 
+                        trend: "up", 
+                        trendValue: "+0.5%", 
+                        chartType: "bar", 
+                        maxValue: 100, 
+                        color: "#8884D8", 
+                        secondaryColor: "#82CA9D",
+                        series: getHistoricalSeries('sForeignBorn')?.map(val => val * 100)
+                    },
+                    { 
+                        title: "Life Expectancy", 
+                        value: formatNumber(getValueForYear('LE') || data.LE, 1), 
+                        unit: "Years", 
+                        trend: "stable", 
+                        trendValue: "+0.3%", 
+                        chartType: "bar", 
+                        maxValue: 100, 
+                        color: "#00C49F", 
+                        secondaryColor: "#8DD1E1",
+                        series: getHistoricalSeries('LE')
+                    },
+                    { 
+                        title: "Family Stability", 
+                        value: formatNumber(data.FamilyStability * 100, 2), 
+                        unit: "%", 
+                        trend: "stable", 
+                        trendValue: "±0.3%", 
+                        chartType: "line", 
+                        maxValue: 100, 
+                        color: "#00C49F", 
+                        secondaryColor: "#8884D8",
+                        series: getHistoricalSeries('FamilyStability')?.map(val => val * 100)
+                    },
+                    { 
+                        title: "Marriages", 
+                        value: formatNumber(data.Marriages), 
+                        unit: "/year", 
+                        trend: "up", 
+                        trendValue: "+1.2%", 
+                        chartType: "bar", 
+                        maxValue: 1000, 
+                        color: "#00C49F", 
+                        secondaryColor: "#8DD1E1",
+                        series: getHistoricalSeries('Marriages')
+                    },
+                    { 
+                        title: "Divorces", 
+                        value: formatNumber(data.Divorces), 
+                        unit: "/year", 
+                        trend: "down", 
+                        trendValue: "-0.8%", 
+                        chartType: "bar", 
+                        maxValue: 100, 
+                        color: "#FF8042", 
+                        secondaryColor: "#FFBB28",
+                        series: getHistoricalSeries('Divorces')
+                    },
+                    { 
+                        title: "Access to Health", 
+                        value: formatNumber(data.Access * 100, 1), 
+                        unit: "%", 
+                        trend: "up", 
+                        trendValue: "+0.5%", 
+                        chartType: "bar", 
+                        maxValue: 100, 
+                        color: "#8884D8", 
+                        secondaryColor: "#82CA9D",
+                        series: getHistoricalSeries('Access')?.map(val => val * 100)
+                    },
+                    { 
+                        title: "Work-Life Balance", 
+                        value: formatNumber(data.WLB * 100, 1), 
+                        unit: "%", 
+                        trend: "down", 
+                        trendValue: "+0.4%", 
+                        chartType: "pentagon", 
+                        maxValue: 100, 
+                        color: "#0088FE", 
+                        secondaryColor: "#00C49F",
+                        series: getHistoricalSeries('WLB')?.map(val => val * 100)
+                    }
+                ],
     environmental: [
-        { title: "Forest Coverage",    value: "98,07",           unit: "%",    trend: "down", trendValue: "-0.7%",chartType: "pie",    maxValue: 100, color: "#00C49F", secondaryColor: "#8DD1E1", series: [98.302,98.276,98.25,98.224,98.199,98.173,98.147,98.122,98.096,98.07] },
-        { title: "CO₂ Emissions",      value: "470",              unit: "t/capita",trend: "down", trendValue: "-2.2%",chartType: "area",  maxValue: 25,  color: "#FF8042", secondaryColor: "#FFBB28", series: [460.0,470.0,470.0,470.0,460.0,441.0,448.0,471.0,480.0,465.0,470.0] },
-        { title: "Renewable Energy",   value: "25.1",             unit: "%",    trend: "up",   trendValue: "+2.8%",chartType: "bar",    maxValue: 100, color: "#00C49F", secondaryColor: "#82CA9D" },
-        { title: "Air Quality Index",  value: "6015",             unit: "AQI",  trend: "up",   trendValue: "+3.1%",chartType: "line",   maxValue: 100, color: "#0088FE", secondaryColor: "#8DD1E1" },
-        { title: "Biodiversity Index",value: "8.7",              unit: "/10",   trend: "down", trendValue: "-0.4%",chartType: "pentagon",maxValue: 10, color: "#8884D8", secondaryColor: "#82CA9D" },
-        { title: "Water Consumption", value: "53,655",            unit: "L/day", trend: "down", trendValue: "-2.3%",chartType: "area",    maxValue: 300, color: "#0088FE", secondaryColor: "#00C49F", series: [59860.0,58765.0,58400.0,56940.0,56502.00000000001,55808.5,55115.0,54421.5,53655.0] }, 
-        { title: "Avg Temperature",   value: "7.46",             unit: "°C",   trend: "up",   trendValue: "+0.3%",chartType: "area",    maxValue: 30,  color: "#FF8042", secondaryColor: "#FFBB28", series: [7.3,7.35,7.36,7.38,7.4,7.42,7.43,7.44,7.45,7.46,7.46]  },
-    ]
-};
+                    { 
+                        title: "Forest Coverage", 
+                        value: formatNumber((getValueForYear('NatCov') || data.NatCov) * 100, 2), 
+                        unit: "%", 
+                        trend: "down", 
+                        trendValue: "-0.7%", 
+                        chartType: "area", 
+                        maxValue: 100, 
+                        color: "#00C49F", 
+                        secondaryColor: "#8DD1E1",
+                        series: getHistoricalSeries('NatCov')?.map(val => val * 100)
+                    },
+                    { 
+                        title: "CO₂ Emissions per Capita", 
+                        value: formatNumber(getValueForYear('CO2pc') || data.CO2pc, 1), 
+                        unit: "t/capita", 
+                        trend: "down", 
+                        trendValue: "-2.2%", 
+                        chartType: "area", 
+                        maxValue: 10, 
+                        color: "#FF8042", 
+                        secondaryColor: "#FFBB28",
+                        series: getHistoricalSeries('CO2pc')
+                    },
+                    { 
+                        title: "Total CO₂ Emissions", 
+                        value: formatNumber((getValueForYear('CO2_total') || data.CO2_total) / 1000, 0), 
+                        unit: "kt", 
+                        trend: "down", 
+                        trendValue: "-1.8%", 
+                        chartType: "area", 
+                        maxValue: 1000, 
+                        color: "#FF8042", 
+                        secondaryColor: "#FFBB28",
+                        series: getHistoricalSeries('CO2_total')?.map(val => val / 1000)
+                    },
+                    { 
+                        title: "Renewable Energy", 
+                        value: formatNumber((getValueForYear('Ren') || data.Ren) * 100, 1), 
+                        unit: "%", 
+                        trend: "up", 
+                        trendValue: "+2.8%", 
+                        chartType: "bar", 
+                        maxValue: 100, 
+                        color: "#00C49F", 
+                        secondaryColor: "#82CA9D",
+                        series: getHistoricalSeries('Ren')?.map(val => val * 100)
+                    },
+                    { 
+                        title: "Air Quality Index", 
+                        value: formatNumber(getValueForYear('AQI') || data.AQI, 0), 
+                        unit: "AQI", 
+                        trend: "up", 
+                        trendValue: "+3.1%", 
+                        chartType: "line", 
+                        maxValue: 100, 
+                        color: "#0088FE", 
+                        secondaryColor: "#8DD1E1",
+                        series: getHistoricalSeries('AQI')
+                    },
+                    { 
+                        title: "Water Consumption", 
+                        value: formatNumber(getValueForYear('Water') || data.Water), 
+                        unit: "L/day", 
+                        trend: "down", 
+                        trendValue: "-2.3%", 
+                        chartType: "area", 
+                        maxValue: 100000, 
+                        color: "#0088FE", 
+                        secondaryColor: "#00C49F",
+                        series: getHistoricalSeries('Water')
+                    },
+                    { 
+                        title: "Average Temperature", 
+                        value: formatNumber(getValueForYear('Temp') || data.Temp, 2), 
+                        unit: "°C", 
+                        trend: "up", 
+                        trendValue: "+0.3%", 
+                        chartType: "area", 
+                        maxValue: 30, 
+                        color: "#FF8042", 
+                        secondaryColor: "#FFBB28",
+                        series: getHistoricalSeries('Temp')
+                    }
+                ]
+            };
+        }
 
 
         // State
         let activeScenario = 0;
-        let activeTab = 'economic';
+        let activeTab = 'main';
+        let selectedYear = 2024;
+        let latestImageRequestId = 0; // Used to ensure we only show the latest requested image
+        let timeSliderUpdateTimeout = null; // Debounce for smoother slider → chart/image updates
+        let chartInstances = {}; // Store chart instances to destroy them properly
+        let isRenderingKPIs = false; // Prevent concurrent renders
+        let currentImageSrc = null; // Track current image/video source to prevent unnecessary reloads
+        
+        // Function to add cache-busting parameter to image URLs
+        function addCacheBuster(url) {
+            if (!url) return url;
+            const separator = url.includes('?') ? '&' : '?';
+            return `${url}${separator}v=${Date.now()}`;
+        }
+
+        // Function to get scenario image based on selected year
+        function getScenarioImage(scenarioId, year) {
+            let imagePath;
+            if (scenarioId === 'current') {
+                imagePath = './Public/CURRENT.png';
+            } else {
+                // For future scenarios, calculate image number based on year
+                // Year 2024 = image 1, 2025 = image 2, etc.
+                let imageNumber;
+                if (scenarioId === 'continuity') {
+                    imageNumber = Math.min(year - 2023, 10); // Cap at 10 (there are 10 images)
+                    imagePath = `./Public/CONTINUITY ${imageNumber}.png`;
+                } else if (scenarioId === 'overgrowth') {
+                    imageNumber = Math.min(year - 2023, 10); // Cap at 10
+                    imagePath = `./Public/OVERGROWTH ${imageNumber}.png`;
+                } else if (scenarioId === 'degrowth') {
+                    // Degrowth shows D MAP.png
+                    imagePath = './Public/D MAP.png';
+                } else {
+                    return null;
+                }
+            }
+            
+            // Add cache-busting parameter to force reload
+            return addCacheBuster(imagePath);
+        }
+
+        // Web Serial API connection for Arduino control
+        let serialPort = null;
+        let serialReader = null;
+        let arduinoConnected = false;
+        let readBuffer = '';
+
+        async function connectSerial() {
+            // Check if Web Serial API is supported
+            if (!('serial' in navigator)) {
+                console.warn('Web Serial API not supported. Please use Chrome or Edge browser.');
+                alert('Web Serial API is not supported in this browser. Please use Chrome or Edge.');
+                return;
+            }
+
+            try {
+                // Request port access
+                serialPort = await navigator.serial.requestPort();
+                
+                // Open connection with 115200 baud rate (matches Arduino)
+                await serialPort.open({ baudRate: 115200 });
+                
+                console.log('✅ Connected to Arduino via Serial');
+                arduinoConnected = true;
+                updateSerialStatus('Connected');
+                
+                // Start reading from serial port
+                readSerial();
+                
+            } catch (error) {
+                if (error.name === 'NotFoundError') {
+                    console.log('No port selected');
+                } else {
+                    console.error('Serial connection error:', error);
+                    alert('Failed to connect to Arduino: ' + error.message);
+                }
+                arduinoConnected = false;
+                updateSerialStatus('Disconnected');
+            }
+        }
+
+        async function disconnectSerial() {
+            if (serialReader) {
+                await serialReader.cancel();
+                serialReader = null;
+            }
+            if (serialPort) {
+                await serialPort.close();
+                serialPort = null;
+            }
+            arduinoConnected = false;
+            updateSerialStatus('Disconnected');
+            console.log('Disconnected from Arduino');
+        }
+
+        async function readSerial() {
+            if (!serialPort) return;
+            
+            const decoder = new TextDecoder();
+            let decoderBuffer = '';
+            
+            try {
+                serialReader = serialPort.readable.getReader();
+                
+                while (serialPort && serialPort.readable) {
+                    try {
+                        const { value, done } = await serialReader.read();
+                        
+                        if (done) {
+                            console.log('Serial reader done');
+                            serialReader.releaseLock();
+                            break;
+                        }
+                        
+                        // Decode received data (handle partial UTF-8 sequences)
+                        decoderBuffer += decoder.decode(value, { stream: true });
+                        
+                        // Process complete lines
+                        const lines = decoderBuffer.split('\n');
+                        decoderBuffer = lines.pop() || ''; // Keep incomplete line in buffer
+                        
+                        for (const line of lines) {
+                            const trimmed = line.trim();
+                            if (trimmed) {
+                                // Skip debug lines that start with "DEBUG:"
+                                if (trimmed.startsWith('DEBUG:')) {
+                                    console.log('Arduino:', trimmed);
+                                    continue;
+                                }
+                                
+                                // Skip plain text release messages like "Scenario 3 RELEASED"
+                                if (trimmed.includes('RELEASED')) {
+                                    console.log('Arduino:', trimmed, '(ignored)');
+                                    continue;
+                                }
+                                
+                                try {
+                                    const message = JSON.parse(trimmed);
+                                    console.log('✅ Received from Arduino:', message);
+                                    handleArduinoMessage(message);
+                                } catch (e) {
+                                    // Not JSON, log for debugging but don't spam
+                                    if (trimmed.length < 100) { // Only log short non-JSON lines
+                                        console.log('⚠️ Non-JSON line:', trimmed);
+                                    }
+                                }
+                            }
+                        }
+                    } catch (readError) {
+                        console.error('Error reading from serial:', readError);
+                        // Continue reading instead of breaking
+                        if (readError.name === 'NetworkError') {
+                            console.log('Serial connection lost, attempting to reconnect...');
+                            arduinoConnected = false;
+                            updateSerialStatus('Disconnected');
+                            break;
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error('Serial read error:', error);
+                arduinoConnected = false;
+                updateSerialStatus('Error');
+            } finally {
+                if (serialReader) {
+                    try {
+                        serialReader.releaseLock();
+                    } catch (e) {
+                        // Already released
+                    }
+                }
+            }
+        }
+
+        function handleArduinoMessage(message) {
+            console.log('🔧 Handling Arduino message:', message);
+            
+            // Handle new format: {event: 'button', index: 3, name: 'Scenario 3', pressed: true}
+            if (message.event === 'button' && message.pressed === true) {
+                // Map button index to scenario index
+                // Custom mapping: Button 4 → Scenario 0 (Historical)
+                let buttonIndex = parseInt(message.index);
+                let scenarioIndex;
+                
+                // Special case: Button 4 maps to Scenario 0 (Historical)
+                if (buttonIndex === 4) {
+                    scenarioIndex = 0; // Historical
+                } else if (buttonIndex >= 1 && buttonIndex <= 3) {
+                    // Buttons 1-3 map to scenarios 1-3
+                    scenarioIndex = buttonIndex; // Button 1→1, 2→2, 3→3
+                } else if (buttonIndex === 0) {
+                    // Button 0 maps to scenario 0
+                    scenarioIndex = 0;
+                } else {
+                    console.error('❌ Unknown button index:', buttonIndex);
+                    return;
+                }
+                
+                console.log('🔄 Button pressed:', message.index, '→ Scenario:', scenarioIndex);
+                
+                if (isNaN(scenarioIndex) || scenarioIndex < 0 || scenarioIndex > 3) {
+                    console.error('❌ Invalid scenario index:', scenarioIndex, 'from button index:', message.index);
+                    return;
+                }
+                
+                const slider = document.getElementById('scenario-slider');
+                if (!slider) {
+                    console.error('❌ Scenario slider not found!');
+                    return;
+                }
+                
+                // Update scenario
+                updateScenario(scenarioIndex);
+                slider.value = scenarioIndex;
+                console.log('✅ Scenario updated from Arduino button:', scenarioIndex);
+            }
+            // Handle old format: {type: 'scenario_change', scenario: 0, name: 'Historical'}
+            else if (message.type === 'scenario_change') {
+                // Update scenario from Arduino
+                const scenarioIndex = parseInt(message.scenario);
+                console.log('🔄 Changing scenario to:', scenarioIndex, message.name);
+                
+                if (isNaN(scenarioIndex) || scenarioIndex < 0 || scenarioIndex > 3) {
+                    console.error('❌ Invalid scenario index:', scenarioIndex);
+                    return;
+                }
+                
+                const slider = document.getElementById('scenario-slider');
+                if (!slider) {
+                    console.error('❌ Scenario slider not found!');
+                    return;
+                }
+                
+                // Update scenario
+                updateScenario(scenarioIndex);
+                slider.value = scenarioIndex;
+                console.log('✅ Scenario updated from Arduino:', message.name, '(index:', scenarioIndex + ')');
+            } 
+            // Handle year change - multiple formats
+            else if (message.type === 'year_change' || message.event === 'slider' || message.event === 'year') {
+                // Update year from Arduino - handle different message formats
+                let rawValue;
+                
+                if (message.year !== undefined) {
+                    rawValue = parseInt(message.year);
+                } else if (message.value !== undefined) {
+                    rawValue = parseInt(message.value);
+                } else if (message.slider !== undefined) {
+                    rawValue = parseInt(message.slider);
+                } else {
+                    console.warn('⚠️ Year message without year/value/slider field:', message);
+                    return;
+                }
+                
+                console.log('📅 Raw slider value:', rawValue, 'from message:', message);
+                
+                // Check if it's already a year (2014-2034) or a slider offset value
+                let year;
+                if (rawValue >= 2014 && rawValue <= 2034) {
+                    // Already a year value
+                    year = rawValue;
+                } else if (rawValue >= 0 && rawValue <= 1023) {
+                    // Slider value directly represents offset from base year (not proportionally mapped)
+                    const baseYear = activeScenario === 0 ? 2014 : 2024; // Historical: 2014, Others: 2024
+                    const maxOffset = activeScenario === 0 ? 10 : 10; // Historical: 0-10 (2014-2024), Others: 0-10 (2024-2034)
+                    
+                    // Use slider value directly as offset, but clamp to max offset
+                    let offset = Math.min(rawValue, maxOffset);
+                    
+                    // Calculate year as base + offset
+                    year = baseYear + offset;
+                    
+                    // Clamp to valid range (safety check)
+                    const yearMin = activeScenario === 0 ? 2014 : 2024;
+                    const yearMax = activeScenario === 0 ? 2024 : 2034;
+                    year = Math.max(yearMin, Math.min(yearMax, year));
+                    
+                    console.log('📊 Slider', rawValue, '→ offset', offset, '→ year', year, '(base:', baseYear, ', range:', yearMin, '-', yearMax + ')');
+                } else {
+                    console.error('❌ Invalid slider/year value:', rawValue);
+                    return;
+                }
+                
+                console.log('📅 Changing year to:', year);
+                
+                if (isNaN(year) || year < 2014 || year > 2034) {
+                    console.error('❌ Invalid year after mapping:', year);
+                    return;
+                }
+                
+                selectedYear = year;
+                const timeSlider = document.getElementById('time-slider');
+                if (!timeSlider) {
+                    console.error('❌ Time slider not found!');
+                    return;
+                }
+                
+                timeSlider.value = year;
+                const yearDisplay = document.getElementById('year-display');
+                if (yearDisplay) {
+                    yearDisplay.textContent = year;
+                }
+                // Use updateKPIValues instead of renderKPIs for smooth updates
+                updateKPIValues();
+                renderImageDashboard();
+                console.log('✅ Year updated from Arduino:', year);
+            } 
+            // Handle button release (ignore)
+            else if (message.event === 'button' && message.pressed === false) {
+                console.log('🔘 Button released:', message.index, '(ignored)');
+            }
+            else {
+                console.warn('⚠️ Unknown message type:', message);
+            }
+        }
+
+        // Helper function to map value from one range to another
+        function mapValue(value, inMin, inMax, outMin, outMax) {
+            return ((value - inMin) * (outMax - outMin)) / (inMax - inMin) + outMin;
+        }
+
+        function updateSerialStatus(status) {
+            // Update connection status indicator if it exists
+            const statusEl = document.getElementById('arduino-status');
+            const btnEl = document.getElementById('arduino-connect-btn');
+            if (statusEl) {
+                statusEl.textContent = status;
+                statusEl.style.color = status === 'Connected' ? '#00C49F' : '#888';
+            }
+            if (btnEl) {
+                if (status === 'Connected') {
+                    btnEl.textContent = '🔌 Disconnect Arduino';
+                    btnEl.style.background = 'var(--destructive)';
+                } else {
+                    btnEl.textContent = '🔌 Connect Arduino';
+                    btnEl.style.background = 'var(--secondary)';
+                }
+            }
+        }
+
+        async function toggleArduinoConnection() {
+            if (arduinoConnected) {
+                await disconnectSerial();
+            } else {
+                await connectSerial();
+            }
+        }
 
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             updateTime();
             setInterval(updateTime, 1000);
             renderKPIs();
+            renderImageDashboard();
             setupEventListeners();
+            // Note: Serial connection must be initiated by user (click button)
         });
 
         function updateTime() {
@@ -474,11 +1575,31 @@ const kpiData = {
                     updateTab(this.dataset.tab);
                 });
             });
+
+            // Time slider - only update values and images, not charts
+            const timeSlider = document.getElementById('time-slider');
+            timeSlider.addEventListener('input', function() {
+                const newYear = parseInt(this.value);
+                document.getElementById('year-display').textContent = newYear;
+
+                // Debounce updates while the thumb is being dragged
+                if (timeSliderUpdateTimeout) {
+                    clearTimeout(timeSliderUpdateTimeout);
+                }
+                timeSliderUpdateTimeout = setTimeout(() => {
+                    selectedYear = newYear;
+                    updateKPIValues(); // Only update values, not charts
+                    renderImageDashboard();
+                }, 120);
+            });
         }
 
         function updateScenario(index) {
             activeScenario = index;
             const scenario = scenarios[index];
+            
+            // Reset tracked image source when scenario changes (force reload)
+            currentImageSrc = null;
             
             // Update scenario info
             document.getElementById('scenario-name').textContent = scenario.name;
@@ -489,7 +1610,161 @@ const kpiData = {
                 label.classList.toggle('active', i === index);
             });
             
+            // Update time slider range based on scenario
+            const timeSlider = document.getElementById('time-slider');
+            const yearDisplay = document.getElementById('year-display');
+            const yearRange = document.getElementById('year-range');
+            const timeLabels = document.getElementById('time-labels');
+            
+            if (index === 0) {
+                // Historical scenario: 2014-2024
+                timeSlider.min = 2014;
+                timeSlider.max = 2024;
+                timeSlider.value = selectedYear = 2024;
+                yearRange.textContent = '2014 - 2024';
+                // Generate labels for all years
+                let labelsHtml = '';
+                for (let year = 2014; year <= 2024; year++) {
+                    labelsHtml += `<span>${year}</span>`;
+                }
+                timeLabels.innerHTML = labelsHtml;
+            } else {
+                // Future scenarios: 2024-2034
+                timeSlider.min = 2024;
+                timeSlider.max = 2034;
+                timeSlider.value = selectedYear = 2034;
+                yearRange.textContent = '2024 - 2034';
+                // Generate labels for all years
+                let labelsHtml = '';
+                for (let year = 2024; year <= 2034; year++) {
+                    labelsHtml += `<span>${year}</span>`;
+                }
+                timeLabels.innerHTML = labelsHtml;
+            }
+            yearDisplay.textContent = selectedYear;
+            
             renderKPIs();
+            renderImageDashboard();
+        }
+        
+        function renderImageDashboard() {
+            const container = document.getElementById('image-display-container');
+            if (!container) return;
+
+            // Generate a unique request id for this render. If newer renders occur before
+            // this one finishes loading, we can safely ignore this one when it completes.
+            const requestId = ++latestImageRequestId;
+
+            const currentScenario = scenarios[activeScenario];
+            const imageSrc = getScenarioImage(currentScenario.id, selectedYear);
+            
+            if (!imageSrc) {
+                container.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--muted-foreground);font-size:0.875rem;">No image available</div>';
+                return;
+            }
+            
+            // Check if we already have the same content displayed (prevent unnecessary reloads)
+            if (currentImageSrc === imageSrc) {
+                // Same content, don't reload
+                console.log('📹 Same video/image already displayed, skipping reload');
+                return;
+            }
+            
+            // Update tracked source
+            currentImageSrc = imageSrc;
+            
+            const isVideo = imageSrc.endsWith('.mp4') || imageSrc.endsWith('.webm') || imageSrc.endsWith('.mov');
+            
+            // Preload the new image/video before swapping (no fade animations)
+            if (isVideo) {
+                // For videos, create new element and swap when loaded
+                const newVideo = document.createElement('video');
+                newVideo.src = imageSrc;
+                newVideo.autoplay = true;
+                newVideo.muted = true;
+                newVideo.loop = true;
+                newVideo.playsInline = true;
+                newVideo.style.position = 'absolute';
+                newVideo.style.top = '50%';
+                newVideo.style.left = '50%';
+                newVideo.style.transform = 'translate(-50%, -50%)';
+                newVideo.style.width = '100%';
+                newVideo.style.height = '100%';
+                newVideo.style.objectFit = 'contain';
+                newVideo.style.borderRadius = 'inherit';
+                
+                newVideo.addEventListener('loadeddata', function() {
+                    // If a newer image/video was requested meanwhile, abort showing this one
+                    if (requestId !== latestImageRequestId) {
+                        newVideo.remove();
+                        return;
+                    }
+                    // Video is ready, replace immediately
+                    const oldContent = container.querySelector('video, img');
+                    if (oldContent && oldContent !== newVideo) {
+                        // Pause and remove old video to prevent conflicts
+                        if (oldContent.tagName === 'VIDEO') {
+                            oldContent.pause();
+                            oldContent.src = '';
+                        }
+                        oldContent.remove();
+                    }
+                });
+                
+                newVideo.addEventListener('error', function() {
+                    if (requestId !== latestImageRequestId) {
+                        newVideo.remove();
+                        return;
+                    }
+                    container.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--muted-foreground);font-size:0.875rem;">Video not available</div>';
+                });
+                
+                // Keep old content visible, add new one
+                container.appendChild(newVideo);
+            } else {
+                // For images, preload and swap when ready (no fade animations)
+                const newImg = new Image();
+                newImg.src = imageSrc;
+                newImg.alt = `${currentScenario.name} scenario - ${selectedYear}`;
+                newImg.style.position = 'absolute';
+                newImg.style.top = '50%';
+                newImg.style.left = '50%';
+                newImg.style.transform = 'translate(-50%, -50%)';
+                newImg.style.maxWidth = '100%';
+                newImg.style.maxHeight = '100%';
+                newImg.style.objectFit = 'contain';
+                
+                newImg.onload = function() {
+                    // If a newer image/video was requested meanwhile, abort showing this one
+                    if (requestId !== latestImageRequestId) {
+                        newImg.remove();
+                        return;
+                    }
+                    // Image is loaded, replace immediately
+                    const oldContent = container.querySelector('img, video');
+                    if (oldContent && oldContent !== newImg) {
+                        oldContent.remove();
+                    }
+                };
+                
+                newImg.onerror = function() {
+                    if (requestId !== latestImageRequestId) {
+                        newImg.remove();
+                        return;
+                    }
+                    // Remove failed image
+                    if (newImg.parentNode === container) {
+                        newImg.remove();
+                    }
+                    // Only show error if no other content
+                    if (!container.querySelector('img, video')) {
+                        container.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--muted-foreground);font-size:0.875rem;">Image not available</div>';
+                    }
+                };
+                
+                // Keep old content visible, add new one
+                container.appendChild(newImg);
+            }
         }
 
         function updateTab(tab) {
@@ -504,41 +1779,55 @@ const kpiData = {
         }
 
         function renderKPIs() {
+            if (isRenderingKPIs) return; // Prevent concurrent renders
+            isRenderingKPIs = true;
+            
             const grid = document.getElementById('kpi-grid');
             const currentScenario = scenarios[activeScenario];
+            const kpiData = generateKpiData(activeScenario);
             const kpis = kpiData[activeTab];
             
+            // Destroy existing chart instances
+            Object.values(chartInstances).forEach(chart => {
+                if (chart && typeof chart.destroy === 'function') {
+                    chart.destroy();
+                }
+            });
+            chartInstances = {};
+            
+            // Create new content in memory first
             let html = '';
             
-            // Add scenario image
+            // Add scenario image (original static images)
             if (currentScenario.image) {
-    const isVideo = currentScenario.image.endsWith('.mp4') || currentScenario.image.endsWith('.webm') || currentScenario.image.endsWith('.mov');
-    html += `
-        <div class="scenario-image">
-            ${isVideo
-                ? `<video src="${currentScenario.image}" autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;border-radius:inherit;"></video>`
-                : `<img src="${currentScenario.image}" alt="${currentScenario.name} scenario"
-                    onerror="this.style.display='none'; this.parentNode.innerHTML='<div style=\\'display:flex;align-items:center;justify-content:center;height:100%;color:var(--muted-foreground);font-size:0.875rem;\\'>Image not available</div>'">`
+                const isVideo = currentScenario.image.endsWith('.mp4') || currentScenario.image.endsWith('.webm') || currentScenario.image.endsWith('.mov');
+                const imageSrc = addCacheBuster(currentScenario.image);
+                html += `
+                    <div class="scenario-image">
+                        ${isVideo
+                            ? `<video src="${imageSrc}" autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;border-radius:inherit;"></video>`
+                            : `<img src="${imageSrc}" alt="${currentScenario.name} scenario"
+                                onerror="this.style.display='none'; this.parentNode.innerHTML='<div style=\\'display:flex;align-items:center;justify-content:center;height:100%;color:var(--muted-foreground);font-size:0.875rem;\\'>Image not available</div>'">`
+                        }
+                    </div>
+                `;
             }
-        </div>
-    `;
-}
             
             // Add KPI cards
             kpis.forEach((kpi, index) => {
                 const trendIcon = kpi.trend === 'up' ? '↗' : kpi.trend === 'down' ? '↘' : '→';
                 html += `
-                    <div class="kpi-card">
+                    <div class="kpi-card" data-kpi-title="${kpi.title}">
                         <div class="title">${kpi.title}</div>
                         <div class="value-container">
                             <div class="value">${kpi.value}</div>
                             ${kpi.unit ? `<div class="unit">${kpi.unit}</div>` : ''}
                         </div>
                         <div class="chart ${kpi.chartType === 'pentagon' ? 'radar' : ''}">
-    <canvas id="chart-${activeTab}-${index}" 
-            width="${kpi.chartType === 'pentagon' ? '1000' : '500'}" 
-            height="${kpi.chartType === 'pentagon' ? '600' : '300'}"></canvas>
-</div>
+                            <canvas id="chart-${activeTab}-${index}" 
+                                    width="${kpi.chartType === 'pentagon' ? '1500' : '500'}" 
+                                    height="${kpi.chartType === 'pentagon' ? '900' : '300'}"></canvas>
+                        </div>
                         <div class="trend ${kpi.trend}">
                             <span>${trendIcon}</span>
                             <span>${kpi.trendValue}</span>
@@ -547,28 +1836,139 @@ const kpiData = {
                 `;
             });
             
+            // Replace content immediately (no fade animations)
             grid.innerHTML = html;
+            setupKPICards(grid, kpis);
+            isRenderingKPIs = false;
+        }
+        
+        // Update KPI values and charts smoothly when year changes
+        function updateKPIValues() {
+            const grid = document.getElementById('kpi-grid');
+            const currentScenario = scenarios[activeScenario];
+            const kpiData = generateKpiData(activeScenario);
+            const kpis = kpiData[activeTab];
             
-            // Render charts
-            setTimeout(() => {
-                kpis.forEach((kpi, index) => {
-                    renderChart(`chart-${activeTab}-${index}`, kpi);
+            // Update values and charts in existing cards
+            kpis.forEach((kpi, index) => {
+                const card = grid.querySelector(`[data-kpi-title="${kpi.title}"]`);
+                if (card) {
+                    // Update displayed value
+                    const valueEl = card.querySelector('.value');
+                    if (valueEl) {
+                        valueEl.textContent = kpi.value;
+                    }
+                    
+                    // Update chart smoothly
+                    const chartId = `chart-${activeTab}-${index}`;
+                    const chart = chartInstances[chartId];
+                    if (chart) {
+                        // Generate new data for current year
+                        const data = generateTrendData(kpi.value, kpi.trend, 10, kpi);
+                        const chartData = getChartData(data, kpi);
+                        
+                        // Update chart data and labels smoothly
+                        chart.data.labels = chartData.labels;
+                        chart.data.datasets = chartData.datasets;
+                        
+                        // Update with smooth animation
+                        chart.update('active'); // 'active' mode provides smooth animation
+                    }
+                }
+            });
+        }
+        
+        function setupKPICards(grid, kpis) {
+            // Setup hover-expand behavior
+            const cards = grid.querySelectorAll('.kpi-card');
+            cards.forEach((card) => {
+                card.addEventListener('mouseenter', () => {
+                    grid.classList.add('is-hovering');
+                    cards.forEach(c => c.classList.remove('is-active'));
+                    card.classList.add('is-active');
                 });
-            }, 100);
+                card.addEventListener('mouseleave', () => {
+                    card.classList.remove('is-active');
+                    setTimeout(() => {
+                        if (!grid.querySelector('.kpi-card:hover')) {
+                            grid.classList.remove('is-hovering');
+                        }
+                    }, 0);
+                });
+            });
+            
+            // Render charts after DOM is ready
+            requestAnimationFrame(() => {
+                setTimeout(() => {
+                    kpis.forEach((kpi, index) => {
+                        const chartId = `chart-${activeTab}-${index}`;
+                        const chart = renderChart(chartId, kpi);
+                        if (chart) {
+                            chartInstances[chartId] = chart;
+                        }
+                    });
+                }, 50);
+            });
         }
 
        function generateTrendData(baseValue, trend, points = 10, kpi = {}) {
     // Use provided series if available
     if (kpi.series && Array.isArray(kpi.series)) {
-        return kpi.series.map((value, i) => ({
-            year: (2015 + i).toString(),
-            value: value,
-            target: value * 1.05,
-            secondary: value * 0.95
-        }));
+        // Determine start year - for historical scenario, series might start at 2010 or 2014
+        // For future scenarios, series starts at 2025
+        let startYear;
+        if (activeScenario === 0) {
+            // Historical scenario: determine start year from series length
+            // If series has 15 items, it starts at 2010; if 11, starts at 2014
+            startYear = kpi.series.length === 15 ? 2010 : 2014;
+        } else {
+            // Future scenarios start at 2025
+            startYear = 2025;
+        }
+        
+        // Filter series to show only up to selectedYear (charts update with year)
+        const endIndex = selectedYear - startYear + 1;
+        const filteredSeries = kpi.series.slice(0, Math.max(1, endIndex));
+        
+        // Spain target data for Historical scenario (2014-2024)
+        const spainTargets = {
+            'Salary': [1476.26, 1492.28, 1495.51, 1527.17, 1550.59, 1575.57, 1625.27, 1672.50, 1740.45, 1811.56, 1779.83],
+            'GDPpc': [28000, 28500, 29000, 29500, 30000, 30500, 31000, 31500, 32000, 32500, 33000], // Spain GDP per capita targets
+            'HPrice': [690, 700, 710, 725, 732, 750, 780, 820, 850, 900, 950], // Spain housing price targets (2014-2024)
+            'Emp': [61.1, 62.1, 63.2, 64.5, 66.2, 67.3, 65.8, 67.0, 68.6, 70.0, 71.4] // Spain employment rate targets (2014-2024)
+        };
+        
+        return filteredSeries.map((value, i) => {
+            let target = value * 1.05; // Default target
+            let secondary = value * 0.95; // Default secondary
+            
+            const currentYear = startYear + i;
+            
+            // Use Spain data as targets for Historical scenario (Housing Price and Employment Rate)
+            if (activeScenario === 0 && kpi.title) {
+                // For historical data that starts in 2010, we need to adjust the index for Spain targets (2014-2024)
+                const spainIndex = currentYear >= 2014 ? currentYear - 2014 : -1;
+                if (kpi.title === 'Housing Price' && spainIndex >= 0 && spainTargets.HPrice[spainIndex]) {
+                    target = spainTargets.HPrice[spainIndex];
+                } else if (kpi.title === 'Employment Rate' && spainIndex >= 0 && spainTargets.Emp[spainIndex]) {
+                    target = spainTargets.Emp[spainIndex];
+                }
+            }
+            
+            return {
+                year: currentYear.toString(),
+                value: value,
+                target: target,
+                secondary: secondary
+            };
+        });
     }
+    
+    // Fallback to generated data if no series available
     const data = [];
     const numericValue = parseFloat(baseValue.toString().replace(/[^\d.-]/g, ''));
+    const startYear = activeScenario === 0 ? 2014 : 2025;
+    
     for (let i = 0; i < points; i++) {
         let value = numericValue;
         let target = numericValue * 1.1;
@@ -587,7 +1987,7 @@ const kpiData = {
             secondary = value * 0.95;
         }
         data.push({
-            year: (2015 + i).toString(),
+            year: (startYear + i).toString(),
             value: Math.max(0, value),
             target: Math.max(0, target),
             secondary: Math.max(0, secondary)
@@ -599,7 +1999,12 @@ const kpiData = {
 // Update renderChart to pass kpi as argument to generateTrendData
 function renderChart(canvasId, kpi) {
     const canvas = document.getElementById(canvasId);
-    if (!canvas) return;
+    if (!canvas) return null;
+    
+    // Destroy existing chart if it exists
+    if (chartInstances[canvasId]) {
+        chartInstances[canvasId].destroy();
+    }
     
     const ctx = canvas.getContext('2d');
     const data = generateTrendData(kpi.value, kpi.trend, 10, kpi); // Pass kpi as 4th argument
@@ -612,10 +2017,11 @@ function renderChart(canvasId, kpi) {
     let chartConfig = {
         type: getChartType(kpi.chartType),
         data: getChartData(data, kpi),
-        options: getChartOptions(kpi.chartType, kpi)
+        options: getChartOptions(kpi.chartType, kpi, data)
     };
     
-    new Chart(ctx, chartConfig);
+    const chart = new Chart(ctx, chartConfig);
+    return chart;
 }
         
         function getChartType(chartType) {
@@ -673,20 +2079,24 @@ function renderChart(canvasId, kpi) {
                     const last5Years = years.slice(-5);
                     const last5Values = values.slice(-5);
                     const last5Targets = targets.slice(-5);
-                    return {
-                        labels: last5Years,
-                        datasets: [{
-                            label: 'Actual',
-                            data: last5Values,
-                            borderColor: kpi.color,
-                            backgroundColor: kpi.color + '20',
-                            borderWidth: 2,
-                            pointRadius: 4,
-                            pointBackgroundColor: kpi.color,
-                            pointBorderColor: '#1a1a1a',
-                            pointBorderWidth: 2
-                        }, {
-                            label: 'Target',
+                    
+                    // Only show Spain data for Employment Rate in Historical scenario
+                    const pentagonDatasets = [{
+                        label: 'Actual',
+                        data: last5Values,
+                        borderColor: kpi.color,
+                        backgroundColor: kpi.color + '20',
+                        borderWidth: 2,
+                        pointRadius: 4,
+                        pointBackgroundColor: kpi.color,
+                        pointBorderColor: '#1a1a1a',
+                        pointBorderWidth: 2
+                    }];
+                    
+                    // Add Spain data only for Employment Rate in Historical scenario
+                    if (kpi.title === 'Employment Rate' && activeScenario === 0) {
+                        pentagonDatasets.push({
+                            label: 'Spain',
                             data: last5Targets,
                             borderColor: kpi.secondaryColor,
                             backgroundColor: kpi.secondaryColor + '10',
@@ -696,7 +2106,12 @@ function renderChart(canvasId, kpi) {
                             pointBackgroundColor: kpi.secondaryColor,
                             pointBorderColor: '#1a1a1a',
                             pointBorderWidth: 2
-                        }]
+                        });
+                    }
+                    
+                    return {
+                        labels: last5Years,
+                        datasets: pentagonDatasets
                     };
                     
                 case 'bar':
@@ -733,22 +2148,24 @@ function renderChart(canvasId, kpi) {
                     };
                     
                 default: // line
-                    return {
-                        labels: years,
-                        datasets: [{
-                            label: 'Actual',
-                            data: values,
-                            borderColor: kpi.color,
-                            backgroundColor: 'transparent',
-                            borderWidth: 2,
-                            tension: 0.4,
-                            pointRadius: 4,
-                            pointHoverRadius: 6,
-                            pointBackgroundColor: kpi.color,
-                            pointBorderColor: '#1a1a1a',
-                            pointBorderWidth: 2
-                        }, {
-                            label: 'Target',
+                    const datasets = [{
+                        label: 'Actual',
+                        data: values,
+                        borderColor: kpi.color,
+                        backgroundColor: 'transparent',
+                        borderWidth: 2,
+                        tension: 0.4,
+                        pointRadius: 4,
+                        pointHoverRadius: 6,
+                        pointBackgroundColor: kpi.color,
+                        pointBorderColor: '#1a1a1a',
+                        pointBorderWidth: 2
+                    }];
+                    
+                    // Only add target line for Housing Price in Historical scenario, never for Annual Income or Employment Rate in future scenarios
+                    if (kpi.title === 'Housing Price' && activeScenario === 0 && kpi.title !== 'Annual Income') {
+                        datasets.push({
+                            label: 'Spain',
                             data: targets,
                             borderColor: kpi.secondaryColor,
                             backgroundColor: 'transparent',
@@ -760,15 +2177,24 @@ function renderChart(canvasId, kpi) {
                             pointBackgroundColor: kpi.secondaryColor,
                             pointBorderColor: '#1a1a1a',
                             pointBorderWidth: 2
-                        }]
+                        });
+                    }
+                    
+                    return {
+                        labels: years,
+                        datasets: datasets
                     };
             }
         }
         
-        function getChartOptions(chartType, kpi) {
+        function getChartOptions(chartType, kpi, dataForScale) {
             const baseOptions = {
                 responsive: true,
                 maintainAspectRatio: false,
+                animation: {
+                    duration: 600, // Smooth animation duration
+                    easing: 'easeInOutQuart' // Smooth easing function
+                },
                 plugins: {
                     legend: {
                         display: chartType === 'pie' || chartType === 'line',
@@ -791,9 +2217,12 @@ function renderChart(canvasId, kpi) {
                     }
                 },
                 interaction: {
-                    intersect: false,
-                    mode: 'index'
-                }
+  // Track nearest element along the x-axis, don't require cursor to intersect a point
+  mode: (chartType === 'pie' || chartType === 'radial') ? 'nearest' : 'index',
+  intersect: false,
+  axis: (chartType === 'pie' || chartType === 'radial' || chartType === 'pentagon') ? undefined : 'x'
+}
+
             };
             
             if (chartType === 'pie') {
@@ -844,6 +2273,8 @@ function renderChart(canvasId, kpi) {
                     },
                     scales: {
                         r: {
+                            min: 40,
+                            max: 100,
                             angleLines: {
                                 color: '#444',
                                 lineWidth: 1
@@ -864,10 +2295,13 @@ function renderChart(canvasId, kpi) {
                                 color: '#888',
                                 font: { size: 11 },
                                 display: true,
-                                stepSize: kpi.maxValue / 5,
-                                backdropColor: 'transparent'
+                                stepSize: 10,
+                                backdropColor: 'transparent',
+                                callback: function(value) {
+                                    return value + '%';
+                                }
                             },
-                            suggestedMin: 0,
+                            suggestedMin: 40,
                             suggestedMax: kpi.maxValue,
                             beginAtZero: true
                         }
@@ -883,6 +2317,18 @@ function renderChart(canvasId, kpi) {
                 };
             }
             
+            // For cartesian charts, auto-zoom Y-axis around data range to reveal small variations
+            let suggested = {};
+            if (chartType === 'line' || chartType === 'area' || chartType === 'bar') {
+                const values = Array.isArray(dataForScale) ? dataForScale.map(d => d.value).filter(v => typeof v === 'number' && isFinite(v)) : [];
+                if (values.length > 0) {
+                    const minV = Math.min(...values);
+                    const maxV = Math.max(...values);
+                    const padding = (maxV - minV) * 0.1 || (minV || 1) * 0.05;
+                    suggested = { suggestedMin: Math.max(0, minV - padding), suggestedMax: maxV + padding };
+                }
+            }
+
             return {
                 ...baseOptions,
                 scales: {
@@ -908,7 +2354,8 @@ function renderChart(canvasId, kpi) {
                         ticks: {
                             color: '#888',
                             font: { size: 10 }
-                        }
+                        },
+                        ...suggested
                     }
                 }
             };

@@ -1,0 +1,9 @@
+{
+  "id": "overgrowth",
+  "name": "Overgrowth (rapid urban expansion)",
+  "assumptions": {
+    "population_growth_rate": 0.01,
+    "tourism_growth_rate": 0.02,
+    "co2_intensity_change": 0.005
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "id": "continuity",
+  "name": "Continuity (steady green progression)",
+  "assumptions": {
+    "population_growth_rate": 0.003,
+    "tourism_growth_rate": 0.008,
+    "co2_intensity_change": -0.005
+  }
+}
