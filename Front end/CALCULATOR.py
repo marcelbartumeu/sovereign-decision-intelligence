@@ -1,6 +1,7 @@
 import json
 from copy import deepcopy
 from pathlib import Path
+from infrastructure import computeInfrastructureScenario, INFRASTRUCTURE_CONFIG
 
 # ========== utilities ==========
 def clamp(x, a, b): return max(a, min(b, x))
@@ -159,7 +160,9 @@ def step_next(baseline):
     # Salary calculation (consistent with income growth)
     # Base salary-to-income ratio from 2024: 30,852 / 55,534 = 0.556
     salary_ratio = p("Salary_ratio", 0.556)  # Salary-to-income ratio
-    Salary_next = salary_ratio * Income_next
+    # Salary is monthly (like historical data: 2,571 per month)
+    # Income is annual, so convert: Salary_monthly = (Salary_ratio * Income_annual) / 12
+    Salary_next = (salary_ratio * Income_next) / 12.0
 
     # Work–Life Balance (realistic scenario-dependent calculation)
     # Base work-life balance from 2024 data (0.6 = 60%)
@@ -241,22 +244,43 @@ def step_next(baseline):
     else:
         FamilyStability_next = base_family_stability
 
-    # Buildings
+    # Buildings - Formula-based calculation
     delta_demo = p("B_delta", 0.01)
     if force_build:
         B_next = B_t1
+
     else:
+        # Get permit parameters
         phi0 = p("Perm_phi0", 0.0); phi1 = p("Perm_phi1", 0.0); phi2 = p("Perm_phi2", 0.0); phi3 = p("Perm_phi3", 0.0)
         LandProtect = get(baseline.get("exog", {}), "LandProtect", p("LandProtect", 0.0))
-        Permits = phi0 + phi1 * growth(Pop_next, Pop_t) + phi2 * growth(HPrice_t, get(S, "HPrice_prev", HPrice_t)) - phi3 * LandProtect
+        
+        # Calculate permits based on:
+        # - Base permit rate (phi0)
+        # - Population growth sensitivity (phi1)
+        # - Housing price growth sensitivity (phi2)
+        # - Land protection policies (phi3)
+        pop_growth_rate = growth(Pop_next, Pop_t) if Pop_t > 0 else 0.0
+        hprice_prev = get(S, "HPrice_prev", HPrice_t)
+        hprice_growth_rate = growth(HPrice_t, hprice_prev) if hprice_prev > 0 else 0.0
+        
+        Permits = phi0 + phi1 * pop_growth_rate + phi2 * hprice_growth_rate - phi3 * LandProtect
+        
+        # Ensure permits are non-negative (can't have negative building permits)
+        Permits = max(0.0, Permits)
+        
+        # Calculate next year's buildings: current + new permits - demolitions
         B_next = B_t + Permits - delta_demo * B_t
+        
+        # Ensure buildings don't go below a minimum threshold (at least 50% of initial)
+        B_min = get(baseline.get("state", {}), "B", B_t) * 0.5
+        B_next = max(B_min, B_next)
 
     # Housing & Affordability (realistic calculation)
     h0 = p("H_h0", 0.0); h1 = p("H_h1", 0.3); h2 = p("H_h2", 1.5); h3 = p("H_h3", 1.0); h4 = p("H_h4", 0.8)
     HPrice_next = h0 + h1 * Income_next - h2 * (B_next / max(Pop_next, 1)) - h3 * s("Rate", 0.03) + h4 * s("TourHomeDemand", 0.0)
     
     # Housing affordability as percentage of median household income spent on housing
-    # Based on corrected data: 2024 = 28.79843554% affordability
+    # Based on corrected data: 2024 = 28.79843554
     # Calculate as actual percentage of income spent on housing
     base_afford = 28.79843554  # 2024 baseline (corrected data)
     
@@ -349,10 +373,17 @@ def step_next(baseline):
     # Ensure renewable energy doesn't exceed 100% but can grow from high baseline
     Ren_next = clamp(base_renewable + renewable_growth * tech_advancement, 0.85, 0.98)
 
-    # Air Quality Index (Andorra-specific calculation with small variations)
+    # Air Quality Index (Andorra-specific calculation with realistic variations)
     # Andorra context: high altitude, 90% natural coverage, mountain environment
-    # Base AQI from 2024: 25.0 (excellent mountain air quality)
-    base_aqi = 25.0
+    # Use current AQI as base (from 2024 data or state)
+    # AQI should be in 0-500 range (excellent: 0-50, good: 51-100)
+    # Handle unrealistic values (like 6015.0) by dividing by 1000
+    if AQI_t > 100:
+        base_aqi = AQI_t / 1000.0  # Fix incorrectly stored values (6015.0 -> 6.015)
+    elif AQI_t > 0 and AQI_t <= 500:
+        base_aqi = AQI_t
+    else:
+        base_aqi = 6.015  # Default excellent mountain air quality for Andorra (2024 baseline)
     
     # Population density impact on air quality (small impact due to mountain environment)
     # Higher density = slightly worse air quality, but mountain winds help dispersion
@@ -360,51 +391,97 @@ def step_next(baseline):
     current_density = Pop_next / 468.0  # people per km² (future)
     density_ratio = current_density / base_density
     
-    # Density impact on AQI: small impact due to mountain environment
-    density_impact = (density_ratio - 1.0) * 3.0  # 3 AQI points per density doubling (very small)
+    # Density impact on AQI: very small impact due to mountain environment
+    density_impact = (density_ratio - 1.0) * 0.3  # 0.3 AQI points per density doubling (very small)
     
-    # CO2 per capita impact (emissions intensity) - small impact due to natural coverage
-    co2_impact = (CO2pc_next - 5.396) * 0.5  # 0.5 AQI points per ton CO2pc change (very small)
+    # CO2 per capita impact (emissions intensity) - minimal impact due to natural coverage
+    co2_impact = (CO2pc_next - 5.396) * 0.05  # 0.05 AQI points per ton CO2pc change (minimal)
     
     # Natural coverage benefit (90% natural coverage provides clean air baseline)
-    natural_benefit = (NatCov_next - 0.9359) * -20.0  # Small impact from natural coverage changes
+    natural_benefit = (NatCov_next - 0.9307) * -1.0  # Small impact from natural coverage changes
     
-    # Mountain altitude benefit (high altitude provides better air quality)
-    altitude_benefit = -8.0  # 8 AQI points improvement from high altitude
+    # Mountain altitude benefit (high altitude provides better air quality) - already in baseline
+    altitude_benefit = 0.0  # Already factored into baseline value of 6.015
     
-    # Renewables impact (clean energy reduces air pollution)
-    ren_impact = (Ren_t - 0.3) * -15.0  # 15 AQI points improvement per 10% renewables increase
+    # Renewables impact (clean energy reduces air pollution) - very small multiplier
+    # Only count improvement beyond baseline (0.931), so high renewables don't over-correct
+    ren_improvement = max(0, Ren_t - 0.931)  # Only positive changes
+    ren_impact = ren_improvement * -0.5  # 0.5 AQI points improvement per 10% renewables increase beyond baseline
     
-    # Calculate AQI with Andorra-specific bounds (excellent range with small variations)
-    AQI_next = clamp(base_aqi + density_impact + co2_impact + natural_benefit + altitude_benefit + ren_impact, 12.0, 50.0)
+    # Tourism impact on air quality (more tourism = more traffic/activity = slightly worse air)
+    AQI_chi = p("AQI_chi", 0.15)  # Tourism impact parameter
+    tour_ratio = Tour_t1 / 9646656.0  # Normalize to 2024 tourism level
+    tour_impact = (tour_ratio - 1.0) * AQI_chi * 0.5  # Small impact from tourism growth
+    
+    # Calculate AQI with Andorra-specific bounds (excellent range with realistic variations)
+    # Based on actual data: 2010-2024 range is 8.4-13.47 (all excellent mountain air quality)
+    # Minimum 7.0 (excellent air), maximum 14.0 (still excellent) for mountain environment
+    # Starting from 8.40 (2024), values should stay in excellent range with small variations
+    AQI_next = clamp(base_aqi + density_impact + co2_impact + natural_benefit + altitude_benefit + ren_impact + tour_impact, 7.0, 14.0)
 
 
     # Water consumption (realistic calculation with population, economic activity, and tourism)
     # Andorra context: mountain climate, tourism industry, population water needs
-    # Base water consumption from 2024: 53655 units/day (from current.json data)
-    base_water = 53655.0  # Base water consumption units per day
+    # Always use 2024 baseline (53655 L/day) as the base to avoid exponential compounding
+    base_water_2024 = 53655.0  # 2024 baseline water consumption L/day
     
-    # Population water consumption (scales with population)
-    pop_scaling = Pop_next / 87097.0  # Population scaling factor
+    # 2024 baseline values for scaling
+    base_pop_2024 = 87097.0
+    base_gdp_2024 = 45000.0
+    base_tour_2024 = 9646656.0  # Actual 2024 tourism value
     
-    # Economic activity water consumption (GDP per capita scaling)
-    gdp_scaling = GDPpc_next / 45000.0  # GDP scaling factor
+    # Calculate years from 2024 for gradual scenario factor application
+    # Use target_year from exog if available (set in simulate_path), otherwise use state Year + 1
+    target_year = x("target_year", None)
+    if target_year is None:
+        # If not provided, infer from state Year (Year is updated after step_next)
+        # For first iteration, Year is 2024, so we're calculating for 2025
+        current_year = S.get("Year", 2024)
+        # If Year is still 2024, we're calculating for 2025 (first future year)
+        # Otherwise, we're calculating for current_year + 1
+        years_from_2024 = max(1, (current_year + 1) - 2024) if current_year == 2024 else max(1, current_year - 2024)
+    else:
+        years_from_2024 = max(0, target_year - 2024)
     
-    # Tourism water consumption (tourism industry water needs)
-    tour_scaling = Tour_t1 / 8000000.0  # Tourism scaling factor
+    # Calculate scaling factors relative to 2024 baseline (not previous year)
+    pop_change = (Pop_next - base_pop_2024) / base_pop_2024  # Population change ratio from 2024
+    gdp_change = (GDPpc_next - base_gdp_2024) / base_gdp_2024  # GDP per capita change ratio from 2024
+    tour_change = (Tour_t1 - base_tour_2024) / base_tour_2024  # Tourism change ratio from 2024
     
-    # Water efficiency factor (improves over time with technology)
-    efficiency_factor = 1.0 - 0.1  # 10% efficiency improvement over 10 years
+    # Water consumption components (weighted by impact on water demand)
+    # These represent the impact on water demand relative to 2024 baseline
+    pop_water_impact = pop_change * 0.4  # 40% population impact
+    gdp_water_impact = gdp_change * 0.3  # 30% economic activity impact
+    tour_water_impact = tour_change * 0.3  # 30% tourism impact
     
-    # Scenario-specific water consumption factors
-    scenario_factor = p("Water_scenario_factor", 1.0)
+    # Total water demand change from 2024 baseline (cumulative, not per-year)
+    water_change_factor = 1.0 + pop_water_impact + gdp_water_impact + tour_water_impact
     
-    # Calculate water consumption with realistic components
-    Water_next = base_water * (
-        pop_scaling * 0.4 +           # 40% population-based consumption
-        gdp_scaling * 0.3 +           # 30% economic activity consumption
-        tour_scaling * 0.3            # 30% tourism consumption
-    ) * efficiency_factor * scenario_factor
+    # Water efficiency improvement (cumulative: 1% per year from 2024)
+    efficiency_improvement = years_from_2024 * 0.01  # 1% efficiency improvement per year cumulative
+    efficiency_factor = 1.0 - efficiency_improvement  # Cumulative efficiency factor
+    
+    # Scenario-specific water consumption factors - apply gradually over 11 years (2025-2035)
+    # This ensures 2025 values are close to 2024 baseline (within ~2-3% of baseline)
+    base_scenario_factor = p("Water_scenario_factor", 1.0)
+    # Interpolate scenario factor: 1.0 at 2024, base_scenario_factor at 2035
+    # For 2025, use a much smaller weight to keep values very close to baseline
+    if years_from_2024 <= 0:
+        scenario_factor = 1.0  # 2024: no scenario effect
+    elif years_from_2024 == 1:
+        # 2025: apply only 10% of scenario effect to keep close to baseline
+        gradual_weight = 0.1  # Much smaller for first year
+        scenario_factor = 1.0 + (base_scenario_factor - 1.0) * gradual_weight
+    else:
+        # Years 2-11: apply gradually, with more weight in later years
+        # Use a quadratic interpolation that accelerates in later years
+        # For year 2: weight = 0.15, for year 11: weight = 1.0
+        gradual_weight = min(0.1 + (years_from_2024 - 1) * 0.09, 1.0)  # 0.1 at year 1, ~1.0 at year 11
+        scenario_factor = 1.0 + (base_scenario_factor - 1.0) * gradual_weight
+    
+    # Calculate water consumption: always from 2024 baseline, not previous year
+    # This prevents exponential growth from compounding
+    Water_next = base_water_2024 * water_change_factor * efficiency_factor * scenario_factor
 
     # Temperature (realistic calculation with climate change and urban heat island effects)
     # Andorra context: mountain climate, urban heat island effects from development
@@ -435,18 +512,85 @@ def step_next(baseline):
     # Calculate temperature with realistic bounds for mountain climate
     Temp_next = clamp(base_temp + climate_change + uhi_effect + natural_cooling + co2_warming + scenario_factor, 6.0, 14.0)
 
+    # ========== Infrastructure Calculations ==========
+    # Get scenario name from exog or params (default to "CO" for Continuity if not specified)
+    scenario_name = x("scenario_name", p("scenario_name", "CO"))
+    
+    # Map scenario names to infrastructure scenario codes
+    scenario_map = {
+        "Overgrowth": "OG",
+        "Continuity": "CO", 
+        "Degrowth": "DG",
+        "current": "CO",  # Current/Historical uses Continuity parameters
+        "Historical": "CO"
+    }
+    infra_scenario = scenario_map.get(scenario_name, "CO")
+    
+    # Calculate infrastructure with current population
+    # Use a custom config that uses Pop_next instead of fixed scenario populations
+    infra_config = deepcopy(INFRASTRUCTURE_CONFIG)
+    infra_config["populations"][infra_scenario] = Pop_next  # Use actual population
+    
+    # Calculate infrastructure
+    try:
+        infra_result = computeInfrastructureScenario(infra_scenario, config=infra_config)
+        
+        # Extract infrastructure values for state
+        infrastructure = {
+            "ElectricityPerCapita_kWh_year": infra_result["electricity"]["perCapita_kWh_year"],
+            "ElectricityDemand_kWh_year": infra_result["electricity"]["demand_kWh_year"],
+            "ElectricityCapacity_kW": infra_result["electricity"]["capacity_kW"],
+            "ElectricityRenewable_kW": infra_result["electricity"]["renewableCapacity_kW"],
+            "ElectricityFossil_kW": infra_result["electricity"]["fossilCapacity_kW"],
+            "WaterPerCapita_L_day": infra_result["water"]["perCapita_L_day"],
+            "WaterHousehold_m3_year": infra_result["water"]["householdDemand_m3_year"],
+            "WaterTotal_m3_year": infra_result["water"]["totalDemand_m3_year"],
+            "WaterSecurityIndex": infra_result["water"]["waterSecurityIndex"],
+            "HospitalBaselineBeds": infra_result["hospitals"]["baselineBeds"],
+            "HospitalRequiredBeds": infra_result["hospitals"]["requiredBeds"],
+            "HospitalDeltaBeds": infra_result["hospitals"]["deltaBeds"],
+            "SchoolStudents": infra_result["schools"]["students"],
+            "SchoolClassrooms": infra_result["schools"]["classrooms"],
+            "SchoolSchools": infra_result["schools"]["schools"],
+            "RoadTotalLength_km": infra_result["roads"]["totalLength_km"],
+            "RoadPerCapita_m": infra_result["roads"]["perCapita_m"]
+        }
+    except Exception as e:
+        # If infrastructure calculation fails, use defaults
+        print(f"Warning: Infrastructure calculation failed: {e}")
+        infrastructure = {
+            "ElectricityPerCapita_kWh_year": 3000.0,
+            "ElectricityDemand_kWh_year": Pop_next * 3000.0,
+            "ElectricityCapacity_kW": 0.0,
+            "ElectricityRenewable_kW": 0.0,
+            "ElectricityFossil_kW": 0.0,
+            "WaterPerCapita_L_day": 150.0,
+            "WaterHousehold_m3_year": 0.0,
+            "WaterTotal_m3_year": 0.0,
+            "WaterSecurityIndex": 0.0,
+            "HospitalBaselineBeds": 0.0,
+            "HospitalRequiredBeds": 0.0,
+            "HospitalDeltaBeds": 0.0,
+            "SchoolStudents": 0.0,
+            "SchoolClassrooms": 0.0,
+            "SchoolSchools": 0.0,
+            "RoadTotalLength_km": 269.0,
+            "RoadPerCapita_m": 0.0
+        }
+
     out_state = {
         "Pop": Pop_next, "ForeignBorn": FB_next, "sForeignBorn": sFB_next,
         "Access": Access_next, "LE": LE_next, "WLB": WLB_next,
         "GDPpc": GDPpc_next, "Income": Income_next, "Salary": Salary_next,  # Income = Median household income (annual)
         "BusinessFormation": BusinessFormation_next,
-        "B": B_next, "HPrice": HPrice_next, "Afford": Afford_next,  # Afford = Percentage of income spent on housing
+        "B": B_next, "HPrice": HPrice_next, "HPrice_prev": HPrice_t, "Afford": Afford_next,  # Afford = Percentage of income spent on housing, HPrice_prev for growth calculation
         "NatCov": NatCov_next, "CO2pc": CO2pc_next, "CO2_total": CO2_total_next,
         "Ren": Ren_next, "AQI": AQI_next, "Water": Water_next,
         "Temp": Temp_next, "Tour": Tour_t1,
         "GDP": GDPpc_next * Pop_next,
         "Marriages": Marriages_next, "Divorces": Divorces_next, "FamilyStability": FamilyStability_next,
-        "Emp": Emp_next  # Employment rate
+        "Emp": Emp_next,  # Employment rate
+        **infrastructure  # Add all infrastructure fields
     }
     return {"state": out_state, "params": P, "exog": X}
 
@@ -468,8 +612,10 @@ def calculate_dynamic_parameters(scenario_name, current_state):
             assumptions = {"population_growth_rate": 0.02, "tourism_growth_rate": 0.03, "co2_intensity_change": 0.005}
         elif scenario_name == "Degrowth":
             assumptions = {"population_growth_rate": -0.005, "tourism_growth_rate": -0.01, "co2_intensity_change": -0.01}
-        else:  # Continuity
-            assumptions = {"population_growth_rate": 0.005, "tourism_growth_rate": 0.01, "co2_intensity_change": -0.005}
+        else:  # Continuity - based on historical trends (2014-2024)
+            # Historical annual growth rates: Pop 2.126%, Tour 2.152%
+            # Using these realistic rates for "what if we continued the same trend"
+            assumptions = {"population_growth_rate": 0.0213, "tourism_growth_rate": 0.0215, "co2_intensity_change": -0.005}
     
     pop_growth_rate = assumptions.get("population_growth_rate", 0.005)
     tour_growth_rate = assumptions.get("tourism_growth_rate", 0.01)
@@ -509,6 +655,39 @@ def calculate_dynamic_parameters(scenario_name, current_state):
     params["H_h1"] = 0.3 + growth_factor * 0.1  # Income sensitivity to housing prices (realistic)
     params["H_h2"] = 1.2 + abs(pop_growth_rate) * 3  # Population density sensitivity
     params["Afford_k"] = 1.0 - growth_factor * 0.5  # Affordability adjustment
+    
+    # Building permit parameters (for formula-based B calculation)
+    # Formula: Permits = phi0 + phi1 * growth(Pop) + phi2 * growth(HPrice) - phi3 * LandProtect
+    # B_next = B_t + Permits - delta_demo * B_t
+    # Calibrated: For 1% pop growth, want ~1% B growth to maintain density
+    # With delta_demo = 0.01, need Permits ≈ B_t * 0.02 for 1% net growth
+    # So phi1 * 0.01 ≈ B_t * 0.02, therefore phi1 ≈ B_t * 2.0
+    B0 = current_state.get("B", 10645)
+    Pop0 = current_state.get("Pop", 87097)
+    ppb0 = Pop0 / B0 if B0 > 0 else 8.18  # persons per building (baseline ~8.18)
+    
+    if scenario_name == "overgrowth":
+        # High responsiveness to population growth, calibrated to roughly match Pop growth
+        # Target: B grows ~1.0x relative to Pop (maintain density)
+        # Note: phi1 is constant, so as B grows, same permits = smaller % growth (compensate with higher phi1)
+        params["Perm_phi0"] = 80.0  # Base annual permits
+        params["Perm_phi1"] = B0 * 2.1  # Calibrated to match ~10% annual pop growth
+        params["Perm_phi2"] = B0 * 0.3  # Moderate response to housing price growth
+        params["Perm_phi3"] = 15.0  # Moderate land protection impact
+    elif scenario_name == "degrowth":
+        # Low responsiveness, minimal base permits, strong land protection
+        # Target: B decreases but slower than Pop (some buildings remain)
+        params["Perm_phi0"] = 3.0  # Very low base permits
+        params["Perm_phi1"] = B0 * 0.15  # Weak response to population growth
+        params["Perm_phi2"] = B0 * 0.03  # Weak response to housing price growth
+        params["Perm_phi3"] = 100.0  # Strong land protection impact (discourages building)
+    else:  # continuity
+        # Moderate responsiveness, calibrated to roughly match Pop growth over time
+        # Note: Since phi1 is constant but B grows, need higher phi1 to maintain growth rate
+        params["Perm_phi0"] = 40.0  # Moderate base permits
+        params["Perm_phi1"] = B0 * 1.6  # Higher to compensate for growth rate slowing as B increases
+        params["Perm_phi2"] = B0 * 0.2  # Moderate response to housing price growth
+        params["Perm_phi3"] = 30.0  # Moderate land protection impact
     
     # Environmental parameters
     params["CO2_eta"] = 0.4 - co2_intensity_change * 10  # Renewables impact on CO2
@@ -555,8 +734,14 @@ def scenario_targets(current_state, scenario_name):
     Pop0 = current_state["Pop"]; B0 = current_state["B"]; Tour0 = current_state["Tour"]
     ppb0 = (Pop0 / B0) if B0 > 0 else 0.0
 
+    # Calculate baseline tourists-per-person ratio from 2024 data
+    # This ratio is used to make tourism proportional to population in all scenarios
+    tourists_per_person_2024 = Tour0 / max(Pop0, 1e-9)
+
     if scenario_name == "Overgrowth":
-        Pop_T, Tour_T = 200_000, 15_000_000
+        Pop_T = 200_000
+        # Tourism grows proportionally with population, using the baseline ratio
+        Tour_T = int(round(Pop_T * tourists_per_person_2024))
         # same density every year → B follows Pop each year at ppb0
         def B_target(Pop_t): 
             return int(round(Pop_t / max(ppb0, 1e-9)))
@@ -564,7 +749,9 @@ def scenario_targets(current_state, scenario_name):
         return Pop_T, Tour_T, B_target, alpha_fb
 
     if scenario_name == "Degrowth":
-        Pop_T, Tour_T = 50_000, 4_000_000
+        Pop_T = 50_000
+        # Tourism shrinks proportionally with population, using the baseline ratio
+        Tour_T = int(round(Pop_T * tourists_per_person_2024))
         # buildings constant across all years
         def B_target(_Pop_t): 
             return B0
@@ -572,11 +759,24 @@ def scenario_targets(current_state, scenario_name):
         return Pop_T, Tour_T, B_target, alpha_fb
 
     if scenario_name == "Continuity":
-        Pop_T, Tour_T = 150_000, 8_000_000
-        density_multiplier = 1.10  # +10% persons/building
-        ppb_target = ppb0 * density_multiplier
+        # Continuity: keep tourism proportional to population, using the
+        # empirically observed 2024 ratio of tourists per resident.
+        #
+        # Historical data (2014–2024) shows tourism and population moving
+        # closely together; instead of assuming an independent tourism
+        # growth rate, we:
+        #   1) project population with the historically‑based 2.126% rate
+        #   2) set tourists as: Tour_t ≈ (Tour_2024 / Pop_2024) * Pop_t
+        #
+        # This guarantees that in the continuity scenario tourism grows
+        # *proportionally* with population instead of being an arbitrary
+        # separate target.
+        Pop_T = int(round(Pop0 * (1.02126 ** 11)))  # ~109,780
+        Tour_T = int(round(Pop_T * tourists_per_person_2024))
+
+        # Maintain current density (ppb0) - buildings grow with population
         def B_target(Pop_t):
-            return int(round(Pop_t / max(ppb_target, 1e-9)))
+            return int(round(Pop_t / max(ppb0, 1e-9)))
         alpha_fb = 1.0
         return Pop_T, Tour_T, B_target, alpha_fb
 
@@ -600,21 +800,32 @@ def simulate_path(current, scenario_name, years=10, start_year=None):
 
     Pop_T, Tour_T, B_target_fn, alpha_fb = scenario_targets(S0, scenario_name)
 
+    # All scenarios now enforce a proportional relationship between tourism
+    # and population over the whole path, using the baseline tourists‑per‑resident
+    # ratio from 2024. This ensures tourism grows/shrinks proportionally with
+    # population rather than being an arbitrary independent target.
+    tourists_per_person_2024 = Tour0 / max(Pop0, 1e-9)
+
     timeline = []
     curr = deepcopy(base)
 
     for t in range(1, years + 1):
         Pop_tgt  = interp_linear(Pop0,  Pop_T,  t, years)
-        Tour_tgt = interp_linear(Tour0, Tour_T, t, years)
+
+        # Tourism grows/shrinks strictly in proportion to population, using
+        # the empirically observed baseline ratio from 2024.
+        Tour_tgt = tourists_per_person_2024 * Pop_tgt
         B_tgt    = B_target_fn(Pop_tgt)
 
         ex = deepcopy(curr.get("exog", {}))
         ex.update({
             "Pop_target":  Pop_tgt,
             "Tour_target": Tour_tgt,
-            "B_target":    B_tgt,
-            "force_pop": True, "force_tour": True, "force_build": True,
-            "alpha_fb": alpha_fb
+            "B_target":    B_tgt,  # Keep as reference but don't force
+            "force_pop": True, "force_tour": True, "force_build": False,  # Changed to False to use formula-based calculation
+            "alpha_fb": alpha_fb,
+            "scenario_name": scenario_name,  # Pass scenario name for infrastructure calculations
+            "target_year": year0 + t  # Pass target year for gradual factor calculations
         })
         curr["exog"] = ex
 
@@ -658,7 +869,7 @@ def transform_data_from_list_format(data_list):
                 state["Emp"] = value_2024
             elif "Housing Price" in metric_name:
                 state["HPrice"] = value_2024
-            elif "Tourism" in metric_name:
+            elif "Tourism" in metric_name or "Tourist" in metric_name:
                 state["Tour"] = value_2024
             elif "Number of buildings" in metric_name:
                 state["B"] = value_2024
@@ -673,7 +884,7 @@ def transform_data_from_list_format(data_list):
             elif "Median House Price" in metric_name:
                 state["HPrice"] = value_2024 * 12 * 2  # Convert monthly to annual and multiply by 2 people per household
             elif "Average Monthly Salary" in metric_name:
-                state["Salary"] = value_2024 * 12  # Convert monthly salary to annual
+                state["Salary"] = value_2024  # Salary is monthly (2,571 in 2024)
             elif "Affordability" in metric_name:
                 state["Afford"] = value_2024 * 100  # Convert to percentage
             elif "Natural Coverage" in metric_name:
@@ -686,8 +897,10 @@ def transform_data_from_list_format(data_list):
             elif "Renewables" in metric_name:
                 state["Ren"] = value_2024
             elif "Air Quality" in metric_name:
-                state["AQI"] = value_2024
-            elif "Water" in metric_name:
+                # AQI values in Current.json are stored as integers (6015.0 instead of 6.015)
+                # Divide by 1000 to get the actual AQI value
+                state["AQI"] = value_2024 / 1000.0 if value_2024 > 100 else value_2024
+            elif "Water Consumption" in metric_name or "Water Consumption a day" in metric_name:
                 state["Water"] = value_2024
             elif "Temperature" in metric_name:
                 state["Temp"] = value_2024
@@ -699,6 +912,15 @@ def transform_data_from_list_format(data_list):
                 state["Divorces"] = value_2024
             elif "Family stability proxy" in metric_name:
                 state["FamilyStability"] = value_2024
+            elif "School Students" in metric_name:
+                # Use real student data from Current.json
+                state["SchoolStudents"] = value_2024
+            elif "School Classrooms" in metric_name:
+                # Use real classroom data from Current.json
+                state["SchoolClassrooms"] = value_2024
+            elif "School Schools" in metric_name:
+                # Use real school data from Current.json
+                state["SchoolSchools"] = value_2024
     
     # Set Year to 2024
     state["Year"] = 2024
@@ -707,8 +929,8 @@ def transform_data_from_list_format(data_list):
     defaults = {
         "Pop": 87097, "GDPpc": 45000, "Emp": 0.95, "HPrice": 15992.808, "Tour": 8000000,
         "B": 10645, "ForeignBorn": 30000, "LE": 84.5, "WLB": 0.6, "Access": 0.922,
-        "Income": 55533.6, "Salary": 30852, "Afford": 28.79843554, "NatCov": 0.9359, "CO2pc": 5.396, "CO2_total": 470000,  # Income = Median household income (annual), Salary = Average monthly salary * 12, NatCov = 93.59%, CO2pc = 5.396 tons per capita (from corrected current.json), CO2_total = 470KT = 470,000 tons
-        "Ren": 0.931, "AQI": 40.0, "Water": 53655, "Temp": 7.46,
+        "Income": 55533.6, "Salary": 2571, "Afford": 28.79843554, "NatCov": 0.9359, "CO2pc": 5.396, "CO2_total": 470000,  # Income = Median household income (annual), Salary = Average monthly salary (2,571 in 2024), NatCov = 93.59%, CO2pc = 5.396 tons per capita (from corrected current.json), CO2_total = 470KT = 470,000 tons
+        "Ren": 0.931, "AQI": 8.40, "Water": 53655, "Temp": 7.46,  # AQI = 8.40 (actual 2024 value, excellent mountain air quality)
         "Beds": 2000, "PriceIdx": 1.0, "GlobalTravel": 1.0, "LaborShare": 0.55,
         "Rate": 0.03, "TourHomeDemand": 0.0,
         "GDP": 45000 * 87097, "BusinessFormation": 1450,
@@ -718,6 +940,38 @@ def transform_data_from_list_format(data_list):
     for key, default_value in defaults.items():
         if key not in state:
             state[key] = default_value
+    
+    # Calculate infrastructure for baseline 2024 state
+    # Use Continuity scenario parameters for baseline
+    Pop_2024 = state.get("Pop", 87097)
+    infra_config = deepcopy(INFRASTRUCTURE_CONFIG)
+    infra_config["populations"]["CO"] = Pop_2024  # Use actual 2024 population
+    
+    try:
+        infra_result = computeInfrastructureScenario("CO", config=infra_config)
+        state["ElectricityPerCapita_kWh_year"] = infra_result["electricity"]["perCapita_kWh_year"]
+        state["ElectricityDemand_kWh_year"] = infra_result["electricity"]["demand_kWh_year"]
+        state["ElectricityCapacity_kW"] = infra_result["electricity"]["capacity_kW"]
+        state["ElectricityRenewable_kW"] = infra_result["electricity"]["renewableCapacity_kW"]
+        state["ElectricityFossil_kW"] = infra_result["electricity"]["fossilCapacity_kW"]
+        state["WaterPerCapita_L_day"] = infra_result["water"]["perCapita_L_day"]
+        state["WaterHousehold_m3_year"] = infra_result["water"]["householdDemand_m3_year"]
+        state["WaterTotal_m3_year"] = infra_result["water"]["totalDemand_m3_year"]
+        state["WaterSecurityIndex"] = infra_result["water"]["waterSecurityIndex"]
+        state["HospitalBaselineBeds"] = infra_result["hospitals"]["baselineBeds"]
+        state["HospitalRequiredBeds"] = infra_result["hospitals"]["requiredBeds"]
+        state["HospitalDeltaBeds"] = infra_result["hospitals"]["deltaBeds"]
+        # Use real student data from Current.json if available, otherwise use calculated
+        if "SchoolStudents" not in state:
+            state["SchoolStudents"] = infra_result["schools"]["students"]
+        if "SchoolClassrooms" not in state:
+            state["SchoolClassrooms"] = infra_result["schools"]["classrooms"]
+        if "SchoolSchools" not in state:
+            state["SchoolSchools"] = infra_result["schools"]["schools"]
+        state["RoadTotalLength_km"] = infra_result["roads"]["totalLength_km"]
+        state["RoadPerCapita_m"] = infra_result["roads"]["perCapita_m"]
+    except Exception as e:
+        print(f"Warning: Infrastructure calculation for baseline failed: {e}")
     
     return {
         "state": state,
@@ -749,7 +1003,7 @@ if __name__ == "__main__":
     here.mkdir(parents=True, exist_ok=True)
 
     for name in ["Overgrowth", "Degrowth", "Continuity"]:
-        ts, final_state = simulate_path(current, name, years=10, start_year=current.get("state", {}).get("Year", 2025))
+        ts, final_state = simulate_path(current, name, years=11, start_year=current.get("state", {}).get("Year", 2025))
         (here / f"{name}_timeseries.json").write_text(json.dumps(ts, indent=2))
         (here / f"{name}_final.json").write_text(json.dumps(final_state, indent=2))
 

@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Andorra V1.0</title>
+    <title>Andorra V1.4</title>
     <meta name="description" content="Advanced Scenario Modeling & Impact Assessment">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
+    <!-- Version: 2025-01-28-07 - Fixed Water consumption exponential growth issue -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="scenarioData.js?v=2025-10-29-01"></script>
+    <script src="scenarioData.js?v=2025-01-28-10"></script>
     <style>
         * {
             margin: 0;
@@ -427,7 +428,7 @@
         <div class="container">
             <div class="header-content">
                 <div>
-                    <h1>ANDORRA V1.0</h1>
+                    <h1>ANDORRA V1.4</h1>
                     <p>Advanced Scenario Modeling & Impact Assessment</p>
                     <button id="arduino-connect-btn" onclick="toggleArduinoConnection()" style="margin-top: 0.5rem; padding: 0.5rem 1rem; background: var(--secondary); border: 1px solid var(--border); border-radius: 0.25rem; color: var(--foreground); cursor: pointer; font-size: 0.75rem; transition: var(--transition-smooth);">
                         🔌 Connect Arduino
@@ -454,12 +455,12 @@
                     <div class="scenario-info">
                         <p class="label">Year</p>
                         <p class="name" id="year-display">2024</p>
-                        <p class="description" id="year-range">2014 - 2024</p>
+                        <p class="description" id="year-range">2010 - 2024</p>
                     </div>
                     <div class="slider-container">
-                        <input type="range" min="2014" max="2024" value="2024" class="slider" id="time-slider" step="1">
+                        <input type="range" min="2010" max="2024" value="2024" class="slider" id="time-slider" step="1">
                         <div class="slider-labels" id="time-labels">
-                            <span>2014</span><span>2015</span><span>2016</span><span>2017</span><span>2018</span><span>2019</span><span>2020</span><span>2021</span><span>2022</span><span>2023</span><span>2024</span>
+                            <span>2010</span><span>2011</span><span>2012</span><span>2013</span><span>2014</span><span>2015</span><span>2016</span><span>2017</span><span>2018</span><span>2019</span><span>2020</span><span>2021</span><span>2022</span><span>2023</span><span>2024</span>
                         </div>
                     </div>
                 </div>
@@ -476,6 +477,7 @@
                 <button class="tab-button" data-tab="economic">ECONOMIC MATRIX</button>
                 <button class="tab-button" data-tab="social">SOCIAL SYSTEMS</button>
                 <button class="tab-button" data-tab="environmental">ENVIRONMENTAL GRID</button>
+                <button class="tab-button" data-tab="infrastructure">INFRASTRUCTURE</button>
             </div>
 
             <!-- KPI Grid -->
@@ -571,22 +573,7 @@
             
             // Helper function to get historical series data
             const getHistoricalSeries = (key) => {
-                // Special case: Calculate CO2_total series from CO2pc * Pop
-                if (key === 'CO2_total') {
-                    const co2pcSeries = scenarioName === 'current' && data.historicalData && data.historicalData['CO2pc'] 
-                        ? data.historicalData['CO2pc'].series
-                        : (data.timeseriesData && data.timeseriesData['CO2pc'] ? data.timeseriesData['CO2pc'].series : null);
-                    const popSeries = scenarioName === 'current' && data.historicalData && data.historicalData['Pop']
-                        ? data.historicalData['Pop'].series
-                        : (data.timeseriesData && data.timeseriesData['Pop'] ? data.timeseriesData['Pop'].series : null);
-                    
-                    if (co2pcSeries && popSeries && Array.isArray(co2pcSeries) && Array.isArray(popSeries)) {
-                        // Calculate CO2_total = CO2pc * Pop for each year
-                        return co2pcSeries.map((co2pc, i) => co2pc * popSeries[i]);
-                    }
-                    return null;
-                }
-                
+                // All calculations are done in Python - dashboard only displays data
                 // Special case: Calculate sForeignBorn series from ForeignBorn / Pop
                 if (key === 'sForeignBorn') {
                     let foreignBornSeries, popSeries;
@@ -612,6 +599,20 @@
                     }
                     
                     if (foreignBornSeries && popSeries && Array.isArray(foreignBornSeries) && Array.isArray(popSeries)) {
+                        // Add 2035 data point if series doesn't include it (extrapolate from last two points)
+                        if (scenarioName !== 'current' && foreignBornSeries.length >= 2 && foreignBornSeries.length < 12) {
+                            const lastFB = foreignBornSeries[foreignBornSeries.length - 1];
+                            const secondLastFB = foreignBornSeries[foreignBornSeries.length - 2];
+                            const growthRateFB = (lastFB - secondLastFB) / Math.abs(secondLastFB);
+                            foreignBornSeries = [...foreignBornSeries, lastFB * (1 + growthRateFB)];
+                        }
+                        if (scenarioName !== 'current' && popSeries.length >= 2 && popSeries.length < 12) {
+                            const lastPop = popSeries[popSeries.length - 1];
+                            const secondLastPop = popSeries[popSeries.length - 2];
+                            const growthRatePop = (lastPop - secondLastPop) / Math.abs(secondLastPop);
+                            popSeries = [...popSeries, lastPop * (1 + growthRatePop)];
+                        }
+                        
                         // Ensure both series have the same length
                         const minLength = Math.min(foreignBornSeries.length, popSeries.length);
                         // Calculate sForeignBorn = ForeignBorn / Pop for each year
@@ -629,42 +630,23 @@
                     // For Historical scenario, return full series (might be 2010-2024 or 2014-2024)
                     return data.historicalData[key].series;
                 } else if (data.timeseriesData && data.timeseriesData[key]) {
-                    return data.timeseriesData[key].series;
+                    let series = data.timeseriesData[key].series;
+                    // Add 2035 data point if series doesn't include it (extrapolate from last two points)
+                    if (scenarioName !== 'current' && Array.isArray(series) && series.length >= 2 && series.length < 11) {
+                        const lastValue = series[series.length - 1];
+                        const secondLastValue = series[series.length - 2];
+                        const growthRate = (lastValue - secondLastValue) / Math.abs(secondLastValue);
+                        const value2035 = lastValue * (1 + growthRate);
+                        series = [...series, value2035];
+                    }
+                    return series;
                 }
                 return null;
             };
             
             // Helper function to get value for selected year
             const getValueForYear = (key) => {
-                // Special case: Calculate CO2_total from CO2pc * Pop for all scenarios
-                if (key === 'CO2_total') {
-                    const co2pcSeries = getHistoricalSeries('CO2pc');
-                    const popSeries = getHistoricalSeries('Pop');
-                    if (co2pcSeries && popSeries && Array.isArray(co2pcSeries) && Array.isArray(popSeries)) {
-                        let startYear;
-                        if (scenarioName === 'current') {
-                            startYear = popSeries.length === 15 ? 2010 : 2014;
-                        } else {
-                            // For future scenarios, timeseries starts at 2025, but slider can start at 2024
-                            // Use 2024 as base if we're at 2024, otherwise 2025
-                            startYear = 2025;
-                        }
-                        
-                        let yearIndex = selectedYear - startYear;
-                        
-                        // Handle 2024 for future scenarios (use first data point)
-                        if (scenarioName !== 'current' && selectedYear === 2024) {
-                            yearIndex = 0;
-                        }
-                        
-                        if (yearIndex >= 0 && yearIndex < co2pcSeries.length && yearIndex < popSeries.length) {
-                            // Calculate CO2_total = CO2pc (t/capita) * Pop (people)
-                            return co2pcSeries[yearIndex] * popSeries[yearIndex];
-                        }
-                    }
-                    return null;
-                }
-                
+                // All calculations are done in Python - dashboard only displays data
                 // Special case: Calculate sForeignBorn from ForeignBorn / Pop for all scenarios
                 if (key === 'sForeignBorn') {
                     // Get the series directly from data (not through getHistoricalSeries to avoid recursion)
@@ -729,6 +711,15 @@
                 
                 if (yearIndex >= 0 && yearIndex < series.length) {
                     return series[yearIndex];
+                } else if (yearIndex >= series.length && series.length >= 2 && selectedYear === 2035) {
+                    // Extrapolate for 2035: use linear extrapolation from last two data points
+                    const lastValue = series[series.length - 1];
+                    const secondLastValue = series[series.length - 2];
+                    const growthRate = (lastValue - secondLastValue) / Math.abs(secondLastValue); // Handle negative values
+                    return lastValue * (1 + growthRate);
+                } else if (series.length > 0) {
+                    // Fallback: use last available value
+                    return series[series.length - 1];
                 }
                 return null;
             };
@@ -1183,6 +1174,152 @@
                         secondaryColor: "#FFBB28",
                         series: getHistoricalSeries('Temp')
                     }
+                ],
+    infrastructure: [
+                    { 
+                        title: "Electricity Capacity", 
+                        value: formatNumber(getValueForYear('ElectricityCapacity_kW') || data.ElectricityCapacity_kW, 0), 
+                        unit: "kW", 
+                        trend: "up", 
+                        trendValue: "+2.5%", 
+                        chartType: "area", 
+                        maxValue: 200000, 
+                        color: "#FFD700", 
+                        secondaryColor: "#FFA500",
+                        series: getHistoricalSeries('ElectricityCapacity_kW')
+                    },
+                    { 
+                        title: "Electricity Demand", 
+                        value: formatNumber((getValueForYear('ElectricityDemand_kWh_year') || data.ElectricityDemand_kWh_year) / 1000000, 1), 
+                        unit: "M kWh/year", 
+                        trend: "up", 
+                        trendValue: "+2.5%", 
+                        chartType: "area", 
+                        maxValue: 1000, 
+                        color: "#FFD700", 
+                        secondaryColor: "#FFA500",
+                        series: getHistoricalSeries('ElectricityDemand_kWh_year')?.map(val => val / 1000000)
+                    },
+                    { 
+                        title: "Renewable Capacity", 
+                        value: formatNumber(getValueForYear('ElectricityRenewable_kW') || data.ElectricityRenewable_kW, 0), 
+                        unit: "kW", 
+                        trend: "up", 
+                        trendValue: "+3.0%", 
+                        chartType: "bar", 
+                        maxValue: 150000, 
+                        color: "#00C49F", 
+                        secondaryColor: "#82CA9D",
+                        series: getHistoricalSeries('ElectricityRenewable_kW')
+                    },
+                    { 
+                        title: "Fossil Capacity", 
+                        value: formatNumber(getValueForYear('ElectricityFossil_kW') || data.ElectricityFossil_kW, 0), 
+                        unit: "kW", 
+                        trend: "down", 
+                        trendValue: "-1.0%", 
+                        chartType: "bar", 
+                        maxValue: 100000, 
+                        color: "#FF8042", 
+                        secondaryColor: "#FFBB28",
+                        series: getHistoricalSeries('ElectricityFossil_kW')
+                    },
+                    { 
+                        title: "Water Total Demand", 
+                        value: formatNumber((getValueForYear('WaterTotal_m3_year') || data.WaterTotal_m3_year) / 1000000, 1), 
+                        unit: "M m³/year", 
+                        trend: "up", 
+                        trendValue: "+2.0%", 
+                        chartType: "area", 
+                        maxValue: 100, 
+                        color: "#0088FE", 
+                        secondaryColor: "#00C49F",
+                        series: getHistoricalSeries('WaterTotal_m3_year')?.map(val => val / 1000000)
+                    },
+                    { 
+                        title: "Water Security Index", 
+                        value: formatNumber(getValueForYear('WaterSecurityIndex') || data.WaterSecurityIndex, 3), 
+                        unit: "", 
+                        trend: "down", 
+                        trendValue: "-0.5%", 
+                        chartType: "bar", 
+                        maxValue: 1, 
+                        color: "#8884D8", 
+                        secondaryColor: "#82CA9D",
+                        series: getHistoricalSeries('WaterSecurityIndex')
+                    },
+                    { 
+                        title: "Hospital Required Beds", 
+                        value: formatNumber(getValueForYear('HospitalRequiredBeds') || data.HospitalRequiredBeds, 1), 
+                        unit: "beds", 
+                        trend: "up", 
+                        trendValue: "+2.0%", 
+                        chartType: "bar", 
+                        maxValue: 1000, 
+                        color: "#FF6B6B", 
+                        secondaryColor: "#FF8787",
+                        series: getHistoricalSeries('HospitalRequiredBeds')
+                    },
+                    { 
+                        title: "Hospital Delta Beds", 
+                        value: formatNumber(getValueForYear('HospitalDeltaBeds') || data.HospitalDeltaBeds, 1), 
+                        unit: "beds", 
+                        trend: "up", 
+                        trendValue: "+2.0%", 
+                        chartType: "bar", 
+                        maxValue: 500, 
+                        color: "#FF6B6B", 
+                        secondaryColor: "#FF8787",
+                        series: getHistoricalSeries('HospitalDeltaBeds')
+                    },
+                    { 
+                        title: "School Students", 
+                        value: formatNumber(getValueForYear('SchoolStudents') || data.SchoolStudents, 0), 
+                        unit: "students", 
+                        trend: "up", 
+                        trendValue: "+1.5%", 
+                        chartType: "area", 
+                        maxValue: 30000, 
+                        color: "#4ECDC4", 
+                        secondaryColor: "#44A08D",
+                        series: getHistoricalSeries('SchoolStudents')
+                    },
+                    { 
+                        title: "School Classrooms", 
+                        value: formatNumber(getValueForYear('SchoolClassrooms') || data.SchoolClassrooms, 1), 
+                        unit: "classrooms", 
+                        trend: "up", 
+                        trendValue: "+1.5%", 
+                        chartType: "bar", 
+                        maxValue: 1500, 
+                        color: "#4ECDC4", 
+                        secondaryColor: "#44A08D",
+                        series: getHistoricalSeries('SchoolClassrooms')
+                    },
+                    { 
+                        title: "School Schools", 
+                        value: formatNumber(getValueForYear('SchoolSchools') || data.SchoolSchools, 1), 
+                        unit: "schools", 
+                        trend: "up", 
+                        trendValue: "+1.5%", 
+                        chartType: "bar", 
+                        maxValue: 100, 
+                        color: "#4ECDC4", 
+                        secondaryColor: "#44A08D",
+                        series: getHistoricalSeries('SchoolSchools')
+                    },
+                    { 
+                        title: "Road Per Capita", 
+                        value: formatNumber(getValueForYear('RoadPerCapita_m') || data.RoadPerCapita_m, 2), 
+                        unit: "m/person", 
+                        trend: "down", 
+                        trendValue: "-0.5%", 
+                        chartType: "area", 
+                        maxValue: 10, 
+                        color: "#95A5A6", 
+                        secondaryColor: "#7F8C8D",
+                        series: getHistoricalSeries('RoadPerCapita_m')
+                    }
                 ]
             };
         }
@@ -1447,15 +1584,15 @@
                 
                 console.log('📅 Raw slider value:', rawValue, 'from message:', message);
                 
-                // Check if it's already a year (2014-2034) or a slider offset value
+                // Check if it's already a year (2010-2035) or a slider offset value
                 let year;
-                if (rawValue >= 2014 && rawValue <= 2034) {
+                if (rawValue >= 2010 && rawValue <= 2035) {
                     // Already a year value
                     year = rawValue;
                 } else if (rawValue >= 0 && rawValue <= 1023) {
                     // Slider value directly represents offset from base year (not proportionally mapped)
-                    const baseYear = activeScenario === 0 ? 2014 : 2024; // Historical: 2014, Others: 2024
-                    const maxOffset = activeScenario === 0 ? 10 : 10; // Historical: 0-10 (2014-2024), Others: 0-10 (2024-2034)
+                    const baseYear = activeScenario === 0 ? 2010 : 2024; // Historical: 2010, Others: 2024
+                    const maxOffset = activeScenario === 0 ? 14 : 11; // Historical: 0-14 (2010-2024), Others: 0-11 (2024-2035)
                     
                     // Use slider value directly as offset, but clamp to max offset
                     let offset = Math.min(rawValue, maxOffset);
@@ -1464,8 +1601,8 @@
                     year = baseYear + offset;
                     
                     // Clamp to valid range (safety check)
-                    const yearMin = activeScenario === 0 ? 2014 : 2024;
-                    const yearMax = activeScenario === 0 ? 2024 : 2034;
+                    const yearMin = activeScenario === 0 ? 2010 : 2024;
+                    const yearMax = activeScenario === 0 ? 2024 : 2035;
                     year = Math.max(yearMin, Math.min(yearMax, year));
                     
                     console.log('📊 Slider', rawValue, '→ offset', offset, '→ year', year, '(base:', baseYear, ', range:', yearMin, '-', yearMax + ')');
@@ -1476,7 +1613,7 @@
                 
                 console.log('📅 Changing year to:', year);
                 
-                if (isNaN(year) || year < 2014 || year > 2034) {
+                if (isNaN(year) || year < 2010 || year > 2035) {
                     console.error('❌ Invalid year after mapping:', year);
                     return;
                 }
@@ -1617,26 +1754,26 @@
             const timeLabels = document.getElementById('time-labels');
             
             if (index === 0) {
-                // Historical scenario: 2014-2024
-                timeSlider.min = 2014;
+                // Historical scenario: 2010-2024 (HPrice series starts at 2010)
+                timeSlider.min = 2010;
                 timeSlider.max = 2024;
                 timeSlider.value = selectedYear = 2024;
-                yearRange.textContent = '2014 - 2024';
+                yearRange.textContent = '2010 - 2024';
                 // Generate labels for all years
                 let labelsHtml = '';
-                for (let year = 2014; year <= 2024; year++) {
+                for (let year = 2010; year <= 2024; year++) {
                     labelsHtml += `<span>${year}</span>`;
                 }
                 timeLabels.innerHTML = labelsHtml;
             } else {
-                // Future scenarios: 2024-2034
+                // Future scenarios: 2024-2035
                 timeSlider.min = 2024;
-                timeSlider.max = 2034;
-                timeSlider.value = selectedYear = 2034;
-                yearRange.textContent = '2024 - 2034';
+                timeSlider.max = 2035;
+                timeSlider.value = selectedYear = 2035;
+                yearRange.textContent = '2024 - 2035';
                 // Generate labels for all years
                 let labelsHtml = '';
-                for (let year = 2024; year <= 2034; year++) {
+                for (let year = 2024; year <= 2035; year++) {
                     labelsHtml += `<span>${year}</span>`;
                 }
                 timeLabels.innerHTML = labelsHtml;
@@ -1859,20 +1996,19 @@
                         valueEl.textContent = kpi.value;
                     }
                     
-                    // Update chart smoothly
+                    // Re-render chart completely to ensure Spain data is updated
                     const chartId = `chart-${activeTab}-${index}`;
                     const chart = chartInstances[chartId];
                     if (chart) {
-                        // Generate new data for current year
-                        const data = generateTrendData(kpi.value, kpi.trend, 10, kpi);
-                        const chartData = getChartData(data, kpi);
+                        // Destroy existing chart
+                        chart.destroy();
+                        delete chartInstances[chartId];
                         
-                        // Update chart data and labels smoothly
-                        chart.data.labels = chartData.labels;
-                        chart.data.datasets = chartData.datasets;
-                        
-                        // Update with smooth animation
-                        chart.update('active'); // 'active' mode provides smooth animation
+                        // Re-render chart with fresh data
+                        const newChart = renderChart(chartId, kpi);
+                        if (newChart) {
+                            chartInstances[chartId] = newChart;
+                        }
                     }
                 }
             });
@@ -1930,11 +2066,11 @@
         const endIndex = selectedYear - startYear + 1;
         const filteredSeries = kpi.series.slice(0, Math.max(1, endIndex));
         
-        // Spain target data for Historical scenario (2014-2024)
+        // Spain target data for Historical scenario (2010-2024)
         const spainTargets = {
-            'Salary': [1476.26, 1492.28, 1495.51, 1527.17, 1550.59, 1575.57, 1625.27, 1672.50, 1740.45, 1811.56, 1779.83],
-            'GDPpc': [28000, 28500, 29000, 29500, 30000, 30500, 31000, 31500, 32000, 32500, 33000], // Spain GDP per capita targets
-            'HPrice': [690, 700, 710, 725, 732, 750, 780, 820, 850, 900, 950], // Spain housing price targets (2014-2024)
+            'Salary': [1878.40, 1897.98, 1886.30, 1887.80, 1883.82, 1904.21, 1898.17, 1900.58, 1916.94, 1954.19, 1903.13, 2020.73, 2112.77, 2212.99, 2296.56], // Spain average monthly salary (2010-2024) - actual data (monthly equivalent EUR)
+            'GDPpc': [30532, 31678, 28323, 29068, 22780, 23440, 24190, 25160, 25950, 26620, 23850, 26090, 28790, 30980, 32630], // Spain GDP per capita targets (2010-2024) - actual data: 2010-2013 USD (World Bank), 2014-2024 EUR (countryeconomy.com)
+            'HPrice': [800, 750, 720, 700, 690, 700, 710, 725, 732, 750, 780, 820, 850, 900, 950], // Spain housing price targets (2010-2024) - declining during crisis 2010-2013, recovery from 2014
             'Emp': [61.1, 62.1, 63.2, 64.5, 66.2, 67.3, 65.8, 67.0, 68.6, 70.0, 71.4] // Spain employment rate targets (2014-2024)
         };
         
@@ -1944,14 +2080,38 @@
             
             const currentYear = startYear + i;
             
-            // Use Spain data as targets for Historical scenario (Housing Price and Employment Rate)
+            // Use Spain data as targets for Historical scenario (Housing Price, GDP per Capita, and Employment Rate)
             if (activeScenario === 0 && kpi.title) {
-                // For historical data that starts in 2010, we need to adjust the index for Spain targets (2014-2024)
-                const spainIndex = currentYear >= 2014 ? currentYear - 2014 : -1;
-                if (kpi.title === 'Housing Price' && spainIndex >= 0 && spainTargets.HPrice[spainIndex]) {
-                    target = spainTargets.HPrice[spainIndex];
-                } else if (kpi.title === 'Employment Rate' && spainIndex >= 0 && spainTargets.Emp[spainIndex]) {
-                    target = spainTargets.Emp[spainIndex];
+                // For historical data that starts in 2010, we need to adjust the index for Spain targets
+                // HPrice covers 2010-2024 (15 years), GDPpc covers 2010-2024 (15 years), Salary covers 2010-2024 (15 years), Emp covers 2014-2024 (11 years)
+                if (kpi.title === 'Housing Price' && currentYear >= 2010 && currentYear <= 2024) {
+                    const spainIndex = currentYear - 2010;
+                    if (spainTargets.HPrice && spainTargets.HPrice[spainIndex] !== undefined) {
+                        target = spainTargets.HPrice[spainIndex];
+                        // Debug: log to verify values
+                        if (currentYear >= 2010 && currentYear <= 2013) {
+                            console.log(`Spain HPrice for ${currentYear}: index ${spainIndex} = ${target} (from array: [${spainTargets.HPrice.slice(0, 4).join(', ')}...])`);
+                        }
+                    }
+                } else if (kpi.title === 'GDP per Capita' && currentYear >= 2010 && currentYear <= 2024) {
+                    const spainIndex = currentYear - 2010;
+                    if (spainTargets.GDPpc && spainTargets.GDPpc[spainIndex] !== undefined) {
+                        target = spainTargets.GDPpc[spainIndex];
+                        // Debug: log to verify values
+                        if (currentYear >= 2010 && currentYear <= 2013) {
+                            console.log(`Spain GDPpc for ${currentYear}: index ${spainIndex} = ${target} (from array: [${spainTargets.GDPpc.slice(0, 15).join(', ')}])`);
+                        }
+                    }
+                } else if (kpi.title === 'Monthly Salary' && currentYear >= 2010 && currentYear <= 2024) {
+                    const spainIndex = currentYear - 2010;
+                    if (spainTargets.Salary && spainTargets.Salary[spainIndex] !== undefined) {
+                        target = spainTargets.Salary[spainIndex];
+                    }
+                } else if (kpi.title === 'Employment Rate' && currentYear >= 2014 && currentYear <= 2024) {
+                    const spainIndex = currentYear - 2014;
+                    if (spainTargets.Emp && spainTargets.Emp[spainIndex] !== undefined) {
+                        target = spainTargets.Emp[spainIndex];
+                    }
                 }
             }
             
@@ -2129,22 +2289,43 @@ function renderChart(canvasId, kpi) {
                     };
                     
                 case 'area':
-                    return {
-                        labels: years,
-                        datasets: [{
-                            label: 'Value',
-                            data: values,
-                            borderColor: kpi.color,
-                            backgroundColor: kpi.color + '20',
+                    const areaDatasets = [{
+                        label: 'Actual',
+                        data: values,
+                        borderColor: kpi.color,
+                        backgroundColor: kpi.color + '20',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 4,
+                        pointHoverRadius: 6,
+                        pointBackgroundColor: kpi.color,
+                        pointBorderColor: '#1a1a1a',
+                        pointBorderWidth: 2
+                    }];
+                    
+                    // Add Spain data for GDP per Capita in Historical scenario
+                    if (kpi.title === 'GDP per Capita' && activeScenario === 0) {
+                        areaDatasets.push({
+                            label: 'Spain',
+                            data: targets,
+                            borderColor: kpi.secondaryColor,
+                            backgroundColor: 'transparent',
                             borderWidth: 2,
-                            fill: true,
+                            borderDash: [5, 5],
+                            fill: false,
                             tension: 0.4,
                             pointRadius: 4,
                             pointHoverRadius: 6,
-                            pointBackgroundColor: kpi.color,
+                            pointBackgroundColor: kpi.secondaryColor,
                             pointBorderColor: '#1a1a1a',
                             pointBorderWidth: 2
-                        }]
+                        });
+                    }
+                    
+                    return {
+                        labels: years,
+                        datasets: areaDatasets
                     };
                     
                 default: // line
@@ -2162,8 +2343,8 @@ function renderChart(canvasId, kpi) {
                         pointBorderWidth: 2
                     }];
                     
-                    // Only add target line for Housing Price in Historical scenario, never for Annual Income or Employment Rate in future scenarios
-                    if (kpi.title === 'Housing Price' && activeScenario === 0 && kpi.title !== 'Annual Income') {
+                    // Add Spain comparison line for Housing Price, GDP per Capita, and Monthly Salary in Historical scenario
+                    if (activeScenario === 0 && (kpi.title === 'Housing Price' || kpi.title === 'GDP per Capita' || kpi.title === 'Monthly Salary') && kpi.title !== 'Annual Income') {
                         datasets.push({
                             label: 'Spain',
                             data: targets,
