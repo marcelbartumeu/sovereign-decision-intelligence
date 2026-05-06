@@ -1,0 +1,17 @@
+# Tell GitHub Linguist to ignore generated/data files for language stats
+
+# Generated Folium/Leaflet HTML maps (large, not hand-written code)
+**/Andorra_Parks_map.html linguist-generated=true
+**/Andorra_Stops_Map.html linguist-generated=true
+
+# Legacy standalone dashboard HTML (replaced by React app)
+**/Dashboard.HTML linguist-documentation=true
+
+# Simulation agent data (JSON data files, not source code)
+**/simulation_output/** linguist-generated=true
+
+# Jupyter notebooks (data exploration, not application code)
+*.ipynb linguist-documentation=true
+
+# Unity project assets
+cdm-server-maqueta/** linguist-vendored=true
