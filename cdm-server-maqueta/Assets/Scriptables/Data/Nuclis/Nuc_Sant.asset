@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 191a2474d644ae8449bb60de7482e91f, type: 3}
+  m_Name: Nuc_Sant
+  m_EditorClassIdentifier: 
+  asset: {fileID: 4900000, guid: 73cc87410ef1fb04090535d76c4115fa, type: 3}
+  data:
+  - coord: {x: 35.904373, y: 6.03129, z: 19.054276}
+  - coord: {x: 20.319595, y: 6.0900536, z: 29.237839}
+  - coord: {x: 22.251444, y: 6.597419, z: 14.853154}
+  - coord: {x: 31.384779, y: 5.2256126, z: 26.00766}
+  - coord: {x: 32.139164, y: 6.630088, z: 7.544639}
+  - coord: {x: 32.552647, y: 5.19038, z: 20.429462}
+  - coord: {x: 34.140396, y: 6.514309, z: 13.387296}
+  - coord: {x: 35.5584, y: 5.934845, z: 23.410294}
+  - coord: {x: 37.407394, y: 6.8360806, z: 25.618528}
+  - coord: {x: 39.2249, y: 6.6595516, z: 23.863651}
+  nameSpaces:
+  - prefix: ogr
+    uri: http://ogr.maptools.org/
+  - prefix: gml
+    uri: http://www.opengis.net/gml/3.2
+  nodeList: //ogr:featureMember
+  parSize: 2
+  nucSize: 1
+  parColor: {r: 1, g: 0.4, b: 0, a: 1}
+  nucColor: {r: 0, g: 0.7019608, b: 0.7019608, a: 1}
+  parName: "Sant Juli\xE0 de L\xF2ria"

@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d73fd45fac415c14ea4952a1c82aaa46, type: 3}
+  m_Name: BTT 61
+  m_EditorClassIdentifier: 
+  asset: {fileID: 4900000, guid: 570c274fdee2b0e409822062fff57d9c, type: 3}
+  data: []
+  nameSpaces:
+  - prefix: ogr
+    uri: http://osgeo.org/gdal
+  - prefix: gpx
+    uri: http://www.topografix.com/GPX/1/1
+  nodeList: //gpx:trk/gpx:trkseg/gpx:trkpt
+  isBackwards: 0

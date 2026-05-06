@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d33017ab78021b2479d332445a6f57a7, type: 3}
+  m_Name: Expired
+  m_EditorClassIdentifier: 
+  showStepEditor: 1
+  toShow: 1
+  cleanPrevious: 1
+  isLayer: 1
+  baseMaterial: {fileID: 2100000, guid: 65bf588059734e747897e83417def51e, type: 2}
+  layerMaterial:
+  - {fileID: 2100000, guid: 650d7040b7f3c35438998d7441fc06f4, type: 2}
+  - {fileID: 2100000, guid: 7ddce509e6e348344b1fa73863d6242f, type: 2}
+  layerOpacity: 1
+  isPaint: 0
+  paints:
+  - rid: 8702494195827081216
+  isRightLeftText: 0
+  textKey: 
+  sprite: {fileID: 0}
+  hasAnim: 0
+  anim:
+    material: {fileID: 2100000, guid: df56c6b47eea2094eba911b40c28261c, type: 2}
+    startValue: 1.6
+    endValue: 0
+    speed: 1
+    key: _CircleSize
+    isLoop: 0
+    isSnow: 0
+  displayTime: 9
+  references:
+    version: 2
+    RefIds:
+    - rid: 8702494195827081216
+      type: {class: PaintDots, ns: , asm: Assembly-CSharp}
+      data:
+        showPaintEditor: 1
+        drawingTime: 
+        toPaint: {fileID: 11400000, guid: a569bab91668a8345a6485440dc550e4, type: 2}
+        isForced: 0
+        speed: 0.02
+        size: 0.9
+        color: {r: 1, g: 0.0020325342, b: 0, a: 1}
+        sortingOrder: 1
+        sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}

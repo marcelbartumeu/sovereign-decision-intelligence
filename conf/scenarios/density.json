@@ -1,0 +1,10 @@
+{
+  "id": "density",
+  "name": "Density (Barcelona-like, no building expansion)",
+  "assumptions": {
+    "gdp_growth_rate": 0.030,
+    "tourism_growth_rate": 0.020,
+    "co2_intensity_change": -0.005,
+    "pop_elasticity_factor": 0.55
+  }
+}

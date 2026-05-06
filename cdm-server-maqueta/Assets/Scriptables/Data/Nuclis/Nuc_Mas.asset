@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 191a2474d644ae8449bb60de7482e91f, type: 3}
+  m_Name: Nuc_Mas
+  m_EditorClassIdentifier: 
+  asset: {fileID: 4900000, guid: 73cc87410ef1fb04090535d76c4115fa, type: 3}
+  data:
+  - coord: {x: 26.30978, y: 7.5601273, z: 60.03976}
+  - coord: {x: 29.27602, y: 7.283615, z: 73.77086}
+  - coord: {x: 34.16665, y: 6.851921, z: 68.364555}
+  - coord: {x: 40.656876, y: 6.34972, z: 59.79419}
+  - coord: {x: 40.867794, y: 6.6942368, z: 54.446453}
+  - coord: {x: 43.23124, y: 6.4570503, z: 58.139435}
+  - coord: {x: 44.50076, y: 6.6208878, z: 54.556015}
+  - coord: {x: 38.049103, y: 6.7625732, z: 60.357113}
+  nameSpaces:
+  - prefix: ogr
+    uri: http://ogr.maptools.org/
+  - prefix: gml
+    uri: http://www.opengis.net/gml/3.2
+  nodeList: //ogr:featureMember
+  parSize: 2
+  nucSize: 1
+  parColor: {r: 1, g: 0.4, b: 0, a: 1}
+  nucColor: {r: 0, g: 0.7019608, b: 0.7019608, a: 1}
+  parName: La Massana

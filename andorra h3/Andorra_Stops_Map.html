@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+<style>
+  .leaflet-container {
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    background: #e8eef2;
+  }
+  .leaflet-control-layers {
+    border: none !important;
+    border-radius: 12px !important;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12) !important;
+    padding: 10px 12px !important;
+    font-size: 13px;
+  }
+  .leaflet-control-layers-list label { margin: 6px 0; display: flex; align-items: center; gap: 8px; }
+  .leaflet-control-attribution {
+    font-size: 11px;
+    background: rgba(255, 255, 255, 0.82) !important;
+    padding: 4px 8px !important;
+    border-radius: 8px 0 0 0 !important;
+    max-width: 55vw;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .leaflet-popup-content { margin: 12px 14px; min-width: 180px; font-size: 13px; line-height: 1.45; }
+  .leaflet-popup-content .muted { color: #64748b; font-size: 12px; }
+  .leaflet-popup-content .small { font-size: 11px; color: #94a3b8; }
+  .leaflet-tooltip {
+    border: none !important;
+    border-radius: 8px !important;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.14) !important;
+    padding: 8px 10px !important;
+    font-size: 12px !important;
+  }
+  .map-legend {
+    position: fixed;
+    z-index: 1000;
+    bottom: 28px;
+    left: 28px;
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(8px);
+    border-radius: 12px;
+    padding: 12px 14px;
+    font-size: 13px;
+    line-height: 1.5;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12);
+    border: 1px solid rgba(148, 163, 184, 0.35);
+  }
+  .map-legend h3 {
+    margin: 0 0 8px 0;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: #475569;
+  }
+  .map-legend .row { display: flex; align-items: center; gap: 10px; margin: 6px 0; }
+  .swatch { width: 12px; height: 12px; border-radius: 999px; border: 2px solid rgba(15, 23, 42, 0.2); }
+</style>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_a00a7e52e25eeb1402401536e29e49bd {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+    
+                    <style>
+                        .foliumtooltip {
+                            
+                        }
+                       .foliumtooltip table{
+                            margin: auto;
+                        }
+                        .foliumtooltip tr{
+                            text-align: left;
+                        }
+                        .foliumtooltip th{
+                            padding: 2px; padding-right: 8px;
+                        }
+                    </style>
+            
+    
+                    <style>
+                        .foliumpopup {
+                            margin: auto;
+                        }
+                       .foliumpopup table{
+                            margin: auto;
+                        }
+                        .foliumpopup tr{
+                            text-align: left;
+                        }
+                        .foliumpopup th{
+                            padding: 2px; padding-right: 8px;
+                        }
+                    </style>
+            
+    
+                    <style>
+                        .foliumtooltip {
+                            
+                        }
+                       .foliumtooltip table{
+                            margin: auto;
+                        }
+                        .foliumtooltip tr{
+                            text-align: left;
+                        }
+                        .foliumtooltip th{
+                            padding: 2px; padding-right: 8px;
+                        }
+                    </style>
+            
+    
+                    <style>
+                        .foliumpopup {
+                            margin: auto;
+                        }
+                       .foliumpopup table{
+                            margin: auto;
+                        }
+                        .foliumpopup tr{
+                            text-align: left;
+                        }
+                        .foliumpopup th{
+                            padding: 2px; padding-right: 8px;
+                        }
+                    </style>
+            
+</head>
+<body>
+    
+    
+<div class="map-legend">
+  <h3>Bus stops</h3>
+  <div class="row"><span class="swatch" style="background:#0d9488"></span> Andorra la Vella</div>
+  <div class="row"><span class="swatch" style="background:#c026d3"></span> Ordino</div>
+</div>
+    
+            <div class="folium-map" id="map_a00a7e52e25eeb1402401536e29e49bd" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_a00a7e52e25eeb1402401536e29e49bd = L.map(
+                "map_a00a7e52e25eeb1402401536e29e49bd",
+                {
+                    center: [42.55832265, 1.51587895],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 12,
+  "zoomControl": true,
+  "preferCanvas": true,
+}
+
+                }
+            );
+            L.control.scale().addTo(map_a00a7e52e25eeb1402401536e29e49bd);
+
+            
+
+        
+    
+            var tile_layer_2655d3611c8ae2dea633d9ca24ce5e54 = L.tileLayer(
+                "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 20,
+  "maxNativeZoom": 20,
+  "noWrap": false,
+  "attribution": "\u00a9 \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e \u00b7 CARTO",
+  "subdomains": "abcd",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_2655d3611c8ae2dea633d9ca24ce5e54.addTo(map_a00a7e52e25eeb1402401536e29e49bd);
+        
+    
+            var feature_group_92159fc88cd971c2e735f5b7c3902e29 = L.featureGroup(
+                {
+}
+            );
+        
+    
+        function geo_json_eec2ea577e7e946fc6e3e0a38fd2ac57_styler(feature) {
+            switch(feature.id) {
+                default:
+                    return {"color": "#0f766e", "fillColor": "#0d9488", "fillOpacity": 0.92, "opacity": 1, "radius": 6, "weight": 2};
+            }
+        }
+        function geo_json_eec2ea577e7e946fc6e3e0a38fd2ac57_highlighter(feature) {
+            switch(feature.id) {
+                default:
+                    return {"fillOpacity": 1, "radius": 8, "weight": 3};
+            }
+        }
+
+        function geo_json_eec2ea577e7e946fc6e3e0a38fd2ac57_onEachFeature(feature, layer) {
+
+            layer.on({
+                mouseout: function(e) {
+                    if(typeof e.target.setStyle === "function"){
+                            geo_json_eec2ea577e7e946fc6e3e0a38fd2ac57.resetStyle(e.target);
+                    }
+                },
+                mouseover: function(e) {
+                    if(typeof e.target.setStyle === "function"){
+                        const highlightStyle = geo_json_eec2ea577e7e946fc6e3e0a38fd2ac57_highlighter(e.target.feature)
+                        e.target.setStyle(highlightStyle);
+                    }
+                },
+            });
+        };
+        var geo_json_eec2ea577e7e946fc6e3e0a38fd2ac57 = L.geoJson(null, {
+                onEachFeature: geo_json_eec2ea577e7e946fc6e3e0a38fd2ac57_onEachFeature,
+            
+                style: geo_json_eec2ea577e7e946fc6e3e0a38fd2ac57_styler,
+            ...{
+}
+        });
+
+        function geo_json_eec2ea577e7e946fc6e3e0a38fd2ac57_add (data) {
+            geo_json_eec2ea577e7e946fc6e3e0a38fd2ac57
+                .addData(data);
+        }
+            geo_json_eec2ea577e7e946fc6e3e0a38fd2ac57_add({"copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.", "features": [{"geometry": {"coordinates": [1.5280457, 42.5073157], "type": "Point"}, "id": "node/51404642", "properties": {"@id": "node/51404642", "bus": "yes", "highway": "bus_stop", "popup": "\u003cspan class=\u0027muted small\u0027\u003enode/51404642\u003c/span\u003e", "public_transport": "stop_position", "tip": "node/51404642"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5342147, 42.5073663], "type": "Point"}, "id": "node/4448379097", "properties": {"@id": "node/4448379097", "bus": "yes", "departures_board": "timetable", "highway": "bus_stop", "name": "La Uni\u00f3", "network": "Expr\u00e9s, Engolasters, L5", "operator": "EEBUS, TRansports de Govern", "popup": "\u003cstrong\u003eLa Uni\u00f3\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eRef\u003c/span\u003e 710\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e Expr\u00e9s, Engolasters, L5\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/4448379097\u003c/span\u003e", "public_transport": "platform", "ref": "710", "shelter": "yes", "tip": "La Uni\u00f3 \u00b7 #710 \u00b7 Expr\u00e9s, Engolasters, L5"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5288909, 42.5080476], "type": "Point"}, "id": "node/4665692090", "properties": {"@id": "node/4665692090", "bus": "yes", "highway": "bus_stop", "popup": "\u003cspan class=\u0027muted small\u0027\u003enode/4665692090\u003c/span\u003e", "public_transport": "platform", "shelter": "yes", "tip": "node/4665692090"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5034905, 42.4977983], "type": "Point"}, "id": "node/4689637109", "properties": {"@id": "node/4689637109", "bench": "yes", "bin": "no", "bus": "yes", "highway": "bus_stop", "image": "https://storage2.openstreetcam.org/files/photo/2016/11/10/lth/27053_8851f_5824615707908.jpg", "name": "5110 El Cedre", "network": "L1", "popup": "\u003cstrong\u003e5110 El Cedre\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L1\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/4689637109\u003c/span\u003e", "public_transport": "platform", "shelter": "yes", "survey:date": "2016-11-10", "tip": "5110 El Cedre \u00b7 L1"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5329683, 42.5104306], "type": "Point"}, "id": "node/4706195792", "properties": {"@id": "node/4706195792", "bench": "no", "bus": "yes", "highway": "bus_stop", "name": "Mitjavilla", "network": "L7, Bus Uni\u00f3, Andbus Comunal", "popup": "\u003cstrong\u003eMitjavilla\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eRef\u003c/span\u003e 5010\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L7, Bus Uni\u00f3, Andbus Comunal\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/4706195792\u003c/span\u003e", "public_transport": "platform", "ref": "5010", "shelter": "no", "tip": "Mitjavilla \u00b7 #5010 \u00b7 L7, Bus Uni\u00f3, Andbus Comunal"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5290632, 42.5090224], "type": "Point"}, "id": "node/4706240589", "properties": {"@id": "node/4706240589", "bus": "yes", "highway": "bus_stop", "name": "5008 Rotonda", "network": "L1, L2, LC, L4, L5, L6", "popup": "\u003cstrong\u003e5008 Rotonda\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L1, L2, LC, L4, L5, L6\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/4706240589\u003c/span\u003e", "public_transport": "platform", "tip": "5008 Rotonda \u00b7 L1, L2, LC, L4, L5, L6"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5216, 42.5081571], "type": "Point"}, "id": "node/4706240690", "properties": {"@id": "node/4706240690", "bus": "yes", "highway": "bus_stop", "name": "5002 Pla\u00e7a Guillem\u00f3", "name:ca": "5002 Pla\u00e7a Guillem\u00f3", "popup": "\u003cstrong\u003e5002 Pla\u00e7a Guillem\u00f3\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/4706240690\u003c/span\u003e", "public_transport": "platform", "tip": "5002 Pla\u00e7a Guillem\u00f3"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5286671, 42.5077497], "type": "Point"}, "id": "node/4706534641", "properties": {"@id": "node/4706534641", "bus": "yes", "highway": "bus_stop", "mapillary": "390667588607436", "name": "5009 La Sardana", "network": "L1, L2, LC, L4, L5, L6", "popup": "\u003cstrong\u003e5009 La Sardana\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L1, L2, LC, L4, L5, L6\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/4706534641\u003c/span\u003e", "public_transport": "platform", "shelter": "yes", "survey:date": "2016-11-28", "tip": "5009 La Sardana \u00b7 L1, L2, LC, L4, L5, L6"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5212053, 42.5074287], "type": "Point"}, "id": "node/4706548691", "properties": {"@id": "node/4706548691", "bus": "yes", "highway": "bus_stop", "name": "5001 Princep Benlloch", "name:ca": "5001 Pr\u00edncep Benlloch", "popup": "\u003cstrong\u003e5001 Princep Benlloch\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/4706548691\u003c/span\u003e", "public_transport": "platform", "tip": "5001 Princep Benlloch"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5242783, 42.5069027], "type": "Point"}, "id": "node/4780988322", "properties": {"@id": "node/4780988322", "bench": "no", "bin": "no", "bus": "yes", "highway": "bus_stop", "image": "https://storage2.openstreetcam.org/files/photo/2016/11/10/lth/27054_72e79_582461a284ef4.jpg", "name": "5200 Ambaixada d\u0027Espanya", "name:es": "5200 Embajada de Espa\u00f1a", "network": "L1, L2, L4, L5, L6", "popup": "\u003cstrong\u003e5200 Ambaixada d\u0026#x27;Espanya\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L1, L2, L4, L5, L6\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/4780988322\u003c/span\u003e", "public_transport": "platform", "shelter": "yes", "survey:date": "2016-11-10", "tip": "5200 Ambaixada d\u0027Espanya \u00b7 L1, L2, L4, L5, L6"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5244205, 42.5068533], "type": "Point"}, "id": "node/4780988323", "properties": {"@id": "node/4780988323", "bench": "yes", "bus": "yes", "check_date": "2025-10-01", "check_date:bench": "2025-10-01", "highway": "bus_stop", "mapillary": "1116645508847237", "name": "5201 Ambaixada d\u0027Espanya", "name:es": "5201 Embajada de Espa\u00f1a", "network": "L1, L2, L4, L5, L6", "popup": "\u003cstrong\u003e5201 Ambaixada d\u0026#x27;Espanya\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L1, L2, L4, L5, L6\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/4780988323\u003c/span\u003e", "public_transport": "platform", "shelter": "yes", "tip": "5201 Ambaixada d\u0027Espanya \u00b7 L1, L2, L4, L5, L6"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5312273, 42.5088603], "type": "Point"}, "id": "node/5290561321", "properties": {"@id": "node/5290561321", "bus": "yes", "highway": "bus_stop", "name": "5011 Consell d\u0027Europa", "name:fr": "5011 Conseil de l\u0027Europe", "network": "L1, L2, LC, L4, L5, L6", "popup": "\u003cstrong\u003e5011 Consell d\u0026#x27;Europa\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L1, L2, LC, L4, L5, L6\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/5290561321\u003c/span\u003e", "public_transport": "platform", "tip": "5011 Consell d\u0027Europa \u00b7 L1, L2, LC, L4, L5, L6"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5263434, 42.5051334], "type": "Point"}, "id": "node/5333957821", "properties": {"@id": "node/5333957821", "bus": "yes", "highway": "bus_stop", "mapillary": "174699911212603", "name": "5419 Els Marginets", "network": "Expr\u00e9s", "popup": "\u003cstrong\u003e5419 Els Marginets\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e Expr\u00e9s\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/5333957821\u003c/span\u003e", "public_transport": "platform", "shelter": "yes", "survey:date": "2017-10-16", "tip": "5419 Els Marginets \u00b7 Expr\u00e9s"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5138007, 42.5020826], "type": "Point"}, "id": "node/5333957822", "properties": {"@id": "node/5333957822", "bench": "no", "bin": "yes", "bus": "yes", "highway": "bus_stop", "lit": "yes", "mapillary": "958646284883919", "name": "5413 Estadi communal", "network": "Expr\u00e9s", "popup": "\u003cstrong\u003e5413 Estadi communal\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e Expr\u00e9s\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/5333957822\u003c/span\u003e", "public_transport": "platform", "shelter": "yes", "survey:date": "2017-10-16", "tip": "5413 Estadi communal \u00b7 Expr\u00e9s"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5208681, 42.5041614], "type": "Point"}, "id": "node/5333957921", "properties": {"@id": "node/5333957921", "bus": "yes", "highway": "bus_stop", "name": "5556 Estaci\u00f3 Nacional d\u0027Autobusos", "name:es": "5556 Estaci\u00f3n Nacional de Autobuses", "network": "Expr\u00e9s", "popup": "\u003cstrong\u003e5556 Estaci\u00f3 Nacional d\u0026#x27;Autobusos\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e Expr\u00e9s\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/5333957921\u003c/span\u003e", "public_transport": "platform", "tip": "5556 Estaci\u00f3 Nacional d\u0027Autobusos \u00b7 Expr\u00e9s"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5138409, 42.5023634], "type": "Point"}, "id": "node/7264482177", "properties": {"@id": "node/7264482177", "bench": "yes", "bin": "yes", "bus": "yes", "highway": "bus_stop", "lit": "yes", "name": "5412 Estadi Comunal", "network": "Expr\u00e9s", "popup": "\u003cstrong\u003e5412 Estadi Comunal\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e Expr\u00e9s\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/7264482177\u003c/span\u003e", "public_transport": "platform", "shelter": "yes", "tip": "5412 Estadi Comunal \u00b7 Expr\u00e9s"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5109589, 42.4982242], "type": "Point"}, "id": "node/7264482178", "properties": {"@id": "node/7264482178", "bench": "yes", "bin": "yes", "bus": "yes", "highway": "bus_stop", "name": "5411 Les Costes", "network": "Expr\u00e9s", "popup": "\u003cstrong\u003e5411 Les Costes\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e Expr\u00e9s\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/7264482178\u003c/span\u003e", "public_transport": "platform", "shelter": "yes", "tip": "5411 Les Costes \u00b7 Expr\u00e9s"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5041608, 42.4953171], "type": "Point"}, "id": "node/7264482179", "properties": {"@id": "node/7264482179", "bus": "yes", "highway": "bus_stop", "name": "5408 Prat de Salit", "network": "Expr\u00e9s", "popup": "\u003cstrong\u003e5408 Prat de Salit\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e Expr\u00e9s\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/7264482179\u003c/span\u003e", "public_transport": "platform", "tip": "5408 Prat de Salit \u00b7 Expr\u00e9s"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5005023, 42.4935666], "type": "Point"}, "id": "node/7264482180", "properties": {"@id": "node/7264482180", "bench": "yes", "bin": "yes", "bus": "yes", "highway": "bus_stop", "name": "5407 Pont de Santa Coloma", "network": "Expr\u00e9s", "popup": "\u003cstrong\u003e5407 Pont de Santa Coloma\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e Expr\u00e9s\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/7264482180\u003c/span\u003e", "public_transport": "platform", "shelter": "yes", "tip": "5407 Pont de Santa Coloma \u00b7 Expr\u00e9s"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5006284, 42.4938178], "type": "Point"}, "id": "node/7264482181", "properties": {"@id": "node/7264482181", "bus": "yes", "highway": "bus_stop", "name": "5408 Pont de Santa Coloma", "network": "Expr\u00e9s", "popup": "\u003cstrong\u003e5408 Pont de Santa Coloma\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e Expr\u00e9s\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/7264482181\u003c/span\u003e", "public_transport": "platform", "tip": "5408 Pont de Santa Coloma \u00b7 Expr\u00e9s"}, "type": "Feature"}, {"geometry": {"coordinates": [1.4965165, 42.491042], "type": "Point"}, "id": "node/7264482183", "properties": {"@id": "node/7264482183", "bus": "yes", "highway": "bus_stop", "name": "5405 Pont Poblad\u00f3", "network": "Expr\u00e9s", "popup": "\u003cstrong\u003e5405 Pont Poblad\u00f3\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e Expr\u00e9s\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/7264482183\u003c/span\u003e", "public_transport": "platform", "tip": "5405 Pont Poblad\u00f3 \u00b7 Expr\u00e9s"}, "type": "Feature"}, {"geometry": {"coordinates": [1.4963087, 42.490951], "type": "Point"}, "id": "node/7264482184", "properties": {"@id": "node/7264482184", "bus": "yes", "highway": "bus_stop", "name": "5404 Pont Poblad\u00f3", "network": "Expr\u00e9s", "popup": "\u003cstrong\u003e5404 Pont Poblad\u00f3\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e Expr\u00e9s\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/7264482184\u003c/span\u003e", "public_transport": "platform", "tip": "5404 Pont Poblad\u00f3 \u00b7 Expr\u00e9s"}, "type": "Feature"}, {"geometry": {"coordinates": [1.4962852, 42.4919334], "type": "Point"}, "id": "node/7264739196", "properties": {"@id": "node/7264739196", "bench": "no", "bus": "yes", "highway": "bus_stop", "name": "5126 Riu d\u0027Enclar", "network": "L1", "popup": "\u003cstrong\u003e5126 Riu d\u0026#x27;Enclar\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L1\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/7264739196\u003c/span\u003e", "public_transport": "platform", "shelter": "no", "tip": "5126 Riu d\u0027Enclar \u00b7 L1"}, "type": "Feature"}, {"geometry": {"coordinates": [1.4994234, 42.4958572], "type": "Point"}, "id": "node/7264739199", "properties": {"@id": "node/7264739199", "bus": "yes", "highway": "bus_stop", "name": "5122 Sant Vicen\u00e7", "network": "L1", "popup": "\u003cstrong\u003e5122 Sant Vicen\u00e7\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L1\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/7264739199\u003c/span\u003e", "public_transport": "platform", "tip": "5122 Sant Vicen\u00e7 \u00b7 L1"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5008074, 42.4965336], "type": "Point"}, "id": "node/7264739200", "properties": {"@id": "node/7264739200", "bus": "yes", "highway": "bus_stop", "name": "5120 Moss\u00e8n Llu\u00eds Pujol", "network": "L1", "popup": "\u003cstrong\u003e5120 Moss\u00e8n Llu\u00eds Pujol\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L1\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/7264739200\u003c/span\u003e", "public_transport": "platform", "tip": "5120 Moss\u00e8n Llu\u00eds Pujol \u00b7 L1"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5008691, 42.4964545], "type": "Point"}, "id": "node/7264739201", "properties": {"@id": "node/7264739201", "bus": "yes", "highway": "bus_stop", "name": "5121 Moss\u00e8n Llu\u00eds Pujol", "network": "L1", "popup": "\u003cstrong\u003e5121 Moss\u00e8n Llu\u00eds Pujol\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L1\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/7264739201\u003c/span\u003e", "public_transport": "platform", "shelter": "yes", "tip": "5121 Moss\u00e8n Llu\u00eds Pujol \u00b7 L1"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5078026, 42.4999485], "type": "Point"}, "id": "node/7264739203", "properties": {"@id": "node/7264739203", "bench": "yes", "bus": "yes", "highway": "bus_stop", "name": "5108 Les Prades", "network": "L1", "popup": "\u003cstrong\u003e5108 Les Prades\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L1\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/7264739203\u003c/span\u003e", "public_transport": "platform", "shelter": "yes", "tip": "5108 Les Prades \u00b7 L1"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5105412, 42.5011627], "type": "Point"}, "id": "node/7264739206", "properties": {"@id": "node/7264739206", "bench": "no", "bin": "yes", "bus": "yes", "highway": "bus_stop", "lit": "yes", "name": "5107 Gil Torres", "network": "L1", "popup": "\u003cstrong\u003e5107 Gil Torres\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L1\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/7264739206\u003c/span\u003e", "public_transport": "platform", "shelter": "no", "tip": "5107 Gil Torres \u00b7 L1"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5209186, 42.506005], "type": "Point"}, "id": "node/7264739210", "properties": {"@id": "node/7264739210", "bench": "yes", "bin": "yes", "bus": "yes", "highway": "bus_stop", "lit": "yes", "name": "5204 La Grau", "network": "L1", "popup": "\u003cstrong\u003e5204 La Grau\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L1\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/7264739210\u003c/span\u003e", "public_transport": "platform", "shelter": "yes", "tip": "5204 La Grau \u00b7 L1"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5209673, 42.5043295], "type": "Point"}, "id": "node/7264739214", "properties": {"@id": "node/7264739214", "bench": "yes", "bin": "no", "bus": "yes", "highway": "bus_stop", "lit": "yes", "name": "5555 Estaci\u00f3 Nacional d\u0027Autobusos", "name:es": "5555 Estaci\u00f3n Nacional de Autobuses", "network": "L2, L4, L5, L6, Expr\u00e9s", "popup": "\u003cstrong\u003e5555 Estaci\u00f3 Nacional d\u0026#x27;Autobusos\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L2, L4, L5, L6, Expr\u00e9s\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/7264739214\u003c/span\u003e", "public_transport": "platform", "shelter": "yes", "tip": "5555 Estaci\u00f3 Nacional d\u0027Autobusos \u00b7 L2, L4, L5, L6, Expr\u00e9s"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5234403, 42.5046874], "type": "Point"}, "id": "node/7264739215", "properties": {"@id": "node/7264739215", "bench": "yes", "bin": "no", "bus": "yes", "check_date:shelter": "2025-10-01", "highway": "bus_stop", "name": "5417 Terra Vella", "network": "Expr\u00e9s", "popup": "\u003cstrong\u003e5417 Terra Vella\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e Expr\u00e9s\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/7264739215\u003c/span\u003e", "public_transport": "platform", "shelter": "yes", "tip": "5417 Terra Vella \u00b7 Expr\u00e9s"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5268521, 42.5053281], "type": "Point"}, "id": "node/7264739216", "properties": {"@id": "node/7264739216", "bus": "yes", "highway": "bus_stop", "name": "5418 Els Marginets", "network": "Expr\u00e9s", "popup": "\u003cstrong\u003e5418 Els Marginets\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e Expr\u00e9s\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/7264739216\u003c/span\u003e", "public_transport": "platform", "tip": "5418 Els Marginets \u00b7 Expr\u00e9s"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5319993, 42.5061586], "type": "Point"}, "id": "node/7264739217", "properties": {"@id": "node/7264739217", "bus": "yes", "highway": "bus_stop", "name": "5024 Rotonda Escaler", "network": "Expr\u00e9s", "popup": "\u003cstrong\u003e5024 Rotonda Escaler\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e Expr\u00e9s\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/7264739217\u003c/span\u003e", "public_transport": "platform", "tip": "5024 Rotonda Escaler \u00b7 Expr\u00e9s"}, "type": "Feature"}, {"geometry": {"coordinates": [1.513646, 42.5034188], "type": "Point"}, "id": "node/9704566804", "properties": {"@id": "node/9704566804", "bus": "yes", "highway": "bus_stop", "popup": "\u003cspan class=\u0027muted small\u0027\u003enode/9704566804\u003c/span\u003e", "public_transport": "stop_position", "tip": "node/9704566804"}, "type": "Feature"}, {"geometry": {"coordinates": [1.4915027, 42.4845953], "type": "Point"}, "id": "node/10921255894", "properties": {"@id": "node/10921255894", "bus": "yes", "highway": "bus_stop", "popup": "\u003cspan class=\u0027muted small\u0027\u003enode/10921255894\u003c/span\u003e", "public_transport": "stop_position", "tip": "node/10921255894"}, "type": "Feature"}, {"geometry": {"coordinates": [1.4969408, 42.4923635], "type": "Point"}, "id": "node/10922448442", "properties": {"@id": "node/10922448442", "bus": "yes", "highway": "bus_stop", "popup": "\u003cspan class=\u0027muted small\u0027\u003enode/10922448442\u003c/span\u003e", "public_transport": "stop_position", "tip": "node/10922448442"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5097471, 42.5007738], "type": "Point"}, "id": "node/10922667519", "properties": {"@id": "node/10922667519", "bus": "yes", "highway": "bus_stop", "popup": "\u003cspan class=\u0027muted small\u0027\u003enode/10922667519\u003c/span\u003e", "public_transport": "stop_position", "tip": "node/10922667519"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5076788, 42.4997869], "type": "Point"}, "id": "node/10922667525", "properties": {"@id": "node/10922667525", "bus": "yes", "highway": "bus_stop", "popup": "\u003cspan class=\u0027muted small\u0027\u003enode/10922667525\u003c/span\u003e", "public_transport": "stop_position", "tip": "node/10922667525"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5024788, 42.4972676], "type": "Point"}, "id": "node/10922667541", "properties": {"@id": "node/10922667541", "bus": "yes", "highway": "bus_stop", "popup": "\u003cspan class=\u0027muted small\u0027\u003enode/10922667541\u003c/span\u003e", "public_transport": "stop_position", "tip": "node/10922667541"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5005208, 42.496306], "type": "Point"}, "id": "node/10922667542", "properties": {"@id": "node/10922667542", "bus": "yes", "highway": "bus_stop", "popup": "\u003cspan class=\u0027muted small\u0027\u003enode/10922667542\u003c/span\u003e", "public_transport": "stop_position", "tip": "node/10922667542"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5139306, 42.5036721], "type": "Point"}, "id": "node/10922671704", "properties": {"@id": "node/10922671704", "bus": "yes", "highway": "bus_stop", "popup": "\u003cspan class=\u0027muted small\u0027\u003enode/10922671704\u003c/span\u003e", "public_transport": "stop_position", "tip": "node/10922671704"}, "type": "Feature"}, {"geometry": {"coordinates": [1.527924, 42.5079604], "type": "Point"}, "id": "node/10924715848", "properties": {"@id": "node/10924715848", "bus": "yes", "highway": "bus_stop", "popup": "\u003cspan class=\u0027muted small\u0027\u003enode/10924715848\u003c/span\u003e", "public_transport": "stop_position", "tip": "node/10924715848"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5260192, 42.5082329], "type": "Point"}, "id": "node/10924715851", "properties": {"@id": "node/10924715851", "bus": "yes", "highway": "bus_stop", "popup": "\u003cspan class=\u0027muted small\u0027\u003enode/10924715851\u003c/span\u003e", "public_transport": "stop_position", "tip": "node/10924715851"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5255383, 42.508107], "type": "Point"}, "id": "node/10924715852", "properties": {"@id": "node/10924715852", "bus": "yes", "highway": "bus_stop", "popup": "\u003cspan class=\u0027muted small\u0027\u003enode/10924715852\u003c/span\u003e", "public_transport": "stop_position", "tip": "node/10924715852"}, "type": "Feature"}], "generator": "overpass-turbo", "timestamp": "2026-04-14T22:56:44Z", "type": "FeatureCollection"});
+
+        
+    
+    geo_json_eec2ea577e7e946fc6e3e0a38fd2ac57.bindTooltip(
+    function(layer){
+    let div = L.DomUtil.create('div');
+    
+    let handleObject = feature => {
+        if (feature === null) {
+            return '';
+        } else if (typeof(feature)=='object') {
+            return JSON.stringify(feature);
+        } else {
+            return feature;
+        }
+    }
+    let fields = ["tip"];
+    let aliases = [""];
+    let table = '<table>' +
+        String(
+        fields.map(
+        (v,i)=>
+        `<tr>
+            <th>${aliases[i]}</th>
+            
+            <td>${handleObject(layer.feature.properties[v])}</td>
+        </tr>`).join(''))
+    +'</table>';
+    div.innerHTML=table;
+    
+    return div
+    }
+    ,{
+  "sticky": true,
+  "className": "foliumtooltip",
+});
+                     
+    
+    geo_json_eec2ea577e7e946fc6e3e0a38fd2ac57.bindPopup(
+    function(layer){
+    let div = L.DomUtil.create('div');
+    
+    let handleObject = feature => {
+        if (feature === null) {
+            return '';
+        } else if (typeof(feature)=='object') {
+            return JSON.stringify(feature);
+        } else {
+            return feature;
+        }
+    }
+    let fields = ["popup"];
+    let aliases = [""];
+    let table = '<table>' +
+        String(
+        fields.map(
+        (v,i)=>
+        `<tr>
+            <th>${aliases[i].toLocaleString()}</th>
+            
+            <td>${handleObject(layer.feature.properties[v]).toLocaleString()}</td>
+        </tr>`).join(''))
+    +'</table>';
+    div.innerHTML=table;
+    
+    return div
+    }
+    ,{
+  "parseHtml": true,
+  "className": "foliumpopup",
+});
+                     
+    
+            geo_json_eec2ea577e7e946fc6e3e0a38fd2ac57.addTo(feature_group_92159fc88cd971c2e735f5b7c3902e29);
+        
+    
+            feature_group_92159fc88cd971c2e735f5b7c3902e29.addTo(map_a00a7e52e25eeb1402401536e29e49bd);
+        
+    
+            var feature_group_d7fa4aeee0c4ec451a7ba853ae4ea1dc = L.featureGroup(
+                {
+}
+            );
+        
+    
+        function geo_json_e49a67f91829fd0550415ee7f4b17aa3_styler(feature) {
+            switch(feature.id) {
+                default:
+                    return {"color": "#86198f", "fillColor": "#c026d3", "fillOpacity": 0.92, "opacity": 1, "radius": 6, "weight": 2};
+            }
+        }
+        function geo_json_e49a67f91829fd0550415ee7f4b17aa3_highlighter(feature) {
+            switch(feature.id) {
+                default:
+                    return {"fillOpacity": 1, "radius": 8, "weight": 3};
+            }
+        }
+
+        function geo_json_e49a67f91829fd0550415ee7f4b17aa3_onEachFeature(feature, layer) {
+
+            layer.on({
+                mouseout: function(e) {
+                    if(typeof e.target.setStyle === "function"){
+                            geo_json_e49a67f91829fd0550415ee7f4b17aa3.resetStyle(e.target);
+                    }
+                },
+                mouseover: function(e) {
+                    if(typeof e.target.setStyle === "function"){
+                        const highlightStyle = geo_json_e49a67f91829fd0550415ee7f4b17aa3_highlighter(e.target.feature)
+                        e.target.setStyle(highlightStyle);
+                    }
+                },
+            });
+        };
+        var geo_json_e49a67f91829fd0550415ee7f4b17aa3 = L.geoJson(null, {
+                onEachFeature: geo_json_e49a67f91829fd0550415ee7f4b17aa3_onEachFeature,
+            
+                style: geo_json_e49a67f91829fd0550415ee7f4b17aa3_styler,
+            ...{
+}
+        });
+
+        function geo_json_e49a67f91829fd0550415ee7f4b17aa3_add (data) {
+            geo_json_e49a67f91829fd0550415ee7f4b17aa3
+                .addData(data);
+        }
+            geo_json_e49a67f91829fd0550415ee7f4b17aa3_add({"copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.", "features": [{"geometry": {"coordinates": [1.5385308, 42.6104255], "type": "Point"}, "id": "node/3874336518", "properties": {"@id": "node/3874336518", "bus": "yes", "highway": "bus_stop", "name": "358 Les Salines", "network": "L6", "popup": "\u003cstrong\u003e358 Les Salines\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L6\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/3874336518\u003c/span\u003e", "public_transport": "platform", "tip": "358 Les Salines \u00b7 L6"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5341551, 42.5556836], "type": "Point"}, "id": "node/4874439755", "properties": {"@id": "node/4874439755", "bench": "yes", "bus": "yes", "highway": "bus_stop", "name": "303 Camp de la Tenada / Cultia", "network": "L6", "popup": "\u003cstrong\u003e303 Camp de la Tenada / Cultia\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L6\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/4874439755\u003c/span\u003e", "public_transport": "platform", "shelter": "yes", "tip": "303 Camp de la Tenada / Cultia \u00b7 L6"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5326999, 42.5560622], "type": "Point"}, "id": "node/4874445626", "properties": {"@id": "node/4874445626", "bus": "yes", "highway": "bus_stop", "name": "306 La Closa / Oficina de Turisme", "network": "L6", "popup": "\u003cstrong\u003e306 La Closa / Oficina de Turisme\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L6\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/4874445626\u003c/span\u003e", "public_transport": "platform", "tip": "306 La Closa / Oficina de Turisme \u00b7 L6"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5318718, 42.5594976], "type": "Point"}, "id": "node/5604155027", "properties": {"@id": "node/5604155027", "bus": "yes", "highway": "bus_stop", "name": "325 Les Moles", "network": "L6", "popup": "\u003cstrong\u003e325 Les Moles\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L6\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/5604155027\u003c/span\u003e", "public_transport": "platform", "tip": "325 Les Moles \u00b7 L6"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5318686, 42.5592987], "type": "Point"}, "id": "node/5604155385", "properties": {"@id": "node/5604155385", "bus": "yes", "highway": "bus_stop", "name": "326 Les Moles", "network": "L6", "popup": "\u003cstrong\u003e326 Les Moles\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L6\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/5604155385\u003c/span\u003e", "public_transport": "platform", "shelter": "yes", "tip": "326 Les Moles \u00b7 L6"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5186199, 42.5759078], "type": "Point"}, "id": "node/5604534493", "properties": {"@id": "node/5604534493", "bus": "yes", "highway": "bus_stop", "name": "345 Pla\u00e7a de la Cortinada", "network": "L6", "popup": "\u003cstrong\u003e345 Pla\u00e7a de la Cortinada\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L6\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/5604534493\u003c/span\u003e", "public_transport": "platform", "tip": "345 Pla\u00e7a de la Cortinada \u00b7 L6"}, "type": "Feature"}, {"geometry": {"coordinates": [1.536117, 42.604385], "type": "Point"}, "id": "node/5604534494", "properties": {"@id": "node/5604534494", "bus": "yes", "highway": "bus_stop", "name": "376 Els Teiers", "network": "L6", "popup": "\u003cstrong\u003e376 Els Teiers\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L6\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/5604534494\u003c/span\u003e", "public_transport": "platform", "tip": "376 Els Teiers \u00b7 L6"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5318663, 42.5995749], "type": "Point"}, "id": "node/5604534516", "properties": {"@id": "node/5604534516", "bus": "yes", "highway": "bus_stop", "name": "371 Les Mines de Llorts", "network": "L6", "popup": "\u003cstrong\u003e371 Les Mines de Llorts\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L6\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/5604534516\u003c/span\u003e", "public_transport": "platform", "tip": "371 Les Mines de Llorts \u00b7 L6"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5236628, 42.5892772], "type": "Point"}, "id": "node/5604534517", "properties": {"@id": "node/5604534517", "bus": "yes", "highway": "bus_stop", "name": "377 Xalet el Cresp", "network": "L6", "popup": "\u003cstrong\u003e377 Xalet el Cresp\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L6\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/5604534517\u003c/span\u003e", "public_transport": "platform", "tip": "377 Xalet el Cresp \u00b7 L6"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5176706, 42.5778217], "type": "Point"}, "id": "node/5604534518", "properties": {"@id": "node/5604534518", "bus": "yes", "highway": "bus_stop", "name": "339 Mas d\u0027en Soler", "network": "L6", "popup": "\u003cstrong\u003e339 Mas d\u0026#x27;en Soler\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L6\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/5604534518\u003c/span\u003e", "public_transport": "platform", "tip": "339 Mas d\u0027en Soler \u00b7 L6"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5379271, 42.6176595], "type": "Point"}, "id": "node/5604536423", "properties": {"@id": "node/5604536423", "bus": "yes", "highway": "bus_stop", "name": "380 Aparthotel Rialb", "network": "L6", "popup": "\u003cstrong\u003e380 Aparthotel Rialb\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L6\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/5604536423\u003c/span\u003e", "public_transport": "platform", "tip": "380 Aparthotel Rialb \u00b7 L6"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5270954, 42.5632132], "type": "Point"}, "id": "node/5604537509", "properties": {"@id": "node/5604537509", "bus": "yes", "highway": "bus_stop", "name": "322 Cru\u00eflla de Sorn\u00e0s", "network": "L6", "popup": "\u003cstrong\u003e322 Cru\u00eflla de Sorn\u00e0s\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L6\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/5604537509\u003c/span\u003e", "public_transport": "platform", "tip": "322 Cru\u00eflla de Sorn\u00e0s \u00b7 L6"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5198123, 42.5718727], "type": "Point"}, "id": "node/5604537510", "properties": {"@id": "node/5604537510", "bus": "yes", "highway": "bus_stop", "name": "378 Edifici Eagle", "network": "L6", "popup": "\u003cstrong\u003e378 Edifici Eagle\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L6\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/5604537510\u003c/span\u003e", "public_transport": "platform", "tip": "378 Edifici Eagle \u00b7 L6"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5181875, 42.5747116], "type": "Point"}, "id": "node/5604537512", "properties": {"@id": "node/5604537512", "bus": "yes", "highway": "bus_stop", "name": "343 La Cortinada", "network": "L6", "popup": "\u003cstrong\u003e343 La Cortinada\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L6\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/5604537512\u003c/span\u003e", "public_transport": "platform", "tip": "343 La Cortinada \u00b7 L6"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5402552, 42.619968], "type": "Point"}, "id": "node/5604537513", "properties": {"@id": "node/5604537513", "bus": "yes", "highway": "bus_stop", "name": "369 Les Sobiranes", "network": "L6", "popup": "\u003cstrong\u003e369 Les Sobiranes\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L6\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/5604537513\u003c/span\u003e", "public_transport": "platform", "tip": "369 Les Sobiranes \u00b7 L6"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5382992, 42.6159127], "type": "Point"}, "id": "node/5604537514", "properties": {"@id": "node/5604537514", "bus": "yes", "highway": "bus_stop", "name": "364 Hostal del Serrat", "network": "L6", "popup": "\u003cstrong\u003e364 Hostal del Serrat\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L6\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/5604537514\u003c/span\u003e", "public_transport": "platform", "tip": "364 Hostal del Serrat \u00b7 L6"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5291595, 42.5981412], "type": "Point"}, "id": "node/5604537515", "properties": {"@id": "node/5604537515", "bus": "yes", "highway": "bus_stop", "name": "355 Xalets la Closa", "network": "L6", "popup": "\u003cstrong\u003e355 Xalets la Closa\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L6\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/5604537515\u003c/span\u003e", "public_transport": "platform", "tip": "355 Xalets la Closa \u00b7 L6"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5189672, 42.5801654], "type": "Point"}, "id": "node/5604537517", "properties": {"@id": "node/5604537517", "bus": "yes", "highway": "bus_stop", "name": "374 Hotel Cal Daina", "network": "L6", "popup": "\u003cstrong\u003e374 Hotel Cal Daina\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L6\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/5604537517\u003c/span\u003e", "public_transport": "platform", "tip": "374 Hotel Cal Daina \u00b7 L6"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5387165, 42.6184109], "type": "Point"}, "id": "node/5604539241", "properties": {"@id": "node/5604539241", "bus": "yes", "highway": "bus_stop", "name": "367 Sant Pere", "network": "L6", "popup": "\u003cstrong\u003e367 Sant Pere\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L6\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/5604539241\u003c/span\u003e", "public_transport": "platform", "tip": "367 Sant Pere \u00b7 L6"}, "type": "Feature"}, {"geometry": {"coordinates": [1.523741, 42.5661227], "type": "Point"}, "id": "node/5604540162", "properties": {"@id": "node/5604540162", "bus": "yes", "highway": "bus_stop", "name": "324 C\u00e0mping Ansalonga", "network": "L6", "popup": "\u003cstrong\u003e324 C\u00e0mping Ansalonga\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L6\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/5604540162\u003c/span\u003e", "public_transport": "platform", "tip": "324 C\u00e0mping Ansalonga \u00b7 L6"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5183954, 42.5736869], "type": "Point"}, "id": "node/5604540163", "properties": {"@id": "node/5604540163", "bus": "yes", "highway": "bus_stop", "name": "342 Bordes del Riu", "network": "L6", "popup": "\u003cstrong\u003e342 Bordes del Riu\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L6\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/5604540163\u003c/span\u003e", "public_transport": "platform", "tip": "342 Bordes del Riu \u00b7 L6"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5190373, 42.5823352], "type": "Point"}, "id": "node/5604540164", "properties": {"@id": "node/5604540164", "bus": "yes", "highway": "bus_stop", "name": "348 Cru\u00eflla d\u0027Arans", "network": "L6", "popup": "\u003cstrong\u003e348 Cru\u00eflla d\u0026#x27;Arans\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L6\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/5604540164\u003c/span\u003e", "public_transport": "platform", "tip": "348 Cru\u00eflla d\u0027Arans \u00b7 L6"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5266718, 42.5961086], "type": "Point"}, "id": "node/5604540166", "properties": {"@id": "node/5604540166", "bus": "yes", "highway": "bus_stop", "name": "353 Llorts", "network": "L6", "popup": "\u003cstrong\u003e353 Llorts\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L6\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/5604540166\u003c/span\u003e", "public_transport": "platform", "tip": "353 Llorts \u00b7 L6"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5172262, 42.5773209], "type": "Point"}, "id": "node/5604540167", "properties": {"@id": "node/5604540167", "bus": "yes", "highway": "bus_stop", "name": "340 Fontblanca", "network": "L6", "popup": "\u003cstrong\u003e340 Fontblanca\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L6\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/5604540167\u003c/span\u003e", "public_transport": "platform", "tip": "340 Fontblanca \u00b7 L6"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5215616, 42.5686656], "type": "Point"}, "id": "node/5604540231", "properties": {"@id": "node/5604540231", "bus": "yes", "highway": "bus_stop", "name": "331 Pont d\u0027Ansalonga", "network": "L6", "popup": "\u003cstrong\u003e331 Pont d\u0026#x27;Ansalonga\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L6\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/5604540231\u003c/span\u003e", "public_transport": "platform", "tip": "331 Pont d\u0027Ansalonga \u00b7 L6"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5235364, 42.5493112], "type": "Point"}, "id": "node/7307264384", "properties": {"@id": "node/7307264384", "bus": "yes", "highway": "bus_stop", "name": "309 Pont d\u0027Ordino", "network": "L6", "popup": "\u003cstrong\u003e309 Pont d\u0026#x27;Ordino\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L6\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/7307264384\u003c/span\u003e", "public_transport": "platform", "tip": "309 Pont d\u0027Ordino \u00b7 L6"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5265083, 42.5508327], "type": "Point"}, "id": "node/7307457187", "properties": {"@id": "node/7307457187", "bus": "yes", "highway": "bus_stop", "name": "307 Grau Sobir\u00e0 / Cru\u00eflla de l\u0027Aldosa", "network": "L6", "popup": "\u003cstrong\u003e307 Grau Sobir\u00e0 / Cru\u00eflla de l\u0026#x27;Aldosa\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L6\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/7307457187\u003c/span\u003e", "public_transport": "platform", "tip": "307 Grau Sobir\u00e0 / Cru\u00eflla de l\u0027Aldosa \u00b7 L6"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5287667, 42.5540249], "type": "Point"}, "id": "node/7307457188", "properties": {"@id": "node/7307457188", "bus": "yes", "highway": "bus_stop", "name": "306 Clota Verda", "network": "L6", "popup": "\u003cstrong\u003e306 Clota Verda\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L6\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/7307457188\u003c/span\u003e", "public_transport": "platform", "tip": "306 Clota Verda \u00b7 L6"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5346649, 42.5567199], "type": "Point"}, "id": "node/7307457190", "properties": {"@id": "node/7307457190", "bus": "yes", "highway": "bus_stop", "name": "320 Portal del Riu", "network": "L6", "popup": "\u003cstrong\u003e320 Portal del Riu\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L6\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/7307457190\u003c/span\u003e", "public_transport": "platform", "tip": "320 Portal del Riu \u00b7 L6"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5325862, 42.5569155], "type": "Point"}, "id": "node/7307457191", "properties": {"@id": "node/7307457191", "bench": "yes", "bin": "yes", "bus": "yes", "highway": "bus_stop", "name": "327 El Raval", "network": "L6", "popup": "\u003cstrong\u003e327 El Raval\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L6\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/7307457191\u003c/span\u003e", "public_transport": "platform", "shelter": "yes", "tip": "327 El Raval \u00b7 L6"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5269804, 42.5634556], "type": "Point"}, "id": "node/7307457192", "properties": {"@id": "node/7307457192", "bus": "yes", "highway": "bus_stop", "name": "321 Cru\u00eflla de Sorn\u00e0s", "network": "L6", "popup": "\u003cstrong\u003e321 Cru\u00eflla de Sorn\u00e0s\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L6\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/7307457192\u003c/span\u003e", "public_transport": "platform", "tip": "321 Cru\u00eflla de Sorn\u00e0s \u00b7 L6"}, "type": "Feature"}, {"geometry": {"coordinates": [1.523838, 42.5661743], "type": "Point"}, "id": "node/7308771127", "properties": {"@id": "node/7308771127", "bus": "yes", "highway": "bus_stop", "name": "323 C\u00e0mping Ansalonga", "network": "L6", "popup": "\u003cstrong\u003e323 C\u00e0mping Ansalonga\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L6\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/7308771127\u003c/span\u003e", "public_transport": "platform", "tip": "323 C\u00e0mping Ansalonga \u00b7 L6"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5213329, 42.5686929], "type": "Point"}, "id": "node/7308771128", "properties": {"@id": "node/7308771128", "bus": "yes", "highway": "bus_stop", "name": "332 Pont d\u0027Ansalonga", "network": "L6", "popup": "\u003cstrong\u003e332 Pont d\u0026#x27;Ansalonga\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L6\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/7308771128\u003c/span\u003e", "public_transport": "platform", "tip": "332 Pont d\u0027Ansalonga \u00b7 L6"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5188572, 42.5729181], "type": "Point"}, "id": "node/7308771129", "properties": {"@id": "node/7308771129", "bus": "yes", "highway": "bus_stop", "name": "341 Bordes del Riu", "network": "L6", "popup": "\u003cstrong\u003e341 Bordes del Riu\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L6\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/7308771129\u003c/span\u003e", "public_transport": "platform", "tip": "341 Bordes del Riu \u00b7 L6"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5179769, 42.5751896], "type": "Point"}, "id": "node/7308771130", "properties": {"@id": "node/7308771130", "bus": "yes", "highway": "bus_stop", "name": "344 La Cortinada", "network": "L6", "popup": "\u003cstrong\u003e344 La Cortinada\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L6\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/7308771130\u003c/span\u003e", "public_transport": "platform", "tip": "344 La Cortinada \u00b7 L6"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5190999, 42.5801409], "type": "Point"}, "id": "node/7308771131", "properties": {"@id": "node/7308771131", "bus": "yes", "highway": "bus_stop", "name": "373 Hotel Cal Daina", "network": "L6", "popup": "\u003cstrong\u003e373 Hotel Cal Daina\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L6\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/7308771131\u003c/span\u003e", "public_transport": "platform", "tip": "373 Hotel Cal Daina \u00b7 L6"}, "type": "Feature"}, {"geometry": {"coordinates": [1.519226, 42.5826017], "type": "Point"}, "id": "node/7308771132", "properties": {"@id": "node/7308771132", "bus": "yes", "highway": "bus_stop", "name": "347 Cru\u00eflla d\u0027Arans", "network": "L6", "popup": "\u003cstrong\u003e347 Cru\u00eflla d\u0026#x27;Arans\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L6\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/7308771132\u003c/span\u003e", "public_transport": "platform", "tip": "347 Cru\u00eflla d\u0027Arans \u00b7 L6"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5204062, 42.5846318], "type": "Point"}, "id": "node/7308771133", "properties": {"@id": "node/7308771133", "bus": "yes", "highway": "bus_stop", "name": "349 Bordes d\u0027Arans", "network": "L6", "popup": "\u003cstrong\u003e349 Bordes d\u0026#x27;Arans\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L6\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/7308771133\u003c/span\u003e", "public_transport": "platform", "tip": "349 Bordes d\u0027Arans \u00b7 L6"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5202506, 42.5846042], "type": "Point"}, "id": "node/7308771134", "properties": {"@id": "node/7308771134", "bus": "yes", "highway": "bus_stop", "name": "350 Bordes d\u0027Arans", "network": "L6", "popup": "\u003cstrong\u003e350 Bordes d\u0026#x27;Arans\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L6\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/7308771134\u003c/span\u003e", "public_transport": "platform", "tip": "350 Bordes d\u0027Arans \u00b7 L6"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5256794, 42.5937151], "type": "Point"}, "id": "node/7308771135", "properties": {"@id": "node/7308771135", "bus": "yes", "highway": "bus_stop", "name": "352 Vilar\u00f3", "network": "L6", "popup": "\u003cstrong\u003e352 Vilar\u00f3\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L6\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/7308771135\u003c/span\u003e", "public_transport": "platform", "tip": "352 Vilar\u00f3 \u00b7 L6"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5255828, 42.5932531], "type": "Point"}, "id": "node/7308771136", "properties": {"@id": "node/7308771136", "bus": "yes", "highway": "bus_stop", "name": "351 Vilar\u00f3", "network": "L6", "popup": "\u003cstrong\u003e351 Vilar\u00f3\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L6\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/7308771136\u003c/span\u003e", "public_transport": "platform", "tip": "351 Vilar\u00f3 \u00b7 L6"}, "type": "Feature"}, {"geometry": {"coordinates": [1.526554, 42.5961435], "type": "Point"}, "id": "node/7308771138", "properties": {"@id": "node/7308771138", "bus": "yes", "highway": "bus_stop", "name": "354 Llorts", "network": "L6", "popup": "\u003cstrong\u003e354 Llorts\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L6\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/7308771138\u003c/span\u003e", "public_transport": "platform", "tip": "354 Llorts \u00b7 L6"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5293942, 42.5984563], "type": "Point"}, "id": "node/7308771139", "properties": {"@id": "node/7308771139", "bus": "yes", "highway": "bus_stop", "name": "356 Xalets de la Closa", "network": "L6", "popup": "\u003cstrong\u003e356 Xalets de la Closa\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L6\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/7308771139\u003c/span\u003e", "public_transport": "platform", "tip": "356 Xalets de la Closa \u00b7 L6"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5320684, 42.5998048], "type": "Point"}, "id": "node/7308771140", "properties": {"@id": "node/7308771140", "bus": "yes", "highway": "bus_stop", "name": "372 Les Mines de Llorts", "network": "L6", "popup": "\u003cstrong\u003e372 Les Mines de Llorts\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L6\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/7308771140\u003c/span\u003e", "public_transport": "platform", "tip": "372 Les Mines de Llorts \u00b7 L6"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5360336, 42.604718], "type": "Point"}, "id": "node/7308771141", "properties": {"@id": "node/7308771141", "bus": "yes", "highway": "bus_stop", "name": "375 Els Teiers", "network": "L6", "popup": "\u003cstrong\u003e375 Els Teiers\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L6\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/7308771141\u003c/span\u003e", "public_transport": "platform", "tip": "375 Els Teiers \u00b7 L6"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5388061, 42.6106518], "type": "Point"}, "id": "node/7308771142", "properties": {"@id": "node/7308771142", "bus": "yes", "highway": "bus_stop", "name": "357 Les Salines", "network": "L6", "popup": "\u003cstrong\u003e357 Les Salines\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L6\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/7308771142\u003c/span\u003e", "public_transport": "platform", "tip": "357 Les Salines \u00b7 L6"}, "type": "Feature"}, {"geometry": {"coordinates": [1.538503, 42.6160472], "type": "Point"}, "id": "node/7308771143", "properties": {"@id": "node/7308771143", "bus": "yes", "highway": "bus_stop", "name": "363 Hostal del Serrat", "network": "L6", "popup": "\u003cstrong\u003e363 Hostal del Serrat\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L6\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/7308771143\u003c/span\u003e", "public_transport": "platform", "tip": "363 Hostal del Serrat \u00b7 L6"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5389402, 42.6185954], "type": "Point"}, "id": "node/7308771144", "properties": {"@id": "node/7308771144", "bus": "yes", "highway": "bus_stop", "name": "368 Sant Pere", "network": "L6", "popup": "\u003cstrong\u003e368 Sant Pere\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L6\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/7308771144\u003c/span\u003e", "public_transport": "platform", "tip": "368 Sant Pere \u00b7 L6"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5399943, 42.6200461], "type": "Point"}, "id": "node/7308771145", "properties": {"@id": "node/7308771145", "bus": "yes", "highway": "bus_stop", "name": "370 Les Sobiranes", "network": "L6", "popup": "\u003cstrong\u003e370 Les Sobiranes\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L6\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/7308771145\u003c/span\u003e", "public_transport": "platform", "tip": "370 Les Sobiranes \u00b7 L6"}, "type": "Feature"}, {"geometry": {"coordinates": [1.499847, 42.63205], "type": "Point"}, "id": "node/7308771146", "properties": {"@id": "node/7308771146", "bus": "yes", "highway": "bus_stop", "name": "396 Arcal\u00eds", "network": "L6", "popup": "\u003cstrong\u003e396 Arcal\u00eds\u003c/strong\u003e\u003cbr\u003e\u003cspan class=\u0027muted\u0027\u003eLine\u003c/span\u003e L6\u003cbr\u003e\u003cspan class=\u0027muted small\u0027\u003enode/7308771146\u003c/span\u003e", "public_transport": "platform", "tip": "396 Arcal\u00eds \u00b7 L6"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5282516, 42.5532552], "type": "Point"}, "id": "node/10914321083", "properties": {"@id": "node/10914321083", "bus": "yes", "highway": "bus_stop", "popup": "\u003cspan class=\u0027muted small\u0027\u003enode/10914321083\u003c/span\u003e", "public_transport": "stop_position", "tip": "node/10914321083"}, "type": "Feature"}, {"geometry": {"coordinates": [1.5261716, 42.5505551], "type": "Point"}, "id": "node/10914321084", "properties": {"@id": "node/10914321084", "bus": "yes", "highway": "bus_stop", "popup": "\u003cspan class=\u0027muted small\u0027\u003enode/10914321084\u003c/span\u003e", "public_transport": "stop_position", "tip": "node/10914321084"}, "type": "Feature"}], "generator": "overpass-turbo", "timestamp": "2026-04-14T22:57:42Z", "type": "FeatureCollection"});
+
+        
+    
+    geo_json_e49a67f91829fd0550415ee7f4b17aa3.bindTooltip(
+    function(layer){
+    let div = L.DomUtil.create('div');
+    
+    let handleObject = feature => {
+        if (feature === null) {
+            return '';
+        } else if (typeof(feature)=='object') {
+            return JSON.stringify(feature);
+        } else {
+            return feature;
+        }
+    }
+    let fields = ["tip"];
+    let aliases = [""];
+    let table = '<table>' +
+        String(
+        fields.map(
+        (v,i)=>
+        `<tr>
+            <th>${aliases[i]}</th>
+            
+            <td>${handleObject(layer.feature.properties[v])}</td>
+        </tr>`).join(''))
+    +'</table>';
+    div.innerHTML=table;
+    
+    return div
+    }
+    ,{
+  "sticky": true,
+  "className": "foliumtooltip",
+});
+                     
+    
+    geo_json_e49a67f91829fd0550415ee7f4b17aa3.bindPopup(
+    function(layer){
+    let div = L.DomUtil.create('div');
+    
+    let handleObject = feature => {
+        if (feature === null) {
+            return '';
+        } else if (typeof(feature)=='object') {
+            return JSON.stringify(feature);
+        } else {
+            return feature;
+        }
+    }
+    let fields = ["popup"];
+    let aliases = [""];
+    let table = '<table>' +
+        String(
+        fields.map(
+        (v,i)=>
+        `<tr>
+            <th>${aliases[i].toLocaleString()}</th>
+            
+            <td>${handleObject(layer.feature.properties[v]).toLocaleString()}</td>
+        </tr>`).join(''))
+    +'</table>';
+    div.innerHTML=table;
+    
+    return div
+    }
+    ,{
+  "parseHtml": true,
+  "className": "foliumpopup",
+});
+                     
+    
+            geo_json_e49a67f91829fd0550415ee7f4b17aa3.addTo(feature_group_d7fa4aeee0c4ec451a7ba853ae4ea1dc);
+        
+    
+            feature_group_d7fa4aeee0c4ec451a7ba853ae4ea1dc.addTo(map_a00a7e52e25eeb1402401536e29e49bd);
+        
+    
+            map_a00a7e52e25eeb1402401536e29e49bd.fitBounds(
+                [[42.4845953, 1.4915027], [42.63205, 1.5402552]],
+                {"padding": [32, 32]}
+            );
+        
+    
+            var layer_control_3538bbc205fcc0db04f551aceebb52dd_layers = {
+                base_layers : {
+                    "Basemap" : tile_layer_2655d3611c8ae2dea633d9ca24ce5e54,
+                },
+                overlays :  {
+                    "Andorra la Vella" : feature_group_92159fc88cd971c2e735f5b7c3902e29,
+                    "Ordino" : feature_group_d7fa4aeee0c4ec451a7ba853ae4ea1dc,
+                },
+            };
+            let layer_control_3538bbc205fcc0db04f551aceebb52dd = L.control.layers(
+                layer_control_3538bbc205fcc0db04f551aceebb52dd_layers.base_layers,
+                layer_control_3538bbc205fcc0db04f551aceebb52dd_layers.overlays,
+                {
+  "position": "topright",
+  "collapsed": false,
+  "autoZIndex": true,
+}
+            ).addTo(map_a00a7e52e25eeb1402401536e29e49bd);
+
+        
+</script>
+</html>

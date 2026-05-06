@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 940c0c849b442a040866ea74db17a4a7, type: 3}
+  m_Name: Refuges
+  m_EditorClassIdentifier: 
+  asset: {fileID: 4900000, guid: 8c2dc80f24d637343a9a6e98f88b0b95, type: 3}
+  data:
+  - coord: {x: 27.679749, y: 10.028938, z: 82.11831}
+  - coord: {x: 21.091585, y: 9.433487, z: 84.06776}
+  - coord: {x: 57.10813, y: 9.21962, z: 107.00958}
+  - coord: {x: 53.27563, y: 9.321823, z: 90.367546}
+  - coord: {x: 53.187664, y: 10.080542, z: 26.836927}
+  - coord: {x: 8.851925, y: 8.680519, z: 32.507687}
+  - coord: {x: 47.997726, y: 9.810602, z: 4.6695914}
+  - coord: {x: 58.061974, y: 10.29884, z: 22.713255}
+  - coord: {x: 58.141323, y: 9.130569, z: 98.22009}
+  - coord: {x: 33.81317, y: 10.181145, z: 90.9588}
+  - coord: {x: 84.82755, y: 10.001434, z: 96.153534}
+  - coord: {x: 69.001724, y: 8.830296, z: 33.58441}
+  - coord: {x: 75.68212, y: 9.846024, z: 84.85736}
+  - coord: {x: 85.52935, y: 9.5383, z: 70.13265}
+  - coord: {x: 74.15523, y: 10.102119, z: 42.999153}
+  - coord: {x: 85.99522, y: 10.868027, z: 45.930874}
+  - coord: {x: 63.186832, y: 9.981125, z: 27.454628}
+  - coord: {x: 85.18474, y: 10.177959, z: 30.095442}
+  - coord: {x: 99.15761, y: 9.784813, z: 64.06521}
+  - coord: {x: 96.82556, y: 10.325745, z: 92.708015}
+  - coord: {x: 114.05251, y: 10.201462, z: 73.160706}
+  - coord: {x: 99.80468, y: 10.894096, z: 37.101715}
+  - coord: {x: 91.13976, y: 11.057259, z: 35.025715}
+  - coord: {x: 108.85218, y: 9.787834, z: 84.48334}
+  - coord: {x: 112.33645, y: 10.385651, z: 90.67168}
+  - coord: {x: 17.104635, y: 10.213646, z: 76.63079}
+  nameSpaces:
+  - prefix: gpx
+    uri: http://www.topografix.com/GPX/1/1
+  nodeList: //gpx:wpt
+  refugeSprite: {fileID: 21300000, guid: 18d0f5b4bed60a341ad10e83306452de, type: 3}
+  guardedColor: {r: 0.7019608, g: 0.1764706, b: 0, a: 1}
+  notGuardedColor: {r: 1, g: 0.8, b: 0, a: 1}

@@ -1,0 +1,87 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d33017ab78021b2479d332445a6f57a7, type: 3}
+  m_Name: CoronaLlacsStep 1
+  m_EditorClassIdentifier: 
+  showStepEditor: 0
+  toShow: 1
+  cleanPrevious: 0
+  isLayer: 1
+  baseMaterial: {fileID: 2100000, guid: 65bf588059734e747897e83417def51e, type: 2}
+  layerMaterial:
+  - {fileID: 2100000, guid: 650d7040b7f3c35438998d7441fc06f4, type: 2}
+  layerOpacity: 1
+  isPaint: 1
+  paints:
+  - rid: 8504607704203132960
+  - rid: 2966505702140674048
+  - rid: 2966505702140674060
+  isRightLeftText: 1
+  textKey: coronallacs
+  sprite: {fileID: 21300000, guid: 9d3e74c2171368b4c87ba47ae3a27ca1, type: 3}
+  hasAnim: 0
+  anim:
+    material: {fileID: 0}
+    startValue: 0
+    targetValue: 0
+    speed: 0
+    shaderProperty: 
+    isLoop: 0
+    isSnow: 0
+  displayTime: 4.8
+  references:
+    version: 2
+    RefIds:
+    - rid: 2966505702140674048
+      type: {class: PaintLine, ns: , asm: Assembly-CSharp}
+      data:
+        showPaintEditor: 0
+        drawingTime: 
+        dataToPaint: {fileID: 11400000, guid: 5ea771ce1c2cce74dbf21fe348440518, type: 2}
+        isForced: 1
+        speed: 0.02
+        size: 0.5
+        color: {r: 0.7019608, g: 0.8509804, b: 1, a: 1}
+        sortingOrder: 1
+        showStartEndPoints: 0
+        startEndPointPrefab: {fileID: 2244081768409015255, guid: a023db164f21eed4093eda6506c6d64f,
+          type: 3}
+        lineRendererPrefab: {fileID: 2516382553468909753, guid: 675dddd746cfaa540984b6b710abf7d3,
+          type: 3}
+    - rid: 2966505702140674060
+      type: {class: PaintDots, ns: , asm: Assembly-CSharp}
+      data:
+        showPaintEditor: 0
+        drawingTime: 
+        dataToPaint: {fileID: 11400000, guid: 193cdbaad4c397149a98b9b4e96824d5, type: 2}
+        isForced: 1
+        speed: 0.02
+        size: 2.5
+        color: {r: 0, g: 0, b: 0, a: 0}
+        sortingOrder: 1
+        sprite: {fileID: 21300000, guid: 18d0f5b4bed60a341ad10e83306452de, type: 3}
+    - rid: 8504607704203132960
+      type: {class: PaintLine, ns: , asm: Assembly-CSharp}
+      data:
+        showPaintEditor: 0
+        drawingTime: 4,68
+        dataToPaint: {fileID: 11400000, guid: 90105c5b959a00846a8bd8a672ddaed2, type: 2}
+        isForced: 0
+        speed: 0.02
+        size: 0.5
+        color: {r: 0, g: 0.34901962, b: 0.7019608, a: 1}
+        sortingOrder: 1
+        showStartEndPoints: 0
+        startEndPointPrefab: {fileID: 2244081768409015255, guid: a023db164f21eed4093eda6506c6d64f,
+          type: 3}
+        lineRendererPrefab: {fileID: 2516382553468909753, guid: 675dddd746cfaa540984b6b710abf7d3,
+          type: 3}

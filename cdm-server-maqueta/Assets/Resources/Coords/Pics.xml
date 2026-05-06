@@ -1,0 +1,2654 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ogr:FeatureCollection
+     gml:id="aFeatureCollection"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://ogr.maptools.org/ q.xsd"
+     xmlns:ogr="http://ogr.maptools.org/"
+     xmlns:gml="http://www.opengis.net/gml/3.2">
+	<gml:boundedBy>
+		<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+			<gml:lowerCorner>42.4345873481685 1.41357993341654</gml:lowerCorner>
+			<gml:upperCorner>42.6558121763881 1.78116416900562</gml:upperCorner>
+		</gml:Envelope>
+	</gml:boundedBy>
+
+	<ogr:featureMember>
+		<ogr:q gml:id="a.0">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.5353460500337 1.41357993341654</gml:lowerCorner>
+					<gml:upperCorner>42.5353460500337 1.41357993341654</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.0">
+					<gml:pos>42.5353460500337 1.41357993341654</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>1</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>1</ogr:PICS_>
+			<ogr:PICS_ID>1</ogr:PICS_ID>
+			<ogr:NOM>76</ogr:NOM>
+			<ogr:ALCADA>2696</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de la Coma Pedrosa</ogr:REFUGIS>
+			<ogr:POLYGONID>1</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>76</ogr:OID_>
+			<ogr:CODI_N>76</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic dels Llacs</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.1">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.541764065268 1.41618863375832</gml:lowerCorner>
+					<gml:upperCorner>42.541764065268 1.41618863375832</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.1">
+					<gml:pos>42.541764065268 1.41618863375832</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>2</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>2</ogr:PICS_>
+			<ogr:PICS_ID>2</ogr:PICS_ID>
+			<ogr:NOM>43</ogr:NOM>
+			<ogr:ALCADA>2522</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de la Coma Pedrosa</ogr:REFUGIS>
+			<ogr:POLYGONID>2</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>43</ogr:OID_>
+			<ogr:CODI_N>43</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic de Setúria</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.2">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.5876421476655 1.42811275572287</gml:lowerCorner>
+					<gml:upperCorner>42.5876421476655 1.42811275572287</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.2">
+					<gml:pos>42.5876421476655 1.42811275572287</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>3</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>3</ogr:PICS_>
+			<ogr:PICS_ID>3</ogr:PICS_ID>
+			<ogr:NOM>42</ogr:NOM>
+			<ogr:ALCADA>2887</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de la Coma Pedrosa</ogr:REFUGIS>
+			<ogr:POLYGONID>3</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>42</ogr:OID_>
+			<ogr:CODI_N>42</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic de Sanfons</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.3">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.4824403974007 1.43130871920373</gml:lowerCorner>
+					<gml:upperCorner>42.4824403974007 1.43130871920373</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.3">
+					<gml:pos>42.4824403974007 1.43130871920373</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>4</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>4</ogr:PICS_>
+			<ogr:PICS_ID>4</ogr:PICS_ID>
+			<ogr:NOM>4</ogr:NOM>
+			<ogr:ALCADA>2207</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de Francolí</ogr:REFUGIS>
+			<ogr:POLYGONID>4</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>4</ogr:OID_>
+			<ogr:CODI_N>4</ogr:CODI_N>
+			<ogr:NOM_PICS>Bony dels Llorers</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.4">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.463597617347 1.44066132469888</gml:lowerCorner>
+					<gml:upperCorner>42.463597617347 1.44066132469888</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.4">
+					<gml:pos>42.463597617347 1.44066132469888</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>5</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>5</ogr:PICS_>
+			<ogr:PICS_ID>5</ogr:PICS_ID>
+			<ogr:NOM>1</ogr:NOM>
+			<ogr:ALCADA>2048</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de Francolí</ogr:REFUGIS>
+			<ogr:POLYGONID>5</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>1</ogr:OID_>
+			<ogr:CODI_N>1</ogr:CODI_N>
+			<ogr:NOM_PICS>Bony de la Costa l'Arn</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.5">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.6037486336879 1.44196862463208</gml:lowerCorner>
+					<gml:upperCorner>42.6037486336879 1.44196862463208</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.5">
+					<gml:pos>42.6037486336879 1.44196862463208</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>6</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>6</ogr:PICS_>
+			<ogr:PICS_ID>6</ogr:PICS_ID>
+			<ogr:NOM>33</ogr:NOM>
+			<ogr:ALCADA>2913</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi del Pla de l'Estany</ogr:REFUGIS>
+			<ogr:POLYGONID>6</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>33</ogr:OID_>
+			<ogr:CODI_N>33</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic de Medecorba</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.6">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.5984250831752 1.44219730072541</gml:lowerCorner>
+					<gml:upperCorner>42.5984250831752 1.44219730072541</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.6">
+					<gml:pos>42.5984250831752 1.44219730072541</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>7</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>7</ogr:PICS_>
+			<ogr:PICS_ID>7</ogr:PICS_ID>
+			<ogr:NOM>83</ogr:NOM>
+			<ogr:ALCADA>2927</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi del Pla de l'Estany</ogr:REFUGIS>
+			<ogr:POLYGONID>7</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>83</ogr:OID_>
+			<ogr:CODI_N>83</ogr:CODI_N>
+			<ogr:NOM_PICS>Roca Entravessada</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.7">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.5718954905424 1.44346865823341</gml:lowerCorner>
+					<gml:upperCorner>42.5718954905424 1.44346865823341</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.7">
+					<gml:pos>42.5718954905424 1.44346865823341</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>8</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>8</ogr:PICS_>
+			<ogr:PICS_ID>8</ogr:PICS_ID>
+			<ogr:NOM>68</ogr:NOM>
+			<ogr:ALCADA>2653</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de la Coma Pedrosa</ogr:REFUGIS>
+			<ogr:POLYGONID>8</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>68</ogr:OID_>
+			<ogr:CODI_N>68</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic del Port Vell</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.8">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.5917764263512 1.44366765180799</gml:lowerCorner>
+					<gml:upperCorner>42.5917764263512 1.44366765180799</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.8">
+					<gml:pos>42.5917764263512 1.44366765180799</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>9</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>9</ogr:PICS_>
+			<ogr:PICS_ID>9</ogr:PICS_ID>
+			<ogr:NOM>29</ogr:NOM>
+			<ogr:ALCADA>2942</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de la Coma Pedrosa; Refugi del Pla de l'Estany</ogr:REFUGIS>
+			<ogr:POLYGONID>9</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>29</ogr:OID_>
+			<ogr:CODI_N>29</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic de Coma Pedrosa</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.9">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.5671965375344 1.44413437724036</gml:lowerCorner>
+					<gml:upperCorner>42.5671965375344 1.44413437724036</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.9">
+					<gml:pos>42.5671965375344 1.44413437724036</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>10</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>10</ogr:PICS_>
+			<ogr:PICS_ID>10</ogr:PICS_ID>
+			<ogr:NOM>37</ogr:NOM>
+			<ogr:ALCADA>2569</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de la Coma Pedrosa</ogr:REFUGIS>
+			<ogr:POLYGONID>10</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>37</ogr:OID_>
+			<ogr:CODI_N>37</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic de Port Negre</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.10">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.4481043859795 1.45319100219814</gml:lowerCorner>
+					<gml:upperCorner>42.4481043859795 1.45319100219814</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.10">
+					<gml:pos>42.4481043859795 1.45319100219814</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>11</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>11</ogr:PICS_>
+			<ogr:PICS_ID>11</ogr:PICS_ID>
+			<ogr:NOM>64</ogr:NOM>
+			<ogr:ALCADA>1763</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de Francolí</ogr:REFUGIS>
+			<ogr:POLYGONID>11</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>64</ogr:OID_>
+			<ogr:CODI_N>64</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic del Cussol</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.11">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.6025957829927 1.45162290346784</gml:lowerCorner>
+					<gml:upperCorner>42.6025957829927 1.45162290346784</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.11">
+					<gml:pos>42.6025957829927 1.45162290346784</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>12</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>12</ogr:PICS_>
+			<ogr:PICS_ID>12</ogr:PICS_ID>
+			<ogr:NOM>38</ogr:NOM>
+			<ogr:ALCADA>2837</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi del Pla de l'Estany</ogr:REFUGIS>
+			<ogr:POLYGONID>12</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>38</ogr:OID_>
+			<ogr:CODI_N>38</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic de Racofret</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.12">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.5739301907152 1.45254785161806</gml:lowerCorner>
+					<gml:upperCorner>42.5739301907152 1.45254785161806</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.12">
+					<gml:pos>42.5739301907152 1.45254785161806</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>13</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>13</ogr:PICS_>
+			<ogr:PICS_ID>13</ogr:PICS_ID>
+			<ogr:NOM>74</ogr:NOM>
+			<ogr:ALCADA>2562</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de la Coma Pedrosa</ogr:REFUGIS>
+			<ogr:POLYGONID>13</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>74</ogr:OID_>
+			<ogr:CODI_N>74</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic dels Aspres</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.13">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.5264653962208 1.45530658880693</gml:lowerCorner>
+					<gml:upperCorner>42.5264653962208 1.45530658880693</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.13">
+					<gml:pos>42.5264653962208 1.45530658880693</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>14</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>14</ogr:PICS_>
+			<ogr:PICS_ID>14</ogr:PICS_ID>
+			<ogr:NOM>63</ogr:NOM>
+			<ogr:ALCADA>2356</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de la Coma Pedrosa</ogr:REFUGIS>
+			<ogr:POLYGONID>14</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>63</ogr:OID_>
+			<ogr:CODI_N>63</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic del Cubil</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.14">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.4642880102849 1.45948492583588</gml:lowerCorner>
+					<gml:upperCorner>42.4642880102849 1.45948492583588</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.14">
+					<gml:pos>42.4642880102849 1.45948492583588</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>15</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>15</ogr:PICS_>
+			<ogr:PICS_ID>15</ogr:PICS_ID>
+			<ogr:NOM>82</ogr:NOM>
+			<ogr:ALCADA>1942</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de Francolí</ogr:REFUGIS>
+			<ogr:POLYGONID>15</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>82</ogr:OID_>
+			<ogr:CODI_N>82</ogr:CODI_N>
+			<ogr:NOM_PICS>Roc del Castell</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.15">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.504519979611 1.46031176963044</gml:lowerCorner>
+					<gml:upperCorner>42.504519979611 1.46031176963044</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.15">
+					<gml:pos>42.504519979611 1.46031176963044</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>16</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>16</ogr:PICS_>
+			<ogr:PICS_ID>16</ogr:PICS_ID>
+			<ogr:NOM>2</ogr:NOM>
+			<ogr:ALCADA>2402</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de Francolí</ogr:REFUGIS>
+			<ogr:POLYGONID>16</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>2</ogr:OID_>
+			<ogr:CODI_N>2</ogr:CODI_N>
+			<ogr:NOM_PICS>Bony de la Pica</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.16">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.6067928178365 1.46411990063355</gml:lowerCorner>
+					<gml:upperCorner>42.6067928178365 1.46411990063355</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.16">
+					<gml:pos>42.6067928178365 1.46411990063355</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>17</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>17</ogr:PICS_>
+			<ogr:PICS_ID>17</ogr:PICS_ID>
+			<ogr:NOM>66</ogr:NOM>
+			<ogr:ALCADA>2859</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi del Pla de l'Estany</ogr:REFUGIS>
+			<ogr:POLYGONID>17</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>66</ogr:OID_>
+			<ogr:CODI_N>66</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic del Pla de l'Estany</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.17">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.5100019319059 1.46842398081058</gml:lowerCorner>
+					<gml:upperCorner>42.5100019319059 1.46842398081058</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.17">
+					<gml:pos>42.5100019319059 1.46842398081058</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>18</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>18</ogr:PICS_>
+			<ogr:PICS_ID>18</ogr:PICS_ID>
+			<ogr:NOM>15</ogr:NOM>
+			<ogr:ALCADA>2383</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de Francolí</ogr:REFUGIS>
+			<ogr:POLYGONID>18</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>15</ogr:OID_>
+			<ogr:CODI_N>15</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic d'Enclar</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.18">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.6308819707216 1.46809372741147</gml:lowerCorner>
+					<gml:upperCorner>42.6308819707216 1.46809372741147</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.18">
+					<gml:pos>42.6308819707216 1.46809372741147</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>19</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>19</ogr:PICS_>
+			<ogr:PICS_ID>19</ogr:PICS_ID>
+			<ogr:NOM>22</ogr:NOM>
+			<ogr:ALCADA>2729</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de l'Angonella</ogr:REFUGIS>
+			<ogr:POLYGONID>19</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>22</ogr:OID_>
+			<ogr:CODI_N>22</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic de Cabanyó</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.19">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.6354340848976 1.46997038814995</gml:lowerCorner>
+					<gml:upperCorner>42.6354340848976 1.46997038814995</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.19">
+					<gml:pos>42.6354340848976 1.46997038814995</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>20</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>20</ogr:PICS_>
+			<ogr:PICS_ID>20</ogr:PICS_ID>
+			<ogr:NOM>23</ogr:NOM>
+			<ogr:ALCADA>2679</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de l'Angonella</ogr:REFUGIS>
+			<ogr:POLYGONID>20</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>23</ogr:OID_>
+			<ogr:CODI_N>23</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic de Caraussans</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.20">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.6149213687792 1.47734688360299</gml:lowerCorner>
+					<gml:upperCorner>42.6149213687792 1.47734688360299</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.20">
+					<gml:pos>42.6149213687792 1.47734688360299</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>21</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>21</ogr:PICS_>
+			<ogr:PICS_ID>21</ogr:PICS_ID>
+			<ogr:NOM>27</ogr:NOM>
+			<ogr:ALCADA>2806</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de l'Angonella</ogr:REFUGIS>
+			<ogr:POLYGONID>21</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>27</ogr:OID_>
+			<ogr:CODI_N>27</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic de Cataperdís</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.21">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.6011204159662 1.47812696981142</gml:lowerCorner>
+					<gml:upperCorner>42.6011204159662 1.47812696981142</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.21">
+					<gml:pos>42.6011204159662 1.47812696981142</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>22</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>22</ogr:PICS_>
+			<ogr:PICS_ID>22</ogr:PICS_ID>
+			<ogr:NOM>61</ogr:NOM>
+			<ogr:ALCADA>2749</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de l'Angonella; Refugi de les Fonts; Refugi del Pla de l'Estany</ogr:REFUGIS>
+			<ogr:POLYGONID>22</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>61</ogr:OID_>
+			<ogr:CODI_N>61</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic de les Fonts</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.22">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.6159512872129 1.4907656729908</gml:lowerCorner>
+					<gml:upperCorner>42.6159512872129 1.4907656729908</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.22">
+					<gml:pos>42.6159512872129 1.4907656729908</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>23</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>23</ogr:PICS_>
+			<ogr:PICS_ID>23</ogr:PICS_ID>
+			<ogr:NOM>13</ogr:NOM>
+			<ogr:ALCADA>2776</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de l'Angonella</ogr:REFUGIS>
+			<ogr:POLYGONID>23</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>13</ogr:OID_>
+			<ogr:CODI_N>13</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic d'Arcalís</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.23">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.5143975989604 1.49380031882911</gml:lowerCorner>
+					<gml:upperCorner>42.5143975989604 1.49380031882911</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.23">
+					<gml:pos>42.5143975989604 1.49380031882911</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>24</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>24</ogr:PICS_>
+			<ogr:PICS_ID>24</ogr:PICS_ID>
+			<ogr:NOM>24</ogr:NOM>
+			<ogr:ALCADA>2335</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de Francolí</ogr:REFUGIS>
+			<ogr:POLYGONID>24</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>24</ogr:OID_>
+			<ogr:CODI_N>24</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic de Carroi</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.24">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.6534064316303 1.49372025100165</gml:lowerCorner>
+					<gml:upperCorner>42.6534064316303 1.49372025100165</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.24">
+					<gml:pos>42.6534064316303 1.49372025100165</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>25</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>25</ogr:PICS_>
+			<ogr:PICS_ID>25</ogr:PICS_ID>
+			<ogr:NOM>45</ogr:NOM>
+			<ogr:ALCADA>2876</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de l'Angonella</ogr:REFUGIS>
+			<ogr:POLYGONID>25</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>45</ogr:OID_>
+			<ogr:CODI_N>45</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic de Tristaina</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.25">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.645640471245 1.49960419826907</gml:lowerCorner>
+					<gml:upperCorner>42.645640471245 1.49960419826907</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.25">
+					<gml:pos>42.645640471245 1.49960419826907</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>26</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>26</ogr:PICS_>
+			<ogr:PICS_ID>26</ogr:PICS_ID>
+			<ogr:NOM>46</ogr:NOM>
+			<ogr:ALCADA>2763</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de l'Angonella; Refugi de Rialb</ogr:REFUGIS>
+			<ogr:POLYGONID>26</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>46</ogr:OID_>
+			<ogr:CODI_N>46</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic de l'Arbella</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.26">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.4799704414841 1.50561348924561</gml:lowerCorner>
+					<gml:upperCorner>42.4799704414841 1.50561348924561</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.26">
+					<gml:pos>42.4799704414841 1.50561348924561</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>27</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>27</ogr:PICS_>
+			<ogr:PICS_ID>27</ogr:PICS_ID>
+			<ogr:NOM>8</ogr:NOM>
+			<ogr:ALCADA>1667</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de Prat Primer</ogr:REFUGIS>
+			<ogr:POLYGONID>27</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>8</ogr:OID_>
+			<ogr:CODI_N>8</ogr:CODI_N>
+			<ogr:NOM_PICS>L'Asparró</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.27">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.5689211876939 1.50510414741153</gml:lowerCorner>
+					<gml:upperCorner>42.5689211876939 1.50510414741153</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.27">
+					<gml:pos>42.5689211876939 1.50510414741153</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>28</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>28</ogr:PICS_>
+			<ogr:PICS_ID>28</ogr:PICS_ID>
+			<ogr:NOM>73</ogr:NOM>
+			<ogr:ALCADA>1982</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de les Fonts</ogr:REFUGIS>
+			<ogr:POLYGONID>28</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>73</ogr:OID_>
+			<ogr:CODI_N>73</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic del Solà d'Erts</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.28">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.645226869411 1.50662189361154</gml:lowerCorner>
+					<gml:upperCorner>42.645226869411 1.50662189361154</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.28">
+					<gml:pos>42.645226869411 1.50662189361154</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>29</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>29</ogr:PICS_>
+			<ogr:PICS_ID>29</ogr:PICS_ID>
+			<ogr:NOM>62</ogr:NOM>
+			<ogr:ALCADA>2787</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de l'Angonella; Refugi de Rialb</ogr:REFUGIS>
+			<ogr:POLYGONID>29</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>62</ogr:OID_>
+			<ogr:CODI_N>62</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic de les Planes</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.29">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.6192302767046 1.50908161338106</gml:lowerCorner>
+					<gml:upperCorner>42.6192302767046 1.50908161338106</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.29">
+					<gml:pos>42.6192302767046 1.50908161338106</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>30</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>30</ogr:PICS_>
+			<ogr:PICS_ID>30</ogr:PICS_ID>
+			<ogr:NOM>49</ogr:NOM>
+			<ogr:ALCADA>2562</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de l'Angonella</ogr:REFUGIS>
+			<ogr:POLYGONID>30</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>49</ogr:OID_>
+			<ogr:CODI_N>49</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic de l'Hortell</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.30">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.6454186741356 1.51875044848099</gml:lowerCorner>
+					<gml:upperCorner>42.6454186741356 1.51875044848099</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.30">
+					<gml:pos>42.6454186741356 1.51875044848099</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>31</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>31</ogr:PICS_>
+			<ogr:PICS_ID>31</ogr:PICS_ID>
+			<ogr:NOM>60</ogr:NOM>
+			<ogr:ALCADA>2684</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de Rialb</ogr:REFUGIS>
+			<ogr:POLYGONID>31</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>60</ogr:OID_>
+			<ogr:CODI_N>60</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic de les Fangasses</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.31">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.6131184741811 1.52162679476804</gml:lowerCorner>
+					<gml:upperCorner>42.6131184741811 1.52162679476804</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.31">
+					<gml:pos>42.6131184741811 1.52162679476804</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>32</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>32</ogr:PICS_>
+			<ogr:PICS_ID>32</ogr:PICS_ID>
+			<ogr:NOM>21</ogr:NOM>
+			<ogr:ALCADA>2319</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de Coma Obaga</ogr:REFUGIS>
+			<ogr:POLYGONID>32</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>21</ogr:OID_>
+			<ogr:CODI_N>21</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic de Brossós</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.32">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.4345873481685 1.53386901260429</gml:lowerCorner>
+					<gml:upperCorner>42.4345873481685 1.53386901260429</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.32">
+					<gml:pos>42.4345873481685 1.53386901260429</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>33</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>33</ogr:PICS_>
+			<ogr:PICS_ID>33</ogr:PICS_ID>
+			<ogr:NOM>84</ogr:NOM>
+			<ogr:ALCADA>2171</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de Roca de Pimes</ogr:REFUGIS>
+			<ogr:POLYGONID>33</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>84</ogr:OID_>
+			<ogr:CODI_N>84</ogr:CODI_N>
+			<ogr:NOM_PICS>Roca de Pimes</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.33">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.6496664128342 1.53433270527581</gml:lowerCorner>
+					<gml:upperCorner>42.6496664128342 1.53433270527581</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.33">
+					<gml:pos>42.6496664128342 1.53433270527581</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>34</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>34</ogr:PICS_>
+			<ogr:PICS_ID>34</ogr:PICS_ID>
+			<ogr:NOM>30</ogr:NOM>
+			<ogr:ALCADA>2904</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de Rialb</ogr:REFUGIS>
+			<ogr:POLYGONID>34</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>30</ogr:OID_>
+			<ogr:CODI_N>30</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic de Font Blanca</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.34">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.6383727517082 1.53782450814596</gml:lowerCorner>
+					<gml:upperCorner>42.6383727517082 1.53782450814596</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.34">
+					<gml:pos>42.6383727517082 1.53782450814596</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>35</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>35</ogr:PICS_>
+			<ogr:PICS_ID>35</ogr:PICS_ID>
+			<ogr:NOM>20</ogr:NOM>
+			<ogr:ALCADA>2639</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de Rialb: Refugi Borda de Sorteny</ogr:REFUGIS>
+			<ogr:POLYGONID>35</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>20</ogr:OID_>
+			<ogr:CODI_N>20</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic de Besalí</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.35">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.5669795487514 1.53953214361083</gml:lowerCorner>
+					<gml:upperCorner>42.5669795487514 1.53953214361083</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.35">
+					<gml:pos>42.5669795487514 1.53953214361083</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>36</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>36</ogr:PICS_>
+			<ogr:PICS_ID>36</ogr:PICS_ID>
+			<ogr:NOM>44</ogr:NOM>
+			<ogr:ALCADA>1839</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de Coma Obaga</ogr:REFUGIS>
+			<ogr:POLYGONID>36</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>44</ogr:OID_>
+			<ogr:CODI_N>44</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic de Sorobilles</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.36">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.5238344711287 1.54623035275552</gml:lowerCorner>
+					<gml:upperCorner>42.5238344711287 1.54623035275552</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.36">
+					<gml:pos>42.5238344711287 1.54623035275552</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>37</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>37</ogr:PICS_>
+			<ogr:PICS_ID>37</ogr:PICS_ID>
+			<ogr:NOM>36</ogr:NOM>
+			<ogr:ALCADA>1857</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de Fontverd</ogr:REFUGIS>
+			<ogr:POLYGONID>37</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>36</ogr:OID_>
+			<ogr:CODI_N>36</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic de Padern</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.37">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.4913020645238 1.54843266377482</gml:lowerCorner>
+					<gml:upperCorner>42.4913020645238 1.54843266377482</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.37">
+					<gml:pos>42.4913020645238 1.54843266377482</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>38</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>38</ogr:PICS_>
+			<ogr:PICS_ID>38</ogr:PICS_ID>
+			<ogr:NOM>81</ogr:NOM>
+			<ogr:ALCADA>2112</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de Prat Primer</ogr:REFUGIS>
+			<ogr:POLYGONID>38</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>81</ogr:OID_>
+			<ogr:CODI_N>81</ogr:CODI_N>
+			<ogr:NOM_PICS>Picó</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.38">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.6558121763881 1.54921775066786</gml:lowerCorner>
+					<gml:upperCorner>42.6558121763881 1.54921775066786</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.38">
+					<gml:pos>42.6558121763881 1.54921775066786</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>39</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>39</ogr:PICS_>
+			<ogr:PICS_ID>39</ogr:PICS_ID>
+			<ogr:NOM>40</ogr:NOM>
+			<ogr:ALCADA>2687</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de Rialb</ogr:REFUGIS>
+			<ogr:POLYGONID>39</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>40</ogr:OID_>
+			<ogr:CODI_N>40</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic de Rialb</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.39">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.4587051809988 1.56103385796991</gml:lowerCorner>
+					<gml:upperCorner>42.4587051809988 1.56103385796991</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.39">
+					<gml:pos>42.4587051809988 1.56103385796991</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>40</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>40</ogr:PICS_>
+			<ogr:PICS_ID>40</ogr:PICS_ID>
+			<ogr:NOM>10</ogr:NOM>
+			<ogr:ALCADA>2642</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de Claror</ogr:REFUGIS>
+			<ogr:POLYGONID>40</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>10</ogr:OID_>
+			<ogr:CODI_N>10</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic Negre</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.40">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.5468080707429 1.56395068553348</gml:lowerCorner>
+					<gml:upperCorner>42.5468080707429 1.56395068553348</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.40">
+					<gml:pos>42.5468080707429 1.56395068553348</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>41</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>41</ogr:PICS_>
+			<ogr:PICS_ID>41</ogr:PICS_ID>
+			<ogr:NOM>3</ogr:NOM>
+			<ogr:ALCADA>2211</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de Riba Escorxada</ogr:REFUGIS>
+			<ogr:POLYGONID>41</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>3</ogr:OID_>
+			<ogr:CODI_N>3</ogr:CODI_N>
+			<ogr:NOM_PICS>Bony de les Neres</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.41">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.5845721638003 1.56543119941171</gml:lowerCorner>
+					<gml:upperCorner>42.5845721638003 1.56543119941171</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.41">
+					<gml:pos>42.5845721638003 1.56543119941171</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>42</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>42</ogr:PICS_>
+			<ogr:PICS_ID>42</ogr:PICS_ID>
+			<ogr:NOM>26</ogr:NOM>
+			<ogr:ALCADA>2740</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de Coma Obaga</ogr:REFUGIS>
+			<ogr:POLYGONID>42</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>26</ogr:OID_>
+			<ogr:CODI_N>26</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic de Casamanya</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.42">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.4577459537023 1.56934358679715</gml:lowerCorner>
+					<gml:upperCorner>42.4577459537023 1.56934358679715</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.42">
+					<gml:pos>42.4577459537023 1.56934358679715</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>43</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>43</ogr:PICS_>
+			<ogr:PICS_ID>43</ogr:PICS_ID>
+			<ogr:NOM>12</ogr:NOM>
+			<ogr:ALCADA>2700</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de Claror</ogr:REFUGIS>
+			<ogr:POLYGONID>43</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>12</ogr:OID_>
+			<ogr:CODI_N>12</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic Negre d'Urgell</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.43">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.5873603744624 1.57035728919573</gml:lowerCorner>
+					<gml:upperCorner>42.5873603744624 1.57035728919573</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.43">
+					<gml:pos>42.5873603744624 1.57035728919573</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>44</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>44</ogr:PICS_>
+			<ogr:PICS_ID>44</ogr:PICS_ID>
+			<ogr:NOM>25</ogr:NOM>
+			<ogr:ALCADA>2752</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de Coma Obaga</ogr:REFUGIS>
+			<ogr:POLYGONID>44</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>25</ogr:OID_>
+			<ogr:CODI_N>25</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic de Casamanya N</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.44">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.6479190956709 1.57471731449005</gml:lowerCorner>
+					<gml:upperCorner>42.6479190956709 1.57471731449005</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.44">
+					<gml:pos>42.6479190956709 1.57471731449005</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>45</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>45</ogr:PICS_>
+			<ogr:PICS_ID>45</ogr:PICS_ID>
+			<ogr:NOM>69</ogr:NOM>
+			<ogr:ALCADA>2638</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de Rialb</ogr:REFUGIS>
+			<ogr:POLYGONID>45</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>69</ogr:OID_>
+			<ogr:CODI_N>69</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic del Port de Siguer</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.45">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.4501435542378 1.58109821489585</gml:lowerCorner>
+					<gml:upperCorner>42.4501435542378 1.58109821489585</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.45">
+					<gml:pos>42.4501435542378 1.58109821489585</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>46</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>46</ogr:PICS_>
+			<ogr:PICS_ID>46</ogr:PICS_ID>
+			<ogr:NOM>85</ogr:NOM>
+			<ogr:ALCADA>2761</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de Claror</ogr:REFUGIS>
+			<ogr:POLYGONID>46</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>85</ogr:OID_>
+			<ogr:CODI_N>85</ogr:CODI_N>
+			<ogr:NOM_PICS>Torre dels Soldats</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.46">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.4591971029413 1.5854344802847</gml:lowerCorner>
+					<gml:upperCorner>42.4591971029413 1.5854344802847</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.46">
+					<gml:pos>42.4591971029413 1.5854344802847</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>47</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>47</ogr:PICS_>
+			<ogr:PICS_ID>47</ogr:PICS_ID>
+			<ogr:NOM>35</ogr:NOM>
+			<ogr:ALCADA>2754</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de Claror; Refugi de Perafita</ogr:REFUGIS>
+			<ogr:POLYGONID>47</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>35</ogr:OID_>
+			<ogr:CODI_N>35</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic de Monturull</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.47">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.6087045726161 1.59259298732238</gml:lowerCorner>
+					<gml:upperCorner>42.6087045726161 1.59259298732238</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.47">
+					<gml:pos>42.6087045726161 1.59259298732238</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>48</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>48</ogr:PICS_>
+			<ogr:PICS_ID>48</ogr:PICS_ID>
+			<ogr:NOM>48</ogr:NOM>
+			<ogr:ALCADA>2915</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi Borda de Sorteny; Cabana de la Vall del Riu</ogr:REFUGIS>
+			<ogr:POLYGONID>48</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>48</ogr:OID_>
+			<ogr:CODI_N>48</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic de l'Estanyó</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.48">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.5024609749324 1.59886369474857</gml:lowerCorner>
+					<gml:upperCorner>42.5024609749324 1.59886369474857</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.48">
+					<gml:pos>42.5024609749324 1.59886369474857</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>49</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>49</ogr:PICS_>
+			<ogr:PICS_ID>49</ogr:PICS_ID>
+			<ogr:NOM>86</ogr:NOM>
+			<ogr:ALCADA>2658</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de Fontverd; Refugi de les Agols</ogr:REFUGIS>
+			<ogr:POLYGONID>49</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>86</ogr:OID_>
+			<ogr:CODI_N>86</ogr:CODI_N>
+			<ogr:NOM_PICS>Tossa del Braibal</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.49">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.4820734308929 1.60035120178595</gml:lowerCorner>
+					<gml:upperCorner>42.4820734308929 1.60035120178595</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.49">
+					<gml:pos>42.4820734308929 1.60035120178595</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>50</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>50</ogr:PICS_>
+			<ogr:PICS_ID>50</ogr:PICS_ID>
+			<ogr:NOM>52</ogr:NOM>
+			<ogr:ALCADA>2520</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de Fontverd; Refugi de Perafita</ogr:REFUGIS>
+			<ogr:POLYGONID>50</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>52</ogr:OID_>
+			<ogr:CODI_N>52</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic de la Maiana</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.50">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.465793880274 1.60377765147832</gml:lowerCorner>
+					<gml:upperCorner>42.465793880274 1.60377765147832</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.50">
+					<gml:pos>42.465793880274 1.60377765147832</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>51</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>51</ogr:PICS_>
+			<ogr:PICS_ID>51</ogr:PICS_ID>
+			<ogr:NOM>71</ogr:NOM>
+			<ogr:ALCADA>2748</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de Fontverd; Refugi de Perafita</ogr:REFUGIS>
+			<ogr:POLYGONID>51</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>71</ogr:OID_>
+			<ogr:CODI_N>71</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic del Sirvent</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.51">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.6255012824523 1.60312570047745</gml:lowerCorner>
+					<gml:upperCorner>42.6255012824523 1.60312570047745</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.51">
+					<gml:pos>42.6255012824523 1.60312570047745</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>52</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>52</ogr:PICS_>
+			<ogr:PICS_ID>52</ogr:PICS_ID>
+			<ogr:NOM>58</ogr:NOM>
+			<ogr:ALCADA>2912</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de Cóms de Jan</ogr:REFUGIS>
+			<ogr:POLYGONID>52</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>58</ogr:OID_>
+			<ogr:CODI_N>58</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic de la Serrera</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.52">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.6135479607443 1.60725383313299</gml:lowerCorner>
+					<gml:upperCorner>42.6135479607443 1.60725383313299</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.52">
+					<gml:pos>42.6135479607443 1.60725383313299</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>53</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>53</ogr:PICS_>
+			<ogr:PICS_ID>53</ogr:PICS_ID>
+			<ogr:NOM>50</ogr:NOM>
+			<ogr:ALCADA>2862</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de Cóms de Jan; Cabana de la Vall del Riu</ogr:REFUGIS>
+			<ogr:POLYGONID>53</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>50</ogr:OID_>
+			<ogr:CODI_N>50</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic de la Cabaneta</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.53">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.5439263471478 1.60994770651184</gml:lowerCorner>
+					<gml:upperCorner>42.5439263471478 1.60994770651184</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.53">
+					<gml:pos>42.5439263471478 1.60994770651184</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>54</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>54</ogr:PICS_>
+			<ogr:PICS_ID>54</ogr:PICS_ID>
+			<ogr:NOM>5</ogr:NOM>
+			<ogr:ALCADA>2317</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de les Agols; Refugi de Riba Escorxada</ogr:REFUGIS>
+			<ogr:POLYGONID>54</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>5</ogr:OID_>
+			<ogr:CODI_N>5</ogr:CODI_N>
+			<ogr:NOM_PICS>Cap de Rep</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.54">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.6285288942869 1.60936012942368</gml:lowerCorner>
+					<gml:upperCorner>42.6285288942869 1.60936012942368</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.54">
+					<gml:pos>42.6285288942869 1.60936012942368</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>55</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>55</ogr:PICS_>
+			<ogr:PICS_ID>55</ogr:PICS_ID>
+			<ogr:NOM>51</ogr:NOM>
+			<ogr:ALCADA>2853</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de Cóms de Jan</ogr:REFUGIS>
+			<ogr:POLYGONID>55</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>51</ogr:OID_>
+			<ogr:CODI_N>51</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic de la Coma de Senyac</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.55">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.6108168015779 1.61226525581999</gml:lowerCorner>
+					<gml:upperCorner>42.6108168015779 1.61226525581999</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.55">
+					<gml:pos>42.6108168015779 1.61226525581999</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>56</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>56</ogr:PICS_>
+			<ogr:PICS_ID>56</ogr:PICS_ID>
+			<ogr:NOM>54</ogr:NOM>
+			<ogr:ALCADA>2792</ogr:ALCADA>
+			<ogr:REFUGIS>Cabana de la Vall del Riu; Refugi de Cóms de Jan</ogr:REFUGIS>
+			<ogr:POLYGONID>56</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>54</ogr:OID_>
+			<ogr:CODI_N>54</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic de la Pala Rodona</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.56">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.5064215082486 1.61398031744943</gml:lowerCorner>
+					<gml:upperCorner>42.5064215082486 1.61398031744943</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.56">
+					<gml:pos>42.5064215082486 1.61398031744943</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>57</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>57</ogr:PICS_>
+			<ogr:PICS_ID>57</ogr:PICS_ID>
+			<ogr:NOM>6</ogr:NOM>
+			<ogr:ALCADA>2532</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de les Agols</ogr:REFUGIS>
+			<ogr:POLYGONID>57</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>6</ogr:OID_>
+			<ogr:CODI_N>6</ogr:CODI_N>
+			<ogr:NOM_PICS>Cap de la Coma dels Llops</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.57">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.6259767604033 1.61817526658785</gml:lowerCorner>
+					<gml:upperCorner>42.6259767604033 1.61817526658785</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.57">
+					<gml:pos>42.6259767604033 1.61817526658785</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>58</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>58</ogr:PICS_>
+			<ogr:PICS_ID>58</ogr:PICS_ID>
+			<ogr:NOM>79</ogr:NOM>
+			<ogr:ALCADA>2713</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de Cóms de Jan</ogr:REFUGIS>
+			<ogr:POLYGONID>58</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>79</ogr:OID_>
+			<ogr:CODI_N>79</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic dels Meners</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.58">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.4654200200469 1.62048854188773</gml:lowerCorner>
+					<gml:upperCorner>42.4654200200469 1.62048854188773</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.58">
+					<gml:pos>42.4654200200469 1.62048854188773</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>59</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>59</ogr:PICS_>
+			<ogr:PICS_ID>59</ogr:PICS_ID>
+			<ogr:NOM>75</ogr:NOM>
+			<ogr:ALCADA>2834</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi del Riu dels Orris</ogr:REFUGIS>
+			<ogr:POLYGONID>59</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>75</ogr:OID_>
+			<ogr:CODI_N>75</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic dels Estanyons</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.59">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.4929346667584 1.62348058144226</gml:lowerCorner>
+					<gml:upperCorner>42.4929346667584 1.62348058144226</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.59">
+					<gml:pos>42.4929346667584 1.62348058144226</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>60</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>60</ogr:PICS_>
+			<ogr:PICS_ID>60</ogr:PICS_ID>
+			<ogr:NOM>89</ogr:NOM>
+			<ogr:ALCADA>2636</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi del Riu dels Orris</ogr:REFUGIS>
+			<ogr:POLYGONID>60</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>89</ogr:OID_>
+			<ogr:CODI_N>89</ogr:CODI_N>
+			<ogr:NOM_PICS>Turó de l'Estany Blau</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.60">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.5939309261837 1.62453974691387</gml:lowerCorner>
+					<gml:upperCorner>42.5939309261837 1.62453974691387</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.60">
+					<gml:pos>42.5939309261837 1.62453974691387</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>61</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>61</ogr:PICS_>
+			<ogr:PICS_ID>61</ogr:PICS_ID>
+			<ogr:NOM>59</ogr:NOM>
+			<ogr:ALCADA>2546</ogr:ALCADA>
+			<ogr:REFUGIS>Cabana de la Vall del Riu</ogr:REFUGIS>
+			<ogr:POLYGONID>61</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>59</ogr:OID_>
+			<ogr:CODI_N>59</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic de Torradella</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.61">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.6076123061455 1.62476203085962</gml:lowerCorner>
+					<gml:upperCorner>42.6076123061455 1.62476203085962</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.61">
+					<gml:pos>42.6076123061455 1.62476203085962</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>62</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>62</ogr:PICS_>
+			<ogr:PICS_ID>62</ogr:PICS_ID>
+			<ogr:NOM>53</ogr:NOM>
+			<ogr:ALCADA>2683</ogr:ALCADA>
+			<ogr:REFUGIS>Cabana de la Vall del Riu</ogr:REFUGIS>
+			<ogr:POLYGONID>62</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>53</ogr:OID_>
+			<ogr:CODI_N>53</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic de la Pala Alta</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.62">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.552373709155 1.62779524413713</gml:lowerCorner>
+					<gml:upperCorner>42.552373709155 1.62779524413713</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.62">
+					<gml:pos>42.552373709155 1.62779524413713</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>63</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>63</ogr:PICS_>
+			<ogr:PICS_ID>63</ogr:PICS_ID>
+			<ogr:NOM>78</ogr:NOM>
+			<ogr:ALCADA>2466</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de Riba Escorxada</ogr:REFUGIS>
+			<ogr:POLYGONID>63</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>78</ogr:OID_>
+			<ogr:CODI_N>78</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic dels Maians</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.63">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.6265978843769 1.62848317328889</gml:lowerCorner>
+					<gml:upperCorner>42.6265978843769 1.62848317328889</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.63">
+					<gml:pos>42.6265978843769 1.62848317328889</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>64</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>64</ogr:PICS_>
+			<ogr:PICS_ID>64</ogr:PICS_ID>
+			<ogr:NOM>47</ogr:NOM>
+			<ogr:ALCADA>2746</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de Cóms de Jan</ogr:REFUGIS>
+			<ogr:POLYGONID>64</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>47</ogr:OID_>
+			<ogr:CODI_N>47</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic de l'Estany Mort</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.64">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.4881824435747 1.63191084126171</gml:lowerCorner>
+					<gml:upperCorner>42.4881824435747 1.63191084126171</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.64">
+					<gml:pos>42.4881824435747 1.63191084126171</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>65</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>65</ogr:PICS_>
+			<ogr:PICS_ID>65</ogr:PICS_ID>
+			<ogr:NOM>67</ogr:NOM>
+			<ogr:ALCADA>2569</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi del Riu dels Orris</ogr:REFUGIS>
+			<ogr:POLYGONID>65</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>67</ogr:OID_>
+			<ogr:CODI_N>67</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic del Pla de l'Ingla</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.65">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.5571254618543 1.63303865082289</gml:lowerCorner>
+					<gml:upperCorner>42.5571254618543 1.63303865082289</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.65">
+					<gml:pos>42.5571254618543 1.63303865082289</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>66</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>66</ogr:PICS_>
+			<ogr:PICS_ID>66</ogr:PICS_ID>
+			<ogr:NOM>14</ogr:NOM>
+			<ogr:ALCADA>2491</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de Riba Escorxada</ogr:REFUGIS>
+			<ogr:POLYGONID>66</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>14</ogr:OID_>
+			<ogr:CODI_N>14</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic d'Encampadana</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.66">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.4681089305389 1.63613068551954</gml:lowerCorner>
+					<gml:upperCorner>42.4681089305389 1.63613068551954</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.66">
+					<gml:pos>42.4681089305389 1.63613068551954</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>67</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>67</ogr:PICS_>
+			<ogr:PICS_ID>67</ogr:PICS_ID>
+			<ogr:NOM>28</ogr:NOM>
+			<ogr:ALCADA>2808</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi del Riu dels Orris</ogr:REFUGIS>
+			<ogr:POLYGONID>67</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>28</ogr:OID_>
+			<ogr:CODI_N>28</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic de Coma Extremera</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.67">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.6299214754312 1.63596895382843</gml:lowerCorner>
+					<gml:upperCorner>42.6299214754312 1.63596895382843</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.67">
+					<gml:pos>42.6299214754312 1.63596895382843</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>68</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>68</ogr:PICS_>
+			<ogr:PICS_ID>68</ogr:PICS_ID>
+			<ogr:NOM>65</ogr:NOM>
+			<ogr:ALCADA>2779</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de Cóms de Jan</ogr:REFUGIS>
+			<ogr:POLYGONID>68</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>65</ogr:OID_>
+			<ogr:CODI_N>65</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic del Mil Menut</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.68">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.6277256865458 1.64428952140231</gml:lowerCorner>
+					<gml:upperCorner>42.6277256865458 1.64428952140231</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.68">
+					<gml:pos>42.6277256865458 1.64428952140231</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>69</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>69</ogr:PICS_>
+			<ogr:PICS_ID>69</ogr:PICS_ID>
+			<ogr:NOM>55</ogr:NOM>
+			<ogr:ALCADA>2774</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de Cóms de Jan</ogr:REFUGIS>
+			<ogr:POLYGONID>69</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>55</ogr:OID_>
+			<ogr:CODI_N>55</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic de la Pala de Jan</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.69">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.5485542200448 1.64583692001602</gml:lowerCorner>
+					<gml:upperCorner>42.5485542200448 1.64583692001602</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.69">
+					<gml:pos>42.5485542200448 1.64583692001602</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>70</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>70</ogr:PICS_>
+			<ogr:PICS_ID>70</ogr:PICS_ID>
+			<ogr:NOM>87</ogr:NOM>
+			<ogr:ALCADA>2560</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de Riba Escorxada; Refugi del Pla de les Pedres</ogr:REFUGIS>
+			<ogr:POLYGONID>70</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>87</ogr:OID_>
+			<ogr:CODI_N>87</ogr:CODI_N>
+			<ogr:NOM_PICS>Tossal de la Llosada</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.70">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.5049393755466 1.64939473657925</gml:lowerCorner>
+					<gml:upperCorner>42.5049393755466 1.64939473657925</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.70">
+					<gml:pos>42.5049393755466 1.64939473657925</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>71</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>71</ogr:PICS_>
+			<ogr:PICS_ID>71</ogr:PICS_ID>
+			<ogr:NOM>77</ogr:NOM>
+			<ogr:ALCADA>2843</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi d'Ensagents; Refugi de l'Illa</ogr:REFUGIS>
+			<ogr:POLYGONID>71</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>77</ogr:OID_>
+			<ogr:CODI_N>77</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic dels Llops</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.71">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.5251022434611 1.65123932709872</gml:lowerCorner>
+					<gml:upperCorner>42.5251022434611 1.65123932709872</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.71">
+					<gml:pos>42.5251022434611 1.65123932709872</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>72</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>72</ogr:PICS_>
+			<ogr:PICS_ID>72</ogr:PICS_ID>
+			<ogr:NOM>0</ogr:NOM>
+			<ogr:ALCADA>2876</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi d'Ensagents</ogr:REFUGIS>
+			<ogr:POLYGONID>72</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>0</ogr:OID_>
+			<ogr:CODI_N>0</ogr:CODI_N>
+			<ogr:NOM_PICS>Alt del Griu</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.72">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.6263815984686 1.65338601144268</gml:lowerCorner>
+					<gml:upperCorner>42.6263815984686 1.65338601144268</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.72">
+					<gml:pos>42.6263815984686 1.65338601144268</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>73</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>73</ogr:PICS_>
+			<ogr:PICS_ID>73</ogr:PICS_ID>
+			<ogr:NOM>39</ogr:NOM>
+			<ogr:ALCADA>2732</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de Cóms de Jan</ogr:REFUGIS>
+			<ogr:POLYGONID>73</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>39</ogr:OID_>
+			<ogr:CODI_N>39</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic de Ransol</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.73">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.4682236250826 1.65648746546304</gml:lowerCorner>
+					<gml:upperCorner>42.4682236250826 1.65648746546304</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.73">
+					<gml:pos>42.4682236250826 1.65648746546304</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>74</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>74</ogr:PICS_>
+			<ogr:PICS_ID>74</ogr:PICS_ID>
+			<ogr:NOM>57</ogr:NOM>
+			<ogr:ALCADA>2905</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi del Riu dels Orris</ogr:REFUGIS>
+			<ogr:POLYGONID>74</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>57</ogr:OID_>
+			<ogr:CODI_N>57</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic de la Portelleta</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.74">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.5202698780901 1.66016753125889</gml:lowerCorner>
+					<gml:upperCorner>42.5202698780901 1.66016753125889</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.74">
+					<gml:pos>42.5202698780901 1.66016753125889</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>75</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>75</ogr:PICS_>
+			<ogr:PICS_ID>75</ogr:PICS_ID>
+			<ogr:NOM>17</ogr:NOM>
+			<ogr:ALCADA>2857</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi d'Ensagents</ogr:REFUGIS>
+			<ogr:POLYGONID>75</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>17</ogr:OID_>
+			<ogr:CODI_N>17</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic d'Ensagents</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.75">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.474793936688 1.66242806117458</gml:lowerCorner>
+					<gml:upperCorner>42.474793936688 1.66242806117458</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.75">
+					<gml:pos>42.474793936688 1.66242806117458</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>76</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>76</ogr:PICS_>
+			<ogr:PICS_ID>76</ogr:PICS_ID>
+			<ogr:NOM>88</ogr:NOM>
+			<ogr:ALCADA>2848</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi del Riu dels Orris; Refugi de l'Illa</ogr:REFUGIS>
+			<ogr:POLYGONID>76</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>88</ogr:OID_>
+			<ogr:CODI_N>88</ogr:CODI_N>
+			<ogr:NOM_PICS>Tosseta de Vallcivera</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.76">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.5081203797223 1.66473869917993</gml:lowerCorner>
+					<gml:upperCorner>42.5081203797223 1.66473869917993</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.76">
+					<gml:pos>42.5081203797223 1.66473869917993</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>77</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>77</ogr:PICS_>
+			<ogr:PICS_ID>77</ogr:PICS_ID>
+			<ogr:NOM>80</ogr:NOM>
+			<ogr:ALCADA>2864</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de l'Illa; Refugi de Montmalús</ogr:REFUGIS>
+			<ogr:POLYGONID>77</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>80</ogr:OID_>
+			<ogr:CODI_N>80</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic dels Pessons</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.77">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.5277893847591 1.6703093124162</gml:lowerCorner>
+					<gml:upperCorner>42.5277893847591 1.6703093124162</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.77">
+					<gml:pos>42.5277893847591 1.6703093124162</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>78</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>78</ogr:PICS_>
+			<ogr:PICS_ID>78</ogr:PICS_ID>
+			<ogr:NOM>9</ogr:NOM>
+			<ogr:ALCADA>2833</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi del Pla de les Pedres</ogr:REFUGIS>
+			<ogr:POLYGONID>78</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>9</ogr:OID_>
+			<ogr:CODI_N>9</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic Alt del Cubil</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.78">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.5056937717526 1.67128539986083</gml:lowerCorner>
+					<gml:upperCorner>42.5056937717526 1.67128539986083</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.78">
+					<gml:pos>42.5056937717526 1.67128539986083</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>79</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>79</ogr:PICS_>
+			<ogr:PICS_ID>79</ogr:PICS_ID>
+			<ogr:NOM>41</ogr:NOM>
+			<ogr:ALCADA>2820</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de Montmalús</ogr:REFUGIS>
+			<ogr:POLYGONID>79</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>41</ogr:OID_>
+			<ogr:CODI_N>41</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic de Ríbuls</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.79">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.6248900754178 1.68174346243496</gml:lowerCorner>
+					<gml:upperCorner>42.6248900754178 1.68174346243496</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.79">
+					<gml:pos>42.6248900754178 1.68174346243496</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>80</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>80</ogr:PICS_>
+			<ogr:PICS_ID>80</ogr:PICS_ID>
+			<ogr:NOM>16</ogr:NOM>
+			<ogr:ALCADA>2729</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de Cabana Sorda</ogr:REFUGIS>
+			<ogr:POLYGONID>80</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>16</ogr:OID_>
+			<ogr:CODI_N>16</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic d'Anrodat</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.80">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.5089252079158 1.68653686052464</gml:lowerCorner>
+					<gml:upperCorner>42.5089252079158 1.68653686052464</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.80">
+					<gml:pos>42.5089252079158 1.68653686052464</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>81</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>81</ogr:PICS_>
+			<ogr:PICS_ID>81</ogr:PICS_ID>
+			<ogr:NOM>34</ogr:NOM>
+			<ogr:ALCADA>2782</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de Montmalús</ogr:REFUGIS>
+			<ogr:POLYGONID>81</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>34</ogr:OID_>
+			<ogr:CODI_N>34</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic de Montmalús</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.81">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.6219722735817 1.69224780489108</gml:lowerCorner>
+					<gml:upperCorner>42.6219722735817 1.69224780489108</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.81">
+					<gml:pos>42.6219722735817 1.69224780489108</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>82</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>82</ogr:PICS_>
+			<ogr:PICS_ID>82</ogr:PICS_ID>
+			<ogr:NOM>31</ogr:NOM>
+			<ogr:ALCADA>2619</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de Cabana Sorda</ogr:REFUGIS>
+			<ogr:POLYGONID>82</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>31</ogr:OID_>
+			<ogr:CODI_N>31</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic de Fontargent</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.82">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.5047417686689 1.70394735181969</gml:lowerCorner>
+					<gml:upperCorner>42.5047417686689 1.70394735181969</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.82">
+					<gml:pos>42.5047417686689 1.70394735181969</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>83</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>83</ogr:PICS_>
+			<ogr:PICS_ID>83</ogr:PICS_ID>
+			<ogr:NOM>56</ogr:NOM>
+			<ogr:ALCADA>2778</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de Montmalús</ogr:REFUGIS>
+			<ogr:POLYGONID>83</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>56</ogr:OID_>
+			<ogr:CODI_N>56</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic de la Portella dels Collels</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.83">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.5539949466099 1.71907721787982</gml:lowerCorner>
+					<gml:upperCorner>42.5539949466099 1.71907721787982</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.83">
+					<gml:pos>42.5539949466099 1.71907721787982</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>84</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>84</ogr:PICS_>
+			<ogr:PICS_ID>84</ogr:PICS_ID>
+			<ogr:NOM>32</ogr:NOM>
+			<ogr:ALCADA>2615</ogr:ALCADA>
+			<ogr:REFUGIS>Cabana de la Portella</ogr:REFUGIS>
+			<ogr:POLYGONID>84</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>32</ogr:OID_>
+			<ogr:CODI_N>32</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic del Maià</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.84">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.5172846321247 1.7214982963115</gml:lowerCorner>
+					<gml:upperCorner>42.5172846321247 1.7214982963115</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.84">
+					<gml:pos>42.5172846321247 1.7214982963115</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>85</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>85</ogr:PICS_>
+			<ogr:PICS_ID>85</ogr:PICS_ID>
+			<ogr:NOM>18</ogr:NOM>
+			<ogr:ALCADA>2827</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi del Pla de les Pedres</ogr:REFUGIS>
+			<ogr:POLYGONID>85</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>18</ogr:OID_>
+			<ogr:CODI_N>18</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic d'Envalira</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.85">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.5184599748001 1.72245971056875</gml:lowerCorner>
+					<gml:upperCorner>42.5184599748001 1.72245971056875</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.85">
+					<gml:pos>42.5184599748001 1.72245971056875</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>86</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>86</ogr:PICS_>
+			<ogr:PICS_ID>86</ogr:PICS_ID>
+			<ogr:NOM>11</ogr:NOM>
+			<ogr:ALCADA>2821</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi del Pla de les Pedres</ogr:REFUGIS>
+			<ogr:POLYGONID>86</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>11</ogr:OID_>
+			<ogr:CODI_N>11</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic Negre d'Envalira</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.86">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.6006265724001 1.72593162203632</gml:lowerCorner>
+					<gml:upperCorner>42.6006265724001 1.72593162203632</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.86">
+					<gml:pos>42.6006265724001 1.72593162203632</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>87</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>87</ogr:PICS_>
+			<ogr:PICS_ID>87</ogr:PICS_ID>
+			<ogr:NOM>72</ogr:NOM>
+			<ogr:ALCADA>2637</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de Juclar</ogr:REFUGIS>
+			<ogr:POLYGONID>87</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>72</ogr:OID_>
+			<ogr:CODI_N>72</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic de Siscaró</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.87">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.5885639952639 1.73364647405503</gml:lowerCorner>
+					<gml:upperCorner>42.5885639952639 1.73364647405503</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.87">
+					<gml:pos>42.5885639952639 1.73364647405503</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>88</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>88</ogr:PICS_>
+			<ogr:PICS_ID>88</ogr:PICS_ID>
+			<ogr:NOM>50</ogr:NOM>
+			<ogr:ALCADA>2818</ogr:ALCADA>
+			<ogr:REFUGIS>Cabana de Siscaró</ogr:REFUGIS>
+			<ogr:POLYGONID>88</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>50</ogr:OID_>
+			<ogr:CODI_N>50</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic de la Cabaneta</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.88">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.6092363449426 1.73559764748366</gml:lowerCorner>
+					<gml:upperCorner>42.6092363449426 1.73559764748366</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.88">
+					<gml:pos>42.6092363449426 1.73559764748366</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>89</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>89</ogr:PICS_>
+			<ogr:PICS_ID>89</ogr:PICS_ID>
+			<ogr:NOM>19</ogr:NOM>
+			<ogr:ALCADA>2781</ogr:ALCADA>
+			<ogr:REFUGIS>Refugi de Juclar</ogr:REFUGIS>
+			<ogr:POLYGONID>89</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>19</ogr:OID_>
+			<ogr:CODI_N>19</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic d'Escobes</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.89">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.5877872792077 1.73995848257661</gml:lowerCorner>
+					<gml:upperCorner>42.5877872792077 1.73995848257661</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.89">
+					<gml:pos>42.5877872792077 1.73995848257661</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>90</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>90</ogr:PICS_>
+			<ogr:PICS_ID>90</ogr:PICS_ID>
+			<ogr:NOM>70</ogr:NOM>
+			<ogr:ALCADA>2816</ogr:ALCADA>
+			<ogr:REFUGIS>Cabana de la Portella</ogr:REFUGIS>
+			<ogr:POLYGONID>90</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>70</ogr:OID_>
+			<ogr:CODI_N>70</ogr:CODI_N>
+			<ogr:NOM_PICS>Pic del Roc Meler</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+	<ogr:featureMember>
+		<ogr:q gml:id="a.90">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+					<gml:lowerCorner>42.582465700493 1.78116416900562</gml:lowerCorner>
+					<gml:upperCorner>42.582465700493 1.78116416900562</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<ogr:geometryProperty>
+				<gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="q.geom.90">
+					<gml:pos>42.582465700493 1.78116416900562</gml:pos>
+				</gml:Point>
+			</ogr:geometryProperty>
+			<ogr:OBJECTID>91</ogr:OBJECTID>
+			<ogr:AREA>0.00000000000</ogr:AREA>
+			<ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+			<ogr:PICS_>91</ogr:PICS_>
+			<ogr:PICS_ID>91</ogr:PICS_ID>
+			<ogr:NOM>7</ogr:NOM>
+			<ogr:ALCADA>2148</ogr:ALCADA>
+			<ogr:REFUGIS>Cabana de la Portella</ogr:REFUGIS>
+			<ogr:POLYGONID>91</ogr:POLYGONID>
+			<ogr:SCALE>1.00000000000</ogr:SCALE>
+			<ogr:ANGLE>0</ogr:ANGLE>
+			<ogr:OID_>7</ogr:OID_>
+			<ogr:CODI_N>7</ogr:CODI_N>
+			<ogr:NOM_PICS>Cap de la Palomera</ogr:NOM_PICS>
+		</ogr:q>
+	</ogr:featureMember>
+</ogr:FeatureCollection>

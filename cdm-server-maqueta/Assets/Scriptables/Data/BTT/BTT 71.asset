@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d73fd45fac415c14ea4952a1c82aaa46, type: 3}
+  m_Name: BTT 71
+  m_EditorClassIdentifier: 
+  asset: {fileID: 4900000, guid: 400cc1ab7e3a8b243ab9d1ad122b2b4e, type: 3}
+  data:
+  - coord: {x: 58.37611, y: 7.4256096, z: 42.328564}
+  - coord: {x: 58.347046, y: 7.428852, z: 42.693134}
+  - coord: {x: 58.501835, y: 7.468067, z: 42.995373}
+  - coord: {x: 58.373, y: 7.44936, z: 43.32595}
+  - coord: {x: 58.40215, y: 7.4736824, z: 43.673523}
+  - coord: {x: 58.535843, y: 7.517521, z: 44.009766}
+  - coord: {x: 58.500854, y: 7.5750847, z: 44.378117}
+  - coord: {x: 58.672222, y: 7.612671, z: 44.701138}
+  - coord: {x: 58.894905, y: 7.6504555, z: 44.97504}
+  - coord: {x: 59.19805, y: 7.688423, z: 45.16583}
+  - coord: {x: 59.503326, y: 7.7011757, z: 45.34906}
+  - coord: {x: 59.84828, y: 7.7626266, z: 45.33017}
+  - coord: {x: 59.587112, y: 7.7492676, z: 45.078934}
+  - coord: {x: 59.30289, y: 7.7341194, z: 44.856033}
+  - coord: {x: 59.016068, y: 7.6901245, z: 44.633133}
+  - coord: {x: 58.981888, y: 7.7032585, z: 44.315784}
+  - coord: {x: 59.153557, y: 7.7304764, z: 43.990875}
+  - coord: {x: 59.187565, y: 7.7359543, z: 43.620632}
+  - coord: {x: 59.46024, y: 7.7669106, z: 43.382618}
+  - coord: {x: 59.55289, y: 7.7503624, z: 43.016155}
+  - coord: {x: 59.575478, y: 7.681202, z: 42.638355}
+  - coord: {x: 59.32207, y: 7.561081, z: 42.44379}
+  - coord: {x: 58.996593, y: 7.5078354, z: 42.511795}
+  - coord: {x: 58.83507, y: 7.483288, z: 42.247334}
+  - coord: {x: 58.473835, y: 7.433243, z: 42.228447}
+  - coord: {x: 58.238026, y: 7.426529, z: 42.037655}
+  nameSpaces:
+  - prefix: ogr
+    uri: http://osgeo.org/gdal
+  - prefix: gpx
+    uri: http://www.topografix.com/GPX/1/1
+  nodeList: //gpx:trk/gpx:trkseg/gpx:trkpt
+  isBackwards: 0

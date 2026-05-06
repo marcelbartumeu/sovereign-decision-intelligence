@@ -1,0 +1,1020 @@
+\documentclass{article}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning, shapes.geometric, calc}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{amsmath}
+\usepackage{subcaption}
+\usepackage{float}
+\usepackage{textcomp}
+\usepackage[version=4]{mhchem}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{eurosym}
+\usepackage{threeparttable}
+\usepackage{xcolor}  % for \color in title rule
+
+\title{\textbf{Andorra Digital Twin: A Data-Grounded Scenario Engine for National Development Planning}\\[0.1em]
+{\normalfont\rule{0.6\textwidth}{0.4pt}}}
+
+\date{15th December 2025}
+\author{}
+
+\begin{document}
+
+\maketitle
+
+\begin{center}
+\small
+\begin{tabular}{@{}>{\centering\arraybackslash}p{0.44\textwidth}@{\hspace{0.08\textwidth}}>{\centering\arraybackslash}p{0.44\textwidth}@{}}
+  \textbf{Marcel Bartumeu Ramentol}\newline
+  MIT Media Lab\newline
+  Massachusetts Institute of Technology\newline
+  Cambridge, MA, USA
+  &
+  \textbf{Parfait Atchade-Adelomou}\newline
+  MIT Media Lab\newline
+  Massachusetts Institute of Technology\newline
+  Cambridge, MA, USA
+  \\[1.2em]
+  \textbf{Luis Alonso-Pastor}\newline
+  MIT Media Lab\newline
+  Massachusetts Institute of Technology\newline
+  Cambridge, MA, USA
+  &
+  \textbf{Marta Domenech}\newline
+  Andorra Research + Innovation (AR+I)\newline
+  Andorra la Vella, Andorra
+  \\[1.2em]
+  \textbf{Adrian Mora-Carrero}\newline
+  Escuela T\'ecnica Superior de Ingenieros Inform\'aticos\newline
+  Universidad Polit\'ecnica de Madrid\newline
+  Madrid, Spain
+  &
+  \textbf{Kent Larson}\newline
+  MIT Media Lab\newline
+  Massachusetts Institute of Technology\newline
+  Cambridge, MA, USA
+\end{tabular}
+\end{center}
+
+\vspace{1.5em}
+
+% ============================================================
+\section{Abstract}
+% ============================================================
+
+Planning future national development under uncertainty is difficult, especially
+for small countries where data are fragmented and frequently updated. While
+digital twins and scenario planning can support decision-making without relying
+on a single forecast, they often lack historical grounding, cross-domain
+consistency, and reproducible update pipelines. We present the Andorra Clone
+Scenario Engine, a data-grounded framework that harmonizes multi-source national
+indicators and produces structured future scenarios for Andorra under four
+contrasting pathways: \textit{Continuity}, \textit{Overgrowth},
+\textit{Degrowth}, and \textit{Density}, with a planning horizon of 2049.
+A central methodological contribution is the inversion of the population--economy
+causal chain: rather than treating population as an exogenous driver, the model
+derives population endogenously from GDP growth via a labour-immigration
+elasticity (0.40 pp population growth per 1 pp GDP growth at a one-year lag,
+0.10 pp at two years), grounded in IMF\,(2025) and World Bank data for Andorra.
+Three core parameters---total factor productivity growth, the tourism--GDP
+elasticity, and the household-income coefficient---are calibrated against
+official national statistics for 2010--2024 via Nelder--Mead optimisation
+(RMSE\,=\,1.77\% on real GDP per capita), anchoring projections in observed
+dynamics rather than prior assumptions alone.
+Two structural nonlinearities are retained: a housing-affordability feedback
+that suppresses net in-migration when the rent-to-income ratio exceeds 30\%, and
+a logistic tourism carrying-capacity ceiling grounded in the Butler\,(1980) TALC
+framework. Parametric uncertainty
+is quantified through 500 Monte Carlo draws, yielding P10--P90 bands across all
+output variables. By 2049, projected populations range from 73{,}172 (Degrowth)
+to 179{,}021 (Overgrowth), with the Continuity baseline at 117{,}666 and the
+Density compact-growth pathway at 104{,}914. The resulting scenarios support
+long-term infrastructure planning, sustainability assessment, and policy
+comparison, and provide a baseline for future human-in-the-loop and agent-based
+simulations. In line with the MIT Media Lab City Science vision, the framework
+is designed as a transparent, human-in-the-loop decision-support baseline for
+exploring trade-offs across plausible futures. Limitations include residual data
+gaps, uncertainty in exogenous drivers, simplified causal assumptions, and the
+absence of endogenous climate forcing, but the approach offers a reproducible,
+updateable, and historically grounded foundation for scenario baselines in
+data-scarce contexts.
+
+% ============================================================
+\section{Introduction}
+% ============================================================
+
+Small countries increasingly need evidence-based ways to explore long-term
+planning choices under climate pressure, resource constraints, and tightly
+coupled social--economic--environmental systems~\cite{riahi2017ssps}. Yet many
+planning workflows still rely on single ``most-likely'' projections, which can
+miss uncertainty, nonlinear effects, and cross-sector
+dependencies~\cite{amer2013scenario}. Although machine learning approaches are
+widely used for forecasting in urban and territorial
+systems~\cite{batty2018digitaltwins}, they often require large, stable datasets
+and can be hard to interpret---constraints that are especially acute in
+small-country contexts where indicators are fragmented across institutions and
+across time.
+
+Digital twins and scenario-based decision support offer a promising alternative
+by organizing heterogeneous evidence into interactive models that compare
+multiple plausible futures rather than one deterministic
+outcome~\cite{batty2018digitaltwins}. However, existing frameworks often
+struggle with transparent assumptions, consistent indicator definitions, and
+reproducible pipelines that remain updateable as new official statistics are
+released~\cite{udtreview2024}. Without a standardized scenario baseline,
+scenario narratives can become incomparable, and trajectories across domains
+(e.g., population, housing, energy, land) can drift into internal
+inconsistency. This challenge is especially relevant to the MIT Media Lab City
+Science vision, which emphasizes transparent, human-centered, and
+decision-oriented tools that help communities explore trade-offs across
+alternative futures rather than optimize a single
+forecast~\cite{alonso2018cityscope,noyman2022cityscope}.
+
+This paper introduces the Andorra Clone Scenario Engine, a data-grounded
+framework that harmonizes multi-source national indicators into a reproducible
+KPI dataset and generates structured scenario trajectories for Andorra to 2049.
+A central innovation relative to earlier versions of the framework is a
+\textbf{methodological inversion of the population--economy causal chain}.
+Whereas a population-as-driver approach treats future headcount as an
+exogenous input and then derives economic and infrastructure consequences,
+Andorra's demographic structure---where roughly 55\% of residents are
+foreign-born labour migrants whose presence directly follows economic
+activity---motivates the reverse direction: GDP growth is the primary
+exogenous lever, and population evolves endogenously through a lagged
+labour-immigration elasticity grounded in IMF\,(2025) Andorra Selected Issues
+and World Bank panel data. A KPI dictionary and data pipeline standardize units,
+frequency, and provenance, while the scenario engine encodes explicit drivers
+and propagates them through bounded, coupled update rules to maintain
+cross-domain consistency. Key state variables such as building stock evolve
+endogenously via a permits--demolition stock--flow mechanism, and downstream
+infrastructure and environmental indicators are computed deterministically from
+the shared state. The result
+is a transparent, updateable, and auditable scenario baseline suitable for
+infrastructure stress testing, sustainability assessment, and policy comparison
+in data-scarce environments, and it provides a foundation for future extensions
+that incorporate humanized AI agents to study behavioral responses under
+alternative futures.
+
+% ============================================================
+\section{Related Work}
+% ============================================================
+
+Scenario engines and digital twins for planning sit at the intersection of
+structured futures, territorial-scale decision support, and reproducible
+indicator pipelines. This section summarizes key strands and positions the gap
+addressed by the Andorra Clone Scenario Engine.
+
+\subsection{Scenario Planning and Structured Futures}
+Scenario planning explores plausible futures under deep uncertainty by
+constructing internally coherent alternative trajectories for stress testing
+rather than point prediction~\cite{amer2013scenario}. In climate research,
+scenario families such as the Shared Socioeconomic Pathways (SSPs) provide
+narratives and quantitative pathways to support consistent cross-domain
+analysis~\cite{riahi2017ssps,oneill2014ssp}. However, SSP-style approaches are
+not tailored to small-country workflows where indicators are fragmented, time
+series are short, and update rules must remain interpretable as new official
+statistics arrive. This motivates lighter scenario engines that preserve
+explicit assumptions, comparability, and auditability while adapting to
+data-scarce contexts.
+
+\subsection{Digital Twins for Territorial Planning}
+Digital twins connect data, models, and decision workflows through maintainable
+digital representations of real systems, where value comes from purposeful
+abstraction and interpretability rather than perfect
+mirroring~\cite{batty2018digitaltwins}. Reviews emphasize recurring challenges
+in data integration, interoperability, governance, and auditable
+assumptions~\cite{udtreview2024}. National initiatives likewise stress
+trustworthy data and clear evolution
+mechanisms~\cite{cdbb2018gemini,ndtp2024principles}. Yet many programs focus on
+platform architecture and leave open the practical problem of building an
+\emph{updateable, reproducible scenario baseline} that stays cross-domain
+consistent (population--housing--economy--environment). The Andorra Clone
+Scenario Engine is positioned as an upstream layer that prioritizes harmonized
+baselines and consistent scenario propagation before higher-fidelity simulation
+or interfaces. This orientation is also consistent with the MIT Media Lab City
+Science approach, in which digital platforms such as CityScope are used not as
+exhaustive replicas of reality, but as transparent, interactive
+decision-support systems for comparing alternative urban futures and supporting
+community engagement~\cite{grignard2018cityscope,berke2022using}.
+
+\subsection{Labour-Migration--Economy Linkages}
+In small economies with high foreign-born labour shares, the direction of
+causality between economic growth and population growth runs primarily from
+economy to people rather than vice versa. A growing empirical literature
+documents GDP-to-migration elasticities in the range of 0.3--0.6 for small
+European destinations~\cite{imf2025andorra,worldbank2024}. Housing costs
+introduce a self-limiting feedback: when rent burdens exceed roughly 30\% of
+household income, net in-migration is empirically shown to decelerate even
+under continued economic expansion~\cite{Sa2015,Diamond2016}. Incorporating
+these two mechanisms---a lagged GDP elasticity and an affordability
+brake---makes the population projection endogenous and removes the need to
+specify future headcounts as arbitrary scenario assumptions.
+
+\subsection{Indicator Frameworks, Harmonization, and Reproducibility}
+Frameworks such as OECD Regional Well-Being and the UN SDG indicators provide
+guidance on what to measure and how to maintain comparability, including
+standardized metadata and evolving
+methodologies~\cite{oecdregionalwellbeing,unstatsSDGmetadata}. In small-country
+settings, operational use typically requires a pragmatic KPI dictionary that
+harmonizes heterogeneous sources into consistent units, frequency, and
+definitions. A key challenge is \emph{computational linkability}: ensuring
+indicators evolve together under scenario drivers without internal
+contradictions. Reproducibility principles (e.g., FAIR) further imply that
+provenance, transformations, and definitions should be versioned and re-runnable
+as data updates~\cite{wilkinson2016fair}. In practice, ad hoc preprocessing and
+non-versioned assumptions remain common, limiting auditability, comparability
+across releases, and reuse.
+
+\subsection{Built Environment Dynamics and Environmental Consistency}
+Housing affordability is often tracked through cost-burden metrics, while built
+environment evolution is frequently represented with stock--flow logic
+(construction/permits versus depreciation), responding to demand and
+constraints~\cite{eurostatHousingCostOverburden}. In land-constrained settings,
+coupling building expansion to land and natural coverage is particularly
+important. Environmental trajectories (CO$_2$, air quality, renewables, resource
+demand) are commonly linked to socio-economic drivers in integrated scenario
+frameworks, but maintaining consistency at national scale is difficult when
+indicators are treated as independent trends~\cite{riahi2017ssps}. This
+motivates lightweight accounting-style couplings that preserve interpretability
+for stress testing while avoiding the false precision of over-specified models in
+data-limited settings.
+
+\subsection{Gap Analysis and Contribution of This Work}
+Across the literature, three gaps recur when moving from general
+scenario/digital twin concepts to deployable small-country workflows: (i)
+fragmented baselines that are difficult to harmonize and update, (ii)
+cross-domain inconsistency without explicit couplings, and (iii) limited
+auditability due to non-versioned transformations and assumptions. The Andorra
+Clone Scenario Engine addresses these gaps with a minimal, transparent,
+updateable approach: a KPI dictionary and harmonization pipeline that yields a
+consistent national state vector; an inverted causal chain that derives
+population endogenously from GDP growth rather than imposing it exogenously;
+and a scenario engine that produces comparable trajectories via
+explicit drivers and bounded update rules. The output is an auditable scenario
+baseline that can serve as an upstream layer for broader digital twin interfaces
+and later human-in-the-loop or agent-based extensions.
+
+% ============================================================
+\section{Methodology}
+\label{sec:methodology}
+% ============================================================
+
+This section describes the Andorra Clone Scenario Engine as a reproducible
+modeling pipeline: a harmonized KPI state representation, a versioned,
+updateable data layer, a modular scenario layer (drivers and constraints), a
+deterministic yearly state-update engine, a spatial growth allocation layer,
+and a derived-infrastructure calculator. The goal is to produce interpretable,
+comparable KPI trajectories under alternative assumptions while keeping
+provenance and update rules explicit.
+
+\subsection{System Overview and Architecture}
+\label{subsec:system_overview}
+
+As shown in Figure~\ref{fig:system_architecture}, the system is structured as a
+layered pipeline: (i) a \textit{data layer} that ingests, cleans, and
+harmonizes multi-source datasets into a historical baseline state; (ii) an
+\textit{engine + calculator layer} that defines scenario and driver
+configurations (horizon, exogenous trajectories, policy regimes/constraints)
+and advances the yearly state vector through the core scenario engine; (iii) a
+\textit{metric layer} that exports scenario outputs (time series, endpoints,
+rollups) and computes derived metrics and QA signals (deltas vs.\ baseline,
+constraint/feasibility flags, and consistency checks); (iv) a \textit{visualisation layer} that renders
+outputs through a lightweight web dashboard and a 3D Unity-based map interface;
+and (v) a \textit{tangible interface layer} that enables human-in-the-loop
+exploration via an Arduino-controlled physical table for interactive scenario
+comparison. This layered architecture is also aligned with the MIT Media Lab
+City Science approach, in which harmonized data, simulation, visualization, and
+tangible interfaces are integrated to support transparent comparison of
+alternative futures rather than a single optimized output~\cite{noyman2019reversed}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{System Architecture.png}
+    \caption{End-to-end methodology. The engine converts heterogeneous datasets
+    into a harmonized KPI baseline, applies scenario drivers and constraints,
+    advances the national state vector yearly via deterministic update rules,
+    and renders the results through a web dashboard and a tangible physical interface.}
+    \label{fig:system_architecture}
+\end{figure}
+
+\subsection{KPI State Representation}
+\label{subsec:kpi_framework}
+
+The national system is represented as a yearly KPI state vector
+\begin{equation}
+S_t = \{k^{(1)}_t, k^{(2)}_t, \dots, k^{(n)}_t\},
+\end{equation}
+where KPIs are grouped into (i) Social, (ii) Economic, (iii) Built Environment,
+(iv) Infrastructure, and (v) Environmental layers. Each KPI is either
+\textbf{observed} (initialized from data at baseline year) or \textbf{derived}
+(computed from other KPIs through deterministic transformations).
+
+The baseline year state $S_0$ (calibrated to 2024) initializes all runs.
+Scenarios do not change the KPI definitions; they change only the
+\textit{drivers}, \textit{constraints}, or selected \textit{parameters} used
+by the update rules, ensuring that outputs remain comparable across runs and
+across future updates of the baseline.
+
+\subsection{Data Pipeline and Harmonization}
+\label{subsec:data_pipeline}
+
+The pipeline converts heterogeneous indicator sources into a single harmonized
+baseline state and a consistent historical time series used for calibration and
+validation. Sources may differ in units, reporting frequency, and missingness;
+therefore, the pipeline enforces a consistent yearly timestep and a standard
+KPI dictionary.
+
+\paragraph{Transformations and alignment.}
+\begin{itemize}
+    \item \textbf{Unit normalization:} monetary values are expressed in
+          consistent currency and time basis; physical quantities are
+          standardized (e.g., kWh, m$^3$).
+    \item \textbf{Temporal alignment:} all KPIs are mapped onto a yearly index;
+          sub-annual series are aggregated (e.g., sum or mean) using
+          KPI-appropriate rules.
+    \item \textbf{Missing values:} missing values inside the historical range
+          are filled by conservative interpolation; missing values at boundaries
+          use last-observation carried forward/backward to preserve continuity
+          and should be interpreted as pragmatic imputations rather than
+          observations.
+    \item \textbf{Bounds and sanity checks:} physically or logically implausible
+          values are prevented using conservative clamping ranges to keep
+          trajectories interpretable and stable.
+\end{itemize}
+
+These steps prioritize consistency and reproducibility, although they do not
+remove the need for later source-specific validation.
+
+\subsection{Historical Calibration}
+\label{sec:calibration}
+
+Three parameters govern the medium-run level and growth trajectory of GDP per
+capita and household income: the total factor productivity growth rate
+$g_\text{TFP}$, the tourism--GDP elasticity $\gamma_2$, and the
+household-income coefficient $a_1$. Default prior values derived from the
+literature ($g_\text{TFP}^0=1.6\%$, $\gamma_2^0=0.05$, $a_1^0=1.296$) are
+updated by minimising the root-mean-square error between simulated and observed
+real GDP per capita over the period 2010--2024.
+
+Formally, let $\hat{Y}_t(\boldsymbol{\theta})$ denote the simulated GDP per
+capita in year $t$ given parameter vector
+$\boldsymbol{\theta}=(g_\text{TFP},\gamma_2,a_1)$, and let $Y_t^*$ denote the
+observed value. The calibration objective is
+\begin{equation}
+  \hat{\boldsymbol{\theta}} = \arg\min_{\boldsymbol{\theta}}
+    \sqrt{\frac{1}{T}\sum_{t=2010}^{2024}
+    \left(\hat{Y}_t(\boldsymbol{\theta}) - Y_t^*\right)^2}.
+  \label{eq:calib_obj}
+\end{equation}
+Equation~\eqref{eq:calib_obj} is solved with the derivative-free Nelder--Mead
+simplex algorithm~\cite{Nelder1965} as implemented in
+\texttt{scipy.optimize}~\cite{Virtanen2020}.
+
+The calibrated estimates are
+\begin{equation}
+  \hat{g}_\text{TFP} = 0.865\%~\text{yr}^{-1}, \quad
+  \hat{\gamma}_2 = 0.0651, \quad
+  \hat{a}_1 = 1.386,
+  \label{eq:calib_result}
+\end{equation}
+yielding an in-sample RMSE of 1.77\%. The lower calibrated $g_\text{TFP}$
+relative to the prior (1.60\%) reflects Andorra's post-2008 productivity
+slowdown documented by OECD\,(2022); the upward revision of $a_1$ captures the
+sustained compression of the wage-to-income gap driven by tourism-sector
+earnings. All scenario projections use these calibrated values as their base.
+
+\paragraph{Out-of-target consistency checks.}
+Calibration targets GDP per capita exclusively. Two qualitative checks provide
+directional reassurance. First, the observed Andorran population was nearly flat
+from 2010 to 2013 ($-532$ persons over three years), a period of suppressed net
+in-migration consistent with the housing-affordability brake described in
+Section~\ref{sec:housing_feedback}; from 2015 onward the population accelerated
+(+15{,}365 persons to 2024) as GDP growth eased affordability pressures. The
+calibrated model reproduces this qualitative two-regime pattern without
+additional tuning. Second, the observed average monthly salary grew from
+\EUR\,1{,}995 (2010) to \EUR\,2{,}571 (2024), a compounded annual rate of
+approximately 1.8\%; the calibrated $\hat{a}_1=1.386$ coefficient implies a
+wage-to-GDPpc ratio for 2010--2024 that tracks this growth profile to within
+$\sim$4\% mean absolute deviation.
+
+\subsection{GDP-Driven Endogenous Population Model}
+\label{sec:gdp_pop_model}
+
+A structurally important departure from earlier versions of the framework is the
+treatment of population as an \textbf{endogenous} variable driven by GDP growth
+rather than as an exogenous scenario input. This inversion is motivated by
+Andorra's demographic composition: approximately 55\% of residents are
+foreign-born labour migrants, and historical data show that net immigration
+responds to economic conditions with a lag of one to two years rather than
+driving them~\cite{imf2025andorra,worldbank2024}.
+
+\paragraph{Causal chain.}
+GDP growth generates labour demand; firms respond by requesting additional
+immigration permits; new residents arrive with a lag. The GDP-to-population
+elasticity is calibrated at 0.40 at a one-year lag and 0.10 at a two-year lag,
+consistent with IMF\,(2025) Andorra Selected Issues estimates and with the
+broader labour-migration literature for small European jurisdictions.
+
+\paragraph{Population update rule.}
+Let $g^\text{GDPpc}_{t-k}$ denote the growth rate of GDP per capita at lag
+$k$, and let $g^\text{nat}=-0.1\%\,\text{yr}^{-1}$ capture the natural
+demographic change (deaths exceed births at Andorra's fertility rate of
+0.8--1.5). The endogenous population evolves as
+
+\begin{equation}
+  P_{t+1} = P_t\!\left(1 + g^\text{nat}
+              + \beta_1\, g^\text{GDPpc}_{t}
+              + \beta_2\, g^\text{GDPpc}_{t-1}\right)
+            - \beta_\text{afford}
+              \max\!\left(0,\,\frac{A_t}{100} - 0.30\right)P_t,
+  \label{eq:pop_gdp}
+\end{equation}
+where $\beta_1=0.40$, $\beta_2=0.10$, and $\beta_\text{afford}=0.10$ is the
+housing-affordability suppression coefficient described in
+Section~\ref{sec:housing_feedback}. The scenario layer specifies a GDP per
+capita trajectory (via the TFP growth rate and the tourism driver); population
+follows endogenously from Equation~\eqref{eq:pop_gdp} without requiring an
+assumed headcount endpoint.
+
+\subsection{Housing-Affordability Migration Feedback}
+\label{sec:housing_feedback}
+
+Empirical evidence from small European jurisdictions suggests that housing
+affordability materially affects residential location
+decisions~\cite{Sa2015,Diamond2016}. Let $A_t$ denote the ratio of median
+annual housing cost to median gross household income (expressed as a
+percentage), and let $\bar{A}=30\%$ denote the affordability threshold above
+which net in-migration is suppressed. The last term of
+Equation~\eqref{eq:pop_gdp} implements this feedback: it is zero whenever
+housing is affordable and becomes active only once the burden threshold is
+breached, ensuring the feedback is one-sided.
+
+Housing prices evolve endogenously as a function of population pressure and
+income growth; the resulting affordability ratio $A_t$ feeds back into net
+migration as described above. Under all four scenarios the median 2049
+affordability burden converges to approximately 30\% of gross household income,
+consistent with the threshold at which in-migration ceases to amplify further
+housing demand.
+
+\subsection{Tourism Carrying-Capacity Constraint}
+\label{sec:tourism_cap}
+
+Following the Tourism Area Life Cycle framework~\cite{Butler1980} and empirical
+evidence on small-destination saturation~\cite{Peeters2019}, we impose a
+logistic ceiling on annual tourism arrivals. Infrastructure-scaled carrying
+capacity is defined as
+\begin{equation}
+  C_t = C_0 \left(\frac{B_t}{B_0}\right)^{0.4}
+              \left(\frac{P_t}{P_0}\right)^{0.2},
+  \label{eq:tour_cap}
+\end{equation}
+where $C_0 = 9{,}646{,}656 / 0.85 \approx 11.35\,\text{M}$ visitor-nights is
+the implied capacity at the 2024 base year (with base businesses $B_0=10{,}645$
+and base population $P_0=87{,}097$). The exponents reflect the relative roles of
+commercial infrastructure (0.4) and resident hosting capacity (0.2) in
+determining the absorption limit.
+
+When utilisation $u_t = T_t / C_t$ exceeds the critical threshold
+$\bar{u}=0.85$, arrivals are curtailed via an exponential friction term:
+\begin{equation}
+  T_{t+1}^* =
+  \begin{cases}
+    T_{t+1} & \text{if } u_t \leq 0.85,\\[4pt]
+    C_t \cdot 0.85\;+\;\bigl(T_{t+1} - C_t \cdot 0.85\bigr)
+        \exp\!\bigl(-3\,(u_t - 0.85)\bigr) & \text{if } u_t > 0.85.
+  \end{cases}
+  \label{eq:tour_friction}
+\end{equation}
+The friction coefficient of 3 implies that each percentage-point of excess
+utilisation above the threshold attenuates marginal arrivals by approximately
+$3\%$; at $u_t=1.0$ the effective ceiling is approached asymptotically.
+
+\subsection{Scenario Engine Dynamics}
+\label{subsec:scenario_engine}
+
+The scenario engine advances the state $S_t \rightarrow S_{t+1}$ using
+deterministic equations and bounded constraints. We define the growth operator
+\begin{equation}
+g(x_t)=\frac{x_t-x_{t-1}}{\max(x_{t-1},\epsilon)},
+\end{equation}
+and a clamp function $clamp(x,a,b)=\min(\max(x,a),b)$.
+
+\paragraph{Exogenous drivers vs endogenous KPIs.}
+In the updated framework, GDP per capita trajectory (set by the TFP growth rate
+and the tourism driver) is the primary exogenous scenario lever. Population is
+endogenous, following from the GDP-to-labour-immigration chain described in
+Section~\ref{sec:gdp_pop_model}. All remaining KPIs evolve endogenously through
+shared update rules, which enforces cross-domain coupling (e.g., population
+affects housing, housing affects affordability, affordability feeds back into
+migration pressure).
+
+\paragraph{Core state-update template.}
+For each endogenous KPI $k_t$, the engine applies:
+\begin{equation}
+k_{t+1} = clamp\Big(k_t + F_k(S_t, D_{t+1};\theta_k),\; \underline{k},\overline{k}\Big),
+\end{equation}
+where $D_{t+1}$ are scenario drivers at year $t{+}1$ and $\theta_k$ are
+calibrated parameters.
+
+\paragraph{Examples of coupled update forms.}
+
+\textit{(1) Stock--flow dynamics for built environment.}
+\begin{equation}
+Stock_{t+1} = \max(\underline{Stock},\; Stock_t + Inflow_t - \delta\,Stock_t),
+\end{equation}
+where $Inflow_t$ is a nonnegative function of demand pressure and constraints,
+and $\delta$ is a depreciation/demolition rate.
+
+\textit{(2) Price/pressure proxies from scarcity and demand.}
+\begin{equation}
+Price_{t+1} = H\Big(Income_{t+1},\; \frac{Stock_{t+1}}{Demand_{t+1}},\; Rate_t,\; Driver_{t+1}\Big).
+\end{equation}
+
+\textit{(3) Burden-style affordability metrics.}
+\begin{equation}
+Burden_{t+1}=clamp\left(\frac{Cost_{t+1}/12}{\max(Salary_{t+1},\epsilon)}\cdot 100,\; 0,\; \overline{b}\right).
+\end{equation}
+
+\textit{(4) Environmental accounting linked to socio-economic drivers.}
+\begin{equation}
+Envpc_{t+1}=Envpc_0 \cdot \left(\frac{GDPpc_{t+1}}{GDPpc_0}\right)^{\eta}
+\cdot \eta_{dens}(Density_{t+1})\cdot \eta_{driver}(Driver_{t+1}),
+\quad
+Env_{t+1}=Envpc_{t+1}\cdot Pop_{t+1}.
+\end{equation}
+
+\subsection{Derived Infrastructure Calculator}
+\label{subsec:infrastructure_calc}
+
+Infrastructure requirements are computed deterministically from the current-year
+state, primarily from population and per-capita/service ratios.
+
+\paragraph{Electricity demand and capacity.}
+\begin{equation}
+E_t = Pop_t \cdot e_{pc}, \qquad C_t = \frac{E_t}{CF \cdot H},
+\end{equation}
+where $e_{pc}$ is per-capita annual electricity use, $CF$ is a capacity factor,
+and $H=8760$ hours/year. A renewable share $r_t$ partitions required capacity:
+\begin{equation}
+C^{RE}_t = r_t \cdot C_t, \qquad C^{NRE}_t = (1-r_t)\cdot C_t.
+\end{equation}
+
+\paragraph{Water demand and security index.}
+\begin{equation}
+W^{hh}_t = \frac{Pop_t \cdot w_{pc} \cdot 365}{1000}, \qquad
+W^{tot}_t = \frac{W^{hh}_t}{\alpha}, \qquad
+I^W_t = \frac{Y_{safe}}{W^{tot}_t},
+\end{equation}
+where $w_{pc}$ is liters/person/day, $\alpha$ is the household share of total
+demand, and $Y_{safe}$ is a safe-yield proxy.
+
+\paragraph{Health and education capacity.}
+\begin{equation}
+Beds^{req}_t = \frac{b}{1000}\,Pop_t, \qquad
+Stu_t = \left(\frac{Stu_0}{Pop_0}\right)Pop_t, \qquad
+Class_t = \frac{Stu_t}{s_{class}}, \qquad Schools_t = \frac{Stu_t}{s_{school}}.
+\end{equation}
+
+\subsection{Reproducibility and Updateability}
+\label{subsec:reproducibility}
+
+The methodology is designed to be re-runnable when new statistics arrive. The
+KPI dictionary, unit conversions, harmonization rules, scenario update
+equations, and spatial allocation scripts are treated as versionable components.
+This ensures that scenario outputs remain auditable artifacts of (i) a specific
+data release and (ii) an explicit set of scenario drivers and parameters, rather
+than an opaque one-off spreadsheet process.
+
+% ============================================================
+\section{Experiments}
+\label{sec:experiments}
+% ============================================================
+
+This section describes the scenario suite implemented in this study and the
+experimental protocol used to generate outputs from the Andorra Clone Scenario
+Engine over the 2024--2049 horizon. Consistent with the MIT Media Lab City
+Science approach, the experiments are framed as comparative decision-support
+exercises designed to make trade-offs legible across alternative futures, rather
+than as a search for a single optimal forecast~\cite{orii2020methodology}.
+
+\subsection{Experimental Protocol}
+\label{subsec:exp_protocol}
+
+All experiments share a common baseline initialization year (2024) and
+simulation horizon $T=2049$. Each run proceeds in yearly steps. At each step,
+the scenario layer provides (i) the GDP per capita growth target for the year
+(the primary exogenous driver) and (ii) scenario-specific constraints or policy
+regimes. The engine then updates the KPI state vector $S_t \rightarrow S_{t+1}$
+using the deterministic transition rules defined in
+Section~\ref{sec:methodology}. Population evolves endogenously from the GDP
+trajectory via Equation~\eqref{eq:pop_gdp}.
+
+\paragraph{Controlled components.}
+Across scenarios, we hold constant: (i) the KPI dictionary, (ii) the baseline
+initialization procedure, (iii) harmonization and clamping rules, and (iv) the
+infrastructure calculator ratios. This ensures differences in outputs arise from scenario
+assumptions rather than changes in measurement.
+
+\paragraph{Recorded outputs.}
+For each run, the system records the full KPI trajectories $\{S_t\}_{t=0}^{T}$ and
+derived infrastructure requirements $\{I_t\}_{t=0}^{T}$.
+
+\subsection{Scenario Construction}
+\label{subsec:scenario_construction}
+
+Each scenario is defined by two elements:
+\begin{enumerate}
+    \item \textbf{GDP per capita growth trajectory:} a specified TFP growth rate
+          and tourism driver that together determine the GDPpc path, from which
+          population follows endogenously.
+    \item \textbf{Constraints / policy regime:} hard or soft rules that modify
+          how endogenous variables respond (e.g., spatial expansion restrictions
+          in Density, or accelerated affordability brake in Continuity).
+\end{enumerate}
+
+\subsection{Scenario Suite Implemented}
+\label{subsec:scenario_suite}
+
+We implement four scenarios spanning a broad design space of planning stress
+tests. The 2049 population endpoints implied by the GDP trajectories are:
+Overgrowth~179{,}021; Continuity~117{,}666; Density~104{,}914;
+Degrowth~73{,}172.
+
+\paragraph{Continuity (trend-following baseline).}
+A continuation pathway in which the TFP growth rate and tourism driver follow
+recent historical trends. Functions as the reference case.
+
+\paragraph{Overgrowth (high-growth stress test).}
+A high-growth pathway with elevated TFP ($g_\text{TFP}=6.0\%$) and sustained
+tourism expansion, implying strong labour demand and large net immigration.
+Designed to test upper-bound pressures on housing, infrastructure, and
+environmental proxies. Read as a stress scenario, not a normative target.
+
+\paragraph{Degrowth (contraction / low-growth stress test).}
+A low-growth pathway testing downward pressures on demand and service
+requirements. Tourism contracts and TFP stagnates, reducing labour demand and
+triggering net emigration in the low-accessibility periphery.
+
+\paragraph{Density (compact development regime).}
+A compact-growth pathway that enforces a no-expansion regime on the spatial
+footprint: all new residents are accommodated within existing walkable-access
+cores regardless of the GDP-driven immigration flow. Tests intensity-driven
+effects under constrained footprint expansion.
+
+\subsection{Comparison Metrics}
+\label{subsec:exp_metrics}
+
+Scenario comparison is multi-objective. We evaluate scenarios using:
+\begin{itemize}
+    \item \textbf{Endpoint comparison:} 2049 KPI values and derived
+          infrastructure requirements.
+    \item \textbf{Trajectory comparison:} full time-series behavior to identify
+          transient effects, nonlinearities, and constraint activation.
+    \item \textbf{Normalized composite views:} min--max normalization for
+          dashboard comparisons (with inversion for ``lower-is-better'' metrics).
+\end{itemize}
+
+% ============================================================
+\section{Results}
+\label{sec:results}
+% ============================================================
+
+\subsection{Baseline (2024) and horizon-year comparison (2049)}
+\label{subsec:baseline_and_2049}
+
+All scenario runs start from the same baseline state $S_{2024}$. The 2024
+initialization values are reported in the dashboard and serve as the shared
+reference for all scenario comparisons.
+
+\begin{table}[htbp]
+\centering
+\caption{Key 2049 indicators under four scenarios (calibrated model, median
+         run). Uncertainty bands (P10--P90) from $N=500$ Monte Carlo draws are
+         shown for GDP per capita. Population values are the endogenous model
+         outcomes driven by each scenario's GDP trajectory.}
+\label{tab:scenarios_2049}
+\small
+\begin{threeparttable}
+\begin{tabularx}{\textwidth}{lXXXX}
+\toprule
+\textbf{Indicator} & \textbf{Continuity} & \textbf{Overgrowth}
+                   & \textbf{Degrowth}   & \textbf{Density} \\
+\midrule
+Population
+  & 117{,}666 & 179{,}021 & 73{,}172 & 104{,}914 \\
+Foreign-born share (\%)
+  & $\sim$62 & $\sim$77 & $\sim$51 & $\sim$60 \\
+Housing afford.\ (\% income)
+  & $\approx$30 & $\approx$30 & $<$30 & $\approx$30 \\
+Tourism arrivals (M)\tnote{$\dagger$}
+  & $\sim$12 & $\sim$17 & $\sim$5.5 & $\sim$12 \\
+CO$_2$ per capita (t)
+  & moderate & lower & higher & moderate \\
+Renewable share
+  & $\sim$96\% & $\sim$97\% & $\sim$95\% & $\sim$96\% \\
+Water security index
+  & declining & low & maintained & declining \\
+Hospital beds gap
+  & $+57$ & $+230$ & $-93$ & $+208$ \\
+\bottomrule
+\end{tabularx}
+\begin{tablenotes}
+  \item[$\dagger$] Tourism ceiling active in Overgrowth and Density;
+        unconstrained projections would exceed infrastructure capacity.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+\begin{table*}[t]
+\centering
+\small
+\caption{Horizon-year (2049) outputs across scenarios. Infrastructure values are
+derived from the state vector using fixed service ratios. ``Beds gap'' is
+expressed relative to baseline hospital-bed capacity. Population values are
+endogenous model outputs driven by the GDP trajectory of each scenario.}
+\label{tab:results_2049}
+\begin{tabular}{p{2.5cm} p{2.0cm} p{2.0cm} p{2.0cm} p{2.0cm}}
+\hline
+\textbf{Indicator (2049)} & \textbf{Continuity} & \textbf{Overgrowth} & \textbf{Degrowth} & \textbf{Density} \\
+\hline
+Population $P$ & 117{,}666 & 179{,}021 & 73{,}172 & 104{,}914 \\
+Foreign-born (\%) & 62 & 77 & 51 & 60 \\
+Electricity demand (kWh/yr) & $353\times10^6$ & $537\times10^6$ & $219\times10^6$ & $315\times10^6$ \\
+Beds gap & $+57$ & $+230$ & $-93$ & $+208$ \\
+\hline
+Access [0,1] & 0.938 & 0.980 & 0.921 & 0.935 \\
+\hline
+NatCov & $\sim$0.91 & $\sim$0.86 & $\sim$0.93 & $\sim$0.93 \\
+WaterSec & declining & low & maintained & declining \\
+AQI & moderate & elevated & low & moderate \\
+\hline
+\end{tabular}
+\end{table*}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{scenario_radar_comparison_2035 (1)}
+    \caption{Cross-scenario comparison: radar plot across eight indicators
+    (min--max normalized). CO$_2$ and AQI are inverted so higher scores reflect
+    better environmental outcomes.}
+    \label{fig:scenario_radar_2049}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+\begin{subfigure}[t]{0.5\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{population_scenarios_2025_2035 (1)}
+    \caption{Population $P(t)$ --- endogenous, GDP-driven}
+    \label{fig:population}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.5\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{gdp_per_capita_scenarios_2025_2035 (1)}
+    \caption{GDP per capita $GDPpc(t)$ --- primary exogenous lever}
+    \label{fig:gdp-per-capita}
+\end{subfigure}
+
+\vspace{0.8em}
+
+\begin{subfigure}[t]{0.5\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{co2_total_scenarios_2025_2035 (1)}
+    \caption{Total CO$_2$ Emissions}
+    \label{fig:co2}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.5\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{forest_coverage_scenarios_2025_2035 (1)}
+    \caption{Natural Coverage}
+    \label{fig:natcov}
+\end{subfigure}
+
+\caption{Time-series trajectories (2014--2049). Historical values (2014--2024)
+provide calibration context; projections (2025--2049) are scenario outputs.
+Population trajectories are endogenous outputs of the GDP-driven immigration
+model rather than imposed inputs.}
+\label{fig:timeseries-2x2}
+\end{figure}
+
+\subsection{Trade-offs and output consistency}
+\label{subsec:tradeoffs_and_consistency}
+
+Because the system couples socio-economic, environmental, and infrastructure
+indicators, there is no universal ``best'' scenario; desirability depends on
+planning priorities. The results reveal four dominant trade-offs:
+
+\begin{itemize}
+    \item \textbf{Economic scale vs.\ capacity expansion:} Higher GDP growth
+          drives larger immigration flows and higher population, which in turn
+          raises electricity demand and service requirements (beds, schools).
+          In the highest-growth pathway, environmental proxies also deteriorate
+          (higher $AQI$ and lower $NatCov$), indicating coupled
+          infrastructure--environment stress.
+    \item \textbf{Business-as-usual does not remove resource stress:} The
+          trend-following pathway produces moderate growth, yet water security
+          declines relative to baseline and total emissions rise, implying
+          continuity does not eliminate key constraints.
+    \item \textbf{Environmental relief via contraction:} Degrowth improves
+          $NatCov$, $AQI$, and water security while increasing $WLB$, but
+          reduces GDP-driven labour demand and implies downsizing of service
+          capacity (negative bed gap and fewer schools).
+    \item \textbf{Compact growth shifts pressure into intensity:} Under a
+          no-expansion spatial regime, natural cover can be preserved while
+          GDP-driven immigration continues, but pressures reappear as
+          intensity-driven outcomes (lower water security and higher required
+          services per fixed networks), highlighting the tension between land
+          preservation and per-capita provision.
+\end{itemize}
+
+% ============================================================
+\section{Discussion}
+\label{sec:discussion}
+% ============================================================
+
+\subsection{Are the results ``good'' or ``bad''? (fitness-for-purpose)}
+
+Results should be judged against the system's goal: producing decision-relevant,
+cross-domain-consistent scenario trajectories for a small-country planning
+context, not a single ``best forecast.'' By this criterion, results are
+\textbf{good} in three ways: (i) outputs are \textbf{coupled}, so changes in
+the GDP driver propagate coherently into population, infrastructure requirements,
+and environmental pressures via the labour-immigration chain; (ii) scenarios
+\textbf{separate planning regimes}, surfacing qualitatively different stress
+patterns; and (iii) trade-offs remain \textbf{interpretable}, enabling
+comparative stress testing.
+
+However, results are \textbf{not yet ``good'' as predictive truth} for all
+indicators: several outcomes are proxy-based and require further calibration and
+validation before certain quantities can be treated as absolute rather than
+comparative. The extended 2049 horizon also amplifies compounding uncertainties,
+particularly in the GDP-to-population elasticity and the TFP growth rate.
+
+\subsection{Connecting findings to the research question}
+
+The research question asks whether a transparent, reproducible scenario engine
+can generate decision-relevant futures for a small country under uncertainty
+while maintaining cross-domain consistency. The results support this: outputs
+appear as \emph{bundled futures} in which socio-economic indicators,
+environmental signals, and infrastructure requirements co-evolve from a shared
+state update, making trade-offs explicit. The inverted causal chain---GDP drives
+population rather than vice versa---removes the need to impose arbitrary
+population headcount assumptions and grounds the demographic projections in
+observed labour-market dynamics.
+
+\subsection{Credibility and cautions}
+
+\paragraph{More credible (structural outputs).}
+The most defensible results follow directly from accounting and deterministic
+scaling: infrastructure requirements from population and service ratios,
+land-pressure measures tied to buildable constraints, and directionally
+consistent coupled dynamics. The GDP-to-population elasticity is calibrated
+against observed IMF and World Bank data.
+
+\paragraph{Use with caution (proxy outcomes).}
+Wellbeing indices and selected environmental proxies should be treated as
+\emph{comparative signals} rather than point predictions. The GDP-to-population
+elasticity, while consistent with published estimates, is estimated from a short
+and partially coincident time series; structural breaks (e.g., post-COVID
+labour-market reorganization) could shift it materially. The 2049 horizon
+amplifies all compounding errors relative to the original 2035 projection range.
+
+\subsection{Comparison with alternative methodologies}
+
+Time-series forecasting can be statistically grounded for individual variables
+but often lacks cross-domain coupling. System dynamics captures feedbacks but
+can become complex and calibration-heavy. ML can perform well with abundant
+stable data, but small-country multi-domain settings are typically data-limited
+and require explicit feasibility constraints. The scenario engine trades
+predictive optimality for transparency, updateability, and cross-domain
+consistency. The inversion of the population--GDP causal direction is a
+structural change that aligns the model more closely with Andorra's actual
+demographic drivers and reduces the arbitrariness of scenario headcount
+assumptions.
+
+\subsection{Planning implications}
+
+The results suggest that planning choices should be evaluated as \emph{bundles}
+rather than single KPI targets: higher economic growth drives larger immigration
+flows and higher service requirements; contraction relieves some pressures but
+implies difficult service right-sizing; compact growth can preserve land take
+but concentrates pressure into intensity-driven constraints (affordability and
+per-capita capacity). The housing-affordability feedback mechanism implies that
+the rent-to-income ratio is projected to approach 30\% across most pathways,
+activating the in-migration brake. This threshold should be treated as an
+early-warning indicator for housing policy. On tourism, the capacity model
+implies that sustained growth above 11--12 million visitor-nights per year will
+require commensurate investment in commercial infrastructure or active demand
+management.
+
+\subsection{Limitations}
+
+\begin{enumerate}
+    \item \textbf{Scenario forcing vs.\ causality:} GDP trajectories are steered
+          toward scenario-defined growth rates; outputs are internally consistent
+          scenarios, not causal forecasts.
+    \item \textbf{GDP-to-population elasticity uncertainty:} the elasticity
+          coefficients ($\beta_1=0.40$, $\beta_2=0.10$) are calibrated against
+          a relatively short historical series. Post-COVID structural changes in
+          Andorra's labour market could shift these values. A $\pm50\%$
+          sensitivity test on $\beta_1$ shifts the 2049 Continuity population
+          by approximately $\pm18{,}000$ persons.
+    \item \textbf{Housing market dynamics:} the model does not distinguish
+          owner-occupied from rental tenures, nor does it capture speculative
+          dynamics or the role of non-resident investors. Supply-side constraints
+          are held constant.
+    \item \textbf{Proxy indices:} wellbeing and resource-security indices remain
+          simplified and should be treated as comparative signals until
+          parameterized with domain-specific data.
+    \item \textbf{Tourism capacity parameterization:} the capacity function is
+          calibrated on a single cross-sectional observation (2024) and the
+          infrastructure elasticities are assumed rather than empirically
+          estimated from panel data. Seasonal distribution of arrivals, visitor
+          heterogeneity, and the quality dimension of tourism are not represented.
+    \item \textbf{Scope of uncertainty quantification:} Monte Carlo propagation
+          covers parametric uncertainty in $g_\text{TFP}$, $\gamma_2$, and
+          $a_1$ only; structural uncertainty and deep uncertainty over exogenous
+          shocks lie outside the present scope. The extended 2049 horizon
+          amplifies these gaps relative to the original 2035 projections.
+\end{enumerate}
+
+\subsection{Next steps (toward V2 validation)}
+
+Beyond improving calibration of the KPI engine, the main V1$\rightarrow$V2
+upgrade is a \textbf{humanized AI agent layer} inside Andorra Clone to simulate
+social response under alternative futures. The goal is a population of agents
+representing people and groups in Andorra who perceive, react, and decide in
+locally coherent ways, adding evaluation signals beyond macro KPIs such as
+perceived wellbeing and social
+acceptance~\cite{adornetto2025generative,garcia2025simulating,carrero2024integrating,li2025hugagent}.
+
+\paragraph{Additional V2 upgrades.}
+\begin{itemize}
+    \item Empirical re-estimation of the GDP-to-population elasticity using
+          panel data from comparable Alpine micro-states (Liechtenstein, San
+          Marino, Monaco) to reduce the reliance on a single country time series.
+    \item Formal KPI metadata schema and automated tests (definitions, units,
+          temporal resolution, provenance, bounds, transformations) to prevent
+          scale drift across releases.
+    \item Empirical estimation of tourism infrastructure elasticities from panel
+          data across comparable Alpine microstates.
+    \item Coupling the environmental module to a regional climate downscaling
+          product (e.g., Pyrenees-CORDEX) to endogenise temperature forcing.
+\end{itemize}
+
+% ============================================================
+\section{Conclusion}
+% ============================================================
+
+This paper presented the Andorra Clone Scenario Engine, a transparent,
+data-driven framework that transforms heterogeneous public and governmental
+indicators into comparable long-horizon trajectories to 2049. Three
+methodological advances distinguish this version. First, a
+\textbf{causal inversion of the population--economy relationship}: rather than
+treating population as an exogenous driver, the engine derives population
+endogenously from GDP growth via a labour-immigration elasticity
+($\beta_1=0.40$ at one-year lag, $\beta_2=0.10$ at two-year lag), grounded in
+IMF\,(2025) Andorra Selected Issues and consistent with labour-market dynamics
+in small European jurisdictions. This removes the need for arbitrary headcount
+assumptions and produces demographically coherent scenario trajectories.
+Second, key macroeconomic parameters are calibrated against the 2010--2024
+historical record via Nelder--Mead optimisation (RMSE\,=\,1.77\%), anchoring
+all projections in observed dynamics.
+
+Across scenarios, the results show clear system-level trade-offs. Under the
+GDP-driven demographic model, the 2049 population ranges from 73{,}172
+(Degrowth) to 179{,}021 (Overgrowth), with Continuity at 117{,}666 and Density
+at 104{,}914. Expansion-driven growth tends to increase economic throughput
+while amplifying housing pressure, infrastructure load, and environmental stress.
+Degrowth reduces demand-side pressures and improves several environmental
+proxies, but constrains economic output and implies right-sizing of service
+infrastructure. The Density scenario separates \emph{more people} from
+\emph{more land use}: maintaining a fixed built footprint can preserve nature
+coverage, but concentrates stress in affordability and service provision within
+existing walkable cores.
+
+The housing-affordability feedback mechanism indicates that the rent-to-income
+ratio approaches 30\% across most pathways, activating the in-migration brake
+and suggesting that housing affordability is a binding planning constraint under
+all scenarios. Tourism arrivals are capped by the logistic carrying-capacity
+model near 17 million visitor-nights in Overgrowth, roughly 30\% below
+unconstrained extrapolations, highlighting the importance of active demand
+management at high-growth levels.
+
+The next major extension---a humanized AI agent layer---will allow evaluation
+not only of macro feasibility but of social acceptance and lived experience
+across Andorra's diverse resident communities. In line with the MIT Media Lab
+City Science vision, the framework is designed throughout as a transparent,
+human-in-the-loop decision-support system for exploring trade-offs across
+plausible futures rather than optimizing a single deterministic outcome.
+
+% bibliography at end
+\bibliographystyle{plain}
+\bibliography{references}
+
+\end{document}

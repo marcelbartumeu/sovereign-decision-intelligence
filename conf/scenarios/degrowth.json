@@ -2,8 +2,8 @@
   "id": "degrowth",
   "name": "Degrowth (sustainable rural communities)",
   "assumptions": {
-    "population_growth_rate": -0.003,
-    "tourism_growth_rate": -0.005,
-    "co2_intensity_change": -0.01
+    "gdp_growth_rate": -0.015,
+    "tourism_growth_rate": -0.010,
+    "co2_intensity_change": -0.010
   }
 }

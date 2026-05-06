@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 191a2474d644ae8449bb60de7482e91f, type: 3}
+  m_Name: Nuc_And
+  m_EditorClassIdentifier: 
+  asset: {fileID: 4900000, guid: 73cc87410ef1fb04090535d76c4115fa, type: 3}
+  data:
+  - coord: {x: 33.543953, y: 5.493168, z: 34.26634}
+  - coord: {x: 41.045216, y: 5.4696617, z: 39.935207}
+  nameSpaces:
+  - prefix: ogr
+    uri: http://ogr.maptools.org/
+  - prefix: gml
+    uri: http://www.opengis.net/gml/3.2
+  nodeList: //ogr:featureMember
+  parSize: 2
+  nucSize: 1
+  parColor: {r: 1, g: 0.4, b: 0, a: 1}
+  nucColor: {r: 0, g: 0.7019608, b: 0.7019608, a: 1}
+  parName: Andorra la Vella

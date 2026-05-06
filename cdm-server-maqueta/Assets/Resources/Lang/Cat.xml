@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Main>
+	<message key="intro">Benvinguts al Principat d’Andorra, un país amb una superfície de 468 quilòmetres quadrats</message>
+	<message key="borders_es">Andorra té dues fronteres: Espanya</message>
+	<message key="borders_fr">Andorra té dues fronteres: Espanya i França</message>
+	
+	<message key="parroquies">Andorra té 7 parròquies</message>
+	<message key="canillo">Andorra té 7 parròquies: Canillo</message>
+	<message key="encamp">Andorra té 7 parròquies: Encamp</message>
+	<message key="ordino">Andorra té 7 parròquies: Ordino</message>
+	<message key="massana">Andorra té 7 parròquies: La Massana</message>
+	<message key="andorra">Andorra té 7 parròquies: Andorra la Vella</message>
+	<message key="sant">Andorra té 7 parròquies: Sant Julià de Lòria</message>
+	<message key="escaldes">Andorra té 7 parròquies: Escaldes-Engordany</message>
+	
+	<message key="roads_1">Les nostres carreteres: <![CDATA[<color=#FF0000>Primàries </color>]]>
+Descarrega el mapa d’Andorra en PDF al punt 7 de la sala</message>
+	<message key="roads_2">Les nostres carreteres: <![CDATA[<color=#FF0000>Primàries </color>]]>i <![CDATA[<color=#FFCC00>Secundàries</color>]]>
+Descarrega el mapa d’Andorra en PDF al punt 7 de la sala
+	</message>
+	
+	<message key="lakes">Repartits per la geografia del nostre Principat, hi ha més de 80 llacs i estanys de diverses dimensions</message>
+	
+	<message key="nord">Riu Valira del Nord</message>
+	<message key="orient">Riu Valira d'Orient</message>
+	<message key="valira">Riu La Valira</message>
+	
+	<message key="mountains">Andorra, el país dels cims infinits: més de 50 cims que desafien els 2.000 metres, amb el <![CDATA[<color=#FF8C66>Comapedrosa </color>]]>liderant a 2.942!</message>
+	<message key="estripagec" foto="estripagec">Descobreix els 6 pics d'Ordino amb estripagecs únics!
+Descarrega el mapa en PDF al punt 7 de la sala
+	</message>
+
+	<message key="parcsIntro">Els nostres parcs naturals i paisatges culturals
+Descarrega el mapa en PDF al punt 7 de la sala
+	</message>
+	<message key="sorteny">Parc Natural de la Vall de Sorteny
+Descarrega el mapa en PDF al punt 7 de la sala
+	</message>
+	<message key="madriu">Vall del Madriu-Perafita-Claror</message>
+	<message key="coma">Parc Natural del Comapedrosa</message>
+	
+	<message key="shelters">Refugis
+Refugis guardats</message>
+	
+	<message key="coronallacs">Coronallacs
+Descarrega el PDF informatiu al punt 7 de la sala</message>
+	<message key="riberamunt">Descobreix Riberamunt
+Descarrega el PDF informatiu al punt 7 de la sala</message>
+	
+	<message key="tam_and">Descobreix els 7 Tamarros: Andy
+Demana el llibret al mostrador</message>
+	<message key="tam_esc">Descobreix els 7 Tamarros: Caldes
+Demana el llibret al mostrador</message>
+	<message key="tam_enc">Descobreix els 7 Tamarros: Enko
+Demana el llibret al mostrador</message>
+	<message key="tam_sant">Descobreix els 7 Tamarros: Lau
+Demana el llibret al mostrador</message>
+	<message key="tam_ord">Descobreix els 7 Tamarros: Dino
+Demana el llibret al mostrador</message>
+	<message key="tam_can">Descobreix els 7 Tamarros: Nilo
+Demana el llibret al mostrador</message>
+	<message key="tam_mas">Descobreix els 7 Tamarros: Massa
+Demana el llibret al mostrador</message>
+	
+	<message key="macarulla_can">Macarulla senders magics
+<![CDATA[<b>On són els bolets?</b>]]>
+Compra’t el llibret al mostrador</message>
+	<message key="macarulla_enc">Macarulla senders magics
+<![CDATA[<b>Rastres i petjades</b>]]>
+Compra’t el llibret al mostrador</message>
+	<message key="macarulla_ord">Macarulla senders magics
+<![CDATA[<b>Piero i la Reina Pitavola</b>]]>
+Compra’t el llibret al mostrador</message>
+	<message key="macarulla_mas">Macarulla senders magics
+<![CDATA[<b>El bosc dels Menairons</b>]]>
+Compra’t el llibret al mostrador</message>
+	<message key="macarulla_and">Macarulla senders magics
+<![CDATA[<b>Els amics de l’Estevet</b>]]>
+Compra’t el llibret al mostrador</message>
+	<message key="macarulla_esc">Macarulla senders magics
+<![CDATA[<b>La poció de la bruixa Quela</b>]]>
+Compra’t el llibret al mostrador</message>
+
+	<message key="cicloturisme">Descobreix les nostres 21 rutes de Cicloturisme
+Descarrega el PDF informatiu al punt 7 de la sala</message>
+	<message key="btt">Descobreix les nostres 33 rutes de BTT
+Descarrega el PDF informatiu al punt 7 de la sala</message>
+	
+	<message key="ski">Les nostres estacions d’esquí: <![CDATA[<color=#0059B3>Grandvalira </color>]]>i <![CDATA[<color=#92C9FF>Naturland</color>]]></message>
+	
+	<message key="todo">Els imprescindibles d'Andorra: els millors punts d'interès turístic que no et pots perdre!</message>
+	<message key="todo_cal">Els imprescindibles d'Andorra: els millors punts d'interès turístic que no et pots perdre!
+<![CDATA[<b>Caldea</b>]]></message>
+	<message key="todo_bridge">Els imprescindibles d'Andorra: els millors punts d'interès turístic que no et pots perdre!
+<![CDATA[<b>Pont Tibetà i Roc del Quer</b>]]></message>
+	<message key="todo_sol">Els imprescindibles d'Andorra: els millors punts d'interès turístic que no et pots perdre!
+<![CDATA[<b>Rellotge Solar</b>]]></message>
+	<message key="todo_mine">Els imprescindibles d'Andorra: els millors punts d'interès turístic que no et pots perdre!
+<![CDATA[<b>Mina de Ferro de Llorts</b>]]></message>
+	<message key="todo_ord">Els imprescindibles d'Andorra: els millors punts d'interès turístic que no et pots perdre!
+<![CDATA[<b>Romànic a la Cortinada</b>]]></message>
+	<message key="todo_mon">Els imprescindibles d'Andorra: els millors punts d'interès turístic que no et pots perdre!
+<![CDATA[<b>Mon Magic Family Park</b>]]></message>
+	<message key="todo_golf">Els imprescindibles d'Andorra: els millors punts d'interès turístic que no et pots perdre!
+<![CDATA[<b>Golf Soldeu</b>]]></message>
+	<message key="todo_funi">Els imprescindibles d'Andorra: els millors punts d'interès turístic que no et pots perdre!
+<![CDATA[<b>Funicamp</b>]]></message>
+	<message key="todo_creu">Els imprescindibles d'Andorra: els millors punts d'interès turístic que no et pots perdre!
+<![CDATA[<b>Telecabina i Telecadira Creussans</b>]]></message>
+	<message key="todo_bike">Els imprescindibles d'Andorra: els millors punts d'interès turístic que no et pots perdre!
+<![CDATA[<b>Bike Parc Pal Arinsal</b>]]></message>
+	<message key="todo_nat">Els imprescindibles d'Andorra: els millors punts d'interès turístic que no et pots perdre!
+<![CDATA[<b>Naturland</b>]]></message>
+</Main>

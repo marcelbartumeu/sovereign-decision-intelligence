@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d33017ab78021b2479d332445a6f57a7, type: 3}
+  m_Name: ValiraStep
+  m_EditorClassIdentifier: 
+  showStepEditor: 0
+  toShow: 1
+  cleanPrevious: 1
+  isLayer: 1
+  baseMaterial: {fileID: 2100000, guid: 65bf588059734e747897e83417def51e, type: 2}
+  layerMaterial:
+  - {fileID: 2100000, guid: 650d7040b7f3c35438998d7441fc06f4, type: 2}
+  - {fileID: 2100000, guid: f9375af8c0a534449bc639801fd13e95, type: 2}
+  - {fileID: 2100000, guid: 77e3b1ef95973f44eae1bf65d72d914a, type: 2}
+  - {fileID: 2100000, guid: 4b0ab37b6040daf499b29dac5c5b20eb, type: 2}
+  layerOpacity: 1
+  isPaint: 0
+  paints:
+  - rid: 9075968286782652418
+  isRightLeftText: 1
+  textKey: valira
+  sprite: {fileID: 0}
+  hasAnim: 0
+  anim:
+    material: {fileID: 0}
+    startValue: 0
+    targetValue: 0
+    speed: 0
+    shaderProperty: 
+    isLoop: 0
+    isSnow: 0
+  displayTime: 7
+  references:
+    version: 2
+    RefIds:
+    - rid: 9075968286782652418
+      type: {class: PaintLine, ns: , asm: Assembly-CSharp}
+      data:
+        showPaintEditor: 1
+        drawingTime: 
+        dataToPaint: {fileID: 0}
+        isForced: 0
+        speed: 0.02
+        size: 1
+        color: {r: 0, g: 0.2958603, b: 1, a: 1}
+        sortingOrder: 1
+        hasPointStartEnd: 0
+        startEndPos: {fileID: 0}
+        line: {fileID: 2516382553468909753, guid: 675dddd746cfaa540984b6b710abf7d3,
+          type: 3}

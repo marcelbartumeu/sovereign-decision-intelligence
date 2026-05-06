@@ -1,0 +1,1295 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ogr:FeatureCollection
+     gml:id="aFeatureCollection"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://ogr.maptools.org/ Nuclis.xsd"
+     xmlns:ogr="http://ogr.maptools.org/"
+     xmlns:gml="http://www.opengis.net/gml/3.2">
+  <gml:boundedBy><gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326"><gml:lowerCorner>42.439493346415 1.45835662129619</gml:lowerCorner><gml:upperCorner>42.6188981279722 1.73353844525478</gml:upperCorner></gml:Envelope></gml:boundedBy>
+                                                                                                                  
+  <ogr:featureMember>
+    <ogr:Nuclis gml:id="Nuclis.0">
+      <gml:boundedBy>
+		  <gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326">
+		  <gml:lowerCorner>42.4627367116758 1.50194932234439</gml:lowerCorner>
+			  <gml:upperCorner>42.4627367116758 1.50194932234439</gml:upperCorner>
+		  </gml:Envelope>
+	  </gml:boundedBy>
+      <ogr:geometryProperty>
+		  <gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="Nuclis.geom.0">
+			  <gml:pos>42.4627367116758 1.50194932234439</gml:pos>
+		  </gml:Point>
+	  </ogr:geometryProperty>
+      <ogr:OBJECTID>1</ogr:OBJECTID>
+      <ogr:AREA>0.00000000000</ogr:AREA>
+      <ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+      <ogr:POBLACIONS>1</ogr:POBLACIONS>
+      <ogr:POBLACIO_1>1</ogr:POBLACIO_1>
+      <ogr:CODI_POB>1</ogr:CODI_POB>
+      <ogr:POLYGONID>1</ogr:POLYGONID>
+      <ogr:SCALE>1.00000000000</ogr:SCALE>
+      <ogr:ANGLE>0</ogr:ANGLE>
+      <ogr:OID_>0</ogr:OID_>
+      <ogr:CODI_POB_1>1</ogr:CODI_POB_1>
+      <ogr:POBLACIO>Aixirivall</ogr:POBLACIO>
+      <ogr:CODI_PAR>1</ogr:CODI_PAR>
+      <ogr:CODI_INT>4</ogr:CODI_INT>
+      <ogr:HABITANTS>581</ogr:HABITANTS>
+      <ogr:HABI_LOG>2.764</ogr:HABI_LOG>
+      <ogr:OID_1>1</ogr:OID_1>
+      <ogr:CODI_PAR_1>1</ogr:CODI_PAR_1>
+      <ogr:PARROQUIA>Sant Julià de Lòria</ogr:PARROQUIA>
+      <ogr:ATRIBUT>1</ogr:ATRIBUT>
+      <ogr:OID_12>3</ogr:OID_12>
+      <ogr:CODI_INT_1>4</ogr:CODI_INT_1>
+      <ogr:INTERVAL>501-1000</ogr:INTERVAL>
+    </ogr:Nuclis>
+  </ogr:featureMember>
+  <ogr:featureMember>
+    <ogr:Nuclis gml:id="Nuclis.1">
+      <gml:boundedBy><gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326"><gml:lowerCorner>42.5722041972754 1.60798848532301</gml:lowerCorner><gml:upperCorner>42.5722041972754 1.60798848532301</gml:upperCorner></gml:Envelope></gml:boundedBy>
+      <ogr:geometryProperty><gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="Nuclis.geom.1"><gml:pos>42.5722041972754 1.60798848532301</gml:pos></gml:Point></ogr:geometryProperty>
+      <ogr:OBJECTID>2</ogr:OBJECTID>
+      <ogr:AREA>0.00000000000</ogr:AREA>
+      <ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+      <ogr:POBLACIONS>2</ogr:POBLACIONS>
+      <ogr:POBLACIO_1>2</ogr:POBLACIO_1>
+      <ogr:CODI_POB>18</ogr:CODI_POB>
+      <ogr:POLYGONID>2</ogr:POLYGONID>
+      <ogr:SCALE>1.00000000000</ogr:SCALE>
+      <ogr:ANGLE>0</ogr:ANGLE>
+      <ogr:OID_>17</ogr:OID_>
+      <ogr:CODI_POB_1>18</ogr:CODI_POB_1>
+      <ogr:POBLACIO>El Vilar</ogr:POBLACIO>
+      <ogr:CODI_PAR>6</ogr:CODI_PAR>
+      <ogr:CODI_INT>2</ogr:CODI_INT>
+      <ogr:HABITANTS>16</ogr:HABITANTS>
+      <ogr:HABI_LOG>1.204</ogr:HABI_LOG>
+      <ogr:OID_1>6</ogr:OID_1>
+      <ogr:CODI_PAR_1>6</ogr:CODI_PAR_1>
+      <ogr:PARROQUIA>Canillo</ogr:PARROQUIA>
+      <ogr:ATRIBUT>1</ogr:ATRIBUT>
+      <ogr:OID_12>1</ogr:OID_12>
+      <ogr:CODI_INT_1>2</ogr:CODI_INT_1>
+      <ogr:INTERVAL>1-100</ogr:INTERVAL>
+    </ogr:Nuclis>
+  </ogr:featureMember>
+  <ogr:featureMember>
+    <ogr:Nuclis gml:id="Nuclis.2">
+      <gml:boundedBy><gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326"><gml:lowerCorner>42.5561797894653 1.61618563606067</gml:lowerCorner><gml:upperCorner>42.5561797894653 1.61618563606067</gml:upperCorner></gml:Envelope></gml:boundedBy>
+      <ogr:geometryProperty><gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="Nuclis.geom.2"><gml:pos>42.5561797894653 1.61618563606067</gml:pos></gml:Point></ogr:geometryProperty>
+      <ogr:OBJECTID>3</ogr:OBJECTID>
+      <ogr:AREA>0.00000000000</ogr:AREA>
+      <ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+      <ogr:POBLACIONS>3</ogr:POBLACIONS>
+      <ogr:POBLACIO_1>3</ogr:POBLACIO_1>
+      <ogr:CODI_POB>14</ogr:CODI_POB>
+      <ogr:POLYGONID>3</ogr:POLYGONID>
+      <ogr:SCALE>1.00000000000</ogr:SCALE>
+      <ogr:ANGLE>0</ogr:ANGLE>
+      <ogr:OID_>13</ogr:OID_>
+      <ogr:CODI_POB_1>14</ogr:CODI_POB_1>
+      <ogr:POBLACIO>El Forn</ogr:POBLACIO>
+      <ogr:CODI_PAR>6</ogr:CODI_PAR>
+      <ogr:CODI_INT>2</ogr:CODI_INT>
+      <ogr:HABITANTS>39</ogr:HABITANTS>
+      <ogr:HABI_LOG>1.591</ogr:HABI_LOG>
+      <ogr:OID_1>6</ogr:OID_1>
+      <ogr:CODI_PAR_1>6</ogr:CODI_PAR_1>
+      <ogr:PARROQUIA>Canillo</ogr:PARROQUIA>
+      <ogr:ATRIBUT>1</ogr:ATRIBUT>
+      <ogr:OID_12>1</ogr:OID_12>
+      <ogr:CODI_INT_1>2</ogr:CODI_INT_1>
+      <ogr:INTERVAL>1-100</ogr:INTERVAL>
+    </ogr:Nuclis>
+  </ogr:featureMember>
+  <ogr:featureMember>
+    <ogr:Nuclis gml:id="Nuclis.3">
+      <gml:boundedBy><gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326"><gml:lowerCorner>42.5825630231176 1.66159576276435</gml:lowerCorner><gml:upperCorner>42.5825630231176 1.66159576276435</gml:upperCorner></gml:Envelope></gml:boundedBy>
+      <ogr:geometryProperty><gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="Nuclis.geom.3"><gml:pos>42.5825630231176 1.66159576276435</gml:pos></gml:Point></ogr:geometryProperty>
+      <ogr:OBJECTID>4</ogr:OBJECTID>
+      <ogr:AREA>0.00000000000</ogr:AREA>
+      <ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+      <ogr:POBLACIONS>4</ogr:POBLACIONS>
+      <ogr:POBLACIO_1>4</ogr:POBLACIO_1>
+      <ogr:CODI_POB>25</ogr:CODI_POB>
+      <ogr:POLYGONID>4</ogr:POLYGONID>
+      <ogr:SCALE>1.00000000000</ogr:SCALE>
+      <ogr:ANGLE>0</ogr:ANGLE>
+      <ogr:OID_>24</ogr:OID_>
+      <ogr:CODI_POB_1>25</ogr:CODI_POB_1>
+      <ogr:POBLACIO>Incles</ogr:POBLACIO>
+      <ogr:CODI_PAR>6</ogr:CODI_PAR>
+      <ogr:CODI_INT>3</ogr:CODI_INT>
+      <ogr:HABITANTS>423</ogr:HABITANTS>
+      <ogr:HABI_LOG>2.626</ogr:HABI_LOG>
+      <ogr:OID_1>6</ogr:OID_1>
+      <ogr:CODI_PAR_1>6</ogr:CODI_PAR_1>
+      <ogr:PARROQUIA>Canillo</ogr:PARROQUIA>
+      <ogr:ATRIBUT>1</ogr:ATRIBUT>
+      <ogr:OID_12>2</ogr:OID_12>
+      <ogr:CODI_INT_1>3</ogr:CODI_INT_1>
+      <ogr:INTERVAL>101-500</ogr:INTERVAL>
+    </ogr:Nuclis>
+  </ogr:featureMember>
+  <ogr:featureMember>
+    <ogr:Nuclis gml:id="Nuclis.4">
+      <gml:boundedBy><gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326"><gml:lowerCorner>42.4833022974645 1.45835662129619</gml:lowerCorner><gml:upperCorner>42.4833022974645 1.45835662129619</gml:upperCorner></gml:Envelope></gml:boundedBy>
+      <ogr:geometryProperty><gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="Nuclis.geom.4"><gml:pos>42.4833022974645 1.45835662129619</gml:pos></gml:Point></ogr:geometryProperty>
+      <ogr:OBJECTID>5</ogr:OBJECTID>
+      <ogr:AREA>0.00000000000</ogr:AREA>
+      <ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+      <ogr:POBLACIONS>5</ogr:POBLACIONS>
+      <ogr:POBLACIO_1>5</ogr:POBLACIO_1>
+      <ogr:CODI_POB>11</ogr:CODI_POB>
+      <ogr:POLYGONID>5</ogr:POLYGONID>
+      <ogr:SCALE>1.00000000000</ogr:SCALE>
+      <ogr:ANGLE>0</ogr:ANGLE>
+      <ogr:OID_>10</ogr:OID_>
+      <ogr:CODI_POB_1>11</ogr:CODI_POB_1>
+      <ogr:POBLACIO>Bixessarri</ogr:POBLACIO>
+      <ogr:CODI_PAR>1</ogr:CODI_PAR>
+      <ogr:CODI_INT>2</ogr:CODI_INT>
+      <ogr:HABITANTS>29</ogr:HABITANTS>
+      <ogr:HABI_LOG>1.462</ogr:HABI_LOG>
+      <ogr:OID_1>1</ogr:OID_1>
+      <ogr:CODI_PAR_1>1</ogr:CODI_PAR_1>
+      <ogr:PARROQUIA>Sant Julià de Lòria</ogr:PARROQUIA>
+      <ogr:ATRIBUT>1</ogr:ATRIBUT>
+      <ogr:OID_12>1</ogr:OID_12>
+      <ogr:CODI_INT_1>2</ogr:CODI_INT_1>
+      <ogr:INTERVAL>1-100</ogr:INTERVAL>
+    </ogr:Nuclis>
+  </ogr:featureMember>
+  <ogr:featureMember>
+    <ogr:Nuclis gml:id="Nuclis.5">
+      <gml:boundedBy><gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326"><gml:lowerCorner>42.4542539565271 1.4637602860602</gml:lowerCorner><gml:upperCorner>42.4542539565271 1.4637602860602</gml:upperCorner></gml:Envelope></gml:boundedBy>
+      <ogr:geometryProperty><gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="Nuclis.geom.5"><gml:pos>42.4542539565271 1.4637602860602</gml:pos></gml:Point></ogr:geometryProperty>
+      <ogr:OBJECTID>6</ogr:OBJECTID>
+      <ogr:AREA>0.00000000000</ogr:AREA>
+      <ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+      <ogr:POBLACIONS>6</ogr:POBLACIONS>
+      <ogr:POBLACIO_1>6</ogr:POBLACIO_1>
+      <ogr:CODI_POB>24</ogr:CODI_POB>
+      <ogr:POLYGONID>6</ogr:POLYGONID>
+      <ogr:SCALE>1.00000000000</ogr:SCALE>
+      <ogr:ANGLE>0</ogr:ANGLE>
+      <ogr:OID_>23</ogr:OID_>
+      <ogr:CODI_POB_1>24</ogr:CODI_POB_1>
+      <ogr:POBLACIO>Fontaneda</ogr:POBLACIO>
+      <ogr:CODI_PAR>1</ogr:CODI_PAR>
+      <ogr:CODI_INT>2</ogr:CODI_INT>
+      <ogr:HABITANTS>83</ogr:HABITANTS>
+      <ogr:HABI_LOG>1.919</ogr:HABI_LOG>
+      <ogr:OID_1>1</ogr:OID_1>
+      <ogr:CODI_PAR_1>1</ogr:CODI_PAR_1>
+      <ogr:PARROQUIA>Sant Julià de Lòria</ogr:PARROQUIA>
+      <ogr:ATRIBUT>1</ogr:ATRIBUT>
+      <ogr:OID_12>1</ogr:OID_12>
+      <ogr:CODI_INT_1>2</ogr:CODI_INT_1>
+      <ogr:INTERVAL>1-100</ogr:INTERVAL>
+    </ogr:Nuclis>
+  </ogr:featureMember>
+  <ogr:featureMember>
+    <ogr:Nuclis gml:id="Nuclis.6">
+      <gml:boundedBy><gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326"><gml:lowerCorner>42.545506972258 1.47511193765191</gml:lowerCorner><gml:upperCorner>42.545506972258 1.47511193765191</gml:upperCorner></gml:Envelope></gml:boundedBy>
+      <ogr:geometryProperty><gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="Nuclis.geom.6"><gml:pos>42.545506972258 1.47511193765191</gml:pos></gml:Point></ogr:geometryProperty>
+      <ogr:OBJECTID>7</ogr:OBJECTID>
+      <ogr:AREA>0.00000000000</ogr:AREA>
+      <ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+      <ogr:POBLACIONS>7</ogr:POBLACIONS>
+      <ogr:POBLACIO_1>7</ogr:POBLACIO_1>
+      <ogr:CODI_POB>35</ogr:CODI_POB>
+      <ogr:POLYGONID>7</ogr:POLYGONID>
+      <ogr:SCALE>1.00000000000</ogr:SCALE>
+      <ogr:ANGLE>0</ogr:ANGLE>
+      <ogr:OID_>34</ogr:OID_>
+      <ogr:CODI_POB_1>35</ogr:CODI_POB_1>
+      <ogr:POBLACIO>Pal</ogr:POBLACIO>
+      <ogr:CODI_PAR>0</ogr:CODI_PAR>
+      <ogr:CODI_INT>3</ogr:CODI_INT>
+      <ogr:HABITANTS>211</ogr:HABITANTS>
+      <ogr:HABI_LOG>2.324</ogr:HABI_LOG>
+      <ogr:OID_1>0</ogr:OID_1>
+      <ogr:CODI_PAR_1>0</ogr:CODI_PAR_1>
+      <ogr:PARROQUIA>La Massana</ogr:PARROQUIA>
+      <ogr:ATRIBUT>1</ogr:ATRIBUT>
+      <ogr:OID_12>2</ogr:OID_12>
+      <ogr:CODI_INT_1>3</ogr:CODI_INT_1>
+      <ogr:INTERVAL>101-500</ogr:INTERVAL>
+    </ogr:Nuclis>
+  </ogr:featureMember>
+  <ogr:featureMember>
+    <ogr:Nuclis gml:id="Nuclis.7">
+      <gml:boundedBy><gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326"><gml:lowerCorner>42.5732328591142 1.48340890851851</gml:lowerCorner><gml:upperCorner>42.5732328591142 1.48340890851851</gml:upperCorner></gml:Envelope></gml:boundedBy>
+      <ogr:geometryProperty><gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="Nuclis.geom.7"><gml:pos>42.5732328591142 1.48340890851851</gml:pos></gml:Point></ogr:geometryProperty>
+      <ogr:OBJECTID>8</ogr:OBJECTID>
+      <ogr:AREA>0.00000000000</ogr:AREA>
+      <ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+      <ogr:POBLACIONS>8</ogr:POBLACIONS>
+      <ogr:POBLACIO_1>8</ogr:POBLACIO_1>
+      <ogr:CODI_POB>9</ogr:CODI_POB>
+      <ogr:POLYGONID>8</ogr:POLYGONID>
+      <ogr:SCALE>1.00000000000</ogr:SCALE>
+      <ogr:ANGLE>0</ogr:ANGLE>
+      <ogr:OID_>8</ogr:OID_>
+      <ogr:CODI_POB_1>9</ogr:CODI_POB_1>
+      <ogr:POBLACIO>Arinsal</ogr:POBLACIO>
+      <ogr:CODI_PAR>0</ogr:CODI_PAR>
+      <ogr:CODI_INT>4</ogr:CODI_INT>
+      <ogr:HABITANTS>1041</ogr:HABITANTS>
+      <ogr:HABI_LOG>3.017</ogr:HABI_LOG>
+      <ogr:OID_1>0</ogr:OID_1>
+      <ogr:CODI_PAR_1>0</ogr:CODI_PAR_1>
+      <ogr:PARROQUIA>La Massana</ogr:PARROQUIA>
+      <ogr:ATRIBUT>1</ogr:ATRIBUT>
+      <ogr:OID_12>3</ogr:OID_12>
+      <ogr:CODI_INT_1>4</ogr:CODI_INT_1>
+      <ogr:INTERVAL>501-1000</ogr:INTERVAL>
+    </ogr:Nuclis>
+  </ogr:featureMember>
+  <ogr:featureMember>
+    <ogr:Nuclis gml:id="Nuclis.8">
+      <gml:boundedBy><gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326"><gml:lowerCorner>42.4767817723593 1.48930740463549</gml:lowerCorner><gml:upperCorner>42.4767817723593 1.48930740463549</gml:upperCorner></gml:Envelope></gml:boundedBy>
+      <ogr:geometryProperty><gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="Nuclis.geom.8"><gml:pos>42.4767817723593 1.48930740463549</gml:pos></gml:Point></ogr:geometryProperty>
+      <ogr:OBJECTID>9</ogr:OBJECTID>
+      <ogr:AREA>0.00000000000</ogr:AREA>
+      <ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+      <ogr:POBLACIONS>9</ogr:POBLACIONS>
+      <ogr:POBLACIO_1>9</ogr:POBLACIO_1>
+      <ogr:CODI_POB>2</ogr:CODI_POB>
+      <ogr:POLYGONID>9</ogr:POLYGONID>
+      <ogr:SCALE>1.00000000000</ogr:SCALE>
+      <ogr:ANGLE>0</ogr:ANGLE>
+      <ogr:OID_>1</ogr:OID_>
+      <ogr:CODI_POB_1>2</ogr:CODI_POB_1>
+      <ogr:POBLACIO>Aixovall</ogr:POBLACIO>
+      <ogr:CODI_PAR>1</ogr:CODI_PAR>
+      <ogr:CODI_INT>3</ogr:CODI_INT>
+      <ogr:HABITANTS>133</ogr:HABITANTS>
+      <ogr:HABI_LOG>2.124</ogr:HABI_LOG>
+      <ogr:OID_1>1</ogr:OID_1>
+      <ogr:CODI_PAR_1>1</ogr:CODI_PAR_1>
+      <ogr:PARROQUIA>Sant Julià de Lòria</ogr:PARROQUIA>
+      <ogr:ATRIBUT>1</ogr:ATRIBUT>
+      <ogr:OID_12>2</ogr:OID_12>
+      <ogr:CODI_INT_1>3</ogr:CODI_INT_1>
+      <ogr:INTERVAL>101-500</ogr:INTERVAL>
+    </ogr:Nuclis>
+  </ogr:featureMember>
+  <ogr:featureMember>
+    <ogr:Nuclis gml:id="Nuclis.9">
+      <gml:boundedBy><gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326"><gml:lowerCorner>42.439493346415 1.49141751402784</gml:lowerCorner><gml:upperCorner>42.439493346415 1.49141751402784</gml:upperCorner></gml:Envelope></gml:boundedBy>
+      <ogr:geometryProperty><gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="Nuclis.geom.9"><gml:pos>42.439493346415 1.49141751402784</gml:pos></gml:Point></ogr:geometryProperty>
+      <ogr:OBJECTID>10</ogr:OBJECTID>
+      <ogr:AREA>0.00000000000</ogr:AREA>
+      <ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+      <ogr:POBLACIONS>10</ogr:POBLACIONS>
+      <ogr:POBLACIO_1>10</ogr:POBLACIO_1>
+      <ogr:CODI_POB>26</ogr:CODI_POB>
+      <ogr:POLYGONID>10</ogr:POLYGONID>
+      <ogr:SCALE>1.00000000000</ogr:SCALE>
+      <ogr:ANGLE>0</ogr:ANGLE>
+      <ogr:OID_>25</ogr:OID_>
+      <ogr:CODI_POB_1>26</ogr:CODI_POB_1>
+      <ogr:POBLACIO>Juberri</ogr:POBLACIO>
+      <ogr:CODI_PAR>1</ogr:CODI_PAR>
+      <ogr:CODI_INT>3</ogr:CODI_INT>
+      <ogr:HABITANTS>153</ogr:HABITANTS>
+      <ogr:HABI_LOG>2.185</ogr:HABI_LOG>
+      <ogr:OID_1>1</ogr:OID_1>
+      <ogr:CODI_PAR_1>1</ogr:CODI_PAR_1>
+      <ogr:PARROQUIA>Sant Julià de Lòria</ogr:PARROQUIA>
+      <ogr:ATRIBUT>1</ogr:ATRIBUT>
+      <ogr:OID_12>2</ogr:OID_12>
+      <ogr:CODI_INT_1>3</ogr:CODI_INT_1>
+      <ogr:INTERVAL>101-500</ogr:INTERVAL>
+    </ogr:Nuclis>
+  </ogr:featureMember>
+  <ogr:featureMember>
+    <ogr:Nuclis gml:id="Nuclis.10">
+      <gml:boundedBy><gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326"><gml:lowerCorner>42.4655138480423 1.49257403988639</gml:lowerCorner><gml:upperCorner>42.4655138480423 1.49257403988639</gml:upperCorner></gml:Envelope></gml:boundedBy>
+      <ogr:geometryProperty><gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="Nuclis.geom.10"><gml:pos>42.4655138480423 1.49257403988639</gml:pos></gml:Point></ogr:geometryProperty>
+      <ogr:OBJECTID>11</ogr:OBJECTID>
+      <ogr:AREA>0.00000000000</ogr:AREA>
+      <ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+      <ogr:POBLACIONS>11</ogr:POBLACIONS>
+      <ogr:POBLACIO_1>11</ogr:POBLACIO_1>
+      <ogr:CODI_POB>38</ogr:CODI_POB>
+      <ogr:POLYGONID>11</ogr:POLYGONID>
+      <ogr:SCALE>1.00000000000</ogr:SCALE>
+      <ogr:ANGLE>0</ogr:ANGLE>
+      <ogr:OID_>37</ogr:OID_>
+      <ogr:CODI_POB_1>38</ogr:CODI_POB_1>
+      <ogr:POBLACIO>Sant Julià de Lòria</ogr:POBLACIO>
+      <ogr:CODI_PAR>1</ogr:CODI_PAR>
+      <ogr:CODI_INT>7</ogr:CODI_INT>
+      <ogr:HABITANTS>7062</ogr:HABITANTS>
+      <ogr:HABI_LOG>3.849</ogr:HABI_LOG>
+      <ogr:OID_1>1</ogr:OID_1>
+      <ogr:CODI_PAR_1>1</ogr:CODI_PAR_1>
+      <ogr:PARROQUIA>Sant Julià de Lòria</ogr:PARROQUIA>
+      <ogr:ATRIBUT>1</ogr:ATRIBUT>
+      <ogr:OID_12>6</ogr:OID_12>
+      <ogr:CODI_INT_1>7</ogr:CODI_INT_1>
+      <ogr:INTERVAL>6001-15000</ogr:INTERVAL>
+    </ogr:Nuclis>
+  </ogr:featureMember>
+  <ogr:featureMember>
+    <ogr:Nuclis gml:id="Nuclis.11">
+      <gml:boundedBy><gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326"><gml:lowerCorner>42.4934563594464 1.49534694742018</gml:lowerCorner><gml:upperCorner>42.4934563594464 1.49534694742018</gml:upperCorner></gml:Envelope></gml:boundedBy>
+      <ogr:geometryProperty><gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="Nuclis.geom.11"><gml:pos>42.4934563594464 1.49534694742018</gml:pos></gml:Point></ogr:geometryProperty>
+      <ogr:OBJECTID>12</ogr:OBJECTID>
+      <ogr:AREA>0.00000000000</ogr:AREA>
+      <ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+      <ogr:POBLACIONS>12</ogr:POBLACIONS>
+      <ogr:POBLACIO_1>12</ogr:POBLACIO_1>
+      <ogr:CODI_POB>39</ogr:CODI_POB>
+      <ogr:POLYGONID>12</ogr:POLYGONID>
+      <ogr:SCALE>1.00000000000</ogr:SCALE>
+      <ogr:ANGLE>0</ogr:ANGLE>
+      <ogr:OID_>38</ogr:OID_>
+      <ogr:CODI_POB_1>39</ogr:CODI_POB_1>
+      <ogr:POBLACIO>Santa Coloma</ogr:POBLACIO>
+      <ogr:CODI_PAR>2</ogr:CODI_PAR>
+      <ogr:CODI_INT>6</ogr:CODI_INT>
+      <ogr:HABITANTS>2692</ogr:HABITANTS>
+      <ogr:HABI_LOG>3.430</ogr:HABI_LOG>
+      <ogr:OID_1>2</ogr:OID_1>
+      <ogr:CODI_PAR_1>2</ogr:CODI_PAR_1>
+      <ogr:PARROQUIA>Andorra la Vella</ogr:PARROQUIA>
+      <ogr:ATRIBUT>1</ogr:ATRIBUT>
+      <ogr:OID_12>5</ogr:OID_12>
+      <ogr:CODI_INT_1>6</ogr:CODI_INT_1>
+      <ogr:INTERVAL>2001-6000</ogr:INTERVAL>
+    </ogr:Nuclis>
+  </ogr:featureMember>
+  <ogr:featureMember>
+    <ogr:Nuclis gml:id="Nuclis.12">
+      <gml:boundedBy><gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326"><gml:lowerCorner>42.4512945384947 1.49701527666443</gml:lowerCorner><gml:upperCorner>42.4512945384947 1.49701527666443</gml:upperCorner></gml:Envelope></gml:boundedBy>
+      <ogr:geometryProperty><gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="Nuclis.geom.12"><gml:pos>42.4512945384947 1.49701527666443</gml:pos></gml:Point></ogr:geometryProperty>
+      <ogr:OBJECTID>13</ogr:OBJECTID>
+      <ogr:AREA>0.00000000000</ogr:AREA>
+      <ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+      <ogr:POBLACIONS>13</ogr:POBLACIONS>
+      <ogr:POBLACIO_1>13</ogr:POBLACIO_1>
+      <ogr:CODI_POB>10</ogr:CODI_POB>
+      <ogr:POLYGONID>13</ogr:POLYGONID>
+      <ogr:SCALE>1.00000000000</ogr:SCALE>
+      <ogr:ANGLE>0</ogr:ANGLE>
+      <ogr:OID_>9</ogr:OID_>
+      <ogr:CODI_POB_1>10</ogr:CODI_POB_1>
+      <ogr:POBLACIO>Aubinyà</ogr:POBLACIO>
+      <ogr:CODI_PAR>1</ogr:CODI_PAR>
+      <ogr:CODI_INT>3</ogr:CODI_INT>
+      <ogr:HABITANTS>163</ogr:HABITANTS>
+      <ogr:HABI_LOG>2.212</ogr:HABI_LOG>
+      <ogr:OID_1>1</ogr:OID_1>
+      <ogr:CODI_PAR_1>1</ogr:CODI_PAR_1>
+      <ogr:PARROQUIA>Sant Julià de Lòria</ogr:PARROQUIA>
+      <ogr:ATRIBUT>1</ogr:ATRIBUT>
+      <ogr:OID_12>2</ogr:OID_12>
+      <ogr:CODI_INT_1>3</ogr:CODI_INT_1>
+      <ogr:INTERVAL>101-500</ogr:INTERVAL>
+    </ogr:Nuclis>
+  </ogr:featureMember>
+  <ogr:featureMember>
+    <ogr:Nuclis gml:id="Nuclis.13">
+      <gml:boundedBy><gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326"><gml:lowerCorner>42.5623160566595 1.49708866725831</gml:lowerCorner><gml:upperCorner>42.5623160566595 1.49708866725831</gml:upperCorner></gml:Envelope></gml:boundedBy>
+      <ogr:geometryProperty><gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="Nuclis.geom.13"><gml:pos>42.5623160566595 1.49708866725831</gml:pos></gml:Point></ogr:geometryProperty>
+      <ogr:OBJECTID>14</ogr:OBJECTID>
+      <ogr:AREA>0.00000000000</ogr:AREA>
+      <ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+      <ogr:POBLACIONS>14</ogr:POBLACIONS>
+      <ogr:POBLACIO_1>14</ogr:POBLACIO_1>
+      <ogr:CODI_POB>21</ogr:CODI_POB>
+      <ogr:POLYGONID>14</ogr:POLYGONID>
+      <ogr:SCALE>1.00000000000</ogr:SCALE>
+      <ogr:ANGLE>0</ogr:ANGLE>
+      <ogr:OID_>20</ogr:OID_>
+      <ogr:CODI_POB_1>21</ogr:CODI_POB_1>
+      <ogr:POBLACIO>Erts</ogr:POBLACIO>
+      <ogr:CODI_PAR>0</ogr:CODI_PAR>
+      <ogr:CODI_INT>3</ogr:CODI_INT>
+      <ogr:HABITANTS>289</ogr:HABITANTS>
+      <ogr:HABI_LOG>2.461</ogr:HABI_LOG>
+      <ogr:OID_1>0</ogr:OID_1>
+      <ogr:CODI_PAR_1>0</ogr:CODI_PAR_1>
+      <ogr:PARROQUIA>La Massana</ogr:PARROQUIA>
+      <ogr:ATRIBUT>1</ogr:ATRIBUT>
+      <ogr:OID_12>2</ogr:OID_12>
+      <ogr:CODI_INT_1>3</ogr:CODI_INT_1>
+      <ogr:INTERVAL>101-500</ogr:INTERVAL>
+    </ogr:Nuclis>
+  </ogr:featureMember>
+  <ogr:featureMember>
+    <ogr:Nuclis gml:id="Nuclis.14">
+      <gml:boundedBy><gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326"><gml:lowerCorner>42.4715345199079 1.5009815398242</gml:lowerCorner><gml:upperCorner>42.4715345199079 1.5009815398242</gml:upperCorner></gml:Envelope></gml:boundedBy>
+      <ogr:geometryProperty><gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="Nuclis.geom.14"><gml:pos>42.4715345199079 1.5009815398242</gml:pos></gml:Point></ogr:geometryProperty>
+      <ogr:OBJECTID>15</ogr:OBJECTID>
+      <ogr:AREA>0.00000000000</ogr:AREA>
+      <ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+      <ogr:POBLACIONS>15</ogr:POBLACIONS>
+      <ogr:POBLACIO_1>15</ogr:POBLACIO_1>
+      <ogr:CODI_POB>33</ogr:CODI_POB>
+      <ogr:POLYGONID>15</ogr:POLYGONID>
+      <ogr:SCALE>1.00000000000</ogr:SCALE>
+      <ogr:ANGLE>0</ogr:ANGLE>
+      <ogr:OID_>32</ogr:OID_>
+      <ogr:CODI_POB_1>33</ogr:CODI_POB_1>
+      <ogr:POBLACIO>Nagol</ogr:POBLACIO>
+      <ogr:CODI_PAR>1</ogr:CODI_PAR>
+      <ogr:CODI_INT>2</ogr:CODI_INT>
+      <ogr:HABITANTS>40</ogr:HABITANTS>
+      <ogr:HABI_LOG>1.602</ogr:HABI_LOG>
+      <ogr:OID_1>1</ogr:OID_1>
+      <ogr:CODI_PAR_1>1</ogr:CODI_PAR_1>
+      <ogr:PARROQUIA>Sant Julià de Lòria</ogr:PARROQUIA>
+      <ogr:ATRIBUT>1</ogr:ATRIBUT>
+      <ogr:OID_12>1</ogr:OID_12>
+      <ogr:CODI_INT_1>2</ogr:CODI_INT_1>
+      <ogr:INTERVAL>1-100</ogr:INTERVAL>
+    </ogr:Nuclis>
+  </ogr:featureMember>
+  <ogr:featureMember>
+    <ogr:Nuclis gml:id="Nuclis.15">
+      <gml:boundedBy><gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326"><gml:lowerCorner>42.4759954452705 1.50615348006223</gml:lowerCorner><gml:upperCorner>42.4759954452705 1.50615348006223</gml:upperCorner></gml:Envelope></gml:boundedBy>
+      <ogr:geometryProperty><gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="Nuclis.geom.15"><gml:pos>42.4759954452705 1.50615348006223</gml:pos></gml:Point></ogr:geometryProperty>
+      <ogr:OBJECTID>16</ogr:OBJECTID>
+      <ogr:AREA>0.00000000000</ogr:AREA>
+      <ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+      <ogr:POBLACIONS>16</ogr:POBLACIONS>
+      <ogr:POBLACIO_1>16</ogr:POBLACIO_1>
+      <ogr:CODI_POB>13</ogr:CODI_POB>
+      <ogr:POLYGONID>16</ogr:POLYGONID>
+      <ogr:SCALE>1.00000000000</ogr:SCALE>
+      <ogr:ANGLE>0</ogr:ANGLE>
+      <ogr:OID_>12</ogr:OID_>
+      <ogr:CODI_POB_1>13</ogr:CODI_POB_1>
+      <ogr:POBLACIO>Certers</ogr:POBLACIO>
+      <ogr:CODI_PAR>1</ogr:CODI_PAR>
+      <ogr:CODI_INT>2</ogr:CODI_INT>
+      <ogr:HABITANTS>66</ogr:HABITANTS>
+      <ogr:HABI_LOG>1.820</ogr:HABI_LOG>
+      <ogr:OID_1>1</ogr:OID_1>
+      <ogr:CODI_PAR_1>1</ogr:CODI_PAR_1>
+      <ogr:PARROQUIA>Sant Julià de Lòria</ogr:PARROQUIA>
+      <ogr:ATRIBUT>1</ogr:ATRIBUT>
+      <ogr:OID_12>1</ogr:OID_12>
+      <ogr:CODI_INT_1>2</ogr:CODI_INT_1>
+      <ogr:INTERVAL>1-100</ogr:INTERVAL>
+    </ogr:Nuclis>
+  </ogr:featureMember>
+  <ogr:featureMember>
+    <ogr:Nuclis gml:id="Nuclis.16">
+      <gml:boundedBy><gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326"><gml:lowerCorner>42.4724518354881 1.51123726055721</gml:lowerCorner><gml:upperCorner>42.4724518354881 1.51123726055721</gml:upperCorner></gml:Envelope></gml:boundedBy>
+      <ogr:geometryProperty><gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="Nuclis.geom.16"><gml:pos>42.4724518354881 1.51123726055721</gml:pos></gml:Point></ogr:geometryProperty>
+      <ogr:OBJECTID>17</ogr:OBJECTID>
+      <ogr:AREA>0.00000000000</ogr:AREA>
+      <ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+      <ogr:POBLACIONS>17</ogr:POBLACIONS>
+      <ogr:POBLACIO_1>17</ogr:POBLACIO_1>
+      <ogr:CODI_POB>31</ogr:CODI_POB>
+      <ogr:POLYGONID>17</ogr:POLYGONID>
+      <ogr:SCALE>1.00000000000</ogr:SCALE>
+      <ogr:ANGLE>0</ogr:ANGLE>
+      <ogr:OID_>30</ogr:OID_>
+      <ogr:CODI_POB_1>31</ogr:CODI_POB_1>
+      <ogr:POBLACIO>Llumeneres</ogr:POBLACIO>
+      <ogr:CODI_PAR>1</ogr:CODI_PAR>
+      <ogr:CODI_INT>2</ogr:CODI_INT>
+      <ogr:HABITANTS>3</ogr:HABITANTS>
+      <ogr:HABI_LOG>0.477</ogr:HABI_LOG>
+      <ogr:OID_1>1</ogr:OID_1>
+      <ogr:CODI_PAR_1>1</ogr:CODI_PAR_1>
+      <ogr:PARROQUIA>Sant Julià de Lòria</ogr:PARROQUIA>
+      <ogr:ATRIBUT>1</ogr:ATRIBUT>
+      <ogr:OID_12>1</ogr:OID_12>
+      <ogr:CODI_INT_1>2</ogr:CODI_INT_1>
+      <ogr:INTERVAL>1-100</ogr:INTERVAL>
+    </ogr:Nuclis>
+  </ogr:featureMember>
+  <ogr:featureMember>
+    <ogr:Nuclis gml:id="Nuclis.17">
+      <gml:boundedBy><gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326"><gml:lowerCorner>42.5450080384755 1.5152426867593</gml:lowerCorner><gml:upperCorner>42.5450080384755 1.5152426867593</gml:upperCorner></gml:Envelope></gml:boundedBy>
+      <ogr:geometryProperty><gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="Nuclis.geom.17"><gml:pos>42.5450080384755 1.5152426867593</gml:pos></gml:Point></ogr:geometryProperty>
+      <ogr:OBJECTID>18</ogr:OBJECTID>
+      <ogr:AREA>0.00000000000</ogr:AREA>
+      <ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+      <ogr:POBLACIONS>18</ogr:POBLACIONS>
+      <ogr:POBLACIO_1>18</ogr:POBLACIO_1>
+      <ogr:CODI_POB>28</ogr:CODI_POB>
+      <ogr:POLYGONID>18</ogr:POLYGONID>
+      <ogr:SCALE>1.00000000000</ogr:SCALE>
+      <ogr:ANGLE>0</ogr:ANGLE>
+      <ogr:OID_>27</ogr:OID_>
+      <ogr:CODI_POB_1>28</ogr:CODI_POB_1>
+      <ogr:POBLACIO>La Massana</ogr:POBLACIO>
+      <ogr:CODI_PAR>0</ogr:CODI_PAR>
+      <ogr:CODI_INT>6</ogr:CODI_INT>
+      <ogr:HABITANTS>3735</ogr:HABITANTS>
+      <ogr:HABI_LOG>3.572</ogr:HABI_LOG>
+      <ogr:OID_1>0</ogr:OID_1>
+      <ogr:CODI_PAR_1>0</ogr:CODI_PAR_1>
+      <ogr:PARROQUIA>La Massana</ogr:PARROQUIA>
+      <ogr:ATRIBUT>1</ogr:ATRIBUT>
+      <ogr:OID_12>5</ogr:OID_12>
+      <ogr:CODI_INT_1>6</ogr:CODI_INT_1>
+      <ogr:INTERVAL>2001-6000</ogr:INTERVAL>
+    </ogr:Nuclis>
+  </ogr:featureMember>
+  <ogr:featureMember>
+    <ogr:Nuclis gml:id="Nuclis.18">
+      <gml:boundedBy><gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326"><gml:lowerCorner>42.5342105072592 1.5158326718349</gml:lowerCorner><gml:upperCorner>42.5342105072592 1.5158326718349</gml:upperCorner></gml:Envelope></gml:boundedBy>
+      <ogr:geometryProperty><gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="Nuclis.geom.18"><gml:pos>42.5342105072592 1.5158326718349</gml:pos></gml:Point></ogr:geometryProperty>
+      <ogr:OBJECTID>19</ogr:OBJECTID>
+      <ogr:AREA>0.00000000000</ogr:AREA>
+      <ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+      <ogr:POBLACIONS>19</ogr:POBLACIONS>
+      <ogr:POBLACIO_1>19</ogr:POBLACIO_1>
+      <ogr:CODI_POB>41</ogr:CODI_POB>
+      <ogr:POLYGONID>19</ogr:POLYGONID>
+      <ogr:SCALE>1.00000000000</ogr:SCALE>
+      <ogr:ANGLE>0</ogr:ANGLE>
+      <ogr:OID_>40</ogr:OID_>
+      <ogr:CODI_POB_1>41</ogr:CODI_POB_1>
+      <ogr:POBLACIO>Sispony</ogr:POBLACIO>
+      <ogr:CODI_PAR>0</ogr:CODI_PAR>
+      <ogr:CODI_INT>4</ogr:CODI_INT>
+      <ogr:HABITANTS>825</ogr:HABITANTS>
+      <ogr:HABI_LOG>2.916</ogr:HABI_LOG>
+      <ogr:OID_1>0</ogr:OID_1>
+      <ogr:CODI_PAR_1>0</ogr:CODI_PAR_1>
+      <ogr:PARROQUIA>La Massana</ogr:PARROQUIA>
+      <ogr:ATRIBUT>1</ogr:ATRIBUT>
+      <ogr:OID_12>3</ogr:OID_12>
+      <ogr:CODI_INT_1>4</ogr:CODI_INT_1>
+      <ogr:INTERVAL>501-1000</ogr:INTERVAL>
+    </ogr:Nuclis>
+  </ogr:featureMember>
+  <ogr:featureMember>
+    <ogr:Nuclis gml:id="Nuclis.19">
+      <gml:boundedBy><gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326"><gml:lowerCorner>42.5049062604961 1.51632887629127</gml:lowerCorner><gml:upperCorner>42.5049062604961 1.51632887629127</gml:upperCorner></gml:Envelope></gml:boundedBy>
+      <ogr:geometryProperty><gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="Nuclis.geom.19"><gml:pos>42.5049062604961 1.51632887629127</gml:pos></gml:Point></ogr:geometryProperty>
+      <ogr:OBJECTID>20</ogr:OBJECTID>
+      <ogr:AREA>0.00000000000</ogr:AREA>
+      <ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+      <ogr:POBLACIONS>20</ogr:POBLACIONS>
+      <ogr:POBLACIO_1>20</ogr:POBLACIO_1>
+      <ogr:CODI_POB>5</ogr:CODI_POB>
+      <ogr:POLYGONID>20</ogr:POLYGONID>
+      <ogr:SCALE>1.00000000000</ogr:SCALE>
+      <ogr:ANGLE>0</ogr:ANGLE>
+      <ogr:OID_>4</ogr:OID_>
+      <ogr:CODI_POB_1>5</ogr:CODI_POB_1>
+      <ogr:POBLACIO>Andorra la Vella</ogr:POBLACIO>
+      <ogr:CODI_PAR>2</ogr:CODI_PAR>
+      <ogr:CODI_INT>8</ogr:CODI_INT>
+      <ogr:HABITANTS>19343</ogr:HABITANTS>
+      <ogr:HABI_LOG>4.287</ogr:HABI_LOG>
+      <ogr:OID_1>2</ogr:OID_1>
+      <ogr:CODI_PAR_1>2</ogr:CODI_PAR_1>
+      <ogr:PARROQUIA>Andorra la Vella</ogr:PARROQUIA>
+      <ogr:ATRIBUT>1</ogr:ATRIBUT>
+      <ogr:OID_12>7</ogr:OID_12>
+      <ogr:CODI_INT_1>8</ogr:CODI_INT_1>
+      <ogr:INTERVAL>més de 15000</ogr:INTERVAL>
+    </ogr:Nuclis>
+  </ogr:featureMember>
+  <ogr:featureMember>
+    <ogr:Nuclis gml:id="Nuclis.20">
+      <gml:boundedBy><gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326"><gml:lowerCorner>42.5826155228528 1.51789465623321</gml:lowerCorner><gml:upperCorner>42.5826155228528 1.51789465623321</gml:upperCorner></gml:Envelope></gml:boundedBy>
+      <ogr:geometryProperty><gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="Nuclis.geom.20"><gml:pos>42.5826155228528 1.51789465623321</gml:pos></gml:Point></ogr:geometryProperty>
+      <ogr:OBJECTID>21</ogr:OBJECTID>
+      <ogr:AREA>0.00000000000</ogr:AREA>
+      <ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+      <ogr:POBLACIONS>21</ogr:POBLACIONS>
+      <ogr:POBLACIO_1>21</ogr:POBLACIO_1>
+      <ogr:CODI_POB>8</ogr:CODI_POB>
+      <ogr:POLYGONID>21</ogr:POLYGONID>
+      <ogr:SCALE>1.00000000000</ogr:SCALE>
+      <ogr:ANGLE>0</ogr:ANGLE>
+      <ogr:OID_>7</ogr:OID_>
+      <ogr:CODI_POB_1>8</ogr:CODI_POB_1>
+      <ogr:POBLACIO>Arans</ogr:POBLACIO>
+      <ogr:CODI_PAR>3</ogr:CODI_PAR>
+      <ogr:CODI_INT>3</ogr:CODI_INT>
+      <ogr:HABITANTS>207</ogr:HABITANTS>
+      <ogr:HABI_LOG>2.316</ogr:HABI_LOG>
+      <ogr:OID_1>3</ogr:OID_1>
+      <ogr:CODI_PAR_1>3</ogr:CODI_PAR_1>
+      <ogr:PARROQUIA>Ordino</ogr:PARROQUIA>
+      <ogr:ATRIBUT>1</ogr:ATRIBUT>
+      <ogr:OID_12>2</ogr:OID_12>
+      <ogr:CODI_INT_1>3</ogr:CODI_INT_1>
+      <ogr:INTERVAL>101-500</ogr:INTERVAL>
+    </ogr:Nuclis>
+  </ogr:featureMember>
+  <ogr:featureMember>
+    <ogr:Nuclis gml:id="Nuclis.21">
+      <gml:boundedBy><gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326"><gml:lowerCorner>42.5747467884802 1.51853150015925</gml:lowerCorner><gml:upperCorner>42.5747467884802 1.51853150015925</gml:upperCorner></gml:Envelope></gml:boundedBy>
+      <ogr:geometryProperty><gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="Nuclis.geom.21"><gml:pos>42.5747467884802 1.51853150015925</gml:pos></gml:Point></ogr:geometryProperty>
+      <ogr:OBJECTID>22</ogr:OBJECTID>
+      <ogr:AREA>0.00000000000</ogr:AREA>
+      <ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+      <ogr:POBLACIONS>22</ogr:POBLACIONS>
+      <ogr:POBLACIO_1>22</ogr:POBLACIO_1>
+      <ogr:CODI_POB>27</ogr:CODI_POB>
+      <ogr:POLYGONID>22</ogr:POLYGONID>
+      <ogr:SCALE>1.00000000000</ogr:SCALE>
+      <ogr:ANGLE>0</ogr:ANGLE>
+      <ogr:OID_>26</ogr:OID_>
+      <ogr:CODI_POB_1>27</ogr:CODI_POB_1>
+      <ogr:POBLACIO>La Cortinada</ogr:POBLACIO>
+      <ogr:CODI_PAR>3</ogr:CODI_PAR>
+      <ogr:CODI_INT>3</ogr:CODI_INT>
+      <ogr:HABITANTS>348</ogr:HABITANTS>
+      <ogr:HABI_LOG>2.542</ogr:HABI_LOG>
+      <ogr:OID_1>3</ogr:OID_1>
+      <ogr:CODI_PAR_1>3</ogr:CODI_PAR_1>
+      <ogr:PARROQUIA>Ordino</ogr:PARROQUIA>
+      <ogr:ATRIBUT>1</ogr:ATRIBUT>
+      <ogr:OID_12>2</ogr:OID_12>
+      <ogr:CODI_INT_1>3</ogr:CODI_INT_1>
+      <ogr:INTERVAL>101-500</ogr:INTERVAL>
+    </ogr:Nuclis>
+  </ogr:featureMember>
+  <ogr:featureMember>
+    <ogr:Nuclis gml:id="Nuclis.22">
+      <gml:boundedBy><gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326"><gml:lowerCorner>42.5690324612262 1.52182995990158</gml:lowerCorner><gml:upperCorner>42.5690324612262 1.52182995990158</gml:upperCorner></gml:Envelope></gml:boundedBy>
+      <ogr:geometryProperty><gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="Nuclis.geom.22"><gml:pos>42.5690324612262 1.52182995990158</gml:pos></gml:Point></ogr:geometryProperty>
+      <ogr:OBJECTID>23</ogr:OBJECTID>
+      <ogr:AREA>0.00000000000</ogr:AREA>
+      <ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+      <ogr:POBLACIONS>23</ogr:POBLACIONS>
+      <ogr:POBLACIO_1>23</ogr:POBLACIO_1>
+      <ogr:CODI_POB>6</ogr:CODI_POB>
+      <ogr:POLYGONID>23</ogr:POLYGONID>
+      <ogr:SCALE>1.00000000000</ogr:SCALE>
+      <ogr:ANGLE>0</ogr:ANGLE>
+      <ogr:OID_>5</ogr:OID_>
+      <ogr:CODI_POB_1>6</ogr:CODI_POB_1>
+      <ogr:POBLACIO>Ansalonga</ogr:POBLACIO>
+      <ogr:CODI_PAR>3</ogr:CODI_PAR>
+      <ogr:CODI_INT>2</ogr:CODI_INT>
+      <ogr:HABITANTS>51</ogr:HABITANTS>
+      <ogr:HABI_LOG>1.708</ogr:HABI_LOG>
+      <ogr:OID_1>3</ogr:OID_1>
+      <ogr:CODI_PAR_1>3</ogr:CODI_PAR_1>
+      <ogr:PARROQUIA>Ordino</ogr:PARROQUIA>
+      <ogr:ATRIBUT>1</ogr:ATRIBUT>
+      <ogr:OID_12>1</ogr:OID_12>
+      <ogr:CODI_INT_1>2</ogr:CODI_INT_1>
+      <ogr:INTERVAL>1-100</ogr:INTERVAL>
+    </ogr:Nuclis>
+  </ogr:featureMember>
+  <ogr:featureMember>
+    <ogr:Nuclis gml:id="Nuclis.23">
+      <gml:boundedBy><gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326"><gml:lowerCorner>42.5416672000217 1.52244354061263</gml:lowerCorner><gml:upperCorner>42.5416672000217 1.52244354061263</gml:upperCorner></gml:Envelope></gml:boundedBy>
+      <ogr:geometryProperty><gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="Nuclis.geom.23"><gml:pos>42.5416672000217 1.52244354061263</gml:pos></gml:Point></ogr:geometryProperty>
+      <ogr:OBJECTID>24</ogr:OBJECTID>
+      <ogr:AREA>0.00000000000</ogr:AREA>
+      <ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+      <ogr:POBLACIONS>24</ogr:POBLACIONS>
+      <ogr:POBLACIO_1>24</ogr:POBLACIO_1>
+      <ogr:CODI_POB>3</ogr:CODI_POB>
+      <ogr:POLYGONID>24</ogr:POLYGONID>
+      <ogr:SCALE>1.00000000000</ogr:SCALE>
+      <ogr:ANGLE>0</ogr:ANGLE>
+      <ogr:OID_>2</ogr:OID_>
+      <ogr:CODI_POB_1>3</ogr:CODI_POB_1>
+      <ogr:POBLACIO>L'Aldosa - La Massana</ogr:POBLACIO>
+      <ogr:CODI_PAR>0</ogr:CODI_PAR>
+      <ogr:CODI_INT>3</ogr:CODI_INT>
+      <ogr:HABITANTS>506</ogr:HABITANTS>
+      <ogr:HABI_LOG>2.704</ogr:HABI_LOG>
+      <ogr:OID_1>0</ogr:OID_1>
+      <ogr:CODI_PAR_1>0</ogr:CODI_PAR_1>
+      <ogr:PARROQUIA>La Massana</ogr:PARROQUIA>
+      <ogr:ATRIBUT>1</ogr:ATRIBUT>
+      <ogr:OID_12>2</ogr:OID_12>
+      <ogr:CODI_INT_1>3</ogr:CODI_INT_1>
+      <ogr:INTERVAL>101-500</ogr:INTERVAL>
+    </ogr:Nuclis>
+  </ogr:featureMember>
+  <ogr:featureMember>
+    <ogr:Nuclis gml:id="Nuclis.24">
+      <gml:boundedBy><gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326"><gml:lowerCorner>42.534431096317 1.52599452425021</gml:lowerCorner><gml:upperCorner>42.534431096317 1.52599452425021</gml:upperCorner></gml:Envelope></gml:boundedBy>
+      <ogr:geometryProperty><gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="Nuclis.geom.24"><gml:pos>42.534431096317 1.52599452425021</gml:pos></gml:Point></ogr:geometryProperty>
+      <ogr:OBJECTID>25</ogr:OBJECTID>
+      <ogr:AREA>0.00000000000</ogr:AREA>
+      <ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+      <ogr:POBLACIONS>25</ogr:POBLACIONS>
+      <ogr:POBLACIO_1>25</ogr:POBLACIO_1>
+      <ogr:CODI_POB>7</ogr:CODI_POB>
+      <ogr:POLYGONID>25</ogr:POLYGONID>
+      <ogr:SCALE>1.00000000000</ogr:SCALE>
+      <ogr:ANGLE>0</ogr:ANGLE>
+      <ogr:OID_>6</ogr:OID_>
+      <ogr:CODI_POB_1>7</ogr:CODI_POB_1>
+      <ogr:POBLACIO>Anyós</ogr:POBLACIO>
+      <ogr:CODI_PAR>0</ogr:CODI_PAR>
+      <ogr:CODI_INT>3</ogr:CODI_INT>
+      <ogr:HABITANTS>451</ogr:HABITANTS>
+      <ogr:HABI_LOG>2.654</ogr:HABI_LOG>
+      <ogr:OID_1>0</ogr:OID_1>
+      <ogr:CODI_PAR_1>0</ogr:CODI_PAR_1>
+      <ogr:PARROQUIA>La Massana</ogr:PARROQUIA>
+      <ogr:ATRIBUT>1</ogr:ATRIBUT>
+      <ogr:OID_12>2</ogr:OID_12>
+      <ogr:CODI_INT_1>3</ogr:CODI_INT_1>
+      <ogr:INTERVAL>101-500</ogr:INTERVAL>
+    </ogr:Nuclis>
+  </ogr:featureMember>
+  <ogr:featureMember>
+    <ogr:Nuclis gml:id="Nuclis.25">
+      <gml:boundedBy><gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326"><gml:lowerCorner>42.5964025835298 1.52684668966881</gml:lowerCorner><gml:upperCorner>42.5964025835298 1.52684668966881</gml:upperCorner></gml:Envelope></gml:boundedBy>
+      <ogr:geometryProperty><gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="Nuclis.geom.25"><gml:pos>42.5964025835298 1.52684668966881</gml:pos></gml:Point></ogr:geometryProperty>
+      <ogr:OBJECTID>26</ogr:OBJECTID>
+      <ogr:AREA>0.00000000000</ogr:AREA>
+      <ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+      <ogr:POBLACIONS>26</ogr:POBLACIONS>
+      <ogr:POBLACIO_1>26</ogr:POBLACIO_1>
+      <ogr:CODI_POB>30</ogr:CODI_POB>
+      <ogr:POLYGONID>26</ogr:POLYGONID>
+      <ogr:SCALE>1.00000000000</ogr:SCALE>
+      <ogr:ANGLE>0</ogr:ANGLE>
+      <ogr:OID_>29</ogr:OID_>
+      <ogr:CODI_POB_1>30</ogr:CODI_POB_1>
+      <ogr:POBLACIO>Llorts</ogr:POBLACIO>
+      <ogr:CODI_PAR>3</ogr:CODI_PAR>
+      <ogr:CODI_INT>3</ogr:CODI_INT>
+      <ogr:HABITANTS>129</ogr:HABITANTS>
+      <ogr:HABI_LOG>2.111</ogr:HABI_LOG>
+      <ogr:OID_1>3</ogr:OID_1>
+      <ogr:CODI_PAR_1>3</ogr:CODI_PAR_1>
+      <ogr:PARROQUIA>Ordino</ogr:PARROQUIA>
+      <ogr:ATRIBUT>1</ogr:ATRIBUT>
+      <ogr:OID_12>2</ogr:OID_12>
+      <ogr:CODI_INT_1>3</ogr:CODI_INT_1>
+      <ogr:INTERVAL>101-500</ogr:INTERVAL>
+    </ogr:Nuclis>
+  </ogr:featureMember>
+  <ogr:featureMember>
+    <ogr:Nuclis gml:id="Nuclis.26">
+      <gml:boundedBy><gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326"><gml:lowerCorner>42.5644732588491 1.52778442332902</gml:lowerCorner><gml:upperCorner>42.5644732588491 1.52778442332902</gml:upperCorner></gml:Envelope></gml:boundedBy>
+      <ogr:geometryProperty><gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="Nuclis.geom.26"><gml:pos>42.5644732588491 1.52778442332902</gml:pos></gml:Point></ogr:geometryProperty>
+      <ogr:OBJECTID>27</ogr:OBJECTID>
+      <ogr:AREA>0.00000000000</ogr:AREA>
+      <ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+      <ogr:POBLACIONS>27</ogr:POBLACIONS>
+      <ogr:POBLACIO_1>27</ogr:POBLACIO_1>
+      <ogr:CODI_POB>43</ogr:CODI_POB>
+      <ogr:POLYGONID>27</ogr:POLYGONID>
+      <ogr:SCALE>1.00000000000</ogr:SCALE>
+      <ogr:ANGLE>0</ogr:ANGLE>
+      <ogr:OID_>42</ogr:OID_>
+      <ogr:CODI_POB_1>43</ogr:CODI_POB_1>
+      <ogr:POBLACIO>Sornàs</ogr:POBLACIO>
+      <ogr:CODI_PAR>3</ogr:CODI_PAR>
+      <ogr:CODI_INT>4</ogr:CODI_INT>
+      <ogr:HABITANTS>116</ogr:HABITANTS>
+      <ogr:HABI_LOG>2.064</ogr:HABI_LOG>
+      <ogr:OID_1>3</ogr:OID_1>
+      <ogr:CODI_PAR_1>3</ogr:CODI_PAR_1>
+      <ogr:PARROQUIA>Ordino</ogr:PARROQUIA>
+      <ogr:ATRIBUT>1</ogr:ATRIBUT>
+      <ogr:OID_12>3</ogr:OID_12>
+      <ogr:CODI_INT_1>4</ogr:CODI_INT_1>
+      <ogr:INTERVAL>501-1000</ogr:INTERVAL>
+    </ogr:Nuclis>
+  </ogr:featureMember>
+  <ogr:featureMember>
+    <ogr:Nuclis gml:id="Nuclis.27">
+      <gml:boundedBy><gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326"><gml:lowerCorner>42.5563535204398 1.53343950414399</gml:lowerCorner><gml:upperCorner>42.5563535204398 1.53343950414399</gml:upperCorner></gml:Envelope></gml:boundedBy>
+      <ogr:geometryProperty><gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="Nuclis.geom.27"><gml:pos>42.5563535204398 1.53343950414399</gml:pos></gml:Point></ogr:geometryProperty>
+      <ogr:OBJECTID>28</ogr:OBJECTID>
+      <ogr:AREA>0.00000000000</ogr:AREA>
+      <ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+      <ogr:POBLACIONS>28</ogr:POBLACIONS>
+      <ogr:POBLACIO_1>28</ogr:POBLACIO_1>
+      <ogr:CODI_POB>34</ogr:CODI_POB>
+      <ogr:POLYGONID>28</ogr:POLYGONID>
+      <ogr:SCALE>1.00000000000</ogr:SCALE>
+      <ogr:ANGLE>0</ogr:ANGLE>
+      <ogr:OID_>33</ogr:OID_>
+      <ogr:CODI_POB_1>34</ogr:CODI_POB_1>
+      <ogr:POBLACIO>Ordino</ogr:POBLACIO>
+      <ogr:CODI_PAR>3</ogr:CODI_PAR>
+      <ogr:CODI_INT>5</ogr:CODI_INT>
+      <ogr:HABITANTS>1814</ogr:HABITANTS>
+      <ogr:HABI_LOG>3.259</ogr:HABI_LOG>
+      <ogr:OID_1>3</ogr:OID_1>
+      <ogr:CODI_PAR_1>3</ogr:CODI_PAR_1>
+      <ogr:PARROQUIA>Ordino</ogr:PARROQUIA>
+      <ogr:ATRIBUT>1</ogr:ATRIBUT>
+      <ogr:OID_12>4</ogr:OID_12>
+      <ogr:CODI_INT_1>5</ogr:CODI_INT_1>
+      <ogr:INTERVAL>1001-2000</ogr:INTERVAL>
+    </ogr:Nuclis>
+  </ogr:featureMember>
+  <ogr:featureMember>
+    <ogr:Nuclis gml:id="Nuclis.28">
+      <gml:boundedBy><gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326"><gml:lowerCorner>42.5117183707115 1.53836755739997</gml:lowerCorner><gml:upperCorner>42.5117183707115 1.53836755739997</gml:upperCorner></gml:Envelope></gml:boundedBy>
+      <ogr:geometryProperty><gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="Nuclis.geom.28"><gml:pos>42.5117183707115 1.53836755739997</gml:pos></gml:Point></ogr:geometryProperty>
+      <ogr:OBJECTID>29</ogr:OBJECTID>
+      <ogr:AREA>0.00000000000</ogr:AREA>
+      <ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+      <ogr:POBLACIONS>29</ogr:POBLACIONS>
+      <ogr:POBLACIO_1>29</ogr:POBLACIO_1>
+      <ogr:CODI_POB>22</ogr:CODI_POB>
+      <ogr:POLYGONID>29</ogr:POLYGONID>
+      <ogr:SCALE>1.00000000000</ogr:SCALE>
+      <ogr:ANGLE>0</ogr:ANGLE>
+      <ogr:OID_>21</ogr:OID_>
+      <ogr:CODI_POB_1>22</ogr:CODI_POB_1>
+      <ogr:POBLACIO>Escaldes-Engordany</ogr:POBLACIO>
+      <ogr:CODI_PAR>4</ogr:CODI_PAR>
+      <ogr:CODI_INT>8</ogr:CODI_INT>
+      <ogr:HABITANTS>16402</ogr:HABITANTS>
+      <ogr:HABI_LOG>4.215</ogr:HABI_LOG>
+      <ogr:OID_1>4</ogr:OID_1>
+      <ogr:CODI_PAR_1>4</ogr:CODI_PAR_1>
+      <ogr:PARROQUIA>Escaldes-Engordany</ogr:PARROQUIA>
+      <ogr:ATRIBUT>1</ogr:ATRIBUT>
+      <ogr:OID_12>7</ogr:OID_12>
+      <ogr:CODI_INT_1>8</ogr:CODI_INT_1>
+      <ogr:INTERVAL>més de 15000</ogr:INTERVAL>
+    </ogr:Nuclis>
+  </ogr:featureMember>
+  <ogr:featureMember>
+    <ogr:Nuclis gml:id="Nuclis.29">
+      <gml:boundedBy><gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326"><gml:lowerCorner>42.5576446039036 1.53788975089133</gml:lowerCorner><gml:upperCorner>42.5576446039036 1.53788975089133</gml:upperCorner></gml:Envelope></gml:boundedBy>
+      <ogr:geometryProperty><gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="Nuclis.geom.29"><gml:pos>42.5576446039036 1.53788975089133</gml:pos></gml:Point></ogr:geometryProperty>
+      <ogr:OBJECTID>30</ogr:OBJECTID>
+      <ogr:AREA>0.00000000000</ogr:AREA>
+      <ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+      <ogr:POBLACIONS>30</ogr:POBLACIONS>
+      <ogr:POBLACIO_1>30</ogr:POBLACIO_1>
+      <ogr:CODI_POB>40</ogr:CODI_POB>
+      <ogr:POLYGONID>30</ogr:POLYGONID>
+      <ogr:SCALE>1.00000000000</ogr:SCALE>
+      <ogr:ANGLE>0</ogr:ANGLE>
+      <ogr:OID_>39</ogr:OID_>
+      <ogr:CODI_POB_1>40</ogr:CODI_POB_1>
+      <ogr:POBLACIO>Segudet</ogr:POBLACIO>
+      <ogr:CODI_PAR>3</ogr:CODI_PAR>
+      <ogr:CODI_INT>2</ogr:CODI_INT>
+      <ogr:HABITANTS>46</ogr:HABITANTS>
+      <ogr:HABI_LOG>1.663</ogr:HABI_LOG>
+      <ogr:OID_1>3</ogr:OID_1>
+      <ogr:CODI_PAR_1>3</ogr:CODI_PAR_1>
+      <ogr:PARROQUIA>Ordino</ogr:PARROQUIA>
+      <ogr:ATRIBUT>1</ogr:ATRIBUT>
+      <ogr:OID_12>1</ogr:OID_12>
+      <ogr:CODI_INT_1>2</ogr:CODI_INT_1>
+      <ogr:INTERVAL>1-100</ogr:INTERVAL>
+    </ogr:Nuclis>
+  </ogr:featureMember>
+  <ogr:featureMember>
+    <ogr:Nuclis gml:id="Nuclis.30">
+      <gml:boundedBy><gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326"><gml:lowerCorner>42.6188981279722 1.53909731360975</gml:lowerCorner><gml:upperCorner>42.6188981279722 1.53909731360975</gml:upperCorner></gml:Envelope></gml:boundedBy>
+      <ogr:geometryProperty><gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="Nuclis.geom.30"><gml:pos>42.6188981279722 1.53909731360975</gml:pos></gml:Point></ogr:geometryProperty>
+      <ogr:OBJECTID>31</ogr:OBJECTID>
+      <ogr:AREA>0.00000000000</ogr:AREA>
+      <ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+      <ogr:POBLACIONS>31</ogr:POBLACIONS>
+      <ogr:POBLACIO_1>31</ogr:POBLACIO_1>
+      <ogr:CODI_POB>16</ogr:CODI_POB>
+      <ogr:POLYGONID>31</ogr:POLYGONID>
+      <ogr:SCALE>1.00000000000</ogr:SCALE>
+      <ogr:ANGLE>0</ogr:ANGLE>
+      <ogr:OID_>15</ogr:OID_>
+      <ogr:CODI_POB_1>16</ogr:CODI_POB_1>
+      <ogr:POBLACIO>El Serrat</ogr:POBLACIO>
+      <ogr:CODI_PAR>3</ogr:CODI_PAR>
+      <ogr:CODI_INT>2</ogr:CODI_INT>
+      <ogr:HABITANTS>56</ogr:HABITANTS>
+      <ogr:HABI_LOG>1.748</ogr:HABI_LOG>
+      <ogr:OID_1>3</ogr:OID_1>
+      <ogr:CODI_PAR_1>3</ogr:CODI_PAR_1>
+      <ogr:PARROQUIA>Ordino</ogr:PARROQUIA>
+      <ogr:ATRIBUT>1</ogr:ATRIBUT>
+      <ogr:OID_12>1</ogr:OID_12>
+      <ogr:CODI_INT_1>2</ogr:CODI_INT_1>
+      <ogr:INTERVAL>1-100</ogr:INTERVAL>
+    </ogr:Nuclis>
+  </ogr:featureMember>
+  <ogr:featureMember>
+    <ogr:Nuclis gml:id="Nuclis.31">
+      <gml:boundedBy><gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326"><gml:lowerCorner>42.531582944104 1.56678848385954</gml:lowerCorner><gml:upperCorner>42.531582944104 1.56678848385954</gml:upperCorner></gml:Envelope></gml:boundedBy>
+      <ogr:geometryProperty><gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="Nuclis.geom.31"><gml:pos>42.531582944104 1.56678848385954</gml:pos></gml:Point></ogr:geometryProperty>
+      <ogr:OBJECTID>32</ogr:OBJECTID>
+      <ogr:AREA>0.00000000000</ogr:AREA>
+      <ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+      <ogr:POBLACIONS>32</ogr:POBLACIONS>
+      <ogr:POBLACIO_1>32</ogr:POBLACIO_1>
+      <ogr:CODI_POB>44</ogr:CODI_POB>
+      <ogr:POLYGONID>32</ogr:POLYGONID>
+      <ogr:SCALE>1.00000000000</ogr:SCALE>
+      <ogr:ANGLE>0</ogr:ANGLE>
+      <ogr:OID_>43</ogr:OID_>
+      <ogr:CODI_POB_1>44</ogr:CODI_POB_1>
+      <ogr:POBLACIO>Vila</ogr:POBLACIO>
+      <ogr:CODI_PAR>5</ogr:CODI_PAR>
+      <ogr:CODI_INT>4</ogr:CODI_INT>
+      <ogr:HABITANTS>807</ogr:HABITANTS>
+      <ogr:HABI_LOG>2.907</ogr:HABI_LOG>
+      <ogr:OID_1>5</ogr:OID_1>
+      <ogr:CODI_PAR_1>5</ogr:CODI_PAR_1>
+      <ogr:PARROQUIA>Encamp</ogr:PARROQUIA>
+      <ogr:ATRIBUT>1</ogr:ATRIBUT>
+      <ogr:OID_12>3</ogr:OID_12>
+      <ogr:CODI_INT_1>4</ogr:CODI_INT_1>
+      <ogr:INTERVAL>501-1000</ogr:INTERVAL>
+    </ogr:Nuclis>
+  </ogr:featureMember>
+  <ogr:featureMember>
+    <ogr:Nuclis gml:id="Nuclis.32">
+      <gml:boundedBy><gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326"><gml:lowerCorner>42.5342300265096 1.57997726544909</gml:lowerCorner><gml:upperCorner>42.5342300265096 1.57997726544909</gml:upperCorner></gml:Envelope></gml:boundedBy>
+      <ogr:geometryProperty><gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="Nuclis.geom.32"><gml:pos>42.5342300265096 1.57997726544909</gml:pos></gml:Point></ogr:geometryProperty>
+      <ogr:OBJECTID>33</ogr:OBJECTID>
+      <ogr:AREA>0.00000000000</ogr:AREA>
+      <ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+      <ogr:POBLACIONS>33</ogr:POBLACIONS>
+      <ogr:POBLACIO_1>33</ogr:POBLACIO_1>
+      <ogr:CODI_POB>20</ogr:CODI_POB>
+      <ogr:POLYGONID>33</ogr:POLYGONID>
+      <ogr:SCALE>1.00000000000</ogr:SCALE>
+      <ogr:ANGLE>0</ogr:ANGLE>
+      <ogr:OID_>19</ogr:OID_>
+      <ogr:CODI_POB_1>20</ogr:CODI_POB_1>
+      <ogr:POBLACIO>Encamp</ogr:POBLACIO>
+      <ogr:CODI_PAR>5</ogr:CODI_PAR>
+      <ogr:CODI_INT>7</ogr:CODI_INT>
+      <ogr:HABITANTS>7360</ogr:HABITANTS>
+      <ogr:HABI_LOG>3.867</ogr:HABI_LOG>
+      <ogr:OID_1>5</ogr:OID_1>
+      <ogr:CODI_PAR_1>5</ogr:CODI_PAR_1>
+      <ogr:PARROQUIA>Encamp</ogr:PARROQUIA>
+      <ogr:ATRIBUT>1</ogr:ATRIBUT>
+      <ogr:OID_12>6</ogr:OID_12>
+      <ogr:CODI_INT_1>7</ogr:CODI_INT_1>
+      <ogr:INTERVAL>6001-15000</ogr:INTERVAL>
+    </ogr:Nuclis>
+  </ogr:featureMember>
+  <ogr:featureMember>
+    <ogr:Nuclis gml:id="Nuclis.33">
+      <gml:boundedBy><gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326"><gml:lowerCorner>42.5379403217275 1.58388049642213</gml:lowerCorner><gml:upperCorner>42.5379403217275 1.58388049642213</gml:upperCorner></gml:Envelope></gml:boundedBy>
+      <ogr:geometryProperty><gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="Nuclis.geom.33"><gml:pos>42.5379403217275 1.58388049642213</gml:pos></gml:Point></ogr:geometryProperty>
+      <ogr:OBJECTID>34</ogr:OBJECTID>
+      <ogr:AREA>0.00000000000</ogr:AREA>
+      <ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+      <ogr:POBLACIONS>34</ogr:POBLACIONS>
+      <ogr:POBLACIO_1>34</ogr:POBLACIO_1>
+      <ogr:CODI_POB>29</ogr:CODI_POB>
+      <ogr:POLYGONID>34</ogr:POLYGONID>
+      <ogr:SCALE>1.00000000000</ogr:SCALE>
+      <ogr:ANGLE>0</ogr:ANGLE>
+      <ogr:OID_>28</ogr:OID_>
+      <ogr:CODI_POB_1>29</ogr:CODI_POB_1>
+      <ogr:POBLACIO>Les Bons</ogr:POBLACIO>
+      <ogr:CODI_PAR>5</ogr:CODI_PAR>
+      <ogr:CODI_INT>4</ogr:CODI_INT>
+      <ogr:HABITANTS>1039</ogr:HABITANTS>
+      <ogr:HABI_LOG>3.017</ogr:HABI_LOG>
+      <ogr:OID_1>5</ogr:OID_1>
+      <ogr:CODI_PAR_1>5</ogr:CODI_PAR_1>
+      <ogr:PARROQUIA>Encamp</ogr:PARROQUIA>
+      <ogr:ATRIBUT>1</ogr:ATRIBUT>
+      <ogr:OID_12>3</ogr:OID_12>
+      <ogr:CODI_INT_1>4</ogr:CODI_INT_1>
+      <ogr:INTERVAL>501-1000</ogr:INTERVAL>
+    </ogr:Nuclis>
+  </ogr:featureMember>
+  <ogr:featureMember>
+    <ogr:Nuclis gml:id="Nuclis.34">
+      <gml:boundedBy><gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326"><gml:lowerCorner>42.5541504941902 1.59039255703598</gml:lowerCorner><gml:upperCorner>42.5541504941902 1.59039255703598</gml:upperCorner></gml:Envelope></gml:boundedBy>
+      <ogr:geometryProperty><gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="Nuclis.geom.34"><gml:pos>42.5541504941902 1.59039255703598</gml:pos></gml:Point></ogr:geometryProperty>
+      <ogr:OBJECTID>35</ogr:OBJECTID>
+      <ogr:AREA>0.00000000000</ogr:AREA>
+      <ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+      <ogr:POBLACIONS>35</ogr:POBLACIONS>
+      <ogr:POBLACIO_1>35</ogr:POBLACIO_1>
+      <ogr:CODI_POB>32</ogr:CODI_POB>
+      <ogr:POLYGONID>35</ogr:POLYGONID>
+      <ogr:SCALE>1.00000000000</ogr:SCALE>
+      <ogr:ANGLE>0</ogr:ANGLE>
+      <ogr:OID_>31</ogr:OID_>
+      <ogr:CODI_POB_1>32</ogr:CODI_POB_1>
+      <ogr:POBLACIO>Meritxell</ogr:POBLACIO>
+      <ogr:CODI_PAR>6</ogr:CODI_PAR>
+      <ogr:CODI_INT>2</ogr:CODI_INT>
+      <ogr:HABITANTS>50</ogr:HABITANTS>
+      <ogr:HABI_LOG>1.699</ogr:HABI_LOG>
+      <ogr:OID_1>6</ogr:OID_1>
+      <ogr:CODI_PAR_1>6</ogr:CODI_PAR_1>
+      <ogr:PARROQUIA>Canillo</ogr:PARROQUIA>
+      <ogr:ATRIBUT>1</ogr:ATRIBUT>
+      <ogr:OID_12>1</ogr:OID_12>
+      <ogr:CODI_INT_1>2</ogr:CODI_INT_1>
+      <ogr:INTERVAL>1-100</ogr:INTERVAL>
+    </ogr:Nuclis>
+  </ogr:featureMember>
+  <ogr:featureMember>
+    <ogr:Nuclis gml:id="Nuclis.35">
+      <gml:boundedBy><gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326"><gml:lowerCorner>42.5600843237263 1.59367643949326</gml:lowerCorner><gml:upperCorner>42.5600843237263 1.59367643949326</gml:upperCorner></gml:Envelope></gml:boundedBy>
+      <ogr:geometryProperty><gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="Nuclis.geom.35"><gml:pos>42.5600843237263 1.59367643949326</gml:pos></gml:Point></ogr:geometryProperty>
+      <ogr:OBJECTID>36</ogr:OBJECTID>
+      <ogr:AREA>0.00000000000</ogr:AREA>
+      <ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+      <ogr:POBLACIONS>36</ogr:POBLACIONS>
+      <ogr:POBLACIO_1>36</ogr:POBLACIO_1>
+      <ogr:CODI_POB>36</ogr:CODI_POB>
+      <ogr:POLYGONID>36</ogr:POLYGONID>
+      <ogr:SCALE>1.00000000000</ogr:SCALE>
+      <ogr:ANGLE>0</ogr:ANGLE>
+      <ogr:OID_>35</ogr:OID_>
+      <ogr:CODI_POB_1>36</ogr:CODI_POB_1>
+      <ogr:POBLACIO>Prats</ogr:POBLACIO>
+      <ogr:CODI_PAR>6</ogr:CODI_PAR>
+      <ogr:CODI_INT>2</ogr:CODI_INT>
+      <ogr:HABITANTS>33</ogr:HABITANTS>
+      <ogr:HABI_LOG>1.519</ogr:HABI_LOG>
+      <ogr:OID_1>6</ogr:OID_1>
+      <ogr:CODI_PAR_1>6</ogr:CODI_PAR_1>
+      <ogr:PARROQUIA>Canillo</ogr:PARROQUIA>
+      <ogr:ATRIBUT>1</ogr:ATRIBUT>
+      <ogr:OID_12>1</ogr:OID_12>
+      <ogr:CODI_INT_1>2</ogr:CODI_INT_1>
+      <ogr:INTERVAL>1-100</ogr:INTERVAL>
+    </ogr:Nuclis>
+  </ogr:featureMember>
+  <ogr:featureMember>
+    <ogr:Nuclis gml:id="Nuclis.36">
+      <gml:boundedBy><gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326"><gml:lowerCorner>42.5667760390384 1.60119751486341</gml:lowerCorner><gml:upperCorner>42.5667760390384 1.60119751486341</gml:upperCorner></gml:Envelope></gml:boundedBy>
+      <ogr:geometryProperty><gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="Nuclis.geom.36"><gml:pos>42.5667760390384 1.60119751486341</gml:pos></gml:Point></ogr:geometryProperty>
+      <ogr:OBJECTID>37</ogr:OBJECTID>
+      <ogr:AREA>0.00000000000</ogr:AREA>
+      <ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+      <ogr:POBLACIONS>37</ogr:POBLACIONS>
+      <ogr:POBLACIO_1>37</ogr:POBLACIO_1>
+      <ogr:CODI_POB>12</ogr:CODI_POB>
+      <ogr:POLYGONID>37</ogr:POLYGONID>
+      <ogr:SCALE>1.00000000000</ogr:SCALE>
+      <ogr:ANGLE>0</ogr:ANGLE>
+      <ogr:OID_>11</ogr:OID_>
+      <ogr:CODI_POB_1>12</ogr:CODI_POB_1>
+      <ogr:POBLACIO>Canillo</ogr:POBLACIO>
+      <ogr:CODI_PAR>6</ogr:CODI_PAR>
+      <ogr:CODI_INT>5</ogr:CODI_INT>
+      <ogr:HABITANTS>1476</ogr:HABITANTS>
+      <ogr:HABI_LOG>3.169</ogr:HABI_LOG>
+      <ogr:OID_1>6</ogr:OID_1>
+      <ogr:CODI_PAR_1>6</ogr:CODI_PAR_1>
+      <ogr:PARROQUIA>Canillo</ogr:PARROQUIA>
+      <ogr:ATRIBUT>1</ogr:ATRIBUT>
+      <ogr:OID_12>4</ogr:OID_12>
+      <ogr:CODI_INT_1>5</ogr:CODI_INT_1>
+      <ogr:INTERVAL>1001-2000</ogr:INTERVAL>
+    </ogr:Nuclis>
+  </ogr:featureMember>
+  <ogr:featureMember>
+    <ogr:Nuclis gml:id="Nuclis.37">
+      <gml:boundedBy><gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326"><gml:lowerCorner>42.5782287494827 1.62836525127304</gml:lowerCorner><gml:upperCorner>42.5782287494827 1.62836525127304</gml:upperCorner></gml:Envelope></gml:boundedBy>
+      <ogr:geometryProperty><gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="Nuclis.geom.37"><gml:pos>42.5782287494827 1.62836525127304</gml:pos></gml:Point></ogr:geometryProperty>
+      <ogr:OBJECTID>38</ogr:OBJECTID>
+      <ogr:AREA>0.00000000000</ogr:AREA>
+      <ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+      <ogr:POBLACIONS>38</ogr:POBLACIONS>
+      <ogr:POBLACIO_1>38</ogr:POBLACIO_1>
+      <ogr:CODI_POB>4</ogr:CODI_POB>
+      <ogr:POLYGONID>38</ogr:POLYGONID>
+      <ogr:SCALE>1.00000000000</ogr:SCALE>
+      <ogr:ANGLE>0</ogr:ANGLE>
+      <ogr:OID_>3</ogr:OID_>
+      <ogr:CODI_POB_1>4</ogr:CODI_POB_1>
+      <ogr:POBLACIO>L'Aldosa</ogr:POBLACIO>
+      <ogr:CODI_PAR>6</ogr:CODI_PAR>
+      <ogr:CODI_INT>3</ogr:CODI_INT>
+      <ogr:HABITANTS>163</ogr:HABITANTS>
+      <ogr:HABI_LOG>2.212</ogr:HABI_LOG>
+      <ogr:OID_1>6</ogr:OID_1>
+      <ogr:CODI_PAR_1>6</ogr:CODI_PAR_1>
+      <ogr:PARROQUIA>Canillo</ogr:PARROQUIA>
+      <ogr:ATRIBUT>1</ogr:ATRIBUT>
+      <ogr:OID_12>2</ogr:OID_12>
+      <ogr:CODI_INT_1>3</ogr:CODI_INT_1>
+      <ogr:INTERVAL>101-500</ogr:INTERVAL>
+    </ogr:Nuclis>
+  </ogr:featureMember>
+  <ogr:featureMember>
+    <ogr:Nuclis gml:id="Nuclis.38">
+      <gml:boundedBy><gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326"><gml:lowerCorner>42.5815036565722 1.63262322452621</gml:lowerCorner><gml:upperCorner>42.5815036565722 1.63262322452621</gml:upperCorner></gml:Envelope></gml:boundedBy>
+      <ogr:geometryProperty><gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="Nuclis.geom.38"><gml:pos>42.5815036565722 1.63262322452621</gml:pos></gml:Point></ogr:geometryProperty>
+      <ogr:OBJECTID>39</ogr:OBJECTID>
+      <ogr:AREA>0.00000000000</ogr:AREA>
+      <ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+      <ogr:POBLACIONS>39</ogr:POBLACIONS>
+      <ogr:POBLACIO_1>39</ogr:POBLACIO_1>
+      <ogr:CODI_POB>19</ogr:CODI_POB>
+      <ogr:POLYGONID>39</ogr:POLYGONID>
+      <ogr:SCALE>1.00000000000</ogr:SCALE>
+      <ogr:ANGLE>0</ogr:ANGLE>
+      <ogr:OID_>18</ogr:OID_>
+      <ogr:CODI_POB_1>19</ogr:CODI_POB_1>
+      <ogr:POBLACIO>Els Plans</ogr:POBLACIO>
+      <ogr:CODI_PAR>6</ogr:CODI_PAR>
+      <ogr:CODI_INT>2</ogr:CODI_INT>
+      <ogr:HABITANTS>32</ogr:HABITANTS>
+      <ogr:HABI_LOG>1.505</ogr:HABI_LOG>
+      <ogr:OID_1>6</ogr:OID_1>
+      <ogr:CODI_PAR_1>6</ogr:CODI_PAR_1>
+      <ogr:PARROQUIA>Canillo</ogr:PARROQUIA>
+      <ogr:ATRIBUT>1</ogr:ATRIBUT>
+      <ogr:OID_12>1</ogr:OID_12>
+      <ogr:CODI_INT_1>2</ogr:CODI_INT_1>
+      <ogr:INTERVAL>1-100</ogr:INTERVAL>
+    </ogr:Nuclis>
+  </ogr:featureMember>
+  <ogr:featureMember>
+    <ogr:Nuclis gml:id="Nuclis.39">
+      <gml:boundedBy><gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326"><gml:lowerCorner>42.581395994585 1.63869835424465</gml:lowerCorner><gml:upperCorner>42.581395994585 1.63869835424465</gml:upperCorner></gml:Envelope></gml:boundedBy>
+      <ogr:geometryProperty><gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="Nuclis.geom.39"><gml:pos>42.581395994585 1.63869835424465</gml:pos></gml:Point></ogr:geometryProperty>
+      <ogr:OBJECTID>40</ogr:OBJECTID>
+      <ogr:AREA>0.00000000000</ogr:AREA>
+      <ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+      <ogr:POBLACIONS>40</ogr:POBLACIONS>
+      <ogr:POBLACIO_1>40</ogr:POBLACIO_1>
+      <ogr:CODI_POB>37</ogr:CODI_POB>
+      <ogr:POLYGONID>40</ogr:POLYGONID>
+      <ogr:SCALE>1.00000000000</ogr:SCALE>
+      <ogr:ANGLE>0</ogr:ANGLE>
+      <ogr:OID_>36</ogr:OID_>
+      <ogr:CODI_POB_1>37</ogr:CODI_POB_1>
+      <ogr:POBLACIO>Ransol</ogr:POBLACIO>
+      <ogr:CODI_PAR>6</ogr:CODI_PAR>
+      <ogr:CODI_INT>3</ogr:CODI_INT>
+      <ogr:HABITANTS>126</ogr:HABITANTS>
+      <ogr:HABI_LOG>2.100</ogr:HABI_LOG>
+      <ogr:OID_1>6</ogr:OID_1>
+      <ogr:CODI_PAR_1>6</ogr:CODI_PAR_1>
+      <ogr:PARROQUIA>Canillo</ogr:PARROQUIA>
+      <ogr:ATRIBUT>1</ogr:ATRIBUT>
+      <ogr:OID_12>2</ogr:OID_12>
+      <ogr:CODI_INT_1>3</ogr:CODI_INT_1>
+      <ogr:INTERVAL>101-500</ogr:INTERVAL>
+    </ogr:Nuclis>
+  </ogr:featureMember>
+  <ogr:featureMember>
+    <ogr:Nuclis gml:id="Nuclis.40">
+      <gml:boundedBy><gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326"><gml:lowerCorner>42.5804428610825 1.6497211238496</gml:lowerCorner><gml:upperCorner>42.5804428610825 1.6497211238496</gml:upperCorner></gml:Envelope></gml:boundedBy>
+      <ogr:geometryProperty><gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="Nuclis.geom.40"><gml:pos>42.5804428610825 1.6497211238496</gml:pos></gml:Point></ogr:geometryProperty>
+      <ogr:OBJECTID>41</ogr:OBJECTID>
+      <ogr:AREA>0.00000000000</ogr:AREA>
+      <ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+      <ogr:POBLACIONS>41</ogr:POBLACIONS>
+      <ogr:POBLACIO_1>41</ogr:POBLACIO_1>
+      <ogr:CODI_POB>17</ogr:CODI_POB>
+      <ogr:POLYGONID>41</ogr:POLYGONID>
+      <ogr:SCALE>1.00000000000</ogr:SCALE>
+      <ogr:ANGLE>0</ogr:ANGLE>
+      <ogr:OID_>16</ogr:OID_>
+      <ogr:CODI_POB_1>17</ogr:CODI_POB_1>
+      <ogr:POBLACIO>El Tarter</ogr:POBLACIO>
+      <ogr:CODI_PAR>6</ogr:CODI_PAR>
+      <ogr:CODI_INT>4</ogr:CODI_INT>
+      <ogr:HABITANTS>731</ogr:HABITANTS>
+      <ogr:HABI_LOG>2.864</ogr:HABI_LOG>
+      <ogr:OID_1>6</ogr:OID_1>
+      <ogr:CODI_PAR_1>6</ogr:CODI_PAR_1>
+      <ogr:PARROQUIA>Canillo</ogr:PARROQUIA>
+      <ogr:ATRIBUT>1</ogr:ATRIBUT>
+      <ogr:OID_12>3</ogr:OID_12>
+      <ogr:CODI_INT_1>4</ogr:CODI_INT_1>
+      <ogr:INTERVAL>501-1000</ogr:INTERVAL>
+    </ogr:Nuclis>
+  </ogr:featureMember>
+  <ogr:featureMember>
+    <ogr:Nuclis gml:id="Nuclis.41">
+      <gml:boundedBy><gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326"><gml:lowerCorner>42.5778785811072 1.66604493290595</gml:lowerCorner><gml:upperCorner>42.5778785811072 1.66604493290595</gml:upperCorner></gml:Envelope></gml:boundedBy>
+      <ogr:geometryProperty><gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="Nuclis.geom.41"><gml:pos>42.5778785811072 1.66604493290595</gml:pos></gml:Point></ogr:geometryProperty>
+      <ogr:OBJECTID>42</ogr:OBJECTID>
+      <ogr:AREA>0.00000000000</ogr:AREA>
+      <ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+      <ogr:POBLACIONS>42</ogr:POBLACIONS>
+      <ogr:POBLACIO_1>42</ogr:POBLACIO_1>
+      <ogr:CODI_POB>42</ogr:CODI_POB>
+      <ogr:POLYGONID>42</ogr:POLYGONID>
+      <ogr:SCALE>1.00000000000</ogr:SCALE>
+      <ogr:ANGLE>0</ogr:ANGLE>
+      <ogr:OID_>41</ogr:OID_>
+      <ogr:CODI_POB_1>42</ogr:CODI_POB_1>
+      <ogr:POBLACIO>Soldeu</ogr:POBLACIO>
+      <ogr:CODI_PAR>6</ogr:CODI_PAR>
+      <ogr:CODI_INT>4</ogr:CODI_INT>
+      <ogr:HABITANTS>618</ogr:HABITANTS>
+      <ogr:HABI_LOG>2.791</ogr:HABI_LOG>
+      <ogr:OID_1>6</ogr:OID_1>
+      <ogr:CODI_PAR_1>6</ogr:CODI_PAR_1>
+      <ogr:PARROQUIA>Canillo</ogr:PARROQUIA>
+      <ogr:ATRIBUT>1</ogr:ATRIBUT>
+      <ogr:OID_12>3</ogr:OID_12>
+      <ogr:CODI_INT_1>4</ogr:CODI_INT_1>
+      <ogr:INTERVAL>501-1000</ogr:INTERVAL>
+    </ogr:Nuclis>
+  </ogr:featureMember>
+  <ogr:featureMember>
+    <ogr:Nuclis gml:id="Nuclis.42">
+      <gml:boundedBy><gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326"><gml:lowerCorner>42.5437072806505 1.73353844525478</gml:lowerCorner><gml:upperCorner>42.5437072806505 1.73353844525478</gml:upperCorner></gml:Envelope></gml:boundedBy>
+      <ogr:geometryProperty><gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="Nuclis.geom.42"><gml:pos>42.5437072806505 1.73353844525478</gml:pos></gml:Point></ogr:geometryProperty>
+      <ogr:OBJECTID>43</ogr:OBJECTID>
+      <ogr:AREA>0.00000000000</ogr:AREA>
+      <ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+      <ogr:POBLACIONS>43</ogr:POBLACIONS>
+      <ogr:POBLACIO_1>43</ogr:POBLACIO_1>
+      <ogr:CODI_POB>15</ogr:CODI_POB>
+      <ogr:POLYGONID>43</ogr:POLYGONID>
+      <ogr:SCALE>1.00000000000</ogr:SCALE>
+      <ogr:ANGLE>0</ogr:ANGLE>
+      <ogr:OID_>14</ogr:OID_>
+      <ogr:CODI_POB_1>15</ogr:CODI_POB_1>
+      <ogr:POBLACIO>El Pas de la Casa</ogr:POBLACIO>
+      <ogr:CODI_PAR>5</ogr:CODI_PAR>
+      <ogr:CODI_INT>6</ogr:CODI_INT>
+      <ogr:HABITANTS>2626</ogr:HABITANTS>
+      <ogr:HABI_LOG>3.419</ogr:HABI_LOG>
+      <ogr:OID_1>5</ogr:OID_1>
+      <ogr:CODI_PAR_1>5</ogr:CODI_PAR_1>
+      <ogr:PARROQUIA>Encamp</ogr:PARROQUIA>
+      <ogr:ATRIBUT>1</ogr:ATRIBUT>
+      <ogr:OID_12>5</ogr:OID_12>
+      <ogr:CODI_INT_1>6</ogr:CODI_INT_1>
+      <ogr:INTERVAL>2001-6000</ogr:INTERVAL>
+    </ogr:Nuclis>
+  </ogr:featureMember>
+  <ogr:featureMember>
+    <ogr:Nuclis gml:id="Nuclis.43">
+      <gml:boundedBy><gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326"><gml:lowerCorner>42.546144912623 1.50794845569749</gml:lowerCorner><gml:upperCorner>42.546144912623 1.50794845569749</gml:upperCorner></gml:Envelope></gml:boundedBy>
+      <ogr:geometryProperty><gml:Point srsName="urn:ogc:def:crs:EPSG::4326" gml:id="Nuclis.geom.43"><gml:pos>42.546144912623 1.50794845569749</gml:pos></gml:Point></ogr:geometryProperty>
+      <ogr:OBJECTID>44</ogr:OBJECTID>
+      <ogr:AREA>0.00000000000</ogr:AREA>
+      <ogr:PERIMETER>0.00000000000</ogr:PERIMETER>
+      <ogr:POBLACIONS>44</ogr:POBLACIONS>
+      <ogr:POBLACIO_1>44</ogr:POBLACIO_1>
+      <ogr:CODI_POB>23</ogr:CODI_POB>
+      <ogr:POLYGONID>44</ogr:POLYGONID>
+      <ogr:SCALE>1.00000000000</ogr:SCALE>
+      <ogr:ANGLE>0</ogr:ANGLE>
+      <ogr:OID_>22</ogr:OID_>
+      <ogr:CODI_POB_1>23</ogr:CODI_POB_1>
+      <ogr:POBLACIO>Escàs</ogr:POBLACIO>
+      <ogr:CODI_PAR>0</ogr:CODI_PAR>
+      <ogr:CODI_INT>3</ogr:CODI_INT>
+      <ogr:HABITANTS>206</ogr:HABITANTS>
+      <ogr:HABI_LOG>2.314</ogr:HABI_LOG>
+      <ogr:OID_1>0</ogr:OID_1>
+      <ogr:CODI_PAR_1>0</ogr:CODI_PAR_1>
+      <ogr:PARROQUIA>La Massana</ogr:PARROQUIA>
+      <ogr:ATRIBUT>1</ogr:ATRIBUT>
+      <ogr:OID_12>2</ogr:OID_12>
+      <ogr:CODI_INT_1>3</ogr:CODI_INT_1>
+      <ogr:INTERVAL>101-500</ogr:INTERVAL>
+    </ogr:Nuclis>
+  </ogr:featureMember>
+</ogr:FeatureCollection>

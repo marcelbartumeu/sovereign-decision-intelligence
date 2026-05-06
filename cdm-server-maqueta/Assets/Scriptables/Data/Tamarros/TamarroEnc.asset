@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9eaec8cba4da58b449e7dfe9a2fbe2df, type: 3}
+  m_Name: TamarroEnc
+  m_EditorClassIdentifier: 
+  asset: {fileID: 4900000, guid: d94133bccac7c6b4fbb44ac08b58196a, type: 3}
+  data: []
+  nameSpaces: []
+  nodeList: /Main/tam
+  sprite: {fileID: 21300000, guid: b5dba2aede674ec4b9972bf6693be80b, type: 3}
+  par: Encamp

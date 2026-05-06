@@ -1,0 +1,740 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<gpx
+ version="1.1"
+ creator="Global Mapper - http://www.globalmapper.com"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns="http://www.topografix.com/GPX/1/1"
+ xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
+	<metadata>
+	</metadata>
+	<wpt lat="42.590093" lon="1.478944">
+		<ele>2195</ele>
+		<name>Unknown Point Feature</name>
+		<desc>Unknown Point Feature</desc>
+		<sym>Dot</sym>
+		<nom>Refugi de les Fonts</nom>
+		<tipus>Refugi no guardat</tipus>
+		<places><![CDATA[6 + 4]]></places>
+		<altitud>2195</altitud>
+		<equipament>Llar de foc, lliteres, taula i bancs. Aigua aprop.</equipament>
+		<x_utm>375289,12</x_utm>
+		<y_utm>4716621,48</y_utm>
+		<x_lambert>529588,44</x_lambert>
+		<y_lambert>32620,56</y_lambert>
+		<lon>1:28:48,307</lon>
+		<lat>42:35:28,244</lat>
+		<id1>1</id1>
+		<calendari><![CDATA[Obert tot l'any]]></calendari>
+		<telefon></telefon>
+		<gr><![CDATA[SÃ­, GRP i GRT de les tres nacions]]></gr>
+		<info>https://visitandorra.com</info>
+		<info2><![CDATA[refugis@govern.ad]]></info2>
+		<info3><![CDATA[grp@andorraturisme.ad]]></info3>
+		<acces><![CDATA[Amb cotxe fins a Arinsal. A peu pel camÃ­ de Percanela, Bordes de Torner i Prats Nou fins al refugi. Temps d'arribada: 2h30]]></acces>
+		<situacio>Sota el Pic de les Fonts entre la Coruvilla i Montmantell (La Massana)</situacio>
+		<foto>http://www.ideandorra.ad/imatges/refugis/refugi_delesfonts.jpg</foto>
+		<numero>13</numero>
+	</wpt>
+	<wpt lat="42.594028" lon="1.460516">
+		<ele>2050</ele>
+		<name>Unknown Point Feature</name>
+		<desc>Unknown Point Feature</desc>
+		<sym>Dot</sym>
+		<nom><![CDATA[Refugi del Pla de l'Estany]]></nom>
+		<tipus>Refugi no guardat</tipus>
+		<places><![CDATA[6 + 4]]></places>
+		<altitud>2050</altitud>
+		<equipament>Llar de foc, lliteres, taula i bancs. Aigua al costat</equipament>
+		<x_utm>373785,03</x_utm>
+		<y_utm>4717085,83</y_utm>
+		<x_lambert>528080,25</x_lambert>
+		<y_lambert>33073,75</y_lambert>
+		<lon>1:27:41,968</lon>
+		<lat>42:35:42,412</lat>
+		<id1>2</id1>
+		<calendari><![CDATA[Obert tot l'any]]></calendari>
+		<telefon></telefon>
+		<gr>GRP, GRT de les tres nacions i GR11.1</gr>
+		<info>https://visitandorra.com</info>
+		<info2><![CDATA[refugis@govern.ad]]></info2>
+		<info3><![CDATA[grp@andorraturisme.ad]]></info3>
+		<acces><![CDATA[Amb cotxe fins a Arinsal. A peu pel camÃ­ de Percanela, Bordes de Torner i Prats Nou fins al refugi. Temps d'arribada: 2h30]]></acces>
+		<situacio>Sota el Pic de les Fonts entre la Coruvilla i Montmantell (La Massana)</situacio>
+		<foto>http://www.ideandorra.ad/imatges/refugis/refugi_Pla_Estany.jpg</foto>
+		<numero>14</numero>
+	</wpt>
+	<wpt lat="42.640359" lon="1.561259">
+		<ele>1990</ele>
+		<name>Unknown Point Feature</name>
+		<desc>Unknown Point Feature</desc>
+		<sym>Dot</sym>
+		<nom>Refugi de Rialb</nom>
+		<tipus>Refugi no guardat</tipus>
+		<places><![CDATA[6 + 4]]></places>
+		<altitud>1990</altitud>
+		<equipament>Llar de foc, lliteres, taula i bancs, porxo per a llenya.</equipament>
+		<x_utm>382138,07</x_utm>
+		<y_utm>4722085,16</y_utm>
+		<x_lambert>536398,75</x_lambert>
+		<y_lambert>38138,25</y_lambert>
+		<lon>1:33:44,638</lon>
+		<lat>42:38:29,194</lat>
+		<id1>3</id1>
+		<calendari><![CDATA[Obert tot l'any]]></calendari>
+		<telefon></telefon>
+		<gr>No</gr>
+		<info>https://visitandorra.com</info>
+		<info2><![CDATA[refugis@govern.ad]]></info2>
+		<info3><![CDATA[grp@andorraturisme.ad]]></info3>
+		<acces><![CDATA[Des de l'aparcament de la Rabassa, del Parc Natural de la Vall de Sorteny seguint per la vall de Rialp (1h)]]></acces>
+		<situacio>A la vall de Rialb (Ordino)</situacio>
+		<foto>http://www.ideandorra.ad/imatges/refugis/refugi_Rialb.jpg</foto>
+		<numero>23</numero>
+	</wpt>
+	<wpt lat="42.606752" lon="1.550539">
+		<ele>2015</ele>
+		<name>Unknown Point Feature</name>
+		<desc>Unknown Point Feature</desc>
+		<sym>Dot</sym>
+		<nom>Refugi de Comaubaga</nom>
+		<tipus>Refugi no guardat</tipus>
+		<places>15</places>
+		<altitud>2015</altitud>
+		<equipament>Llar de foc, lliteres, taula i bancs. Font a prop del refugi.</equipament>
+		<x_utm>381195,26</x_utm>
+		<y_utm>4718368,30</y_utm>
+		<x_lambert>535483,75</x_lambert>
+		<y_lambert>34412,75</y_lambert>
+		<lon>1:33:06,046</lon>
+		<lat>42:36:28,213</lat>
+		<id1>4</id1>
+		<calendari><![CDATA[Obert tot l'any]]></calendari>
+		<telefon></telefon>
+		<gr>No</gr>
+		<info>https://visitandorra.com</info>
+		<info2><![CDATA[refugis@govern.ad]]></info2>
+		<info3><![CDATA[grp@andorraturisme.ad]]></info3>
+		<acces><![CDATA[DesprÃ©s de les mines de ferro (Llorts), travessar el riu de Ferreroles i pujar per la vall, al lÃ­mit superior del bosc]]></acces>
+		<situacio>A la vall de Comaubaga (Ordino)</situacio>
+		<foto>http://www.ideandorra.ad/imatges/refugis/refugi_Comaubaga.jpg</foto>
+		<numero>24</numero>
+	</wpt>
+	<wpt lat="42.478454" lon="1.550293">
+		<ele>2235</ele>
+		<name>Unknown Point Feature</name>
+		<desc>Unknown Point Feature</desc>
+		<sym>Dot</sym>
+		<nom>Refugi de Prat Primer</nom>
+		<tipus>Refugi no guardat</tipus>
+		<places><![CDATA[6 + 4]]></places>
+		<altitud>2235</altitud>
+		<equipament>Llar de foc, taula i bancs, porxo per a llenya.</equipament>
+		<x_utm>380931,11</x_utm>
+		<y_utm>4704121,89</y_utm>
+		<x_lambert>535327,13</x_lambert>
+		<y_lambert>20158,13</y_lambert>
+		<lon>1:33:05,143</lon>
+		<lat>42:28:46,347</lat>
+		<id1>5</id1>
+		<calendari><![CDATA[Obert tot l'any]]></calendari>
+		<telefon></telefon>
+		<gr>No</gr>
+		<info>https://visitandorra.com</info>
+		<info2><![CDATA[refugis@govern.ad]]></info2>
+		<info3><![CDATA[grp@andorraturisme.ad]]></info3>
+		<acces><![CDATA[Pujar per la carretera de la Comella (CS-101) fins a l'aparcament (km 4): amunt per la vall de Prat Primer en direcciÃ³ al cortal de la Plana, i cap al planell de Prat Primer. Sobre del bony a mÃ  dreta, es troba el refugi (1h30).]]></acces>
+		<situacio><![CDATA[A la vall de Prat Primer, obaga d'Andorra la Vella, a l'esquerra sortint del bosc]]></situacio>
+		<foto>http://www.ideandorra.ad/imatges/refugis/refugi_Pratprimer.jpg</foto>
+		<numero>25</numero>
+	</wpt>
+	<wpt lat="42.489905" lon="1.426280">
+		<ele>1865</ele>
+		<name>Unknown Point Feature</name>
+		<desc>Unknown Point Feature</desc>
+		<sym>Dot</sym>
+		<nom><![CDATA[Refugi de FrancolÃ­]]></nom>
+		<tipus>Refugi no guardat</tipus>
+		<places>6</places>
+		<altitud>1865</altitud>
+		<equipament>Llar de foc, lliteres, taula i bancs, aigua a prop del refugi.</equipament>
+		<x_utm>370761,22</x_utm>
+		<y_utm>4705575,29</y_utm>
+		<x_lambert>525141,75</x_lambert>
+		<y_lambert>21535,75</y_lambert>
+		<lon>1:25:38,710</lon>
+		<lat>42:29:27,579</lat>
+		<id1>6</id1>
+		<calendari><![CDATA[Obert tot l'any]]></calendari>
+		<telefon></telefon>
+		<gr>No</gr>
+		<info>http://www.andorra.ad</info>
+		<info2><![CDATA[refugis@govern.ad]]></info2>
+		<info3><![CDATA[grp@andorraturisme.ad]]></info3>
+		<acces><![CDATA[Carretera d'Ã“s de CÃ­vis (CG-6), Ã rea de berenada (km 5,5): pont sobre el riu d'Ã“s i seguir el riu de l'Arquell (marques grogues) fins a la borda de Molines, seguir fins a la canal dels CÃ³ms, i amunt fins al refugi (2h45).]]></acces>
+		<situacio><![CDATA[A la solana dels Llimois (Sant JuliÃ  de LÃ²ria]]></situacio>
+		<foto>http://www.ideandorra.ad/imatges/refugis/refugi_Francoli.jpg</foto>
+		<numero>26</numero>
+	</wpt>
+	<wpt lat="42.433689" lon="1.535776">
+		<ele>2160</ele>
+		<name>Unknown Point Feature</name>
+		<desc>Unknown Point Feature</desc>
+		<sym>Dot</sym>
+		<nom>Refugi de Roca de Pimes</nom>
+		<tipus>Refugi no guardat</tipus>
+		<places><![CDATA[6 + 4]]></places>
+		<altitud>2160</altitud>
+		<equipament>Llar de foc, taula i bancs, porxo per a llenya. Font de la Trenca prop del refugi.</equipament>
+		<x_utm>379652,09</x_utm>
+		<y_utm>4699171,66</y_utm>
+		<x_lambert>534084,75</x_lambert>
+		<y_lambert>15195,92</y_lambert>
+		<lon>1:32:12,881</lon>
+		<lat>42:26:05,199</lat>
+		<id1>7</id1>
+		<calendari><![CDATA[Obert tot l'any]]></calendari>
+		<telefon></telefon>
+		<gr><![CDATA[SÃ­, GRP]]></gr>
+		<info>https://visitandorra.com</info>
+		<info2><![CDATA[refugis@govern.ad]]></info2>
+		<info3><![CDATA[grp@andorraturisme.ad]]></info3>
+		<acces><![CDATA[Amb cotxe des de Sant JuliÃ  de LÃ²ria fins el Camp de Neu de la Rabassa; a peu prendre el camÃ­ a mÃ  esquerra fins el refugi. Temps d'arribada: 1 h. (recorregut a peu).]]></acces>
+		<situacio><![CDATA[Al bosc de la Rabassa (Sant JuliÃ  de LÃ²ria) entre Conangle i la Solana de Caborreu]]></situacio>
+		<foto>http://www.ideandorra.ad/imatges/refugis/refugi_RocadePimes.jpg</foto>
+		<numero>1</numero>
+	</wpt>
+	<wpt lat="42.470126" lon="1.563927">
+		<ele>2280</ele>
+		<name>Unknown Point Feature</name>
+		<desc>Unknown Point Feature</desc>
+		<sym>Dot</sym>
+		<nom>Refugi de Claror</nom>
+		<tipus>Refugi no guardat</tipus>
+		<places>20</places>
+		<altitud>2280</altitud>
+		<equipament>Llar de foc, lliteres, taula i bancs.</equipament>
+		<x_utm>382036,11</x_utm>
+		<y_utm>4703178,13</y_utm>
+		<x_lambert>536439,75</x_lambert>
+		<y_lambert>19222,25</y_lambert>
+		<lon>1:33:54,223</lon>
+		<lat>42:28:16,368</lat>
+		<id1>8</id1>
+		<calendari><![CDATA[Obert tot l'any]]></calendari>
+		<telefon></telefon>
+		<gr><![CDATA[SÃ­, GRP]]></gr>
+		<info>https://visitandorra.com</info>
+		<info2><![CDATA[refugis@govern.ad]]></info2>
+		<info3><![CDATA[grp@andorraturisme.ad]]></info3>
+		<acces><![CDATA[Amb cotxe fins a CertÃ¨s i des d'aquÃ­ per Manyat seguint el camÃ­ de Certes. TambÃ© des d'EntremesaigÃ¼es seguint el riu, o pel Pic Negre de Claror, des del Camp de Neu de la Rabassa. Temps d'arribada: 2 a 3 h, depenent del recorregut triat.]]></acces>
+		<situacio><![CDATA[Vall de Madriu-Perafita-Claror, entre la collada de Prat Primer, Perafita i l'estany de La Nou.]]></situacio>
+		<foto>http://www.ideandorra.ad/imatges/refugis/refugi_Claror.jpg</foto>
+		<numero>2</numero>
+	</wpt>
+	<wpt lat="42.622608" lon="1.564149">
+		<ele>1965</ele>
+		<name>Unknown Point Feature</name>
+		<desc>Unknown Point Feature</desc>
+		<sym>Dot</sym>
+		<nom>Refugi Borda de Sorteny</nom>
+		<tipus>Refugi guardat</tipus>
+		<places><![CDATA[50 + 8 accÃ©s lliure]]></places>
+		<altitud>1965</altitud>
+		<equipament>Servei de menjador, dutxes i sanitaris. Wifi.</equipament>
+		<x_utm>382341,50</x_utm>
+		<y_utm>4720109,90</y_utm>
+		<x_lambert>536617,25</x_lambert>
+		<y_lambert>36163,75</y_lambert>
+		<lon>1:33:55,039</lon>
+		<lat>42:37:25,290</lat>
+		<id1>9</id1>
+		<calendari><![CDATA[Obert tot l'any]]></calendari>
+		<telefon><![CDATA[+376 846 446]]></telefon>
+		<gr><![CDATA[SÃ­, GRP, HRP i Coronallacs.]]></gr>
+		<info>https://visitandorra.com</info>
+		<info2><![CDATA[refugis@govern.ad]]></info2>
+		<info3><![CDATA[grp@andorraturisme.ad]]></info3>
+		<acces><![CDATA[Des del pÃ rking del parc (30 mn). O venint pel GRP des de la Coma de Ransol]]></acces>
+		<situacio><![CDATA[Parc Natural de la vall de Sorteny (Ordino), desprÃ¨s del portell de pedra]]></situacio>
+		<foto>http://www.ideandorra.ad/imatges/refugis/refugi_BordadeSorteny.jpg</foto>
+		<numero>11</numero>
+	</wpt>
+	<wpt lat="42.607946" lon="1.496100">
+		<ele>2235</ele>
+		<name>Unknown Point Feature</name>
+		<desc>Unknown Point Feature</desc>
+		<sym>Dot</sym>
+		<nom><![CDATA[Refugi de l'Angonella]]></nom>
+		<tipus>Refugi no guardat</tipus>
+		<places>6</places>
+		<altitud>2235</altitud>
+		<equipament>Llar de foc, lliteres, taula i bancs. Aigua al costat del refugi</equipament>
+		<x_utm>376732,02</x_utm>
+		<y_utm>4718578,87</y_utm>
+		<x_lambert>531017,13</x_lambert>
+		<y_lambert>34589,63</y_lambert>
+		<lon>1:29:50,069</lon>
+		<lat>42:36:32,514</lat>
+		<id1>10</id1>
+		<calendari><![CDATA[Obert tot l'any]]></calendari>
+		<telefon></telefon>
+		<gr><![CDATA[SÃ­, GRP, GRT de les tres nacions]]></gr>
+		<info>https://visitandorra.com</info>
+		<info2><![CDATA[refugis@govern.ad]]></info2>
+		<info3><![CDATA[grp@andorraturisme.ad]]></info3>
+		<acces>Des del poble de Llorts (4h30). O venint pel GRP des del refugi de les Fonts (Arinsal)</acces>
+		<situacio><![CDATA[Vall de l'Angonella (Ordino), abans dels estanys, a la dreta del riu pujant]]></situacio>
+		<foto>http://www.ideandorra.ad/imatges/refugis/refugi_Angonella.jpg</foto>
+		<numero>12</numero>
+	</wpt>
+	<wpt lat="42.618433" lon="1.638794">
+		<ele>2215</ele>
+		<name>Unknown Point Feature</name>
+		<desc>Unknown Point Feature</desc>
+		<sym>Dot</sym>
+		<nom><![CDATA[Refugi de CÃ³ms de Jan]]></nom>
+		<tipus>Refugi no guardat</tipus>
+		<places>10</places>
+		<altitud>2215</altitud>
+		<equipament>Llar de foc, lliteres taula i bancs. Aigua al costat.</equipament>
+		<x_utm>388455,50</x_utm>
+		<y_utm>4719545,02</y_utm>
+		<x_lambert>542738,06</x_lambert>
+		<y_lambert>35645,08</y_lambert>
+		<lon>1:38:23,754</lon>
+		<lat>42:37:10,255</lat>
+		<id1>11</id1>
+		<calendari><![CDATA[Obert tot l'any]]></calendari>
+		<telefon></telefon>
+		<gr><![CDATA[SÃ­, GRP i HRP]]></gr>
+		<info>https://visitandorra.com</info>
+		<info2><![CDATA[refugis@govern.ad]]></info2>
+		<info3><![CDATA[grp@andorraturisme.ad]]></info3>
+		<acces>Del fons de la Coma de Ransol, a la dreta del riu (30 min).</acces>
+		<situacio><![CDATA[Vedat de caÃ§a de la vall de Ransol (Canillo), entre el bony de la pala de Jan i la portella de la Coma de Varilles, just sortint del bosc]]></situacio>
+		<foto>http://www.ideandorra.ad/imatges/refugis/refugi_ComsdeJan.jpg</foto>
+		<numero>10</numero>
+	</wpt>
+	<wpt lat="42.492081" lon="1.594527">
+		<ele>1880</ele>
+		<name>Unknown Point Feature</name>
+		<desc>Unknown Point Feature</desc>
+		<sym>Dot</sym>
+		<nom>Refugi de Fontverd</nom>
+		<tipus>Refugi no guardat</tipus>
+		<places>14</places>
+		<altitud>1880</altitud>
+		<equipament>Llar de foc, lliteres, taula i bancs. Plaques solars. Aigua prop del refugi.</equipament>
+		<x_utm>384592,10</x_utm>
+		<y_utm>4705573,84</y_utm>
+		<x_lambert>538978,88</x_lambert>
+		<y_lambert>21638,38</y_lambert>
+		<lon>1:35:44,384</lon>
+		<lat>42:29:35,400</lat>
+		<id1>12</id1>
+		<calendari><![CDATA[Obert tot l'any]]></calendari>
+		<telefon></telefon>
+		<gr><![CDATA[SÃ­, GR11, GR7 i GR11-10]]></gr>
+		<info>https://visitandorra.com</info>
+		<info2><![CDATA[refugis@govern.ad]]></info2>
+		<info3><![CDATA[grp@andorraturisme.ad]]></info3>
+		<acces><![CDATA[Engolasters a peu pel camÃ­ de Coll Jovell i RÃ mio (1h30). Des del Refugi de Malniu  i pel port de Vall Civera (GR11). Des de la Portella Blanca i per la collada dels Pessons (GR7), o des del refugi dels estanys de la Pera (GR11-10)]]></acces>
+		<situacio><![CDATA[A la Vall de Madriu-Perafita-Claror, entre RÃ mio i el Collet de l'Infern]]></situacio>
+		<foto>http://www.ideandorra.ad/imatges/refugis/refugi_Fontverd.jpg</foto>
+		<numero>16</numero>
+	</wpt>
+	<wpt lat="42.595622" lon="1.613213">
+		<ele>2160</ele>
+		<name>Unknown Point Feature</name>
+		<desc>Unknown Point Feature</desc>
+		<sym>Dot</sym>
+		<nom>Refugi de la Vall del Riu</nom>
+		<tipus>Refugi no guardat</tipus>
+		<places>10</places>
+		<altitud>2160</altitud>
+		<equipament>Llar de foc, lliteres, aigua al costat del refugi.</equipament>
+		<x_utm>386315,97</x_utm>
+		<y_utm>4717046,13</y_utm>
+		<x_lambert>540616,63</x_lambert>
+		<y_lambert>33128,88</y_lambert>
+		<lon>1:36:51,661</lon>
+		<lat>42:35:48,141</lat>
+		<id1>13</id1>
+		<calendari><![CDATA[Obert tot l'any]]></calendari>
+		<telefon></telefon>
+		<gr>No</gr>
+		<info>https://visitandorra.com</info>
+		<info2><![CDATA[refugis@govern.ad]]></info2>
+		<info3><![CDATA[grp@andorraturisme.ad]]></info3>
+		<acces><![CDATA[Des del poble de Canillo o de sant Joan de Caselles (1h30); des de la carretera del coll d'Ordino (CS 240) passant pel poble enruna de l'Armiana (1h); des del poble de els Plans (1h15)]]></acces>
+		<situacio><![CDATA[A la Vall del Riu (Canillo), en el camÃ­ dels estanys, al peu de la Comarqueta d'Incles, al lÃ­mit superior del bosc, desprÃ¨s de la Borda de Mora]]></situacio>
+		<foto>http://www.ideandorra.ad/imatges/refugis/refugi_Valldelriu.jpg</foto>
+		<numero>18</numero>
+	</wpt>
+	<wpt lat="42.565886" lon="1.640757">
+		<ele>2075</ele>
+		<name>Unknown Point Feature</name>
+		<desc>Unknown Point Feature</desc>
+		<sym>Dot</sym>
+		<nom>Refugi de Ribaescorjada</nom>
+		<tipus>Refugi no guardat</tipus>
+		<places>6</places>
+		<altitud>2075</altitud>
+		<equipament>Llar de foc, lliteres, taula i bancs. Font propera al refugi.</equipament>
+		<x_utm>388522,79</x_utm>
+		<y_utm>4713707,39</y_utm>
+		<x_lambert>542849,76</x_lambert>
+		<y_lambert>29805,43</y_lambert>
+		<lon>1:38:30,817</lon>
+		<lat>42:34:01,090</lat>
+		<id1>14</id1>
+		<calendari><![CDATA[Obert tot l'any]]></calendari>
+		<telefon></telefon>
+		<gr>No</gr>
+		<info>https://visitandorra.com</info>
+		<info2><![CDATA[refugis@govern.ad]]></info2>
+		<info3><![CDATA[grp@andorraturisme.ad]]></info3>
+		<acces><![CDATA[Des del poble de Canillo, seguint el camÃ­ del Gall fins al bosc de la Mandurana, i seguint el camÃ­ de Ribaescorjada (1h30)]]></acces>
+		<situacio><![CDATA[A l'obaga del riu Valira d'Orient (Canillo), a la dreta del planell de Ribaescorjada (estaciÃ³ d'esquÃ­ de El Tarter)]]></situacio>
+		<foto>http://www.ideandorra.ad/imatges/refugis/refugi_Ribaescorjada.jpg</foto>
+		<numero>19</numero>
+	</wpt>
+	<wpt lat="42.511092" lon="1.608942">
+		<ele>2230</ele>
+		<name>Unknown Point Feature</name>
+		<desc>Unknown Point Feature</desc>
+		<sym>Dot</sym>
+		<nom>Refugi dels Agols</nom>
+		<tipus>Refugi no guardat</tipus>
+		<places><![CDATA[6 + 4]]></places>
+		<altitud>2230</altitud>
+		<equipament>Llar de foc, lliteres, taula i bancs. Aigua aprop del refugi</equipament>
+		<x_utm>385811,34</x_utm>
+		<y_utm>4707665,39</y_utm>
+		<x_lambert>540182,88</x_lambert>
+		<y_lambert>23740,13</y_lambert>
+		<lon>1:36:36,277</lon>
+		<lat>42:30:43,840</lat>
+		<id1>15</id1>
+		<calendari><![CDATA[Obert tot l'any]]></calendari>
+		<telefon></telefon>
+		<gr>No</gr>
+		<info>https://visitandorra.com</info>
+		<info2><![CDATA[refugis@govern.ad]]></info2>
+		<info3><![CDATA[grp@andorraturisme.ad]]></info3>
+		<acces><![CDATA[Des del camÃ­ de les Pardines, pujant des d'Encamp o per la carretera dels Cortals (2h)]]></acces>
+		<situacio><![CDATA[A la vall dels Agols (Encamp), a l'obaga del Valira d'Orient]]></situacio>
+		<foto>http://www.ideandorra.ad/imatges/refugis/refugi_Agols.jpg</foto>
+		<numero>21</numero>
+	</wpt>
+	<wpt lat="42.517015" lon="1.642060">
+		<ele>2425</ele>
+		<name>Unknown Point Feature</name>
+		<desc>Unknown Point Feature</desc>
+		<sym>Dot</sym>
+		<nom><![CDATA[Refugi d'Ensagents]]></nom>
+		<tipus>Refugi no guardat</tipus>
+		<places>14</places>
+		<altitud>2425</altitud>
+		<equipament>Llar de foc, lliteres, taula i bancs. Aigua al costat.</equipament>
+		<x_utm>388542,71</x_utm>
+		<y_utm>4708278,92</y_utm>
+		<x_lambert>542910,88</x_lambert>
+		<y_lambert>24374,63</y_lambert>
+		<lon>1:38:35,502</lon>
+		<lat>42:31:05,159</lat>
+		<id1>16</id1>
+		<calendari><![CDATA[Obert tot l'any]]></calendari>
+		<telefon></telefon>
+		<gr>No</gr>
+		<info>https://visitandorra.com</info>
+		<info2><![CDATA[refugis@govern.ad]]></info2>
+		<info3><![CDATA[grp@andorraturisme.ad]]></info3>
+		<acces><![CDATA[Des de la carretera dels Cortals d'Encamp (CS-220), al km 6,2 (2h)]]></acces>
+		<situacio><![CDATA[A la vall d'ensagents (Encamp), a l'obaga del Valira d'Orient]]></situacio>
+		<foto>http://www.ideandorra.ad/imatges/refugis/refugi_Ensagents.jpg</foto>
+		<numero>22</numero>
+	</wpt>
+	<wpt lat="42.479701" lon="1.578262">
+		<ele>2200</ele>
+		<name>Unknown Point Feature</name>
+		<desc>Unknown Point Feature</desc>
+		<sym>Dot</sym>
+		<nom>Refugi de Perafita</nom>
+		<tipus>Refugi no guardat</tipus>
+		<places><![CDATA[6 + 4]]></places>
+		<altitud>2200</altitud>
+		<equipament>Llar de foc, lliteres, taula i bancs, porxo per a llenya, aigua aprop</equipament>
+		<x_utm>383232,41</x_utm>
+		<y_utm>4704221,42</y_utm>
+		<x_lambert>537628,75</x_lambert>
+		<y_lambert>20275,05</y_lambert>
+		<lon>1:34:45,830</lon>
+		<lat>42:28:50,834</lat>
+		<id1>17</id1>
+		<calendari><![CDATA[Obert tot l'any]]></calendari>
+		<telefon></telefon>
+		<gr><![CDATA[SÃ­, GRP i GR11.10]]></gr>
+		<info>https://visitandorra.com</info>
+		<info2><![CDATA[refugis@govern.ad]]></info2>
+		<info3><![CDATA[grp@andorraturisme.ad]]></info3>
+		<acces><![CDATA[Amb cotxe fins la borda SabatÃ©; a peu pel camÃ­ fins EntremesaigÃ¼es agafant el camÃ­ de l'esquerra pasant pel pont. Temps d'arribada: 2 h (itinerari a peu).]]></acces>
+		<situacio><![CDATA[Vall de Madriu-Perafita-Claror, a la dreta del riu de Perafita, al costat de l'antiga cabana]]></situacio>
+		<foto>http://www.ideandorra.ad/imatges/refugis/refugi_Perafita.jpg</foto>
+		<numero>3</numero>
+	</wpt>
+	<wpt lat="42.485035" lon="1.639793">
+		<ele>2230</ele>
+		<name>Unknown Point Feature</name>
+		<desc>Unknown Point Feature</desc>
+		<sym>Dot</sym>
+		<nom>Refugi del Riu dels Orris</nom>
+		<tipus>Refugi no guardat</tipus>
+		<places><![CDATA[6 + 4]]></places>
+		<altitud>2230</altitud>
+		<equipament>Llar de foc, lliteres, taula i bancs, porxo per a llenya, aigua i llenya aprop.</equipament>
+		<x_utm>388299,46</x_utm>
+		<y_utm>4704730,71</y_utm>
+		<x_lambert>542694,38</x_lambert>
+		<y_lambert>20822,88</y_lambert>
+		<lon>1:38:27,336</lon>
+		<lat>42:29:10,031</lat>
+		<id1>18</id1>
+		<calendari><![CDATA[Obert tot l'any]]></calendari>
+		<telefon></telefon>
+		<gr><![CDATA[SÃ­, GRP, GR11 i GR7]]></gr>
+		<info>https://visitandorra.com</info>
+		<info2><![CDATA[refugis@govern.ad]]></info2>
+		<info3><![CDATA[grp@andorraturisme.ad]]></info3>
+		<acces><![CDATA[Amb cotxe fins Engolasters; a peu per Coll Jovell, Fontverd i el PlÃ  de l'Ingla, o venint de Vall Civera (GR11). Temps d'arribada: 3h30 (itinerari a peu)]]></acces>
+		<situacio><![CDATA[Vall de Madriu-Perafita-Claror, a tocar del PlÃ  de l'Ingla, a la dreta del riu Madriu]]></situacio>
+		<foto>http://www.ideandorra.ad/imatges/refugis/refugi_RiudelsOrris.jpg</foto>
+		<numero>4</numero>
+	</wpt>
+	<wpt lat="42.553636" lon="1.678877">
+		<ele>2150</ele>
+		<name>Unknown Point Feature</name>
+		<desc>Unknown Point Feature</desc>
+		<sym>Dot</sym>
+		<nom>Refugi del Pla de les Pedres</nom>
+		<tipus>Refugi no guardat</tipus>
+		<places>5</places>
+		<altitud>2150</altitud>
+		<equipament><![CDATA[Porxo ample a l'entrada.]]></equipament>
+		<x_utm>391630,53</x_utm>
+		<y_utm>4712297,61</y_utm>
+		<x_lambert>545969,63</x_lambert>
+		<y_lambert>28418,63</y_lambert>
+		<lon>1:40:48,044</lon>
+		<lat>42:33:16,990</lat>
+		<id1>19</id1>
+		<calendari><![CDATA[Obert tot l'any]]></calendari>
+		<telefon></telefon>
+		<gr><![CDATA[SÃ­, GRP]]></gr>
+		<info>https://visitandorra.com</info>
+		<info2><![CDATA[refugis@govern.ad]]></info2>
+		<info3><![CDATA[grp@andorraturisme.ad]]></info3>
+		<acces><![CDATA[A la dreta de CG- 2 direcciÃ³ Pas de la Casa, prop de les Bordes d'Envalira, a la sortida del bosc.]]></acces>
+		<situacio><![CDATA[En cotxe fins El Peretol; a peu seguint el camÃ­ marcat. Temps d'arribada: 20 min.(itinerari a peu)]]></situacio>
+		<foto>http://www.ideandorra.ad/imatges/refugis/refugi_PladelesPedres.jpg</foto>
+		<numero>6</numero>
+	</wpt>
+	<wpt lat="42.611475" lon="1.672354">
+		<ele>2295</ele>
+		<name>Unknown Point Feature</name>
+		<desc>Unknown Point Feature</desc>
+		<sym>Dot</sym>
+		<nom>Refugi de Cabana Sorda</nom>
+		<tipus>Refugi no guardat</tipus>
+		<places>20</places>
+		<altitud>2295</altitud>
+		<equipament>Llar de foc, lliteres, taula i bancs. Aigua al costat.</equipament>
+		<x_utm>391195,78</x_utm>
+		<y_utm>4718728,66</y_utm>
+		<x_lambert>545485,73</x_lambert>
+		<y_lambert>34849,23</y_lambert>
+		<lon>1:40:24,568</lon>
+		<lat>42:36:45,206</lat>
+		<id1>20</id1>
+		<calendari><![CDATA[Obert tot l'any]]></calendari>
+		<telefon></telefon>
+		<gr><![CDATA[SÃ­, GRP i HRP]]></gr>
+		<info>https://visitandorra.com</info>
+		<info2><![CDATA[refugis@govern.ad]]></info2>
+		<info3><![CDATA[grp@andorraturisme.ad]]></info3>
+		<acces><![CDATA[Des de la vall d'Incles, temps d'arribada: 2h. O venint pel GR PaÃ­s: de l'est des del refugi de JuclÃ , o de l'oest per la Coma de Ransol]]></acces>
+		<situacio><![CDATA[Vall d'Incles (Canillo), just a sota de l'estany de Cabana Sorda]]></situacio>
+		<foto>http://www.ideandorra.ad/imatges/refugis/refugi_CabanaSorda.jpg</foto>
+		<numero>9</numero>
+	</wpt>
+	<wpt lat="42.572004" lon="1.720540">
+		<ele>2265</ele>
+		<name>Unknown Point Feature</name>
+		<desc>Unknown Point Feature</desc>
+		<sym>Dot</sym>
+		<nom>Refugi de la Portella</nom>
+		<tipus>Refugi no guardat</tipus>
+		<places>6</places>
+		<altitud>2265</altitud>
+		<equipament>Llar de foc, lliteres, taula i bancs. Aigua a prop.</equipament>
+		<x_utm>395081,82</x_utm>
+		<y_utm>4714284,67</y_utm>
+		<x_lambert>549407,38</x_lambert>
+		<y_lambert>30432,88</y_lambert>
+		<lon>1:43:18,030</lon>
+		<lat>42:34:23,109</lat>
+		<id1>21</id1>
+		<calendari><![CDATA[Obert tot l'any]]></calendari>
+		<telefon></telefon>
+		<gr><![CDATA[SÃ­, GRT la volta als llacs]]></gr>
+		<info>https://visitandorra.com</info>
+		<info2><![CDATA[refugis@govern.ad]]></info2>
+		<info3><![CDATA[grp@andorraturisme.ad]]></info3>
+		<acces>Amb cotxe fins a Soldeu, o fins el Pas de la Casa; a peu des de Soldeu pasant pels Fontanals, Port Dret i seguint el riu de Sant Josep fins el refugi 3 h. (itinerari a peu)</acces>
+		<situacio><![CDATA[Sota el Port Dret, a la Solana d'Andorra, a l'esquerra del riu de Sant Josep]]></situacio>
+		<foto>http://www.ideandorra.ad/imatges/refugis/refugi_Portella.jpg</foto>
+		<numero>17</numero>
+	</wpt>
+	<wpt lat="42.499182" lon="1.680687">
+		<ele>2445</ele>
+		<name>Unknown Point Feature</name>
+		<desc>Unknown Point Feature</desc>
+		<sym>Dot</sym>
+		<nom><![CDATA[Refugi de MontmalÃºs]]></nom>
+		<tipus>Refugi no guardat</tipus>
+		<places>10</places>
+		<altitud>2445</altitud>
+		<equipament>Llar de foc, lliteres, taula i bancs.</equipament>
+		<x_utm>391684,88</x_utm>
+		<y_utm>4706248,52</y_utm>
+		<x_lambert>546069,94</x_lambert>
+		<y_lambert>22367,08</y_lambert>
+		<lon>1:40:54,551</lon>
+		<lat>42:30:00,958</lat>
+		<id1>22</id1>
+		<calendari><![CDATA[Obert tot l'any]]></calendari>
+		<telefon></telefon>
+		<gr>No</gr>
+		<info>https://visitandorra.com</info>
+		<info2><![CDATA[refugis@govern.ad]]></info2>
+		<info3><![CDATA[grp@andorraturisme.ad]]></info3>
+		<acces><![CDATA[Amb cotxe fins al Grau-Roig, a peu pujar per la pista fins al primer estany dels Pessons, seguir el GR7 fins a la bassa de Coma Estremera (2.386 m), desprÃ©s pujar per la Coma fins la collada de MontmalÃºs i baixar fins a l'estany (2h)]]></acces>
+		<situacio><![CDATA[Al costat de l'Estany de MontmalÃºs]]></situacio>
+		<foto>http://www.ideandorra.ad/imatges/refugis/refugi_Montmalus.jpg</foto>
+		<numero>20</numero>
+	</wpt>
+	<wpt lat="42.494991" lon="1.656450">
+		<ele>2488</ele>
+		<name>Unknown Point Feature</name>
+		<desc>Unknown Point Feature</desc>
+		<sym>Dot</sym>
+		<nom><![CDATA[Refugi de l'Illa]]></nom>
+		<tipus>Refugi guardat</tipus>
+		<places><![CDATA[50 - 12 accÃ©s lliur]]></places>
+		<altitud>2488</altitud>
+		<equipament>Servei de menjador, bar, terrassa, dutxes, sanitaris. Wifi.</equipament>
+		<x_utm>389685,99</x_utm>
+		<y_utm>4705814,43</y_utm>
+		<x_lambert>544073,38</x_lambert>
+		<y_lambert>21917,63</y_lambert>
+		<lon>1:39:27,301</lon>
+		<lat>42:29:45,872</lat>
+		<id1>23</id1>
+		<calendari>1 juny a 15 nov. totos els dies. 16 nov a 31 maig caps de setmana (dijous-diumenge)</calendari>
+		<telefon><![CDATA[+376 801 044]]></telefon>
+		<gr><![CDATA[SÃ­, GRP, GR7, GR11, Coronallacs.]]></gr>
+		<info>https://visitandorra.com</info>
+		<info2><![CDATA[refugis@govern.ad]]></info2>
+		<info3><![CDATA[grp@andorraturisme.ad]]></info3>
+		<acces>Amb cotxe fins Engolasters. A peu fins Coll Jovell, seguint la Vall del Madriu. (4h30 a peu). Des de Grau-roig seguint el GRP (3h30). Des del Refugi de Malniu, pel GR 11, pel port de Vall Civera, o pel GR 7 des de la Portella Blanca</acces>
+		<situacio><![CDATA[Vall de Madriu-Perafita-Claror, just sota l'estany de l'Illa]]></situacio>
+		<foto>http://www.ideandorra.ad/imatges/refugis/refugi_Illa.jpg</foto>
+		<numero>5</numero>
+	</wpt>
+	<wpt lat="42.594868" lon="1.705994">
+		<ele>2145</ele>
+		<name>Unknown Point Feature</name>
+		<desc>Unknown Point Feature</desc>
+		<sym>Dot</sym>
+		<nom><![CDATA[Refugi de SiscarÃ³]]></nom>
+		<tipus>Refugi no guardat</tipus>
+		<places>10</places>
+		<altitud>2145</altitud>
+		<equipament>Llar de foc, lliteres. Aigua al costat i llenya al voltant.</equipament>
+		<x_utm>393926,74</x_utm>
+		<y_utm>4716841,71</y_utm>
+		<x_lambert>548232,28</x_lambert>
+		<y_lambert>32982,27</y_lambert>
+		<lon>1:42:25,665</lon>
+		<lat>42:35:45,418</lat>
+		<id1>24</id1>
+		<calendari><![CDATA[Obert tot l'any]]></calendari>
+		<telefon></telefon>
+		<gr><![CDATA[SÃ­, proper a GRP, GRT (volta als estanys) i HRP]]></gr>
+		<info>https://visitandorra.com</info>
+		<info2><![CDATA[refugis@govern.ad]]></info2>
+		<info3><![CDATA[grp@andorraturisme.ad]]></info3>
+		<acces><![CDATA[Des del fons de la vall d'Incles, temps d'arribada: 30 min. O venint pel GR PaÃ­s, de l'est des dels estanys del SiscarÃ³ o de l'oest des del refugi del JuclÃ ]]></acces>
+		<situacio><![CDATA[A la vall d'Incles (Canillo), a la zona humida mÃ©s gran d'Andorra: la pleta del SiscarÃ³, a l'esquerra sortint del bosc]]></situacio>
+		<foto>http://www.ideandorra.ad/imatges/refugis/refugi_Siscaro.jpg</foto>
+		<numero>7</numero>
+	</wpt>
+	<wpt lat="42.607365" lon="1.715740">
+		<ele>2310</ele>
+		<name>Unknown Point Feature</name>
+		<desc>Unknown Point Feature</desc>
+		<sym>Dot</sym>
+		<nom><![CDATA[Refugi de JuclÃ ]]></nom>
+		<tipus>Refugi guardat</tipus>
+		<places>50 - 9</places>
+		<altitud>2310</altitud>
+		<equipament>Refugi guardat: servei de menjador, bar, cafeteria, dutxes, sanitaris.</equipament>
+		<x_utm>394747,47</x_utm>
+		<y_utm>4718217,32</y_utm>
+		<x_lambert>549042,88</x_lambert>
+		<y_lambert>34364,75</y_lambert>
+		<lon>1:43:00,754</lon>
+		<lat>42:36:30,408</lat>
+		<id1>25</id1>
+		<calendari><![CDATA[Refugi guardat de 15 juny a 15 de setembre. Refugi no guardat la resta de l'any (10 pax)]]></calendari>
+		<telefon><![CDATA[+376 678 145]]></telefon>
+		<gr><![CDATA[SÃ­, GRP, GRT, HRP i Coronallacs.]]></gr>
+		<info>https://visitandorra.com</info>
+		<info2><![CDATA[refugis@govern.ad]]></info2>
+		<info3><![CDATA[grp@andorraturisme.ad]]></info3>
+		<acces><![CDATA[Des del fons de la vall d'Incles, temps d'arribada: 1h30 min. O venint pel GR PaÃ­s, de l'est des del SiscarÃ³ o de l'oest des de Cabana Sorda. O seguint el GR Transfronterer "La volta dels estanys", des del port d'Incles (refuge de Rulhe)]]></acces>
+		<situacio><![CDATA[A la vall d'Incles (Canillo), a la vora de la presa de l'estany primer de JuclÃ .]]></situacio>
+		<foto>http://www.ideandorra.ad/imatges/refugis/refugi_Jucla.jpg</foto>
+		<numero>8</numero>
+	</wpt>
+	<wpt lat="42.579010" lon="1.449364">
+		<ele>2265</ele>
+		<name>Unknown Point Feature</name>
+		<desc>Unknown Point Feature</desc>
+		<sym>Dot</sym>
+		<nom>Refugi de Comapedrosa</nom>
+		<tipus>Refugi guardat</tipus>
+		<places>50 - 10</places>
+		<altitud>2265</altitud>
+		<equipament>Dutxes, sanitaris, servei de bar, menjars, 10 places de refugi lliure. Admet reserves.</equipament>
+		<x_utm>372839,52</x_utm>
+		<y_utm>4715434,89</y_utm>
+		<x_lambert>527146,81</x_lambert>
+		<y_lambert>31415,03</y_lambert>
+		<lon>1:27:01,821</lon>
+		<lat>42:34:48,349</lat>
+		<id1>26</id1>
+		<calendari><![CDATA[Refugi guardat 15 juny a 15 de setembre. Refugi no guardat la resta de l'any (capacitat 10 pax)]]></calendari>
+		<telefon><![CDATA[+376 327 955]]></telefon>
+		<gr><![CDATA[SÃ­, GRP, GR11, GRT 3 nacions, Coronallacs]]></gr>
+		<info>https://visitandorra.com</info>
+		<info2><![CDATA[refugis@govern.ad]]></info2>
+		<info3><![CDATA[grp@andorraturisme.ad]]></info3>
+		<acces><![CDATA[Des del fons de la vall d'Arinsal, (1h30 min). Venint de l'oest pel GR 11, o GRT "La ruta de les 3 nacions" (port de Baiau - refugi de Vallferrera), o des del refugi del Pla de l'Estany.]]></acces>
+		<situacio><![CDATA[Al Parc Natural de les Valls del Comapedrosa, en el camÃ­ del punt culminant d'Andorra (Pic del Comapedrosa 2.946 m)]]></situacio>
+		<foto>http://www.ideandorra.ad/imatges/refugis/refugi_Comapedrosa.jpg</foto>
+		<numero>15</numero>
+	</wpt>
+	<extensions>
+	</extensions>
+</gpx>

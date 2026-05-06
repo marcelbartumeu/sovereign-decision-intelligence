@@ -1,0 +1,144 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Main>
+	<message key="intro">Welcome to the Principality of Andorra, a country with an area of 468 square kilometers</message>
+	<message key="borders_es">Andorra has two borders: Spain</message>
+	<message key="borders_fr">Andorra has two borders: Spain and France</message>
+
+	<message key="parroquies">Andorra has 7 parishes</message>
+	<message key="canillo">Andorra has 7 parishes: Canillo</message>
+	<message key="encamp">Andorra has 7 parishes: Encamp</message>
+	<message key="ordino">Andorra has 7 parishes: Ordino</message>
+	<message key="massana">Andorra has 7 parishes: La Massana</message>
+	<message key="andorra">Andorra has 7 parishes: Andorra la Vella</message>
+	<message key="sant">Andorra has 7 parishes: Sant Julià de Lòria</message>
+	<message key="escaldes">Andorra has 7 parishes: Escaldes-Engordany</message>
+
+	<message key="roads_1">Our roads: <![CDATA[<color=#FF0000>Primary </color>]]>
+Download the Andorra map PDF at point 7 in the room
+	</message>
+	<message key="roads_2">Our roads: <![CDATA[<color=#FF0000>Primary </color>]]>and <![CDATA[<color=#FFCC00>Secondary</color>]]>
+Download the Andorra map PDF at point 7 in the room
+	</message>
+
+	<message key="lakes">Scattered across our Principality's geography, there are more than 80 lakes and ponds of various sizes</message>
+
+	<message key="nord">Valira del Nord River</message>
+	<message key="orient">Valira d'Orient River</message>
+	<message key="valira">La Valira River</message>
+
+	<message key="mountains">Andorra, the country of endless peaks: more than 50 summits challenging 2,000 meters, with <![CDATA[<color=#FF8C66>Comapedrosa </color>]]>leading at 2,942!</message>
+	<message key="estripagec" foto="estripagec">Discover the 6 peaks of Ordino with unique ridge lines!
+Download the PDF map at point 7 in the room
+	</message>
+
+	<message key="parcsIntro">Our natural parks and cultural landscapes
+Download the PDF map at point 7 in the room
+	</message>
+	<message key="sorteny">Sorteny Valley Natural Park
+Download the PDF map at point 7 in the room
+	</message>
+	<message key="madriu">Madriu-Perafita-Claror Valley</message>
+	<message key="coma">Comapedrosa Natural Park</message>
+
+	<message key="shelters">Mountain shelters
+Guarded shelters
+	</message>
+
+	<message key="coronallacs">Coronallacs
+Download the information PDF at point 7 in the room
+	</message>
+	<message key="riberamunt">Discover Riberamunt
+Download the information PDF at point 7 in the room
+	</message>
+
+	<message key="tam_and">Discover the 7 Tamarros: Andy
+Request the booklet at the counter
+	</message>
+	<message key="tam_esc">Discover the 7 Tamarros: Caldes
+Request the booklet at the counter
+	</message>
+	<message key="tam_enc">Discover the 7 Tamarros: Enko
+Request the booklet at the counter
+	</message>
+	<message key="tam_sant">Discover the 7 Tamarros: Lau
+Request the booklet at the counter
+	</message>
+	<message key="tam_ord">Discover the 7 Tamarros: Dino
+Request the booklet at the counter
+	</message>
+	<message key="tam_can">Discover the 7 Tamarros: Nilo
+Request the booklet at the counter
+	</message>
+	<message key="tam_mas">Discover the 7 Tamarros: Massa
+Request the booklet at the counter
+	</message>
+
+	<message key="macarulla_can">Macarulla magical trails
+<![CDATA[<b>Where are the mushrooms?</b>]]>
+Buy the booklet at the counter
+	</message>
+	<message key="macarulla_enc">Macarulla magical trails
+<![CDATA[<b>Tracks and footprints</b>]]>
+Buy the booklet at the counter
+	</message>
+	<message key="macarulla_ord">Macarulla magical trails
+<![CDATA[<b>Piero and Queen Pitavola</b>]]>
+Buy the booklet at the counter
+	</message>
+	<message key="macarulla_mas">Macarulla magical trails
+<![CDATA[<b>The Forest of the Menairons</b>]]>
+Buy the booklet at the counter
+	</message>
+	<message key="macarulla_and">Macarulla magical trails
+<![CDATA[<b>Estevet's Friends</b>]]>
+Buy the booklet at the counter
+	</message>
+	<message key="macarulla_esc">Macarulla magical trails
+<![CDATA[<b>The Witch Quela's Potion</b>]]>
+Buy the booklet at the counter
+	</message>
+
+	<message key="cicloturisme">Discover our 21 Cycle Tourism routes
+Download the information PDF at point 7 in the room
+	</message>
+	<message key="btt">Discover our 33 MTB routes
+Download the information PDF at point 7 in the room
+	</message>
+
+	<message key="ski">Our ski resorts: <![CDATA[<color=#0059B3>Grandvalira </color>]]>and <![CDATA[<color=#92C9FF>Naturland</color>]]></message>
+
+	<message key="todo">Andorra's must-sees: the best tourist attractions you can't miss!</message>
+	<message key="todo_cal">Andorra's must-sees: the best tourist attractions you can't miss!
+<![CDATA[<b>Caldea</b>]]>
+	</message>
+	<message key="todo_bridge">Andorra's must-sees: the best tourist attractions you can't miss!
+<![CDATA[<b>Tibetan Bridge and Roc del Quer</b>]]>
+	</message>
+	<message key="todo_sol">Andorra's must-sees: the best tourist attractions you can't miss!
+<![CDATA[<b>Solar Clock</b>]]>
+	</message>
+	<message key="todo_mine">Andorra's must-sees: the best tourist attractions you can't miss!
+<![CDATA[<b>Llorts Iron Mine</b>]]>
+	</message>
+	<message key="todo_ord">Andorra's must-sees: the best tourist attractions you can't miss!
+<![CDATA[<b>Romanesque in La Cortinada</b>]]>
+	</message>
+	<message key="todo_mon">Andorra's must-sees: the best tourist attractions you can't miss!
+<![CDATA[<b>Mon Magic Family Park</b>]]>
+	</message>
+	<message key="todo_golf">Andorra's must-sees: the best tourist attractions you can't miss!
+<![CDATA[<b>Soldeu Golf</b>]]>
+	</message>
+	<message key="todo_funi">Andorra's must-sees: the best tourist attractions you can't miss!
+<![CDATA[<b>Funicamp</b>]]>
+	</message>
+	<message key="todo_creu">Andorra's must-sees: the best tourist attractions you can't miss!
+<![CDATA[<b>Creussans Cable Car and Chairlift</b>]]>
+	</message>
+	<message key="todo_bike">Andorra's must-sees: the best tourist attractions you can't miss!
+<![CDATA[<b>Bike Park Pal Arinsal</b>]]>
+	</message>
+	<message key="todo_nat">Andorra's must-sees: the best tourist attractions you can't miss!
+<![CDATA[<b>Naturland</b>]]>
+	</message>
+</Main>

@@ -1,0 +1,84 @@
+﻿<?xml version="1.0"?>
+<gpx creator="GPS Visualizer http://www.gpsvisualizer.com/" 
+	 version="1.0" xmlns="http://www.topografix.com/GPX/1/0" 
+	 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	 xsi:schemaLocation="http://www.topografix.com/GPX/1/0 http://www.topografix.com/GPX/1/0/gpx.xsd">
+	<trk>
+		<name>Estaci&#243; de pal - XC1</name>
+		<desc>Tracklog</desc>
+		<trkseg>
+			<trkpt lat="42.536601" lon="1.49081">
+				<ele>1902.1</ele>
+			</trkpt>
+			<trkpt lat="42.53663" lon="1.490721">
+				<ele>1901.5</ele>
+			</trkpt>
+			<trkpt lat="42.53661" lon="1.490503">
+				<ele>1900.4</ele>
+			</trkpt>
+			<trkpt lat="42.536587" lon="1.490156">
+				<ele>1898.7</ele>
+			</trkpt>
+			<trkpt lat="42.536586" lon="1.490033">
+				<ele>1898.0</ele>
+			</trkpt>
+			<trkpt lat="42.536571" lon="1.489934">
+				<ele>1897.7</ele>
+			</trkpt>
+			<trkpt lat="42.536382" lon="1.489555">
+				<ele>1898.7</ele>
+			</trkpt>
+			<trkpt lat="42.536338" lon="1.489437">
+				<ele>1899.0</ele>
+			</trkpt>
+			<trkpt lat="42.535978" lon="1.488475">
+				<ele>1900.9</ele>
+			</trkpt>
+			<trkpt lat="42.535877" lon="1.488239">
+				<ele>1901.9</ele>
+			</trkpt>
+			<trkpt lat="42.535772" lon="1.488025">
+				<ele>1902.8</ele>
+			</trkpt>
+			<trkpt lat="42.535755" lon="1.487956">
+				<ele>1902.7</ele>
+			</trkpt>
+			<trkpt lat="42.535682" lon="1.487984">
+				<ele>1905.1</ele>
+			</trkpt>
+			<trkpt lat="42.535623" lon="1.488115">
+				<ele>1907.7</ele>
+			</trkpt>
+			<trkpt lat="42.535662" lon="1.488483">
+				<ele>1908.7</ele>
+			</trkpt>
+			<trkpt lat="42.535826" lon="1.489035">
+				<ele>1907.5</ele>
+			</trkpt>
+			<trkpt lat="42.536075" lon="1.489538">
+				<ele>1903.4</ele>
+			</trkpt>
+			<trkpt lat="42.536325" lon="1.490019">
+				<ele>1900.7</ele>
+			</trkpt>
+			<trkpt lat="42.536466" lon="1.490176">
+				<ele>1899.9</ele>
+			</trkpt>
+			<trkpt lat="42.536496" lon="1.490235">
+				<ele>1899.9</ele>
+			</trkpt>
+			<trkpt lat="42.536491" lon="1.490349">
+				<ele>1900.5</ele>
+			</trkpt>
+			<trkpt lat="42.536542" lon="1.4905">
+				<ele>1900.8</ele>
+			</trkpt>
+			<trkpt lat="42.536567" lon="1.490715">
+				<ele>1901.8</ele>
+			</trkpt>
+			<trkpt lat="42.536601" lon="1.49081">
+				<ele>1902.1</ele>
+			</trkpt>
+		</trkseg>
+	</trk>
+</gpx>

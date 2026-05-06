@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d33017ab78021b2479d332445a6f57a7, type: 3}
+  m_Name: EstripagecsStep
+  m_EditorClassIdentifier: 
+  showStepEditor: 0
+  toShow: 1
+  cleanPrevious: 1
+  isLayer: 1
+  baseMaterial: {fileID: 2100000, guid: 65bf588059734e747897e83417def51e, type: 2}
+  layerMaterial:
+  - {fileID: 2100000, guid: 650d7040b7f3c35438998d7441fc06f4, type: 2}
+  layerOpacity: 1
+  isPaint: 1
+  paints:
+  - rid: 9075968286782652439
+  isRightLeftText: 1
+  textKey: estripagec
+  sprite: {fileID: 0}
+  hasAnim: 0
+  anim:
+    material: {fileID: 0}
+    startValue: 0
+    targetValue: 0
+    speed: 0
+    shaderProperty: 
+    isLoop: 0
+    isSnow: 0
+  displayTime: 8
+  references:
+    version: 2
+    RefIds:
+    - rid: 9075968286782652439
+      type: {class: PaintDots, ns: , asm: Assembly-CSharp}
+      data:
+        showPaintEditor: 1
+        drawingTime: 
+        dataToPaint: {fileID: 11400000, guid: 5560f1818c73af04e85cb99884504be4, type: 2}
+        isForced: 0
+        speed: 0.2
+        size: 3
+        color: {r: 0.7019608, g: 0.85098046, b: 1, a: 1}
+        sortingOrder: 1
+        sprite: {fileID: 7482667652216324306, guid: b21d85a3c9b27b448b5c4394b7b854a3,
+          type: 3}

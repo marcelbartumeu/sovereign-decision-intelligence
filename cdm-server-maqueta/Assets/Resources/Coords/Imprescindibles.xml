@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Main>
+	<imp id="0">
+		<name>Caldea</name>
+		<coord>42.511194;1.537979</coord>
+		<par>Escaldes-Engordany</par>
+	</imp>
+	<imp id="1">
+		<name>Pont Tibetà y Roc del Quer</name>
+		<coord>42.576581;1.610656</coord>
+		<par>Canillo</par>
+	</imp>
+	<imp id="3">
+		<name>Rellotge Solar</name>
+		<coord>42.640625;1.4746</coord>
+		<par>Ordino</par>
+	</imp>
+	<imp id="4">
+		<name>Mina</name>
+		<coord>42.599813;1.530203</coord>
+		<par>Ordino</par>
+	</imp>
+	<imp id="5">
+		<name>Romànic a Ordino</name>
+		<coord>42.576624;1.5152131</coord>
+		<par>Ordino</par>
+	</imp>
+	<imp id="6">
+		<name>Mon Magic Family Park</name>
+		<coord>42.5659122;1.5987791</coord>
+		<par>Canillo</par>
+	</imp>
+	<imp id="8">
+		<name>Funicamp</name>
+		<coord>42.5390425;1.603666</coord>
+		<par>Encamp</par>
+	</imp>
+	<imp id="9">
+		<name>Telecabina i Telecadira Creussans</name>
+		<coord>42.6381027;1.4719923</coord>
+		<par>Ordino</par>
+	</imp>
+	<imp id="10">
+		<name>Bike Parc</name>
+		<coord>42.5373989;1.4892111</coord>
+		<par>La Massana</par>
+	</imp>
+	<imp id="11">
+		<name>Naturland</name>
+		<coord>42.4420394;1.4995215</coord>
+		<par>Sant Julià de Lòria</par>
+	</imp>
+</Main>

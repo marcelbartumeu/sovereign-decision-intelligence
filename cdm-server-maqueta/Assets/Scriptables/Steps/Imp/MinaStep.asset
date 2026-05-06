@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d33017ab78021b2479d332445a6f57a7, type: 3}
+  m_Name: MinaStep
+  m_EditorClassIdentifier: 
+  showStepEditor: 0
+  toShow: 1
+  cleanPrevious: 1
+  isLayer: 1
+  baseMaterial: {fileID: 2100000, guid: 65bf588059734e747897e83417def51e, type: 2}
+  layerMaterial:
+  - {fileID: 2100000, guid: 650d7040b7f3c35438998d7441fc06f4, type: 2}
+  - {fileID: 2100000, guid: 5584b243074d1ad48b12425ab4ddcfc3, type: 2}
+  - {fileID: 2100000, guid: a15ac1e9c52f67646920ad8c7ce99147, type: 2}
+  layerOpacity: 0.3
+  isPaint: 1
+  paints:
+  - rid: 9075968874238967812
+  isRightLeftText: 1
+  textKey: todo_mine
+  sprite: {fileID: 0}
+  hasAnim: 0
+  anim:
+    material: {fileID: 0}
+    startValue: 0
+    targetValue: 0
+    speed: 0
+    shaderProperty: 
+    isLoop: 0
+    isSnow: 0
+  displayTime: 5
+  references:
+    version: 2
+    RefIds:
+    - rid: 9075968874238967812
+      type: {class: PaintDots, ns: , asm: Assembly-CSharp}
+      data:
+        showPaintEditor: 1
+        drawingTime: 
+        dataToPaint: {fileID: 11400000, guid: 9f28c25e0e6c84e4d863015bfb70487b, type: 2}
+        isForced: 0
+        speed: 0.02
+        size: 2
+        color: {r: 1, g: 0.40000004, b: 0, a: 1}
+        sortingOrder: 1
+        sprite: {fileID: -2413806693520163455, guid: 99dd6433502c36d40a6cfd28978e1dee,
+          type: 3}

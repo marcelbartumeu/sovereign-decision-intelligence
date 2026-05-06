@@ -10,7 +10,9 @@
     <meta http-equiv="Expires" content="0">
     <!-- Version: 2025-01-28-07 - Fixed Water consumption exponential growth issue -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="scenarioData.js?v=2025-01-28-10"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="js/scenarioData.js?v=2025-01-28-10"></script>
     <style>
         * {
             margin: 0;
@@ -420,6 +422,261 @@
                 grid-row: span 1;
             }
         }
+
+        /* Overlay dashboard: scenario toggles */
+        .overlay-header {
+            margin-bottom: 1.25rem;
+        }
+        .overlay-header h2 {
+            font-size: 1.125rem;
+            color: var(--primary);
+            margin-bottom: 0.25rem;
+        }
+        .overlay-header p {
+            font-size: 0.8125rem;
+            color: var(--muted-foreground);
+            margin-bottom: 0.75rem;
+        }
+        .overlay-layer-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .overlay-layer-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.4rem 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 0.25rem;
+            background: var(--secondary);
+            color: var(--foreground);
+            font-size: 0.8125rem;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+        .overlay-layer-badge:hover {
+            background: var(--accent);
+        }
+        .overlay-layer-badge.active {
+            border-color: var(--primary);
+            background: hsl(0, 0%, 18%);
+        }
+        .overlay-layer-badge.inactive {
+            opacity: 0.5;
+        }
+        .overlay-layer-badge .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        /* ── Accessibility Tab ─────────────────────────────────────────── */
+        #accessibility-panel { padding: 0 0 2rem; }
+
+        .acc-stat-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.25rem;
+        }
+        .acc-stat-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 1.25rem 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            border-top: 3px solid var(--border);
+        }
+        .acc-stat-card.acc-walk  { border-top-color: #22c55e; }
+        .acc-stat-card.acc-bike  { border-top-color: #f59e0b; }
+        .acc-stat-card.acc-car   { border-top-color: #ef4444; }
+        .acc-stat-card.acc-total { border-top-color: var(--primary); }
+        .acc-stat-icon  { font-size: 1.5rem; }
+        .acc-stat-value { font-size: 2rem; font-weight: 700; color: var(--foreground); line-height: 1; }
+        .acc-stat-label { font-size: 0.8rem; color: var(--primary); font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; }
+        .acc-stat-sub   { font-size: 0.75rem; color: var(--muted-foreground); }
+
+        .acc-main-row {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 1rem;
+            align-items: start;
+        }
+        .acc-map-card, .acc-chart-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            overflow: hidden;
+        }
+        .acc-charts-col { display: flex; flex-direction: column; gap: 1rem; }
+
+        .acc-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .acc-layer-toggles { display: flex; gap: 0.4rem; }
+        .acc-layer-btn {
+            padding: 0.2rem 0.6rem;
+            font-size: 0.7rem;
+            border: 1px solid var(--border);
+            border-radius: 0.25rem;
+            background: transparent;
+            color: var(--muted-foreground);
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+        .acc-layer-btn.active { background: var(--secondary); color: var(--foreground); border-color: var(--primary); }
+
+        #acc-map { height: 620px; width: 100%; background: #0d0d0d; }
+
+        .acc-map-legend {
+            display: flex;
+            gap: 1.25rem;
+            padding: 0.6rem 1rem;
+            border-top: 1px solid var(--border);
+        }
+        .acc-legend-item { display: flex; align-items: center; gap: 0.4rem; font-size: 0.75rem; color: var(--muted-foreground); }
+        .acc-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+
+        .acc-chart-card canvas { display: block; padding: 0.75rem 1rem 1rem; }
+        .acc-donut-wrap {
+            position: relative;
+            padding: 0.75rem 1.5rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .acc-donut-center {
+            position: absolute;
+            text-align: center;
+            pointer-events: none;
+        }
+        .acc-donut-total { font-size: 1.25rem; font-weight: 700; color: var(--foreground); }
+        .acc-donut-label { font-size: 0.7rem; color: var(--muted-foreground); }
+
+        .acc-iframe-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .acc-iframe {
+            width: 100%;
+            height: 480px;
+            border: none;
+            display: block;
+        }
+
+        /* Population density tab */
+        #pop-map { height: 620px; width: 100%; background: #0d0d0d; }
+        .pop-gradient-bar {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.7rem;
+            color: var(--muted-foreground);
+        }
+        .pop-gradient {
+            width: 90px;
+            height: 10px;
+            border-radius: 3px;
+            background: linear-gradient(to right, #1e3a8a, #1d4ed8, #7c3aed, #f97316, #fbbf24);
+        }
+
+        /* Leaflet dark overrides */
+        .leaflet-container { background: #0d0d0d; }
+        .leaflet-popup-content-wrapper { background: var(--card); color: var(--foreground); border: 1px solid var(--border); border-radius: 0.5rem; }
+        .leaflet-popup-tip { background: var(--card); }
+
+        /* ── Tourism Tab ──────────────────────────────────────────────── */
+        #tourism-panel { padding: 0 0 2rem; }
+        #tour-map { height: 560px; width: 100%; background: #0d0d0d; }
+
+        .tour-stat-row {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .tour-main-row {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 1rem;
+            align-items: start;
+            margin-bottom: 1rem;
+        }
+
+        .tour-resort-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            padding: 0 0 0.25rem;
+        }
+
+        .tour-resort-card {
+            background: rgba(255,255,255,0.04);
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            border-left: 3px solid #60a5fa;
+        }
+
+        .tour-resort-name {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--foreground);
+            margin-bottom: 0.35rem;
+        }
+
+        .tour-resort-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .tour-resort-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.2rem;
+            background: rgba(255,255,255,0.07);
+            border-radius: 0.25rem;
+            padding: 0.1rem 0.45rem;
+            font-size: 0.7rem;
+            color: var(--primary);
+        }
+
+        .tour-trails-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .tour-trail-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 1rem;
+            border-top: 3px solid var(--border);
+        }
+
+        .tour-trail-icon { font-size: 1.4rem; margin-bottom: 0.4rem; }
+        .tour-trail-count { font-size: 1.75rem; font-weight: 700; color: var(--foreground); line-height: 1; }
+        .tour-trail-label { font-size: 0.78rem; color: var(--primary); font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 0.2rem; }
+        .tour-trail-sub { font-size: 0.72rem; color: var(--muted-foreground); margin-top: 0.15rem; }
+
     </style>
 </head>
 <body>
@@ -478,13 +735,306 @@
                 <button class="tab-button" data-tab="social">SOCIAL SYSTEMS</button>
                 <button class="tab-button" data-tab="environmental">ENVIRONMENTAL GRID</button>
                 <button class="tab-button" data-tab="infrastructure">INFRASTRUCTURE</button>
+                <button class="tab-button" data-tab="accessibility">ACCESSIBILITY</button>
+                <button class="tab-button" data-tab="population">POPULATION</button>
+                <button class="tab-button" data-tab="tourism">TOURISM</button>
             </div>
+
+            <!-- Overlay: scenario toggles (superpose all selected scenarios on charts) -->
+            <header class="overlay-header">
+                <h2>Scenario overlay</h2>
+                <p>Toggle scenarios on or off to compare their trajectories on the same charts.</p>
+                <div class="overlay-layer-badges" id="overlay-layer-badges">
+                    <button type="button" class="overlay-layer-badge active" data-overlay-scenario="0" title="Historical">
+                        <span class="dot" style="background:#9ca3af;"></span> Historical
+                    </button>
+                    <button type="button" class="overlay-layer-badge active" data-overlay-scenario="1" title="Overgrowth">
+                        <span class="dot" style="background:#bd0638;"></span> Overgrowth
+                    </button>
+                    <button type="button" class="overlay-layer-badge active" data-overlay-scenario="2" title="Degrowth">
+                        <span class="dot" style="background:#076f37;"></span> Degrowth
+                    </button>
+                    <button type="button" class="overlay-layer-badge active" data-overlay-scenario="3" title="Continuity">
+                        <span class="dot" style="background:#294daf;"></span> Continuity
+                    </button>
+                </div>
+            </header>
 
             <!-- KPI Grid -->
             <div class="kpi-grid" id="kpi-grid">
                 <!-- Content will be dynamically generated -->
             </div>
-            
+
+            <!-- Accessibility Panel (shown only when accessibility tab is active) -->
+            <div id="accessibility-panel" style="display:none;">
+
+                <!-- Stat cards row -->
+                <div class="acc-stat-row">
+                    <div class="acc-stat-card acc-walk">
+                        <div class="acc-stat-icon">🚶</div>
+                        <div class="acc-stat-value">64.6%</div>
+                        <div class="acc-stat-label">Walkable</div>
+                        <div class="acc-stat-sub">56,265 residents</div>
+                    </div>
+                    <div class="acc-stat-card acc-bike">
+                        <div class="acc-stat-icon">🚲</div>
+                        <div class="acc-stat-value">11.6%</div>
+                        <div class="acc-stat-label">Bike access</div>
+                        <div class="acc-stat-sub">10,101 residents</div>
+                    </div>
+                    <div class="acc-stat-card acc-car">
+                        <div class="acc-stat-icon">🚌</div>
+                        <div class="acc-stat-value">15.4%</div>
+                        <div class="acc-stat-label">Bus / Car only</div>
+                        <div class="acc-stat-sub">13,392 residents</div>
+                    </div>
+                    <div class="acc-stat-card acc-total">
+                        <div class="acc-stat-icon">👥</div>
+                        <div class="acc-stat-value">87,097</div>
+                        <div class="acc-stat-label">Total population</div>
+                        <div class="acc-stat-sub">2024 baseline</div>
+                    </div>
+                </div>
+
+                <!-- Map + Charts row -->
+                <div class="acc-main-row">
+
+                    <!-- Leaflet map -->
+                    <div class="acc-map-card">
+                        <div class="acc-card-header">
+                            <span>Street-level accessibility</span>
+                            <div class="acc-layer-toggles">
+                                <button class="acc-layer-btn active" id="toggle-hexagons">Hexagons</button>
+                                <button class="acc-layer-btn active" id="toggle-streets">Streets</button>
+                                <button class="acc-layer-btn active" id="toggle-schools">Schools</button>
+                                <button class="acc-layer-btn active" id="toggle-parks">Parks</button>
+                                <button class="acc-layer-btn active" id="toggle-bus-routes">Bus Lines</button>
+                                <button class="acc-layer-btn active" id="toggle-bus-stops">Bus Stops</button>
+                            </div>
+                        </div>
+                        <div id="acc-map"></div>
+                        <div class="acc-map-legend">
+                            <span class="acc-legend-item"><span class="acc-dot" style="background:#4ade80"></span>Walk</span>
+                            <span class="acc-legend-item"><span class="acc-dot" style="background:#fbbf24"></span>Bike</span>
+                            <span class="acc-legend-item"><span class="acc-dot" style="background:#f87171"></span>Bus/Car</span>
+                            <span class="acc-legend-item"><span class="acc-dot" style="background:#166534"></span>Parks</span>
+                            <span class="acc-legend-item"><span class="acc-dot" style="background:#E63946;border-radius:2px;width:14px;height:4px"></span>Bus Lines</span>
+                            <span class="acc-legend-item"><span class="acc-dot" style="background:#facc15;border:2px solid #1e293b"></span>Bus Stops</span>
+                        </div>
+                    </div>
+
+                    <!-- Right column: donut + bar -->
+                    <div class="acc-charts-col">
+                        <div class="acc-chart-card">
+                            <div class="acc-card-header"><span>Population by mode</span></div>
+                            <div class="acc-donut-wrap">
+                                <canvas id="acc-donut-chart"></canvas>
+                                <div class="acc-donut-center">
+                                    <div class="acc-donut-total">87,097</div>
+                                    <div class="acc-donut-label">residents</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="acc-chart-card">
+                            <div class="acc-card-header"><span>Residents by access mode</span></div>
+                            <canvas id="acc-bar-chart" style="max-height:160px"></canvas>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Population Density Panel -->
+            <div id="population-panel" style="display:none;">
+
+                <!-- Stat cards -->
+                <div class="acc-stat-row">
+                    <div class="acc-stat-card" style="border-top-color:#f97316;">
+                        <div class="acc-stat-icon">👥</div>
+                        <div class="acc-stat-value">87,097</div>
+                        <div class="acc-stat-label">Total population</div>
+                        <div class="acc-stat-sub">2024 baseline</div>
+                    </div>
+                    <div class="acc-stat-card" style="border-top-color:#ef4444;">
+                        <div class="acc-stat-icon">🏙️</div>
+                        <div class="acc-stat-value">399</div>
+                        <div class="acc-stat-label">Peak hex density</div>
+                        <div class="acc-stat-sub">residents per cell</div>
+                    </div>
+                    <div class="acc-stat-card" style="border-top-color:#a855f7;">
+                        <div class="acc-stat-icon">📐</div>
+                        <div class="acc-stat-value">10,299</div>
+                        <div class="acc-stat-label">H3 hexagons</div>
+                        <div class="acc-stat-sub">4,547 populated</div>
+                    </div>
+                    <div class="acc-stat-card" style="border-top-color:#3b82f6;">
+                        <div class="acc-stat-icon">📊</div>
+                        <div class="acc-stat-value">2.7</div>
+                        <div class="acc-stat-label">Median density</div>
+                        <div class="acc-stat-sub">residents per cell</div>
+                    </div>
+                </div>
+
+                <!-- Map + charts row -->
+                <div class="acc-main-row">
+                    <div class="acc-map-card">
+                        <div class="acc-card-header">
+                            <span>Population density by H3 cell</span>
+                            <div style="display:flex;align-items:center;gap:0.75rem;">
+                                <span style="font-size:0.7rem;color:var(--muted-foreground);">Log scale</span>
+                                <div class="pop-gradient-bar">
+                                    <span>Low</span>
+                                    <div class="pop-gradient"></div>
+                                    <span>High</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="pop-map"></div>
+                    </div>
+
+                    <div class="acc-charts-col">
+                        <div class="acc-chart-card">
+                            <div class="acc-card-header"><span>Density distribution</span></div>
+                            <canvas id="pop-histogram" style="max-height:200px;padding:0.75rem 1rem 1rem;display:block;"></canvas>
+                        </div>
+                        <div class="acc-chart-card">
+                            <div class="acc-card-header"><span>Population by density band</span></div>
+                            <canvas id="pop-band-chart" style="max-height:200px;padding:0.75rem 1rem 1rem;display:block;"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tourism Panel -->
+            <div id="tourism-panel" style="display:none;">
+
+                <!-- Stat cards row -->
+                <div class="tour-stat-row">
+                    <div class="acc-stat-card" style="border-top-color:#60a5fa;">
+                        <div class="acc-stat-icon">✈️</div>
+                        <div class="acc-stat-value">9.6M</div>
+                        <div class="acc-stat-label">Tourist Arrivals</div>
+                        <div class="acc-stat-sub">2024 baseline</div>
+                    </div>
+                    <div class="acc-stat-card" style="border-top-color:#a78bfa;">
+                        <div class="acc-stat-icon">🧑‍🤝‍🧑</div>
+                        <div class="acc-stat-value">110.7×</div>
+                        <div class="acc-stat-label">Visitors per Resident</div>
+                        <div class="acc-stat-sub">tourists ÷ population</div>
+                    </div>
+                    <div class="acc-stat-card" style="border-top-color:#38bdf8;">
+                        <div class="acc-stat-icon">⛷️</div>
+                        <div class="acc-stat-value">303 km</div>
+                        <div class="acc-stat-label">Ski Pistes</div>
+                        <div class="acc-stat-sub">across 3 ski resorts</div>
+                    </div>
+                    <div class="acc-stat-card" style="border-top-color:#34d399;">
+                        <div class="acc-stat-icon">⛰️</div>
+                        <div class="acc-stat-value">91</div>
+                        <div class="acc-stat-label">Mountain Peaks</div>
+                        <div class="acc-stat-sub">catalogued summits</div>
+                    </div>
+                    <div class="acc-stat-card" style="border-top-color:#fb923c;">
+                        <div class="acc-stat-icon">🏕️</div>
+                        <div class="acc-stat-value">26</div>
+                        <div class="acc-stat-label">Mountain Refuges</div>
+                        <div class="acc-stat-sub">alpine shelter network</div>
+                    </div>
+                </div>
+
+                <!-- Map + Right column -->
+                <div class="tour-main-row">
+
+                    <!-- Leaflet map -->
+                    <div class="acc-map-card">
+                        <div class="acc-card-header">
+                            <span>Tourism Infrastructure</span>
+                            <div class="acc-layer-toggles">
+                                <button class="acc-layer-btn active" id="tour-toggle-ski">Ski</button>
+                                <button class="acc-layer-btn active" id="tour-toggle-peaks">Peaks</button>
+                                <button class="acc-layer-btn active" id="tour-toggle-refuges">Refuges</button>
+                                <button class="acc-layer-btn active" id="tour-toggle-attractions">Attractions</button>
+                                <button class="acc-layer-btn active" id="tour-toggle-btt">MTB</button>
+                                <button class="acc-layer-btn active" id="tour-toggle-cycling">Cycling</button>
+                                <button class="acc-layer-btn" id="tour-toggle-corona">Corona Llacs</button>
+                            </div>
+                        </div>
+                        <div id="tour-map"></div>
+                        <div class="acc-map-legend">
+                            <span class="acc-legend-item"><span class="acc-dot" style="background:#38bdf8;width:14px;height:14px;border-radius:50%;"></span>Ski Resort</span>
+                            <span class="acc-legend-item"><span class="acc-dot" style="background:#34d399;"></span>Peak</span>
+                            <span class="acc-legend-item"><span class="acc-dot" style="background:#fb923c;"></span>Refuge</span>
+                            <span class="acc-legend-item"><span class="acc-dot" style="background:#fbbf24;border-radius:2px;"></span>Attraction</span>
+                            <span class="acc-legend-item"><span class="acc-dot" style="background:#f97316;border-radius:2px;width:14px;height:4px;"></span>MTB</span>
+                            <span class="acc-legend-item"><span class="acc-dot" style="background:#22d3ee;border-radius:2px;width:14px;height:4px;"></span>Cycling</span>
+                            <span class="acc-legend-item"><span class="acc-dot" style="background:#c084fc;border-radius:2px;width:14px;height:4px;"></span>Corona Llacs</span>
+                        </div>
+                    </div>
+
+                    <!-- Right column: chart + ski resort cards -->
+                    <div class="acc-charts-col">
+                        <div class="acc-chart-card">
+                            <div class="acc-card-header"><span>Tourist Arrivals — All Scenarios</span></div>
+                            <canvas id="tour-arrivals-chart" style="max-height:230px;padding:0.75rem 1rem 1rem;display:block;"></canvas>
+                        </div>
+                        <div class="acc-chart-card" style="padding:1rem;">
+                            <div class="acc-card-header" style="border:none;padding:0 0 0.75rem;"><span>Ski Resorts</span></div>
+                            <div class="tour-resort-list">
+                                <div class="tour-resort-card" style="border-left-color:#38bdf8;">
+                                    <div class="tour-resort-name">Grandvalira – Pas de la Casa</div>
+                                    <div class="tour-resort-meta">
+                                        <span class="tour-resort-badge">⛷️ 210 km</span>
+                                        <span class="tour-resort-badge">↕ 1,710–2,640 m</span>
+                                    </div>
+                                    <div style="font-size:0.68rem;color:var(--muted-foreground);">Pas de la Casa · Grau Roig · Soldeu · El Tarter · Encamp · Canillo</div>
+                                </div>
+                                <div class="tour-resort-card" style="border-left-color:#a78bfa;">
+                                    <div class="tour-resort-name">Vallnord – Pal Arinsal</div>
+                                    <div class="tour-resort-meta">
+                                        <span class="tour-resort-badge">⛷️ 63 km</span>
+                                        <span class="tour-resort-badge">↕ 1,550–2,560 m</span>
+                                    </div>
+                                    <div style="font-size:0.68rem;color:var(--muted-foreground);">Pal · Arinsal</div>
+                                </div>
+                                <div class="tour-resort-card" style="border-left-color:#34d399;">
+                                    <div class="tour-resort-name">Ordino Arcalís</div>
+                                    <div class="tour-resort-meta">
+                                        <span class="tour-resort-badge">⛷️ 30 km</span>
+                                        <span class="tour-resort-badge">↕ 1,940–2,625 m</span>
+                                    </div>
+                                    <div style="font-size:0.68rem;color:var(--muted-foreground);">Arcalís</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Bottom: Trail network summary -->
+                <div class="tour-trails-row">
+                    <div class="tour-trail-card" style="border-top-color:#f97316;">
+                        <div class="tour-trail-icon">🚵</div>
+                        <div class="tour-trail-count">36</div>
+                        <div class="tour-trail-label">MTB / BTT Trails</div>
+                        <div class="tour-trail-sub">mountain bike circuits</div>
+                    </div>
+                    <div class="tour-trail-card" style="border-top-color:#22d3ee;">
+                        <div class="tour-trail-icon">🚴</div>
+                        <div class="tour-trail-count">21</div>
+                        <div class="tour-trail-label">Cycling Routes</div>
+                        <div class="tour-trail-sub">road & cycle tourism</div>
+                    </div>
+                    <div class="tour-trail-card" style="border-top-color:#c084fc;">
+                        <div class="tour-trail-icon">🥾</div>
+                        <div class="tour-trail-count">5</div>
+                        <div class="tour-trail-label">Corona de Llacs</div>
+                        <div class="tour-trail-sub">high-altitude lake circuit</div>
+                    </div>
+                </div>
+
+            </div>
+
             <!-- Scenario Visualization -->
             <div class="image-dashboard">
                 <div class="image-dashboard-header">
@@ -558,7 +1108,7 @@
             const data = scenarioData[scenarioName];
             const currentData = scenarioData['current']; // Always have access to historical scenario for 2024 baseline
             
-            if (!data) return { economic: [], social: [], environmental: [] };
+            if (!data) return { main: [], economic: [], social: [], environmental: [], infrastructure: [] };
             
             // Helper function to format numbers
             const formatNumber = (value, decimals = 0) => {
@@ -631,11 +1181,17 @@
                     return data.historicalData[key].series;
                 } else if (data.timeseriesData && data.timeseriesData[key]) {
                     let series = data.timeseriesData[key].series;
+                    // For future scenarios, prepend 2024 baseline for Employment Rate
+                    if (scenarioName !== 'current' && key === 'Emp' && currentData?.historicalData?.[key]?.series) {
+                        const histSeries = currentData.historicalData[key].series;
+                        const baseline2024 = histSeries[histSeries.length - 1];
+                        series = [baseline2024, ...series];
+                    }
                     // Add 2035 data point if series doesn't include it (extrapolate from last two points)
-                    if (scenarioName !== 'current' && Array.isArray(series) && series.length >= 2 && series.length < 11) {
+                    if (scenarioName !== 'current' && Array.isArray(series) && series.length >= 2 && series.length < 12) {
                         const lastValue = series[series.length - 1];
                         const secondLastValue = series[series.length - 2];
-                        const growthRate = (lastValue - secondLastValue) / Math.abs(secondLastValue);
+                        const growthRate = (secondLastValue !== 0) ? (lastValue - secondLastValue) / Math.abs(secondLastValue) : 0;
                         const value2035 = lastValue * (1 + growthRate);
                         series = [...series, value2035];
                     }
@@ -936,7 +1492,7 @@
                         unit: "%", 
                         trend: "up", 
                         trendValue: "+0.7%", 
-                        chartType: "pentagon", 
+                        chartType: "area", 
                         maxValue: 100, 
                         color: "#00C49F", 
                         secondaryColor: "#8DD1E1",
@@ -1325,6 +1881,15 @@
         }
 
 
+        // Overlay mode: which scenarios are shown on charts (all superposed)
+        const OVERLAY_SCENARIOS = [
+            { index: 0, label: 'Historical', color: '#9ca3af' },
+            { index: 1, label: 'Overgrowth', color: '#bd0638' },
+            { index: 2, label: 'Degrowth', color: '#076f37' },
+            { index: 3, label: 'Continuity', color: '#294daf' }
+        ];
+        let overlayEnabled = { 0: true, 1: true, 2: true, 3: true };
+
         // State
         let activeScenario = 0;
         let activeTab = 'main';
@@ -1502,145 +2067,193 @@
             }
         }
 
+        // Arduino controller state — populated by incoming serial messages
+        let arduinoAgentIndex = 0;   // encoder 1 detent position → drum-list index
+        let arduinoZoomBand   = 'Parish'; // zoom potentiometer band
+
         function handleArduinoMessage(message) {
             console.log('🔧 Handling Arduino message:', message);
-            
-            // Handle new format: {event: 'button', index: 3, name: 'Scenario 3', pressed: true}
-            if (message.event === 'button' && message.pressed === true) {
-                // Map button index to scenario index
-                // Custom mapping: Button 4 → Scenario 0 (Historical)
-                let buttonIndex = parseInt(message.index);
-                let scenarioIndex;
-                
-                // Special case: Button 4 maps to Scenario 0 (Historical)
-                if (buttonIndex === 4) {
-                    scenarioIndex = 0; // Historical
-                } else if (buttonIndex >= 1 && buttonIndex <= 3) {
-                    // Buttons 1-3 map to scenarios 1-3
-                    scenarioIndex = buttonIndex; // Button 1→1, 2→2, 3→3
-                } else if (buttonIndex === 0) {
-                    // Button 0 maps to scenario 0
-                    scenarioIndex = 0;
-                } else {
-                    console.error('❌ Unknown button index:', buttonIndex);
+
+            // ── V1.4 Mega messages ─────────────────────────────────────────
+
+            // {"type":"year","value":2027}
+            // Year is already mapped to 2010–2035 on the Arduino
+            if (message.type === 'year') {
+                const year = parseInt(message.value);
+                if (isNaN(year) || year < 2010 || year > 2035) {
+                    console.error('❌ Invalid year:', message.value);
                     return;
                 }
-                
-                console.log('🔄 Button pressed:', message.index, '→ Scenario:', scenarioIndex);
-                
-                if (isNaN(scenarioIndex) || scenarioIndex < 0 || scenarioIndex > 3) {
-                    console.error('❌ Invalid scenario index:', scenarioIndex, 'from button index:', message.index);
-                    return;
-                }
-                
-                const slider = document.getElementById('scenario-slider');
-                if (!slider) {
-                    console.error('❌ Scenario slider not found!');
-                    return;
-                }
-                
-                // Update scenario
-                updateScenario(scenarioIndex);
-                slider.value = scenarioIndex;
-                console.log('✅ Scenario updated from Arduino button:', scenarioIndex);
+                selectedYear = year;
+                const timeSlider = document.getElementById('time-slider');
+                if (timeSlider) timeSlider.value = year;
+                const yearDisplay = document.getElementById('year-display');
+                if (yearDisplay) yearDisplay.textContent = year;
+                updateKPIValues();
+                renderImageDashboard();
+                console.log('✅ Year from potentiometer:', year);
             }
-            // Handle old format: {type: 'scenario_change', scenario: 0, name: 'Historical'}
+
+            // {"type":"zoom","value":"Parish"}
+            else if (message.type === 'zoom') {
+                arduinoZoomBand = message.value;
+                console.log('🔍 Zoom band:', message.value);
+                // Emit custom event so future map/agent components can react
+                document.dispatchEvent(new CustomEvent('arduino:zoom', { detail: { band: message.value } }));
+            }
+
+            // {"type":"encoder","id":1,"direction":"CW","position":4}
+            // Encoder 1 → agent drum-list index
+            // Encoder 2 → map layer selector (dispatches event)
+            else if (message.type === 'encoder') {
+                if (message.id === 1) {
+                    arduinoAgentIndex = parseInt(message.position) || 0;
+                    console.log('🎛️ Agent index (enc1):', arduinoAgentIndex, message.direction);
+                    document.dispatchEvent(new CustomEvent('arduino:agentSelect', {
+                        detail: { index: arduinoAgentIndex, direction: message.direction }
+                    }));
+                } else if (message.id === 2) {
+                    console.log('🗺️ Map layer (enc2):', message.position, message.direction);
+                    document.dispatchEvent(new CustomEvent('arduino:mapLayer', {
+                        detail: { position: parseInt(message.position) || 0, direction: message.direction }
+                    }));
+                }
+            }
+
+            // {"type":"encoder_btn","id":1}
+            else if (message.type === 'encoder_btn') {
+                console.log('🔘 Encoder button pressed, id:', message.id);
+                document.dispatchEvent(new CustomEvent('arduino:encoderBtn', { detail: { id: message.id } }));
+            }
+
+            // {"type":"tab","value":"social"}
+            // Map directly to the existing tab-switching logic
+            else if (message.type === 'tab') {
+                const tab = message.value;
+                const tabBtn = document.querySelector(`.tab-button[data-tab="${tab}"]`);
+                if (tabBtn) {
+                    updateTab(tab);
+                    console.log('✅ Tab switched to:', tab);
+                } else {
+                    // Tab button not present in DOM (e.g. "agents") — store and dispatch
+                    console.log('ℹ️ Tab not in DOM, dispatching event:', tab);
+                    document.dispatchEvent(new CustomEvent('arduino:tab', { detail: { tab } }));
+                }
+            }
+
+            // {"type":"toggle","scenario":"overgrowth","state":true}
+            // Map to existing scenario overlay toggles
+            else if (message.type === 'toggle') {
+                const scenarioNameMap = {
+                    historical: 0, overgrowth: 1, degrowth: 2, continuity: 3
+                };
+                const overlayIdx = scenarioNameMap[message.scenario];
+                if (overlayIdx !== undefined) {
+                    const desiredState = Boolean(message.state);
+                    if (overlayEnabled[overlayIdx] !== desiredState) {
+                        overlayEnabled[overlayIdx] = desiredState;
+                        const badge = document.querySelector(
+                            `.overlay-layer-badge[data-overlay-scenario="${overlayIdx}"]`
+                        );
+                        if (badge) {
+                            badge.classList.toggle('active',   desiredState);
+                            badge.classList.toggle('inactive', !desiredState);
+                        }
+                        // Re-render charts with updated overlay state
+                        const kpiData  = generateKpiData(activeScenario);
+                        const kpisList = kpiData[activeTab];
+                        if (kpisList) {
+                            kpisList.forEach((kpi, index) => {
+                                const chartId  = `chart-${activeTab}-${index}`;
+                                const existing = chartInstances[chartId];
+                                if (existing) existing.destroy();
+                                const overlayData = buildOverlayDataForKpi(index);
+                                const chart = renderChart(chartId, kpi, overlayData);
+                                if (chart) chartInstances[chartId] = chart;
+                            });
+                        }
+                        console.log('✅ Overlay', message.scenario, '→', desiredState);
+                    }
+                } else {
+                    // Unknown scenario name (e.g. "density") — dispatch for future use
+                    console.log('ℹ️ Unknown overlay scenario, dispatching event:', message.scenario);
+                    document.dispatchEvent(new CustomEvent('arduino:toggle', {
+                        detail: { scenario: message.scenario, state: Boolean(message.state) }
+                    }));
+                }
+            }
+
+            // {"type":"status","value":"ready"} — Arduino boot confirmation
+            else if (message.type === 'status') {
+                console.log('✅ Arduino ready:', message.value);
+            }
+
+            // ── Legacy formats (kept for backward compatibility) ───────────
+
+            // {event: 'button', index: N, pressed: true}
+            else if (message.event === 'button' && message.pressed === true) {
+                let buttonIndex = parseInt(message.index);
+                let scenarioIndex = (buttonIndex === 4) ? 0 : buttonIndex;
+                if (isNaN(scenarioIndex) || scenarioIndex < 0 || scenarioIndex > 3) {
+                    console.error('❌ Invalid scenario index from legacy button:', buttonIndex);
+                    return;
+                }
+                const slider = document.getElementById('scenario-slider');
+                if (slider) slider.value = scenarioIndex;
+                updateScenario(scenarioIndex);
+                console.log('✅ Scenario (legacy button):', scenarioIndex);
+            }
+
+            // {type: 'scenario_change', scenario: N, name: '...'}
             else if (message.type === 'scenario_change') {
-                // Update scenario from Arduino
                 const scenarioIndex = parseInt(message.scenario);
-                console.log('🔄 Changing scenario to:', scenarioIndex, message.name);
-                
                 if (isNaN(scenarioIndex) || scenarioIndex < 0 || scenarioIndex > 3) {
                     console.error('❌ Invalid scenario index:', scenarioIndex);
                     return;
                 }
-                
                 const slider = document.getElementById('scenario-slider');
-                if (!slider) {
-                    console.error('❌ Scenario slider not found!');
-                    return;
-                }
-                
-                // Update scenario
+                if (slider) slider.value = scenarioIndex;
                 updateScenario(scenarioIndex);
-                slider.value = scenarioIndex;
-                console.log('✅ Scenario updated from Arduino:', message.name, '(index:', scenarioIndex + ')');
-            } 
-            // Handle year change - multiple formats
+                console.log('✅ Scenario (legacy scenario_change):', message.name);
+            }
+
+            // {type: 'year_change', year: N}  or  {event: 'slider'/'year', value: N}
             else if (message.type === 'year_change' || message.event === 'slider' || message.event === 'year') {
-                // Update year from Arduino - handle different message formats
-                let rawValue;
-                
-                if (message.year !== undefined) {
-                    rawValue = parseInt(message.year);
-                } else if (message.value !== undefined) {
-                    rawValue = parseInt(message.value);
-                } else if (message.slider !== undefined) {
-                    rawValue = parseInt(message.slider);
-                } else {
-                    console.warn('⚠️ Year message without year/value/slider field:', message);
+                let rawValue = message.year ?? message.value ?? message.slider;
+                if (rawValue === undefined) {
+                    console.warn('⚠️ Year message missing value:', message);
                     return;
                 }
-                
-                console.log('📅 Raw slider value:', rawValue, 'from message:', message);
-                
-                // Check if it's already a year (2010-2035) or a slider offset value
+                rawValue = parseInt(rawValue);
                 let year;
                 if (rawValue >= 2010 && rawValue <= 2035) {
-                    // Already a year value
                     year = rawValue;
                 } else if (rawValue >= 0 && rawValue <= 1023) {
-                    // Slider value directly represents offset from base year (not proportionally mapped)
-                    const baseYear = activeScenario === 0 ? 2010 : 2024; // Historical: 2010, Others: 2024
-                    const maxOffset = activeScenario === 0 ? 14 : 11; // Historical: 0-14 (2010-2024), Others: 0-11 (2024-2035)
-                    
-                    // Use slider value directly as offset, but clamp to max offset
-                    let offset = Math.min(rawValue, maxOffset);
-                    
-                    // Calculate year as base + offset
-                    year = baseYear + offset;
-                    
-                    // Clamp to valid range (safety check)
-                    const yearMin = activeScenario === 0 ? 2010 : 2024;
-                    const yearMax = activeScenario === 0 ? 2024 : 2035;
-                    year = Math.max(yearMin, Math.min(yearMax, year));
-                    
-                    console.log('📊 Slider', rawValue, '→ offset', offset, '→ year', year, '(base:', baseYear, ', range:', yearMin, '-', yearMax + ')');
+                    const baseYear  = activeScenario === 0 ? 2010 : 2024;
+                    const maxOffset = activeScenario === 0 ? 14   : 11;
+                    year = baseYear + Math.min(rawValue, maxOffset);
+                    year = Math.max(activeScenario === 0 ? 2010 : 2024,
+                                    Math.min(activeScenario === 0 ? 2024 : 2035, year));
                 } else {
-                    console.error('❌ Invalid slider/year value:', rawValue);
+                    console.error('❌ Invalid legacy year value:', rawValue);
                     return;
                 }
-                
-                console.log('📅 Changing year to:', year);
-                
-                if (isNaN(year) || year < 2010 || year > 2035) {
-                    console.error('❌ Invalid year after mapping:', year);
-                    return;
-                }
-                
                 selectedYear = year;
                 const timeSlider = document.getElementById('time-slider');
-                if (!timeSlider) {
-                    console.error('❌ Time slider not found!');
-                    return;
-                }
-                
-                timeSlider.value = year;
+                if (timeSlider) timeSlider.value = year;
                 const yearDisplay = document.getElementById('year-display');
-                if (yearDisplay) {
-                    yearDisplay.textContent = year;
-                }
-                // Use updateKPIValues instead of renderKPIs for smooth updates
+                if (yearDisplay) yearDisplay.textContent = year;
                 updateKPIValues();
                 renderImageDashboard();
-                console.log('✅ Year updated from Arduino:', year);
-            } 
-            // Handle button release (ignore)
-            else if (message.event === 'button' && message.pressed === false) {
-                console.log('🔘 Button released:', message.index, '(ignored)');
+                console.log('✅ Year (legacy):', year);
             }
+
+            else if (message.event === 'button' && message.pressed === false) {
+                // button release — intentionally ignored
+            }
+
             else {
-                console.warn('⚠️ Unknown message type:', message);
+                console.warn('⚠️ Unknown Arduino message:', message);
             }
         }
 
@@ -1906,13 +2519,52 @@
 
         function updateTab(tab) {
             activeTab = tab;
-            
+
             // Update tab buttons
             document.querySelectorAll('[data-tab]').forEach(button => {
                 button.classList.toggle('active', button.dataset.tab === tab);
             });
-            
-            renderKPIs();
+
+            const accPanel   = document.getElementById('accessibility-panel');
+            const popPanel   = document.getElementById('population-panel');
+            const tourPanel  = document.getElementById('tourism-panel');
+            const kpiGrid    = document.getElementById('kpi-grid');
+            const imgDash    = document.querySelector('.image-dashboard');
+            const overlayHdr = document.querySelector('.overlay-header');
+
+            if (tab === 'accessibility') {
+                if (kpiGrid)    kpiGrid.style.display    = 'none';
+                if (imgDash)    imgDash.style.display    = 'none';
+                if (overlayHdr) overlayHdr.style.display = 'none';
+                if (popPanel)   popPanel.style.display   = 'none';
+                if (tourPanel)  tourPanel.style.display  = 'none';
+                if (accPanel)   accPanel.style.display   = 'block';
+                initAccessibilityTab();
+            } else if (tab === 'population') {
+                if (kpiGrid)    kpiGrid.style.display    = 'none';
+                if (imgDash)    imgDash.style.display    = 'none';
+                if (overlayHdr) overlayHdr.style.display = 'none';
+                if (accPanel)   accPanel.style.display   = 'none';
+                if (tourPanel)  tourPanel.style.display  = 'none';
+                if (popPanel)   popPanel.style.display   = 'block';
+                initPopulationTab();
+            } else if (tab === 'tourism') {
+                if (kpiGrid)    kpiGrid.style.display    = 'none';
+                if (imgDash)    imgDash.style.display    = 'none';
+                if (overlayHdr) overlayHdr.style.display = 'none';
+                if (accPanel)   accPanel.style.display   = 'none';
+                if (popPanel)   popPanel.style.display   = 'none';
+                if (tourPanel)  tourPanel.style.display  = 'block';
+                initTourismTab();
+            } else {
+                if (accPanel)   accPanel.style.display   = 'none';
+                if (popPanel)   popPanel.style.display   = 'none';
+                if (tourPanel)  tourPanel.style.display  = 'none';
+                if (kpiGrid)    kpiGrid.style.display    = '';
+                if (imgDash)    imgDash.style.display    = '';
+                if (overlayHdr) overlayHdr.style.display = '';
+                renderKPIs();
+            }
         }
 
         function renderKPIs() {
@@ -1996,19 +2648,15 @@
                         valueEl.textContent = kpi.value;
                     }
                     
-                    // Re-render chart completely to ensure Spain data is updated
+                    // Re-render chart completely (keep overlay if in use)
                     const chartId = `chart-${activeTab}-${index}`;
                     const chart = chartInstances[chartId];
                     if (chart) {
-                        // Destroy existing chart
                         chart.destroy();
                         delete chartInstances[chartId];
-                        
-                        // Re-render chart with fresh data
-                        const newChart = renderChart(chartId, kpi);
-                        if (newChart) {
-                            chartInstances[chartId] = newChart;
-                        }
+                        const overlayData = buildOverlayDataForKpi(index);
+                        const newChart = renderChart(chartId, kpi, overlayData);
+                        if (newChart) chartInstances[chartId] = newChart;
                     }
                 }
             });
@@ -2033,17 +2681,42 @@
                 });
             });
             
-            // Render charts after DOM is ready
+            // Render charts after DOM is ready (with overlay: superpose all enabled scenarios)
             requestAnimationFrame(() => {
                 setTimeout(() => {
                     kpis.forEach((kpi, index) => {
                         const chartId = `chart-${activeTab}-${index}`;
-                        const chart = renderChart(chartId, kpi);
+                        const overlayData = buildOverlayDataForKpi(index);
+                        const chart = renderChart(chartId, kpi, overlayData);
                         if (chart) {
                             chartInstances[chartId] = chart;
                         }
                     });
                 }, 50);
+            });
+
+            // Overlay scenario toggle buttons
+            document.querySelectorAll('.overlay-layer-badge').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const idx = parseInt(btn.dataset.overlayScenario, 10);
+                    overlayEnabled[idx] = !overlayEnabled[idx];
+                    btn.classList.toggle('active', overlayEnabled[idx]);
+                    btn.classList.toggle('inactive', !overlayEnabled[idx]);
+                    // Re-render all charts with new overlay selection
+                    const grid = document.getElementById('kpi-grid');
+                    const kpiData = generateKpiData(activeScenario);
+                    const kpisList = kpiData[activeTab];
+                    if (kpisList) {
+                        kpisList.forEach((kpi, index) => {
+                            const chartId = `chart-${activeTab}-${index}`;
+                            const existing = chartInstances[chartId];
+                            if (existing) existing.destroy();
+                            const overlayData = buildOverlayDataForKpi(index);
+                            const chart = renderChart(chartId, kpi, overlayData);
+                            if (chart) chartInstances[chartId] = chart;
+                        });
+                    }
+                });
             });
         }
 
@@ -2058,8 +2731,8 @@
             // If series has 15 items, it starts at 2010; if 11, starts at 2014
             startYear = kpi.series.length === 15 ? 2010 : 2014;
         } else {
-            // Future scenarios start at 2025
-            startYear = 2025;
+            // Future scenarios: 12 items = 2024 prepended + 2025-2035, else 2025-2035
+            startYear = kpi.series.length === 12 ? 2024 : 2025;
         }
         
         // Filter series to show only up to selectedYear (charts update with year)
@@ -2156,8 +2829,48 @@
     return data;
 }
 
+        // Build overlay chart data: multiple scenarios superposed (same years, one dataset per scenario)
+        function buildOverlayDataForKpi(kpiIndex) {
+            const enabledIndices = OVERLAY_SCENARIOS.filter(s => overlayEnabled[s.index]).map(s => s.index);
+            if (enabledIndices.length === 0) return null;
+            const allYears = [];
+            for (let y = 2010; y <= 2035; y++) allYears.push(y.toString());
+            const datasets = [];
+            for (const idx of enabledIndices) {
+                const kpiData = generateKpiData(idx);
+                const kpis = kpiData[activeTab];
+                if (!kpis || !kpis[kpiIndex]) continue;
+                const kpi = kpis[kpiIndex];
+                const series = kpi.series;
+                if (!series || !Array.isArray(series)) continue;
+                const startYear = idx === 0 ? (series.length === 15 ? 2010 : 2014) : 2024;
+                const data = allYears.map((yr, i) => {
+                    const y = parseInt(yr, 10);
+                    const pos = y - startYear;
+                    if (pos >= 0 && pos < series.length) return series[pos];
+                    return null;
+                });
+                const cfg = OVERLAY_SCENARIOS.find(s => s.index === idx);
+                datasets.push({
+                    label: cfg ? cfg.label : scenarios[idx].name,
+                    data: data,
+                    borderColor: cfg ? cfg.color : '#888',
+                    backgroundColor: (cfg ? cfg.color : '#888') + '20',
+                    borderWidth: 2,
+                    fill: kpi.chartType === 'area',
+                    tension: 0.4,
+                    pointRadius: 3,
+                    pointHoverRadius: 5,
+                    pointBackgroundColor: cfg ? cfg.color : '#888',
+                    pointBorderColor: '#1a1a1a',
+                    pointBorderWidth: 1
+                });
+            }
+            return { labels: allYears, datasets: datasets };
+        }
+
 // Update renderChart to pass kpi as argument to generateTrendData
-function renderChart(canvasId, kpi) {
+function renderChart(canvasId, kpi, overlayData) {
     const canvas = document.getElementById(canvasId);
     if (!canvas) return null;
     
@@ -2167,18 +2880,42 @@ function renderChart(canvasId, kpi) {
     }
     
     const ctx = canvas.getContext('2d');
-    const data = generateTrendData(kpi.value, kpi.trend, 10, kpi); // Pass kpi as 4th argument
     
     // Apply dark theme defaults
     Chart.defaults.color = '#888';
     Chart.defaults.borderColor = '#333';
     Chart.defaults.backgroundColor = '#1a1a1a';
     
+    let chartData, chartType = getChartType(kpi.chartType);
+    const useOverlay = overlayData && overlayData.datasets && overlayData.datasets.length > 0 &&
+        (kpi.chartType === 'line' || kpi.chartType === 'area' || kpi.chartType === 'bar');
+    
+    let scaleData;
+    if (useOverlay) {
+        chartData = {
+            labels: overlayData.labels,
+            datasets: overlayData.datasets.map(ds => ({
+                ...ds,
+                fill: kpi.chartType === 'area' ? true : false,
+                borderRadius: kpi.chartType === 'bar' ? 4 : 0,
+                borderSkipped: false
+            }))
+        };
+        scaleData = overlayData.datasets.flatMap(ds => ds.data).filter(v => v != null && typeof v === 'number').map(v => ({ value: v }));
+    } else {
+        const data = generateTrendData(kpi.value, kpi.trend, 10, kpi);
+        chartData = getChartData(data, kpi);
+        scaleData = data;
+    }
     let chartConfig = {
-        type: getChartType(kpi.chartType),
-        data: getChartData(data, kpi),
-        options: getChartOptions(kpi.chartType, kpi, data)
+        type: chartType,
+        data: chartData,
+        options: getChartOptions(kpi.chartType, kpi, scaleData)
     };
+    if (useOverlay) {
+        chartConfig.options.plugins = chartConfig.options.plugins || {};
+        chartConfig.options.plugins.legend = { display: true, position: 'bottom', labels: { color: '#888', font: { size: 10 }, usePointStyle: true, padding: 10 } };
+    }
     
     const chart = new Chart(ctx, chartConfig);
     return chart;
@@ -2304,8 +3041,8 @@ function renderChart(canvasId, kpi) {
                         pointBorderWidth: 2
                     }];
                     
-                    // Add Spain data for GDP per Capita in Historical scenario
-                    if (kpi.title === 'GDP per Capita' && activeScenario === 0) {
+                    // Add Spain data for GDP per Capita and Employment Rate in Historical scenario
+                    if ((kpi.title === 'GDP per Capita' || kpi.title === 'Employment Rate') && activeScenario === 0) {
                         areaDatasets.push({
                             label: 'Spain',
                             data: targets,
@@ -2541,6 +3278,845 @@ function renderChart(canvasId, kpi) {
                 }
             };
         }
+
+        // ── Accessibility Tab ─────────────────────────────────────────────
+
+        let accMap            = null;
+        let accHexLayer       = null;
+        let accStreetLayer    = null;
+        let accSchoolLayer    = null;
+        let accParksLayer     = null;
+        let accBusRoutesLayer = null;
+        let accBusStopsLayer  = null;
+        let accDonutChart     = null;
+        let accBarChart       = null;
+        let accLayerVisible   = { hexagons: true, streets: true, schools: true, parks: true, busRoutes: true, busStops: true };
+
+        const ACC_COLORS = {
+            'walk':    '#4ade80',   // bright green
+            'bike':    '#fbbf24',   // vivid amber
+            'bus/car': '#f87171',   // soft red
+            'default': '#374151'
+        };
+
+        function accColor(val) {
+            return ACC_COLORS[val] || ACC_COLORS['default'];
+        }
+
+        function initAccessibilityTab() {
+            // Only initialise once
+            if (accMap) { accMap.invalidateSize(); return; }
+
+            // ── Leaflet map ──────────────────────────────────────────────
+            accMap = L.map('acc-map', { zoomControl: true, attributionControl: false })
+                      .setView([42.545, 1.545], 11);
+
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                subdomains: 'abcd', maxZoom: 19
+            }).addTo(accMap);
+
+            // ── Layer toggle buttons (wired immediately, before data loads) ──
+            document.getElementById('toggle-hexagons').addEventListener('click', function() {
+                accLayerVisible.hexagons = !accLayerVisible.hexagons;
+                this.classList.toggle('active', accLayerVisible.hexagons);
+                if (!accHexLayer) return;
+                accLayerVisible.hexagons ? accMap.addLayer(accHexLayer) : accMap.removeLayer(accHexLayer);
+            });
+            document.getElementById('toggle-streets').addEventListener('click', function() {
+                accLayerVisible.streets = !accLayerVisible.streets;
+                this.classList.toggle('active', accLayerVisible.streets);
+                if (!accStreetLayer) return;
+                accLayerVisible.streets ? accMap.addLayer(accStreetLayer) : accMap.removeLayer(accStreetLayer);
+            });
+            document.getElementById('toggle-schools').addEventListener('click', function() {
+                accLayerVisible.schools = !accLayerVisible.schools;
+                this.classList.toggle('active', accLayerVisible.schools);
+                if (!accSchoolLayer) return;
+                accLayerVisible.schools ? accMap.addLayer(accSchoolLayer) : accMap.removeLayer(accSchoolLayer);
+            });
+            document.getElementById('toggle-parks').addEventListener('click', function() {
+                accLayerVisible.parks = !accLayerVisible.parks;
+                this.classList.toggle('active', accLayerVisible.parks);
+                if (!accParksLayer) return;
+                accLayerVisible.parks ? accMap.addLayer(accParksLayer) : accMap.removeLayer(accParksLayer);
+            });
+            document.getElementById('toggle-bus-routes').addEventListener('click', function() {
+                accLayerVisible.busRoutes = !accLayerVisible.busRoutes;
+                this.classList.toggle('active', accLayerVisible.busRoutes);
+                if (!accBusRoutesLayer) return;
+                accLayerVisible.busRoutes ? accMap.addLayer(accBusRoutesLayer) : accMap.removeLayer(accBusRoutesLayer);
+            });
+            document.getElementById('toggle-bus-stops').addEventListener('click', function() {
+                accLayerVisible.busStops = !accLayerVisible.busStops;
+                this.classList.toggle('active', accLayerVisible.busStops);
+                if (!accBusStopsLayer) return;
+                accLayerVisible.busStops ? accMap.addLayer(accBusStopsLayer) : accMap.removeLayer(accBusStopsLayer);
+            });
+
+            // ── Charts (no network dependency) ───────────────────────────
+            Chart.defaults.color = '#9ca3af';
+            Chart.defaults.font  = { family: 'inherit', size: 11 };
+
+            const modeLabels = ['Walk', 'Bike', 'Bus / Car'];
+            const modePop    = [56265, 10101, 13392];
+            const modeColors = ['#22c55e', '#f59e0b', '#ef4444'];
+
+            accDonutChart = new Chart(
+                document.getElementById('acc-donut-chart').getContext('2d'), {
+                type: 'doughnut',
+                data: {
+                    labels:   modeLabels,
+                    datasets: [{ data: modePop, backgroundColor: modeColors,
+                                 borderColor: '#1a1a1a', borderWidth: 2, hoverOffset: 6 }]
+                },
+                options: {
+                    cutout: '68%',
+                    plugins: {
+                        legend: { position: 'bottom', labels: { boxWidth: 10, padding: 12 } },
+                        tooltip: {
+                            callbacks: {
+                                label: ctx => ` ${ctx.label}: ${ctx.parsed.toLocaleString()} (${(ctx.parsed/87097*100).toFixed(1)}%)`
+                            }
+                        }
+                    }
+                }
+            });
+
+            accBarChart = new Chart(
+                document.getElementById('acc-bar-chart').getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels:   modeLabels,
+                    datasets: [{
+                        label: 'Residents',
+                        data:  modePop,
+                        backgroundColor: modeColors,
+                        borderRadius: 4,
+                        borderSkipped: false
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: {
+                            grid: { color: 'rgba(255,255,255,0.05)' },
+                            ticks: { callback: v => (v/1000).toFixed(0) + 'k' }
+                        },
+                        y: { grid: { display: false } }
+                    }
+                }
+            });
+
+            // ── Load GeoJSON layers (async, won't block buttons/charts) ──
+            loadAccLayers();
+        }
+
+        async function loadAccLayers() {
+            try {
+                const _v = Date.now();
+
+                fetch(`model/andorra_boundary.geojson?v=${_v}`).then(r => r.json()).then(bnd => {
+                    L.geoJSON(bnd, {
+                        style: { color: '#ffffff', weight: 2, opacity: 0.55,
+                                 fillOpacity: 0, dashArray: '5 7', lineCap: 'round' },
+                        interactive: false
+                    }).addTo(accMap);
+                }).catch(() => {});
+
+                const [popData, streetsData, schoolsData, parksData, busRoutesData, busStopsData] = await Promise.all([
+                    fetch(`model/accessibility_population.geojson?v=${_v}`).then(r => r.json()),
+                    fetch(`model/accessibility_streets.geojson?v=${_v}`).then(r => r.json()),
+                    fetch(`model/accessibility_schools.geojson?v=${_v}`).then(r => r.json()),
+                    fetch(`model/accessibility_parks.geojson?v=${_v}`).then(r => r.json()),
+                    fetch(`model/bus_routes.geojson?v=${_v}`).then(r => r.json()),
+                    fetch(`model/bus_stops.geojson?v=${_v}`).then(r => r.json())
+                ]);
+
+                // Compute max population for density-based opacity scaling
+                const maxPop = Math.max(...popData.features.map(f => f.properties.population || 0));
+
+                accHexLayer = L.geoJSON(popData, {
+                    style: f => {
+                        const pop      = f.properties.population || 0;
+                        const density  = Math.sqrt(pop / maxPop);           // sqrt for perceptual scaling
+                        const opacity  = 0.15 + density * 0.72;             // 0.15 → 0.87 range
+                        return {
+                            fillColor:   accColor(f.properties.accessibility),
+                            fillOpacity: opacity,
+                            color:       'rgba(0,0,0,0)',                    // no border — seamless hex grid
+                            weight:      0
+                        };
+                    },
+                    onEachFeature: (f, layer) => {
+                        const p = f.properties;
+                        layer.on('mouseover', function() {
+                            this.setStyle({ weight: 1.5, color: '#ffffff', fillOpacity: 1 });
+                        });
+                        layer.on('mouseout', function() {
+                            accHexLayer.resetStyle(this);
+                        });
+                        layer.bindPopup(
+                            `<b style="text-transform:capitalize">${p.accessibility || 'unknown'}</b><br>` +
+                            `Population: <b>${(p.population || 0).toLocaleString()}</b>`
+                        );
+                    }
+                });
+                if (accLayerVisible.hexagons) accHexLayer.addTo(accMap);
+
+                accStreetLayer = L.geoJSON(streetsData, {
+                    style: f => ({
+                        color:   accColor(f.properties.accessibility),
+                        weight:  1.2,
+                        opacity: 0.6,
+                        lineCap: 'round',
+                        lineJoin: 'round'
+                    })
+                });
+                if (accLayerVisible.streets) accStreetLayer.addTo(accMap);
+
+                accSchoolLayer = L.geoJSON(schoolsData, {
+                    pointToLayer: (f, latlng) => L.circleMarker(latlng, {
+                        radius: 6, fillColor: '#60a5fa', color: '#1d4ed8',
+                        weight: 1.5, fillOpacity: 0.9
+                    }),
+                    onEachFeature: (f, layer) => {
+                        layer.bindPopup(`<b>${f.properties.name || 'School'}</b>`);
+                    }
+                });
+                if (accLayerVisible.schools) accSchoolLayer.addTo(accMap);
+
+                // Parks — polygons colored by poi_quality (green scale)
+                accParksLayer = L.geoJSON(parksData, {
+                    style: f => ({
+                        fillColor:   f.properties.color || '#166534',
+                        fillOpacity: 0.5,
+                        color:       '#14532d',
+                        weight:      1
+                    }),
+                    onEachFeature: (f, layer) => {
+                        const q = f.properties.poi_quality;
+                        layer.bindPopup(`Park<br>Quality score: <b>${q ? (q * 100).toFixed(0) + '%' : 'N/A'}</b>`);
+                    }
+                });
+                if (accLayerVisible.parks) accParksLayer.addTo(accMap);
+
+                // Bus routes — each line gets its own colour, with glow effect
+                accBusRoutesLayer = L.geoJSON(busRoutesData, {
+                    style: f => ({
+                        color:     f.properties.colour || '#ffffff',
+                        weight:    3.5,
+                        opacity:   0.85,
+                        lineCap:   'round',
+                        lineJoin:  'round'
+                    }),
+                    onEachFeature: (f, layer) => {
+                        const p = f.properties;
+                        layer.bindPopup(
+                            `<b>${p.ref}</b> — ${p.name}<br>` +
+                            `<span style="opacity:0.7">${p.operator}</span>`
+                        );
+                        layer.on('mouseover', function() {
+                            this.setStyle({ weight: 6, opacity: 1 });
+                            this.bringToFront();
+                        });
+                        layer.on('mouseout', function() {
+                            accBusRoutesLayer.resetStyle(this);
+                        });
+                    }
+                });
+                if (accLayerVisible.busRoutes) accBusRoutesLayer.addTo(accMap);
+
+                // Bus stops from OSM — yellow markers with line info popup
+                accBusStopsLayer = L.geoJSON(busStopsData, {
+                    pointToLayer: (f, latlng) => L.circleMarker(latlng, {
+                        radius:      4,
+                        fillColor:   '#facc15',
+                        color:       '#1e293b',
+                        weight:      1.5,
+                        fillOpacity: 0.95
+                    }),
+                    onEachFeature: (f, layer) => {
+                        const p = f.properties;
+                        const lines = p.lines ? `<br>Lines: <b>${p.lines}</b>` : '';
+                        const op    = p.operator ? `<br>${p.operator}` : '';
+                        layer.bindPopup(`<b>${p.name}</b>${lines}${op}`);
+                    }
+                });
+                if (accLayerVisible.busStops) accBusStopsLayer.addTo(accMap);
+
+                accMap.fitBounds(accHexLayer.getBounds(), { padding: [16, 16] });
+
+            } catch (err) {
+                console.warn('Accessibility layers failed to load — run via http.server:', err);
+                document.getElementById('acc-map').insertAdjacentHTML('afterbegin',
+                    '<div style="position:absolute;z-index:9999;top:50%;left:50%;transform:translate(-50%,-50%);' +
+                    'background:var(--card);border:1px solid var(--border);border-radius:0.5rem;padding:1rem 1.5rem;' +
+                    'text-align:center;font-size:0.8rem;color:var(--muted-foreground);max-width:280px;">' +
+                    'Map data requires a local server.<br><code style="color:var(--foreground)">python3 -m http.server 8080</code><br>' +
+                    'then open <code style="color:var(--foreground)">localhost:8080/Dashboard.HTML</code></div>'
+                );
+            }
+        }
+
+        // ─────────────────────────────────────────────────────────────────────
+        // POPULATION DENSITY TAB
+        // ─────────────────────────────────────────────────────────────────────
+        let popMap       = null;
+        let popHexLayer  = null;
+        let popHistChart = null;
+        let popBandChart = null;
+
+        // ── Tourism tab state ─────────────────────────────────────────────
+        let tourMap            = null;
+        let tourSkiLayer       = null;
+        let tourPeaksLayer     = null;
+        let tourRefugesLayer   = null;
+        let tourAttractLayer   = null;
+        let tourBttLayer       = null;
+        let tourCyclingLayer   = null;
+        let tourCoronaLayer    = null;
+        let tourArrivalsChart  = null;
+        let tourLayerVisible   = { ski: true, peaks: true, refuges: true, attractions: true, btt: true, cycling: true, corona: false };
+
+        function initTourismTab() {
+            if (tourMap) { tourMap.invalidateSize(); return; }
+
+            // ── Leaflet map ──────────────────────────────────────────────
+            tourMap = L.map('tour-map', { zoomControl: true, attributionControl: false })
+                       .setView([42.545, 1.545], 11);
+
+            // Esri World Imagery — free satellite, no API key required
+            L.tileLayer(
+                'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+                { maxZoom: 18 }
+            ).addTo(tourMap);
+            // Subtle label overlay
+            L.tileLayer(
+                'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
+                { maxZoom: 18, opacity: 0.55 }
+            ).addTo(tourMap);
+
+            // Layer toggle buttons
+            document.getElementById('tour-toggle-ski').addEventListener('click', function() {
+                tourLayerVisible.ski = !tourLayerVisible.ski;
+                this.classList.toggle('active', tourLayerVisible.ski);
+                if (!tourSkiLayer) return;
+                tourLayerVisible.ski ? tourMap.addLayer(tourSkiLayer) : tourMap.removeLayer(tourSkiLayer);
+            });
+            document.getElementById('tour-toggle-peaks').addEventListener('click', function() {
+                tourLayerVisible.peaks = !tourLayerVisible.peaks;
+                this.classList.toggle('active', tourLayerVisible.peaks);
+                if (!tourPeaksLayer) return;
+                tourLayerVisible.peaks ? tourMap.addLayer(tourPeaksLayer) : tourMap.removeLayer(tourPeaksLayer);
+            });
+            document.getElementById('tour-toggle-refuges').addEventListener('click', function() {
+                tourLayerVisible.refuges = !tourLayerVisible.refuges;
+                this.classList.toggle('active', tourLayerVisible.refuges);
+                if (!tourRefugesLayer) return;
+                tourLayerVisible.refuges ? tourMap.addLayer(tourRefugesLayer) : tourMap.removeLayer(tourRefugesLayer);
+            });
+            document.getElementById('tour-toggle-attractions').addEventListener('click', function() {
+                tourLayerVisible.attractions = !tourLayerVisible.attractions;
+                this.classList.toggle('active', tourLayerVisible.attractions);
+                if (!tourAttractLayer) return;
+                tourLayerVisible.attractions ? tourMap.addLayer(tourAttractLayer) : tourMap.removeLayer(tourAttractLayer);
+            });
+            document.getElementById('tour-toggle-btt').addEventListener('click', function() {
+                tourLayerVisible.btt = !tourLayerVisible.btt;
+                this.classList.toggle('active', tourLayerVisible.btt);
+                if (!tourBttLayer) return;
+                tourLayerVisible.btt ? tourMap.addLayer(tourBttLayer) : tourMap.removeLayer(tourBttLayer);
+            });
+            document.getElementById('tour-toggle-cycling').addEventListener('click', function() {
+                tourLayerVisible.cycling = !tourLayerVisible.cycling;
+                this.classList.toggle('active', tourLayerVisible.cycling);
+                if (!tourCyclingLayer) return;
+                tourLayerVisible.cycling ? tourMap.addLayer(tourCyclingLayer) : tourMap.removeLayer(tourCyclingLayer);
+            });
+            document.getElementById('tour-toggle-corona').addEventListener('click', function() {
+                tourLayerVisible.corona = !tourLayerVisible.corona;
+                this.classList.toggle('active', tourLayerVisible.corona);
+                if (!tourCoronaLayer) return;
+                tourLayerVisible.corona ? tourMap.addLayer(tourCoronaLayer) : tourMap.removeLayer(tourCoronaLayer);
+            });
+
+            // ── Tourist arrivals multi-scenario chart ────────────────────
+            Chart.defaults.color = '#9ca3af';
+            Chart.defaults.font  = { family: 'inherit', size: 11 };
+
+            // Build combined year labels 2014–2035
+            const histYears    = ['2014','2015','2016','2017','2018','2019','2020','2021','2022','2023','2024'];
+            const futureYears  = ['2025','2026','2027','2028','2029','2030','2031','2032','2033','2034','2035'];
+            const allYears     = [...histYears, ...futureYears];
+            const nHist        = histYears.length;
+
+            // Historical baseline values (2014-2024)
+            const histSeries   = [7796770,7850411,8025265,8152148,8328254,8234993,5206632,5422415,8426708,9367696,9646656];
+            const baseline2024 = 9646656;
+
+            // Future scenario series (2025-2035) pulled from scenarioData
+            function futureSeries(name) {
+                const ts = scenarioData[name]?.timeseriesData?.Tour?.series;
+                if (!ts) return new Array(futureYears.length).fill(null);
+                return ts.slice(0, futureYears.length);
+            }
+
+            // Pad arrays for combined chart (null = gap)
+            const nullFuture = new Array(futureYears.length).fill(null);
+            const nullHist   = new Array(nHist).fill(null);
+
+            const datasets = [
+                {
+                    label: 'Historical',
+                    data: [...histSeries, ...nullFuture],
+                    borderColor: '#9ca3af',
+                    backgroundColor: 'rgba(156,163,175,0.08)',
+                    borderWidth: 2,
+                    tension: 0.3,
+                    fill: false,
+                    pointRadius: 2,
+                    pointHoverRadius: 5
+                },
+                {
+                    label: 'Continuity',
+                    data: [...nullHist.slice(0,-1), baseline2024, ...futureSeries('continuity')],
+                    borderColor: '#294daf',
+                    backgroundColor: 'rgba(41,77,175,0.08)',
+                    borderWidth: 2,
+                    tension: 0.3,
+                    fill: false,
+                    pointRadius: 2,
+                    pointHoverRadius: 5
+                },
+                {
+                    label: 'Overgrowth',
+                    data: [...nullHist.slice(0,-1), baseline2024, ...futureSeries('overgrowth')],
+                    borderColor: '#bd0638',
+                    backgroundColor: 'rgba(189,6,56,0.08)',
+                    borderWidth: 2,
+                    tension: 0.3,
+                    fill: false,
+                    pointRadius: 2,
+                    pointHoverRadius: 5
+                },
+                {
+                    label: 'Degrowth',
+                    data: [...nullHist.slice(0,-1), baseline2024, ...futureSeries('degrowth')],
+                    borderColor: '#076f37',
+                    backgroundColor: 'rgba(7,111,55,0.08)',
+                    borderWidth: 2,
+                    tension: 0.3,
+                    fill: false,
+                    pointRadius: 2,
+                    pointHoverRadius: 5
+                }
+            ];
+
+            tourArrivalsChart = new Chart(
+                document.getElementById('tour-arrivals-chart').getContext('2d'), {
+                type: 'line',
+                data: { labels: allYears, datasets },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    spanGaps: false,
+                    interaction: { mode: 'index', intersect: false },
+                    plugins: {
+                        legend: { position: 'bottom', labels: { boxWidth: 10, padding: 10, font: { size: 10 } } },
+                        tooltip: {
+                            callbacks: {
+                                label: ctx => {
+                                    const v = ctx.parsed.y;
+                                    if (v == null) return null;
+                                    return ` ${ctx.dataset.label}: ${(v/1000000).toFixed(2)}M`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { color: 'rgba(255,255,255,0.04)' },
+                            ticks: { maxRotation: 45, font: { size: 9 }, maxTicksLimit: 12 }
+                        },
+                        y: {
+                            grid: { color: 'rgba(255,255,255,0.04)' },
+                            ticks: { callback: v => (v/1000000).toFixed(1) + 'M' }
+                        }
+                    }
+                }
+            });
+
+            // ── Load GeoJSON layers ──────────────────────────────────────
+            loadTourismLayers();
+        }
+
+        async function loadTourismLayers() {
+            try {
+                const _v = Date.now();
+                const base = 'dashboard/public';
+
+                // Andorra national boundary
+                fetch(`model/andorra_boundary.geojson?v=${_v}`).then(r => r.json()).then(bnd => {
+                    L.geoJSON(bnd, {
+                        style: { color: '#ffffff', weight: 2, opacity: 0.55,
+                                 fillOpacity: 0, dashArray: '5 7', lineCap: 'round' },
+                        interactive: false
+                    }).addTo(tourMap);
+                }).catch(() => {});
+
+                const [peaksData, refugesData, attractData, bttData, cyclingData, coronaData] = await Promise.all([
+                    fetch(`${base}/tourism_peaks.geojson?v=${_v}`).then(r => r.json()),
+                    fetch(`${base}/tourism_refuges.geojson?v=${_v}`).then(r => r.json()),
+                    fetch(`${base}/tourism_attractions.geojson?v=${_v}`).then(r => r.json()),
+                    fetch(`${base}/tourism_btt.geojson?v=${_v}`).then(r => r.json()),
+                    fetch(`${base}/tourism_cycling.geojson?v=${_v}`).then(r => r.json()),
+                    fetch(`${base}/tourism_corona_llacs.geojson?v=${_v}`).then(r => r.json())
+                ]);
+
+                // Ski resorts — exact OSM boundary polygons + floating labels
+                const SKI_CFG_BY_NAME = {
+                    'Grandvalira':          { color: '#38bdf8', border: '#0ea5e9', textColor: '#0c2233' },
+                    'Vallnord – Pal Arinsal': { color: '#c4b5fd', border: '#8b5cf6', textColor: '#1e0a3c' },
+                    'Ordino Arcalís':       { color: '#6ee7b7', border: '#10b981', textColor: '#052e16' }
+                };
+
+                const skiAreasData = await fetch(`${base}/tourism_ski_areas.geojson?v=${_v}`).then(r => r.json());
+
+                tourSkiLayer = L.layerGroup();
+
+                skiAreasData.features.forEach(f => {
+                    const p   = f.properties;
+                    const cfg = SKI_CFG_BY_NAME[p.name] || { color: '#38bdf8', border: '#0ea5e9', textColor: '#0c2233' };
+
+                    // Filled polygon with exact boundary
+                    const poly = L.geoJSON(f, {
+                        style: {
+                            fillColor:   cfg.color,
+                            fillOpacity: 0.18,
+                            color:       cfg.border,
+                            weight:      2,
+                            dashArray:   '6 4'
+                        }
+                    });
+                    poly.bindPopup(
+                        `<b style="font-size:0.9rem">${p.name}</b><br>` +
+                        `<span style="color:${cfg.border}">⛷️ ${p.pistes_km} km of pistes</span><br>` +
+                        `Altitude: <b>${p.min_alt}–${p.max_alt} m</b><br>` +
+                        `<span style="font-size:0.75rem;opacity:0.7">${p.sectors}</span>`
+                    );
+                    poly.addTo(tourSkiLayer);
+
+                    // Centroid label
+                    const coords = f.geometry.coordinates[0];
+                    const avgLon = coords.reduce((s, c) => s + c[0], 0) / coords.length;
+                    const avgLat = coords.reduce((s, c) => s + c[1], 0) / coords.length;
+                    const shortName = p.name.includes('–') ? p.name.split('–')[0].trim() : p.name;
+                    const icon = L.divIcon({
+                        html: `<div style="
+                            background:${cfg.color};
+                            border:1.5px solid ${cfg.border};
+                            border-radius:5px;
+                            padding:3px 8px;
+                            white-space:nowrap;
+                            font-family:inherit;
+                            font-size:0.7rem;
+                            font-weight:700;
+                            color:${cfg.textColor};
+                            box-shadow:0 2px 10px rgba(0,0,0,0.6);
+                            text-align:center;
+                            line-height:1.45;
+                            transform:translateX(-50%) translateY(-50%);
+                            pointer-events:none;
+                        ">⛷️ ${shortName}<br><span style="font-weight:500;font-size:0.64rem">${p.pistes_km} km &nbsp;·&nbsp; ${p.min_alt}–${p.max_alt} m</span></div>`,
+                        className: '',
+                        iconSize:   [0, 0],
+                        iconAnchor: [0, 0]
+                    });
+                    L.marker([avgLat, avgLon], { icon, interactive: false }).addTo(tourSkiLayer);
+                });
+
+                if (tourLayerVisible.ski) tourSkiLayer.addTo(tourMap);
+
+                // Mountain peaks — small green circles
+                tourPeaksLayer = L.geoJSON(peaksData, {
+                    pointToLayer: (f, latlng) => L.circleMarker(latlng, {
+                        radius: 4,
+                        fillColor: '#34d399',
+                        color: '#059669',
+                        weight: 1,
+                        fillOpacity: 0.85
+                    }),
+                    onEachFeature: (f, layer) => {
+                        const p = f.properties;
+                        layer.bindPopup(
+                            `<b>${p.name || 'Peak'}</b>` +
+                            (p.altitude ? `<br>Alt: <b>${p.altitude} m</b>` : '') +
+                            (p.refugi ? `<br>Refugi: ${p.refugi}` : '')
+                        );
+                    }
+                });
+                if (tourLayerVisible.peaks) tourPeaksLayer.addTo(tourMap);
+
+                // Mountain refuges — orange circles
+                tourRefugesLayer = L.geoJSON(refugesData, {
+                    pointToLayer: (f, latlng) => L.circleMarker(latlng, {
+                        radius: 6,
+                        fillColor: '#fb923c',
+                        color: '#ea580c',
+                        weight: 1.5,
+                        fillOpacity: 0.9
+                    }),
+                    onEachFeature: (f, layer) => {
+                        const p = f.properties;
+                        layer.bindPopup(
+                            `<b>${p.name || 'Refuge'}</b>` +
+                            (p.altitude ? `<br>Alt: <b>${p.altitude} m</b>` : '') +
+                            (p.tipus ? `<br>Type: ${p.tipus}` : '') +
+                            (p.calendari ? `<br><span style="font-size:0.75rem;opacity:0.7">${p.calendari}</span>` : '')
+                        );
+                    }
+                });
+                if (tourLayerVisible.refuges) tourRefugesLayer.addTo(tourMap);
+
+                // Attractions — amber squares
+                tourAttractLayer = L.geoJSON(attractData, {
+                    pointToLayer: (f, latlng) => L.circleMarker(latlng, {
+                        radius: 7,
+                        fillColor: '#fbbf24',
+                        color: '#d97706',
+                        weight: 1.5,
+                        fillOpacity: 0.9
+                    }),
+                    onEachFeature: (f, layer) => {
+                        const p = f.properties;
+                        layer.bindPopup(`<b>${p.name}</b><br><span style="opacity:0.7">${p.parish || ''}</span>`);
+                    }
+                });
+                if (tourLayerVisible.attractions) tourAttractLayer.addTo(tourMap);
+
+                // BTT mountain bike trails — orange lines
+                tourBttLayer = L.geoJSON(bttData, {
+                    style: () => ({
+                        color: '#f97316',
+                        weight: 2,
+                        opacity: 0.75,
+                        lineCap: 'round',
+                        lineJoin: 'round'
+                    }),
+                    onEachFeature: (f, layer) => {
+                        layer.bindPopup(`<b>${f.properties.name || 'BTT Trail'}</b>`);
+                    }
+                });
+                if (tourLayerVisible.btt) tourBttLayer.addTo(tourMap);
+
+                // Cycling routes — cyan lines
+                tourCyclingLayer = L.geoJSON(cyclingData, {
+                    style: () => ({
+                        color: '#22d3ee',
+                        weight: 2,
+                        opacity: 0.7,
+                        lineCap: 'round',
+                        lineJoin: 'round'
+                    }),
+                    onEachFeature: (f, layer) => {
+                        layer.bindPopup(`<b>${f.properties.name || 'Cycling Route'}</b>`);
+                    }
+                });
+                if (tourLayerVisible.cycling) tourCyclingLayer.addTo(tourMap);
+
+                // Corona de Llacs — purple staged lines
+                const coronaColors = ['#c084fc','#a855f7','#9333ea','#7c3aed','#6d28d9'];
+                tourCoronaLayer = L.geoJSON(coronaData, {
+                    style: (f) => ({
+                        color: f.properties.color || coronaColors[(f.properties.stage || 1) - 1] || '#c084fc',
+                        weight: 3,
+                        opacity: 0.85,
+                        lineCap: 'round',
+                        lineJoin: 'round'
+                    }),
+                    onEachFeature: (f, layer) => {
+                        const p = f.properties;
+                        layer.bindPopup(`<b>${p.name || 'Stage ' + p.stage}</b>`);
+                    }
+                });
+                if (tourLayerVisible.corona) tourCoronaLayer.addTo(tourMap);
+
+            } catch (err) {
+                console.warn('Tourism layers failed to load:', err);
+                document.getElementById('tour-map').insertAdjacentHTML('afterbegin',
+                    '<div style="position:absolute;z-index:9999;top:50%;left:50%;transform:translate(-50%,-50%);' +
+                    'background:var(--card);border:1px solid var(--border);border-radius:0.5rem;padding:1rem 1.5rem;' +
+                    'text-align:center;font-size:0.8rem;color:var(--muted-foreground);max-width:280px;">' +
+                    'Map data requires a local server.<br><code style="color:var(--foreground)">python3 -m http.server 8080</code><br>' +
+                    'then open <code style="color:var(--foreground)">localhost:8080/Dashboard.HTML</code></div>'
+                );
+            }
+        }
+
+        function popDensityColor(pop, maxPop) {
+            if (!pop || pop <= 0) return '#1f2937';  // unpopulated: dark slate
+            const t = Math.log1p(pop) / Math.log1p(maxPop);  // 0–1, log-normalised
+            const stops = [
+                { t: 0.00, r: 30,  g: 58,  b: 138 },  // #1e3a8a  deep navy
+                { t: 0.25, r: 29,  g: 78,  b: 216 },  // #1d4ed8  royal blue
+                { t: 0.50, r: 79,  g: 70,  b: 229 },  // #4f46e5  indigo
+                { t: 0.68, r: 124, g: 58,  b: 237 },  // #7c3aed  violet
+                { t: 0.84, r: 192, g: 38,  b: 211 },  // #c026d3  fuchsia
+                { t: 0.93, r: 249, g: 115, b: 22  },  // #f97316  orange
+                { t: 1.00, r: 251, g: 191, b: 36  },  // #fbbf24  amber
+            ];
+            let i = 0;
+            for (; i < stops.length - 2; i++) {
+                if (t <= stops[i + 1].t) break;
+            }
+            const lo = stops[i], hi = stops[i + 1];
+            const span = hi.t - lo.t || 1;
+            const s = Math.max(0, Math.min(1, (t - lo.t) / span));
+            const r = Math.round(lo.r + (hi.r - lo.r) * s);
+            const g = Math.round(lo.g + (hi.g - lo.g) * s);
+            const b = Math.round(lo.b + (hi.b - lo.b) * s);
+            return `rgb(${r},${g},${b})`;
+        }
+
+        function initPopulationTab() {
+            if (popMap) { popMap.invalidateSize(); return; }
+
+            popMap = L.map('pop-map', { zoomControl: true, attributionControl: false })
+                      .setView([42.545, 1.545], 11);
+
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                subdomains: 'abcd', maxZoom: 19
+            }).addTo(popMap);
+
+            loadPopLayers();
+        }
+
+        async function loadPopLayers() {
+            try {
+                const _v = Date.now();
+
+                fetch(`model/andorra_boundary.geojson?v=${_v}`).then(r => r.json()).then(bnd => {
+                    L.geoJSON(bnd, {
+                        style: { color: '#ffffff', weight: 2, opacity: 0.55,
+                                 fillOpacity: 0, dashArray: '5 7', lineCap: 'round' },
+                        interactive: false
+                    }).addTo(popMap);
+                }).catch(() => {});
+
+                const data = await fetch(`model/accessibility_population.geojson?v=${_v}`).then(r => r.json());
+
+                const features = data.features;
+                const maxPop = Math.max(...features.map(f => f.properties.population || 0));
+
+                popHexLayer = L.geoJSON(data, {
+                    style: f => {
+                        const pop = f.properties.population || 0;
+                        return {
+                            fillColor:   popDensityColor(pop, maxPop),
+                            fillOpacity: pop > 0 ? 0.85 : 0.18,
+                            color:       'rgba(0,0,0,0)',
+                            weight:      0
+                        };
+                    },
+                    onEachFeature: (f, layer) => {
+                        const pop = f.properties.population || 0;
+                        layer.on('mouseover', function() {
+                            this.setStyle({ weight: 1.5, color: '#ffffff', fillOpacity: 1 });
+                        });
+                        layer.on('mouseout', function() {
+                            popHexLayer.resetStyle(this);
+                        });
+                        layer.bindPopup(
+                            `Population: <b>${pop.toLocaleString()}</b>` +
+                            (f.properties.h3_cell ? `<br><span style="font-size:0.72rem;opacity:0.5">${f.properties.h3_cell}</span>` : '')
+                        );
+                    }
+                }).addTo(popMap);
+
+                popMap.fitBounds(popHexLayer.getBounds(), { padding: [16, 16] });
+
+                // ── Chart data: bucket hexagons by population ────────────────
+                const bands = [
+                    { label: '0',       min: 0,   max: 0,        color: '#374151' },
+                    { label: '1–5',     min: 1,   max: 5,        color: '#1e3a8a' },
+                    { label: '6–15',    min: 6,   max: 15,       color: '#1d4ed8' },
+                    { label: '16–40',   min: 16,  max: 40,       color: '#4f46e5' },
+                    { label: '41–80',   min: 41,  max: 80,       color: '#7c3aed' },
+                    { label: '81–150',  min: 81,  max: 150,      color: '#c026d3' },
+                    { label: '151–250', min: 151, max: 250,      color: '#f97316' },
+                    { label: '251+',    min: 251, max: Infinity, color: '#fbbf24' },
+                ];
+                bands.forEach(b => { b.count = 0; b.totalPop = 0; });
+                features.forEach(f => {
+                    const pop = f.properties.population || 0;
+                    const band = bands.find(b => pop >= b.min && pop <= b.max);
+                    if (band) { band.count++; band.totalPop += pop; }
+                });
+
+                Chart.defaults.color = '#9ca3af';
+                Chart.defaults.font  = { family: 'inherit', size: 11 };
+
+                popHistChart = new Chart(
+                    document.getElementById('pop-histogram').getContext('2d'), {
+                    type: 'bar',
+                    data: {
+                        labels:   bands.map(b => b.label),
+                        datasets: [{
+                            label: 'Hexagons',
+                            data:  bands.map(b => b.count),
+                            backgroundColor: bands.map(b => b.color),
+                            borderRadius: 3,
+                            borderSkipped: false
+                        }]
+                    },
+                    options: {
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            x: { grid: { color: 'rgba(255,255,255,0.04)' },
+                                 ticks: { font: { size: 10 } } },
+                            y: { grid: { color: 'rgba(255,255,255,0.04)' },
+                                 ticks: { callback: v => v >= 1000 ? (v/1000).toFixed(1)+'k' : v } }
+                        }
+                    }
+                });
+
+                popBandChart = new Chart(
+                    document.getElementById('pop-band-chart').getContext('2d'), {
+                    type: 'bar',
+                    data: {
+                        labels:   bands.map(b => b.label),
+                        datasets: [{
+                            label: 'Residents',
+                            data:  bands.map(b => b.totalPop),
+                            backgroundColor: bands.map(b => b.color),
+                            borderRadius: 3,
+                            borderSkipped: false
+                        }]
+                    },
+                    options: {
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            x: { grid: { color: 'rgba(255,255,255,0.04)' },
+                                 ticks: { font: { size: 10 } } },
+                            y: { grid: { color: 'rgba(255,255,255,0.04)' },
+                                 ticks: { callback: v => v >= 1000 ? (v/1000).toFixed(0)+'k' : v } }
+                        }
+                    }
+                });
+
+            } catch (err) {
+                console.warn('Population layer failed to load:', err);
+                document.getElementById('pop-map').insertAdjacentHTML('afterbegin',
+                    '<div style="position:absolute;z-index:9999;top:50%;left:50%;transform:translate(-50%,-50%);' +
+                    'background:var(--card);border:1px solid var(--border);border-radius:0.5rem;padding:1rem 1.5rem;' +
+                    'text-align:center;font-size:0.8rem;color:var(--muted-foreground);max-width:280px;">' +
+                    'Map data requires a local server.<br><code style="color:var(--foreground)">python3 -m http.server 8080</code><br>' +
+                    'then open <code style="color:var(--foreground)">localhost:8080/Dashboard.HTML</code></div>'
+                );
+            }
+        }
+
     </script>
 </body>
 </html>

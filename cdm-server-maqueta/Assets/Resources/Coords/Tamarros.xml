@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Main>
+	<tam lat="42.563751" lon="1.574804">
+		<par>Canillo</par>
+		<name>Nilo</name>
+		<color>fbcb5f</color>
+		<place>Carretera de Montaup, Planells de Mereig</place>
+	</tam>
+	<tam lat="42.534667" lon="1.618194">
+		<par>Encamp</par>
+		<name>Enko</name>
+		<color>97c376</color>
+		<place>Carretera dels Cortals, Berenador Camí Pleta dels Orris</place>
+	</tam>
+	<tam lat="42.624732" lon="1.526664">
+		<par>Ordino</par>
+		<name>Dino</name>
+		<color>aa513f</color>
+		<place>Carretera Arcalís, Berenador d'Encodina</place>
+	</tam>
+	<tam lat="42.580389" lon="1.473250">
+		<par>La Massana</par>
+		<name>Massa</name>
+		<color>80b8b5</color>
+		<place>Carretera d'Arinsal, Berenador Riu Pollós</place>
+	</tam>
+	<tam lat="42.491508" lon="1.525710">
+		<par>Andorra la Vella</par>
+		<name>Andy</name>
+		<color>db6a1c</color>
+		<place>Carretera de la Comella, Circuit dels Miradors (Bosc Negre)</place>
+	</tam>
+	<tam lat="42.443237" lon="1.493215">
+		<par>Sant Julià de Lòria</par>
+		<name>Lau</name>
+		<color>9268a7</color>
+		<place>Carretera de la Rabassa, Camó Comabella</place>
+	</tam>
+	<tam lat="42.514054" lon="1.567855">
+		<par>Escaldes-Engordany</par>
+		<name>Caldes</name>
+		<color>445ea8</color>
+		<place>Carretera d'Engolasters, Circuit de les Fonts</place>
+	</tam>
+</Main>

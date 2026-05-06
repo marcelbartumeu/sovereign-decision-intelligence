@@ -2,8 +2,8 @@
   "id": "overgrowth",
   "name": "Overgrowth (rapid urban expansion)",
   "assumptions": {
-    "population_growth_rate": 0.01,
-    "tourism_growth_rate": 0.02,
+    "gdp_growth_rate": 0.060,
+    "tourism_growth_rate": 0.025,
     "co2_intensity_change": 0.005
   }
 }
