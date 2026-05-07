@@ -34,17 +34,11 @@ Four scenarios are modeled: **Continuity**, **Overgrowth**, **Degrowth**, and **
 git clone https://github.com/Meimus/ANDORRA-V1.0-MIT.git
 cd ANDORRA-V1.0-MIT
 
-# 2. Install dashboard dependencies
+# 2. Install dependencies
 cd "Front end/dashboard"
 npm install
 
-# 3. Install and build the ABM visualization
-cd viz-abm-emotion-main
-npm install
-npm run build
-cd ..
-
-# 4. Start the dev server
+# 3. Start the dev server
 npm run dev
 ```
 
