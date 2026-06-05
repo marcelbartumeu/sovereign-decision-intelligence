@@ -1,0 +1,10 @@
+{
+  "framework": null,
+  "buildCommand": "mkdir -p public/andorra && cp -r viz-abm-emotion-main/dist/. public/andorra/ && mkdir -p public/earth && cp -r vertex-earth-interactive/. public/earth/ && cd transit-builder && npm install && npm run build && cd .. && mkdir -p public/transit-builder && cp -r transit-builder/dist/. public/transit-builder/ && npm run build",
+  "outputDirectory": "dist",
+  "rewrites": [
+    { "source": "/andorra/:path*",         "destination": "/andorra/index.html" },
+    { "source": "/transit-builder/:path*", "destination": "/transit-builder/index.html" },
+    { "source": "/:path*",                 "destination": "/index.html" }
+  ]
+}

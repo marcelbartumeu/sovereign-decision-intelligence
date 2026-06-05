@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<!-- saved from url=(0054)https://chrisboligprojects.pythonanywhere.com/gpuEarth -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>points Earth</title>
+    <style>
+    body { margin: 0; background-color: black; overflow: hidden; }
+    #ui {
+      position: fixed; inset: 0; pointer-events: none;
+      font-family: Helvetica, Arial, sans-serif;
+    }
+    #search-container {
+      position: absolute; top: 48px; left: 50%; transform: translateX(-50%);
+      pointer-events: all; width: 520px;
+    }
+    #search-box {
+      display: flex; align-items: center;
+      background: rgba(10,10,10,0.78); border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 14px; padding: 0 28px; gap: 16px;
+      backdrop-filter: blur(12px);
+    }
+    #search-icon { color: rgba(255,255,255,0.35); font-size: 26px; line-height: 1; }
+    #search-input {
+      flex: 1; background: none; border: none; outline: none;
+      color: white; font-family: Helvetica, Arial, sans-serif;
+      font-size: 22px; font-weight: 300; padding: 24px 0;
+    }
+    #search-input::placeholder { color: rgba(255,255,255,0.28); }
+    #search-suggestion {
+      margin-top: 8px; background: rgba(10,10,10,0.88);
+      border: 1px solid rgba(255,255,255,0.13); border-radius: 14px;
+      overflow: hidden; backdrop-filter: blur(12px);
+    }
+    #suggestion-item {
+      display: flex; align-items: center; gap: 16px;
+      padding: 20px 28px; cursor: pointer;
+      font-size: 19px; font-weight: 400; color: rgba(255,255,255,0.8);
+      transition: background 0.15s;
+    }
+    #suggestion-item:hover { background: rgba(255,255,255,0.08); }
+    #suggestion-arrow { margin-left: auto; color: rgba(255,255,255,0.3); font-size: 20px; }
+    #hint {
+      position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
+      font-size: 12px; font-weight: 300; letter-spacing: 0.1em;
+      color: rgba(255,255,255,0.22); white-space: nowrap;
+    }
+    </style>
+    <script type="importmap">
+      {
+				"imports": {
+					"three": "https://cdn.jsdelivr.net/npm/three@0.161/build/three.module.js",
+          "jsm/": "https://cdn.jsdelivr.net/npm/three@0.161/examples/jsm/"
+        }
+			}
+    </script>
+    </head>
+    <body>
+    <div id="ui">
+      <div id="search-container">
+        <div id="search-box">
+          <span id="search-icon">⌕</span>
+          <input id="search-input" type="text" placeholder="Search location..." spellcheck="false" autocomplete="off">
+        </div>
+        <div id="search-suggestion" style="display:none">
+          <div id="suggestion-item">
+            <span>▲</span>
+            <span id="suggestion-name">Andorra, AD</span>
+            <span id="suggestion-arrow">→</span>
+          </div>
+        </div>
+      </div>
+      <div id="hint">Drag to rotate &nbsp;·&nbsp; Scroll to zoom</div>
+    </div>
+    <script type="module" src="index.js"></script>
+</body></html>

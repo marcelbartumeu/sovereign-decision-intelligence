@@ -1,15 +1,17 @@
 """
 Route all agent trips through Andorra's road network.
 
-Uses the local accessibility_streets.geojson (7655 road segments already in the
-project) to build a routing graph — no external API calls required.
+Edge weight: travel time (hours) = segment_length_km / speed_kmh
+  Speed limits follow OSRM's car profile defaults by highway type.
+  This makes Dijkstra choose the fastest route (like Google Maps) rather than
+  the shortest geometric distance, so agents use highways through valleys
+  instead of short mountain-pass residential roads.
 
 Graph construction
 ──────────────────
-Each LineString feature becomes one directed edge (both directions added).
-Endpoints are rounded to 4 decimal places (~11m) to snap nearby nodes together.
-Edge weight = total length in degrees (proxy for distance — sufficient for
-shortest-path routing within a small country).
+Each LineString feature becomes one undirected edge.
+Endpoints are rounded to 4 decimal places (~11 m) to snap nearby nodes.
+When two parallel edges exist between the same nodes, keep the faster one.
 
 Output: results/andorra_population/schedules_routed.json
   Same as schedules.json with an added "routed_paths" list per agent —
@@ -35,56 +37,101 @@ STREETS_FILE = ROOT / "Front end" / "dashboard" / "public" / "model" / "accessib
 POP_DIR      = Path(__file__).parent / "results" / "andorra_population"
 OUT_FILE     = POP_DIR / "schedules_routed.json"
 
-# Round coordinates to this many decimal places for node identity (~11m at 4dp)
-SNAP_PRECISION = 4
+SNAP_PRECISION = 4  # decimal places for node identity (~11 m)
+
+# H3 centroids farther than this from any road node are skipped — they are
+# mountain terrain / census noise with no real road access.
+MAX_SNAP_KM = 1.5
 
 MODE_ACCESS = {
     "car":  {"bus/car"},
     "bus":  {"bus/car"},
-    "walk": {"bus/car", "walk", "bike"},
+    "walk": {"bus/car"},
 }
 
+# Speed limits (km/h) by OSM highway type — matches OSRM car profile defaults.
+# Higher-class roads get higher speeds → Dijkstra on travel time naturally
+# prefers highways through valleys over short mountain residential roads.
+HIGHWAY_SPEEDS: dict[str, float] = {
+    "motorway":       110,
+    "motorway_link":   60,
+    "trunk":           90,
+    "trunk_link":      60,
+    "primary":         70,
+    "primary_link":    60,
+    "secondary":       60,
+    "secondary_link":  50,
+    "tertiary":        50,
+    "tertiary_link":   40,
+    "unclassified":    40,
+    "residential":     30,
+    "living_street":   15,
+    "pedestrian":      10,
+    "road":            40,
+}
+_DEFAULT_SPEED = 40.0  # km/h fallback for unknown highway types
 
-def snap(coord: list[float]) -> tuple[float, float]:
+
+def snap(coord) -> tuple[float, float]:
     return (round(coord[0], SNAP_PRECISION), round(coord[1], SNAP_PRECISION))
 
 
-def seg_length(coords: list) -> float:
-    """Sum of Euclidean distances along a coordinate sequence (degrees)."""
-    total = 0.0
-    for i in range(len(coords) - 1):
-        dx = coords[i+1][0] - coords[i][0]
-        dy = coords[i+1][1] - coords[i][1]
-        total += math.sqrt(dx*dx + dy*dy)
-    return total
+def haversine_km(lon1: float, lat1: float, lon2: float, lat2: float) -> float:
+    """Great-circle distance in kilometres between two lon/lat points."""
+    R = 6371.0
+    dlat = math.radians(lat2 - lat1)
+    dlon = math.radians(lon2 - lon1)
+    a = (math.sin(dlat / 2) ** 2
+         + math.cos(math.radians(lat1)) * math.cos(math.radians(lat2))
+         * math.sin(dlon / 2) ** 2)
+    return R * 2 * math.asin(math.sqrt(a))
+
+
+def seg_travel_time(coords: list, highway: str) -> float:
+    """Travel time in hours along a coordinate sequence."""
+    dist_km = sum(
+        haversine_km(coords[i][0], coords[i][1], coords[i+1][0], coords[i+1][1])
+        for i in range(len(coords) - 1)
+    )
+    speed = HIGHWAY_SPEEDS.get(highway, _DEFAULT_SPEED)
+    return dist_km / speed
+
+
+def seg_length_km(coords: list) -> float:
+    """Total length in km (stored on edge for reference, not used as weight)."""
+    return sum(
+        haversine_km(coords[i][0], coords[i][1], coords[i+1][0], coords[i+1][1])
+        for i in range(len(coords) - 1)
+    )
 
 
 def build_graph(streets: list[dict], allowed_access: set[str]) -> nx.Graph:
     G = nx.Graph()
     for feat in streets:
-        acc = feat["properties"].get("accessibility")
-        if acc not in allowed_access:
+        if feat["properties"].get("accessibility") not in allowed_access:
             continue
         coords = feat["geometry"]["coordinates"]
         if len(coords) < 2:
             continue
-        u = snap(coords[0])
-        v = snap(coords[-1])
-        length = seg_length(coords)
-        # Store full geometry on the edge (needed to reconstruct the path)
+        highway  = feat["properties"].get("highway", "")
+        u        = snap(coords[0])
+        v        = snap(coords[-1])
+        travel_t = seg_travel_time(coords, highway)
+        length   = seg_length_km(coords)
         if G.has_edge(u, v):
-            if length < G[u][v]["length"]:
-                G[u][v].update({"length": length, "geometry": coords})
+            if travel_t < G[u][v]["time"]:
+                G[u][v].update({"time": travel_t, "length": length,
+                                "geometry": coords, "highway": highway})
         else:
-            G.add_edge(u, v, length=length, geometry=coords)
+            G.add_edge(u, v, time=travel_t, length=length,
+                       geometry=coords, highway=highway)
     return G
 
 
-MAX_PTS_PER_ROUTE = 40  # cap road geometry to keep schedules_routed.json small
+MAX_PTS_PER_ROUTE = 60  # waypoints per routed trip (raised for smoother curves)
 
 
 def _subsample(pts: list, n: int) -> list:
-    """Uniformly subsample a list to n items, always keeping endpoints."""
     total = len(pts)
     if total <= n:
         return pts
@@ -93,12 +140,11 @@ def _subsample(pts: list, n: int) -> list:
 
 
 def reconstruct_path(G: nx.Graph, node_path: list) -> list[list[float]]:
-    """Concatenate edge geometries into a full [lon, lat] list, capped at MAX_PTS_PER_ROUTE."""
     if len(node_path) < 2:
         return [list(node_path[0])]
     coords: list[list[float]] = []
     for i in range(len(node_path) - 1):
-        u, v = node_path[i], node_path[i+1]
+        u, v = node_path[i], node_path[i + 1]
         geom = G[u][v]["geometry"]
         if snap(geom[0]) != u:
             geom = list(reversed(geom))
@@ -115,20 +161,22 @@ def make_kd(G: nx.Graph):
     return nodes, KDTree(arr)
 
 
-def nearest_node(nodes, kd, lon: float, lat: float):
-    _, idx = kd.query([lon, lat])
-    return nodes[idx]
+def nearest_nodes(nodes, kd, lon: float, lat: float, k: int = 3):
+    """Return k nearest graph nodes to the given coordinate."""
+    k = min(k, len(nodes))
+    _, idxs = kd.query([lon, lat], k=k)
+    if k == 1:
+        return [nodes[idxs]]
+    return [nodes[i] for i in idxs]
 
 
 def main():
-    # Load street network
     print("Loading street network...", end=" ", flush=True)
     with open(STREETS_FILE) as f:
         streets_geo = json.load(f)
     streets = streets_geo["features"]
     print(f"{len(streets)} segments")
 
-    # Build one graph per mode (car uses bus/car roads; walk uses all)
     print("Building routing graphs...", end=" ", flush=True)
     graphs = {
         "car":  build_graph(streets, MODE_ACCESS["car"]),
@@ -138,19 +186,15 @@ def main():
     for mode, G in graphs.items():
         print(f"\n  {mode}: {len(G.nodes):,} nodes, {len(G.edges):,} edges", end="")
 
-    # Largest connected component per graph (routing only works within one component)
+    # Trim to largest connected component — all routing stays within one component
     for mode in graphs:
         G     = graphs[mode]
         comps = sorted(nx.connected_components(G), key=len, reverse=True)
-        main_comp = G.subgraph(comps[0]).copy()
-        graphs[mode] = main_comp
-
+        graphs[mode] = G.subgraph(comps[0]).copy()
     print(f"\n  (trimmed to largest connected component)")
 
-    # KD-trees for nearest-node snapping
     kds = {mode: make_kd(G) for mode, G in graphs.items()}
 
-    # Load H3 centroids for snapping trip origins/destinations
     print("Loading H3 centroids...", end=" ", flush=True)
     import sys
     sys.path.insert(0, str(Path(__file__).parent))
@@ -158,56 +202,65 @@ def main():
     h3_centroids = load_h3_centroids(GEOJSON_PATH)
     print(f"{len(h3_centroids):,} cells")
 
-    # Load schedules
     print("Loading schedules...", end=" ", flush=True)
     with open(POP_DIR / "schedules.json") as f:
         schedules: list[dict] = json.load(f)
     print(f"{len(schedules):,} agents")
 
-    # Routing with caching — many trips share the same H3 origin/dest
-    snap_cache:  dict[tuple[str, str], tuple | None] = {}   # (h3, mode) → graph_node
-    route_cache: dict[tuple, list | None]             = {}   # (o_node, d_node, mode) → coords
+    snap_cache:  dict[tuple, tuple | None] = {}
+    route_cache: dict[tuple, list | None]  = {}
 
-    def get_snap(h3: str, mode: str):
-        key = (h3, mode)
-        if key in snap_cache:
-            return snap_cache[key]
+    def get_snap(h3: str, mode: str, exclude: tuple | None = None):
+        """Snap an H3 centroid to its nearest road node, skipping `exclude`.
+        Returns None if the centroid is more than MAX_SNAP_KM from any road node."""
         pos = h3_centroids.get(h3)
         if pos is None:
-            snap_cache[key] = None
             return None
-        G = graphs[mode]
         nodes, kd = kds[mode]
-        node = nearest_node(nodes, kd, pos[0], pos[1])
-        if node not in G:
-            snap_cache[key] = None
-            return None
-        snap_cache[key] = node
-        return node
+        d_deg, _ = kd.query([pos[0], pos[1]])
+        if d_deg * 111 > MAX_SNAP_KM:
+            return None  # too far from any road — mountain terrain / census noise
+        candidates = nearest_nodes(nodes, kd, pos[0], pos[1], k=5)
+        G = graphs[mode]
+        for node in candidates:
+            if node == exclude:
+                continue
+            if node in G:
+                return node
+        return None
 
     def get_route(o_h3: str, d_h3: str, mode: str) -> list | None:
+        if mode not in graphs:
+            mode = "car"
         o_node = get_snap(o_h3, mode)
-        d_node = get_snap(d_h3, mode)
-        if o_node is None or d_node is None:
+        if o_node is None:
             return None
+        # If origin and destination snap to the same node, pick a different
+        # destination node so the agent has a real path rather than a zero-length
+        # segment that looks like a straight line in the visualisation.
+        d_node = get_snap(d_h3, mode, exclude=o_node)
+        if d_node is None:
+            d_node = get_snap(d_h3, mode)
+        if d_node is None:
+            return None
+
         cache_key = (o_node, d_node, mode)
         if cache_key in route_cache:
             return route_cache[cache_key]
 
         if o_node == d_node:
+            # Truly same location — store a minimal two-point path
             route_cache[cache_key] = [list(o_node), list(o_node)]
             return route_cache[cache_key]
 
         G = graphs[mode]
         try:
-            path = nx.shortest_path(G, o_node, d_node, weight="length")
-            coords = reconstruct_path(G, path)
-            route_cache[cache_key] = coords
+            node_path = nx.shortest_path(G, o_node, d_node, weight="time")
+            route_cache[cache_key] = reconstruct_path(G, node_path)
         except (nx.NetworkXNoPath, nx.NodeNotFound):
             route_cache[cache_key] = None
         return route_cache[cache_key]
 
-    # Process all agents
     print(f"\nRouting {len(schedules):,} agents' trips...")
     t0 = time.time()
     n_routed = 0
@@ -217,12 +270,9 @@ def main():
         trips = sched.get("trips", [])
         sched["routed_paths"] = []
         for trip in trips:
-            mode  = trip.get("mode",       "car")
-            o_h3  = trip.get("origin_h3",  "")
-            d_h3  = trip.get("dest_h3",    "")
-            # Normalise mode key
-            if mode not in graphs:
-                mode = "car"
+            mode  = trip.get("mode", "car")
+            o_h3  = trip.get("origin_h3", "")
+            d_h3  = trip.get("dest_h3",   "")
             coords = get_route(o_h3, d_h3, mode)
             if coords:
                 n_routed += 1

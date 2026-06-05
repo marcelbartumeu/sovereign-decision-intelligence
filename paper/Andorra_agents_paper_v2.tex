@@ -1,0 +1,1355 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning, shapes.geometric, calc}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{float}
+\usepackage[version=4]{mhchem}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{eurosym}
+\usepackage{threeparttable}
+\usepackage{xcolor}
+\usepackage{cite}
+\usepackage{hyperref}
+\usepackage{caption}
+\usepackage{subcaption}
+
+\title{\textbf{Behaviorally Grounded Synthetic Populations for\\
+National-Scale Agent-Based Modeling:\\
+A Three-Phase Pipeline Applied to Andorra}\\[0.1em]
+{\normalfont\rule{0.6\textwidth}{0.4pt}}}
+
+\author{Marcel Bartumeu Ramentol$^{1}$,
+        Parfait Atchade-Adelomou$^{1}$,
+        Adrian Mora-Carrero$^{3}$,\\
+        Kent Larson$^{1}$,
+        Luis Alonso-Pastor$^{1}$ and
+        Marta Domenech$^{2,*}$\\[0.8em]
+{\normalsize
+$^{1}$ MIT Media Lab, Massachusetts Institute of Technology, Cambridge, MA 02139, USA\\
+$^{2}$ Andorra Research + Innovation (AR+I), Andorra la Vella, AD500, Andorra\\
+$^{3}$ Escuela T\'ecnica Superior de Ingenieros Inform\'aticos,
+       Universidad Polit\'ecnica de Madrid, 28660 Madrid, Spain\\[0.4em]
+$^{*}$ Correspondence: marta.domenech@ari.ad
+}}
+
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Evaluating national development scenarios requires not only macro-level KPI
+trajectories but also the ability to simulate how diverse resident populations
+perceive and respond to alternative futures. We present a three-phase pipeline
+that generates 90,000 behaviorally grounded synthetic agents representing
+Andorra's population, without requiring one LLM call per agent. Phase~1 uses a
+world-context-cached LLM (Claude Sonnet, GRAVITY-style) to produce 75 demographic
+archetypes, each with a 21-dimensional preference profile grounded in validated
+psychometric frameworks (Big Five, Schwartz values, Prospect Theory loss aversion,
+quasi-hyperbolic discounting, and WVS trust battery). Phase~2 expands archetypes
+to the full population via a knowledge graph that encodes country-specific
+sociological constraints---for example, recent Portuguese immigrants under a
+housing crisis face financial stress in the range 0.72--0.92---combined with
+stratified demographic sampling that matches Andorra's empirical nationality,
+income, and age distributions exactly within rounding, and psychometric correlation
+enforcement (seven literature-grounded covariance rules). Phase~3 generates a
+representative weekday schedule per agent via Poisson activity sampling,
+multinomial logit mode choice, a gravity destination model, and Dijkstra routing
+on the full OSM road network. The resulting population achieves a diversity score
+of 0.904 (average pairwise distance in preference space), distribution alignment
+of 0.970 (chi-square goodness-of-fit against official statistics), and norm
+alignment of 0.749 against Western European cross-national survey norms, with
+zero diagnostic flags. The 90,000 agents collectively generate 386,324 daily
+trips (193,162 outbound), all routed on the actual road network rather than
+Euclidean straight lines. This layer is designed as the behavioral extension of
+the Andorra Clone Scenario Engine, enabling evaluation of social acceptance and
+lived experience---signals not captured by macro KPIs alone---under the four
+planning scenarios to 2049.
+\end{abstract}
+
+\noindent\textbf{Keywords:} synthetic population; agent-based modeling; large language
+models; knowledge graph; psychometric grounding; digital twin; Andorra;
+activity-based travel demand; behavioral economics; scenario planning
+
+\section{Introduction}
+\label{sec:introduction}
+
+Macro-level scenario engines produce comparable KPI trajectories---population,
+housing, energy, CO$_2$---but they cannot answer the question of whether a
+given future is \emph{socially accepted} by the diverse communities that live
+inside it. A planning scenario with favourable aggregate statistics may
+nonetheless impose severe burdens on specific groups: recent immigrants facing
+a housing crisis, ageing Andorran nationals navigating a rapidly changing
+cultural landscape, or cross-border workers whose commuting patterns are
+disrupted by tourism-driven congestion. Evaluating these distributional
+effects requires a synthetic population of agents whose behavioral profiles
+are grounded in both validated psychometric frameworks and the structural
+conditions of the society they inhabit.
+
+Building such a population is non-trivial. Naive approaches to LLM-based
+agent generation produce agents that are excessively similar (central tendency
+bias), internally incoherent (psychometric correlations violated), or
+disconnected from the demographic structure of the target
+population~\cite{argyle2023outstuffing,park2023generative}. Scaling to tens
+of thousands of agents through direct LLM calls is prohibitively expensive and
+introduces latency-driven variance that undermines
+reproducibility~\cite{adornetto2025generative}. Classical synthetic population
+methods (iterative proportional fitting, sample enumeration) match demographic
+marginals well but provide no behavioral depth: they produce age-income cells,
+not agents with preferences, trust levels, and mobility
+patterns~\cite{muller2021synthetic,axhausen2016population}.
+
+This paper presents a three-phase pipeline that resolves these tensions for
+Andorra's national-scale digital twin. The pipeline is positioned as the
+behavioral extension of the Andorra Clone Scenario Engine~\cite{bartumeu2026andorra},
+which provides macro-level KPI trajectories under four contrasting development
+scenarios (Continuity, Overgrowth, Degrowth, Density) to 2049. Where the
+scenario engine asks ``what happens to the national system under each
+pathway?'', the agent layer asks ``how do the people living in that future
+perceive and respond to it?''
+
+The central methodological contributions are:
+
+\begin{enumerate}
+\item A \textbf{multi-framework preference schema} integrating five validated
+      psychometric instruments---Big Five personality (OCEAN), Schwartz Basic
+      Human Values, Prospect Theory loss aversion, quasi-hyperbolic discounting,
+      and the WVS trust battery---into a consistent 21-dimensional profile
+      suitable for behavioral simulation.
+\item A \textbf{world-context-cached LLM archetype generation} strategy
+      (GRAVITY-style~\cite{gravity2025}) that grounds each archetype in
+      Andorra's empirical social, economic, and political conditions, using
+      prompt caching to reduce cost.
+\item A \textbf{country-specific knowledge graph} encoding demographic branch
+      constraints (nationality~$\times$~income~$\times$~residence duration~$\times$
+      situational context) that bound field values during population expansion
+      to sociologically valid ranges.
+\item A \textbf{stratified graph-constrained expansion} algorithm that converts
+      $N$~archetypes into any target population size while (i) matching official
+      demographic distributions exactly within rounding, (ii) enforcing seven
+      literature-grounded psychometric correlation rules, and (iii) incurring
+      no additional LLM cost.
+\item An \textbf{activity-based daily schedule generator} that produces one
+      representative weekday schedule per agent through Poisson activity count
+      sampling, multinomial logit mode choice, gravity destination assignment,
+      and Dijkstra routing on the full OpenStreetMap road network of Andorra.
+\item A \textbf{five-metric evaluation framework}---diversity, variance,
+      coherence, distribution alignment, and norm alignment---for assessing
+      synthetic population quality against ground-truth demographic data and
+      cross-national psychometric norms.
+\end{enumerate}
+
+Applied to Andorra's residential population of approximately 90,000 persons,
+the pipeline generates 75 LLM-produced archetypes and 90,000 expanded agents
+in under 15 minutes of wall-clock time, at a LLM cost of under \$1.00, achieving
+distribution alignment of 0.970 and zero diagnostic flags against cross-national
+norms.
+
+\section{Related Work}
+\label{sec:related_work}
+
+\subsection{Synthetic Population Generation}
+
+Classical synthetic population methods reconstruct micro-level individuals
+from aggregate statistics. Iterative proportional fitting (IPF) matches
+joint distributions of socio-demographic variables to census
+targets~\cite{deming1940least}, while sample enumeration draws records from a
+reference survey and re-weights them to match target
+margins~\cite{muller2021synthetic}. These methods produce demographically
+consistent populations but assign no behavioral profiles: agents are records
+of age, income, and household type, not individuals with preferences,
+trust levels, or decision-making styles. Activity-based travel demand
+models~\cite{axhausen2016population,bhat1999activity} extend synthetic
+populations with activity-travel patterns, but typically represent behavior
+through utility functions fitted to revealed preference data---data that are
+unavailable for Andorra's specific institutional and cultural context.
+
+\subsection{LLM-Based Agent Generation}
+
+Large language models have been used to generate behavioral profiles for
+social simulation~\cite{park2023generative,argyle2023outstuffing,
+adornetto2025generative,garcia2025simulating}. Park et al.~\cite{park2023generative}
+demonstrate that LLM agents can produce socially plausible behavior in
+open-ended simulations, but the approach does not scale to national populations
+without prohibitive cost. Argyle et al.~\cite{argyle2023outstuffing} show
+that LLMs can replicate group opinion distributions when conditioned on
+demographic descriptors, but also document central tendency bias when
+generating diverse populations.
+
+The GRAVITY framework~\cite{gravity2025} addresses this by grounding LLM
+generation in a structured world context---empirical data on demography,
+economy, wages, housing, governance, and culture---and using prompt caching
+to make per-archetype calls efficient. The HAG (Hierarchical Demographic
+tree-based Agent Generation) framework~\cite{li2025hugagent} adds branch
+constraints derived from a demographic tree, injecting field-level ranges
+into the LLM user message to enforce distributional coherence at generation
+time. Both approaches remain focused on archetype generation and require a
+separate expansion mechanism to reach population scale.
+
+\subsection{Knowledge Graphs for Behavioral Constraints}
+
+Knowledge graphs have been used to encode structured domain knowledge for
+agent constraint inference in multi-agent
+systems~\cite{pan2023unifying,carrero2024integrating}. In the context of
+synthetic population generation, graph-encoded constraints can represent the
+intersection of multiple demographic factors---for example, the combination
+of nationality, residence duration, and an active housing crisis activating
+a higher financial stress range that would not apply to any single dimension
+alone. This ``AND-condition'' edge semantics is not available in flat
+demographic tables or prompt-based constraint lists.
+
+\subsection{Psychometric Frameworks for Agent Behavioral Profiles}
+
+The Big Five (OCEAN) personality framework~\cite{costa1992neopersonality}
+is the cross-cultural gold standard for trait-based personality representation,
+with validated population norms across 56 countries~\cite{schmitt2007geographic}.
+Schwartz Basic Human Values~\cite{schwartz1992universals} provide a motivational
+hierarchy validated in over 80 countries, and have been linked to political
+preferences and pro-social behavior. Prospect Theory~\cite{kahneman1979prospect}
+provides the dominant framework for loss aversion, and quasi-hyperbolic
+discounting~\cite{laibson1997golden} captures present bias in intertemporal
+choice. The WVS trust battery~\cite{inglehart2020worldvalues} measures
+institutional and interpersonal trust across national populations. Putnam's
+bonding/bridging social capital distinction~\cite{putnam2000bowling} captures
+intra- versus inter-group social connectivity, with implications for civic
+participation and residential mobility. Integrating these five frameworks into
+a single coherent profile schema---and enforcing the known cross-framework
+correlations during generation---is a methodological requirement for any agent
+layer intended for social simulation.
+
+\subsection{Activity-Based Travel Demand Modeling}
+
+Activity-based models generate travel demand as a derived consequence of
+activity participation~\cite{bhat1999activity,arentze2000albatross}.
+Poisson distributions are standard for modeling activity frequency, as
+trips are rare discrete events within a fixed observation
+window~\cite{arentze2000albatross}. Multinomial logit models capture
+mode choice as a function of traveler characteristics and supply
+conditions~\cite{ben1985discrete}. Gravity models assign destinations
+based on the attractiveness of locations and the deterrence of distance.
+Together, these three sub-models constitute a minimal but internally
+consistent activity-travel generation framework.
+
+\section{Methodology}
+\label{sec:methodology}
+
+The pipeline converts empirical country data into a synthetic population
+with behavioral profiles and daily schedules through three sequential phases,
+as shown in Figure~\ref{fig:system_architecture}.
+
+\begin{figure}[H]
+\begin{center}
+\begin{tikzpicture}[
+  box/.style={rectangle, draw, rounded corners=3pt, text width=3.8cm,
+              align=center, minimum height=1.2cm, fill=gray!10},
+  arrow/.style={-{Stealth[scale=1.2]}, thick},
+  notelbl/.style={font=\small\itshape, text width=3.8cm, align=center}
+]
+  \node[box] (p1) at (0,0)
+    {\textbf{Phase 1}\\ LLM Archetype\\ Generation\\ (75 LLM calls)};
+  \node[box] (p2) at (5,0)
+    {\textbf{Phase 2}\\ Graph-Constrained\\ Expansion\\ (no LLM calls)};
+  \node[box] (p3) at (10,0)
+    {\textbf{Phase 3}\\ Schedule\\ Generation\\ (Dijkstra routing)};
+  \draw[arrow] (p1) -- node[above, font=\small\itshape]{75 archetypes} (p2);
+  \draw[arrow] (p2) -- node[above, font=\small\itshape]{90{,}000 agents} (p3);
+  \node[notelbl, below=0.6cm of p1] {World context\\+ seed $\rightarrow$ profile};
+  \node[notelbl, below=0.6cm of p2] {Knowledge graph\\+ stratified sampling};
+  \node[notelbl, below=0.6cm of p3] {Poisson + logit\\+ gravity + OSM};
+\end{tikzpicture}
+\end{center}
+\caption{Three-phase synthetic population pipeline. Phase~1 (LLM Archetype
+Generation) uses a world-context-cached large language model to produce $N$
+demographically grounded behavioral archetypes. Phase~2 (Graph-Constrained
+Expansion) converts archetypes into the full synthetic population via stratified
+demographic sampling and a knowledge graph that enforces sociologically valid
+field bounds. Phase~3 (Schedule Generation) assigns each agent a representative
+weekday schedule via activity count sampling, mode choice, destination assignment,
+and road network routing.}
+\label{fig:system_architecture}
+\end{figure}
+
+\subsection{Preference Profile Schema}
+\label{subsec:schema}
+
+Each agent is represented by a structured preference profile embedding five
+validated psychometric frameworks into a 21-dimensional numerical representation.
+The schema is designed to be internally consistent: the cross-framework
+correlations documented in the literature are not treated as desiderata but
+as hard constraints enforced during population expansion.
+
+\paragraph{Personality (Big Five / OCEAN).}
+The five factors---Openness, Conscientiousness, Extraversion, Agreeableness,
+and Neuroticism---are encoded as continuous values in $[0,1]$, normalised from
+population T-score distributions (mean~$\approx$~0.50, SD~$\approx$~0.12--0.15)
+following~\cite{costa1992neopersonality,schmitt2007geographic}. The population
+norms used for validation are the Western European reference group from
+Schmitt et al.~\cite{schmitt2007geographic}: $\mu_O = 0.54$, $\mu_C = 0.52$,
+$\mu_E = 0.49$, $\mu_A = 0.56$, $\mu_N = 0.50$, each with SD~$\approx 0.13$.
+
+\paragraph{Values (Schwartz).}
+Each agent carries a ranked top-3 from the 10 Schwartz motivational value
+types~\cite{schwartz1992universals}: \textit{security}, \textit{conformity},
+\textit{tradition}, \textit{benevolence}, \textit{universalism},
+\textit{self-direction}, \textit{achievement}, \textit{power},
+\textit{hedonism}, and \textit{stimulation}. The ranking captures motivational
+hierarchy and is used in qualitative analysis of social response patterns.
+
+\paragraph{Behavioral economics.}
+Prospect Theory loss aversion $\lambda \in [1.0, 4.5]$ follows the
+meta-analytic population mean of $\lambda \approx 2.25$ from
+Tversky and Kahneman~\cite{tversky1992advances}. The $\beta$-$\delta$
+quasi-hyperbolic discounting model~\cite{laibson1997golden} provides the
+annual discount rate $\delta \in [0.03, 0.35]$ (mean $\approx 0.12$ from
+representative Danish field experiments~\cite{andersen2008eliciting}) and
+present bias $\beta \in [0.50, 1.00]$ ($\beta = 1.0$ implies time consistency).
+
+\paragraph{Trust (WVS).}
+Five institutional trust dimensions---government, legal system, employers,
+media, and interpersonal---are anchored to the WVS Wave~7 trust battery
+question wording~\cite{inglehart2020worldvalues}. Population norms for
+Western Europe ($\mu_\text{gov} = 0.42$, $\mu_\text{interpers} = 0.46$,
+$\mu_\text{legal} = 0.48$) serve as validation targets.
+
+\paragraph{Social capital (Putnam).}
+Bonding capital (strength of ties to similar others: family, ethnic
+community) and bridging capital (cross-group ties: neighbours, colleagues)
+are encoded in $[0,1]$ following~\cite{putnam2000bowling}. These fields
+directly determine home neighbourhood assignment probabilities and
+destination gravity weights during schedule generation.
+
+\paragraph{Mobility and economic stress.}
+Additional fields capture primary transport mode, transit willingness,
+walking radius, car dependency, cross-border commuting frequency, financial
+stress, savings orientation, price sensitivity, and employment security
+perception. These fields link directly to the activity and mode choice
+sub-models in Phase~3.
+
+The numerical projection of the profile for metric computation uses 21
+fields extracted from the schema: 5 Big Five traits, 3 political axes,
+3 trust dimensions, 3 behavioral economics parameters, 3 mobility/economic
+fields, and 3 social capital fields (Table~\ref{tab:schema_fields}).
+
+\begin{table}[H]
+\caption{The 21 numerical fields used for metric computation.
+Big Five values are normalised T-scores in $[0,1]$; loss aversion is
+in $[1.0, 4.5]$; discount rate in $[0.03, 0.35]$; all others in $[0,1]$.}
+\label{tab:schema_fields}
+\begin{tabularx}{\textwidth}{p{3.2cm}p{4.5cm}X}
+\toprule
+\textbf{Domain} & \textbf{Field} & \textbf{Grounding / Validation Source} \\
+\midrule
+Personality     & Openness, Conscientiousness, Extraversion, Agreeableness, Neuroticism
+                & Big Five; Schmitt et al.\ (2007) Western Europe norms \\
+Political       & Economic axis, Social axis, Local engagement
+                & Chapel Hill Expert Survey / Manifesto Project scale \\
+Trust           & Government, Legal system, Interpersonal
+                & WVS Wave 7 trust battery \\
+Behavioral econ & Loss aversion ($\lambda$), Discount rate ($\delta$), Present bias ($\beta$)
+                & Kahneman \& Tversky (1979); Laibson (1997); Andersen et al.\ (2008) \\
+Mobility        & Transit willingness, Financial stress, Savings orientation
+                & HETUS 2010; Mullainathan \& Shafir (2013) \\
+Social capital  & Bonding, Bridging, Civic participation
+                & Putnam (2000); Jost et al.\ (2004) \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Country Configuration and World Context}
+\label{subsec:world_context}
+
+All empirical parameters are centralised in a typed \texttt{CountryConfig}
+dataclass, clearly separating ground-truth inputs from LLM outputs. The
+configuration encodes: age distribution (UN WPP 2022), nationality mix
+(SAIG Anuari 2023), income distribution (CASS 2022), sector wage medians
+(CASS labour statistics 2022--2023), housing cost ranges (SAIG 2021;
+real-estate portals 2023--2024), World Bank WGI governance percentiles (2022),
+Inglehart--Welzel cultural positioning (interpolated from Spain/France, WVS
+2023), and current structural stresses and active policies. These parameters
+serve dual roles: they are the empirical ground truth used for
+\emph{validation}, and they are formatted into a structured world context
+string used as the \emph{LLM system prompt} in Phase~1.
+
+For Andorra, the key structural parameters are: population $\approx 90{,}000$,
+55\% foreign-born share (primarily Spanish, Portuguese, and French labour
+migrants), area 467.6\,km$^2$, GDP per capita (PPP) \$49{,}900, Gini 27.0,
+unemployment 2.0\%, minimum wage \EUR\,1{,}377/month gross, and an active
+housing affordability crisis (rents consuming 50--70\% of net income for
+working-class immigrants). Andorra's 20-year naturalisation threshold is
+explicitly encoded, as it creates structural long-horizon precarity for
+immigrant cohorts that directly shapes their preference profiles.
+
+The world context string is formatted programmatically from the
+\texttt{CountryConfig} fields and passed as the LLM system prompt, where
+it is eligible for prompt caching (Section~\ref{subsec:archetype_generation}).
+Swapping the active configuration to a different country requires changing
+a single line; no generation code changes.
+
+\subsection{Phase 1: LLM Archetype Generation}
+\label{subsec:archetype_generation}
+
+\paragraph{Seed generation.}
+Demographic seeds are produced by stratified weighted sampling from the
+\texttt{CountryConfig} distributions (nationality, income, age), with the
+guarantee that every nationality appears at least once regardless of
+population weight. For Andorra, seeds include six fields: nationality,
+age (sampled from the group midpoint distribution with $\sigma = 4$), age
+group, income bracket, years in Andorra (sampled from nationality-specific
+residence-duration ranges), and occupation (a nationality $\times$ income
+deterministic assignment with stochastic cross-border-worker probability
+for Spanish mid-income residents).
+
+\paragraph{LLM generation (GRAVITY-style).}
+For each seed, a single LLM call generates one preference profile. The
+world context (Section~\ref{subsec:world_context}) is the system prompt,
+activated as a prompt cache block across all archetype calls; only the
+per-seed user message varies. The user message instructs the model to
+``generate a preference profile for this resident'' and provides the seed
+fields, asking the model to ``ground the profile in their likely lived
+experience given the world context above.''
+
+The model must output a single JSON object matching the schema
+(Section~\ref{subsec:schema}), with no prose, markdown fences, or inline
+comments. A structured parse function strips any residual markup and
+retries once on JSON failure. The seed's nationality, income bracket, and
+age are copied verbatim from the seed onto the parsed profile, overriding
+any model-generated values for those fields. This ensures demographic
+consistency while allowing the model full latitude over the 21 behavioral
+dimensions.
+
+\paragraph{Prompt caching.}
+The world context string is approximately 2,500 tokens. At 75 archetype
+calls, the total uncached input token cost would be $75 \times 2{,}500
+= 187{,}500$ tokens. With prompt caching, the world context is read once;
+subsequent calls incur a cache-read fee (approximately 10\% of the write
+cost) instead of a full-read fee. This reduces effective per-archetype
+input token cost by roughly 85\%, enabling the full archetype set to be
+generated for under \$1.00 with Claude Sonnet.
+
+\paragraph{Coverage enforcement.}
+After generating $N$ archetypes, the \emph{coverage score} measures what
+fraction of the total (nationality~$\times$~income) population mass is
+represented by at least one archetype in the same cell
+(Equation~\eqref{eq:coverage}). At $N = 75$, coverage reaches 84.5\%,
+meaning the remaining 15.5\% of population mass falls into cells that
+are covered by the demographically nearest archetype during expansion.
+
+\begin{equation}
+  \text{Coverage} =
+    \frac{\displaystyle\sum_{\text{nat}} \sum_{\text{inc}}
+           \mathbf{1}[\exists\,\text{archetype in cell (nat, inc)}]
+           \cdot w_\text{nat} \cdot w_\text{inc}}
+         {\displaystyle\sum_{\text{nat}} \sum_{\text{inc}}
+           w_\text{nat} \cdot w_\text{inc}}.
+  \label{eq:coverage}
+\end{equation}
+
+\subsection{Phase 2: Knowledge Graph-Constrained Population Expansion}
+\label{subsec:expansion}
+
+\paragraph{Knowledge graph structure.}
+The Andorra knowledge graph is a directed bipartite structure with
+\emph{nodes} representing demographic positions or situational conditions,
+and \emph{edges} encoding field constraints that activate when all source
+nodes in the edge's antecedent are matched by the agent's seed
+(AND-condition semantics). Nodes fall into three types:
+
+\begin{itemize}
+\item \textbf{Demographic nodes}: nationality (Andorran, Spanish, Portuguese,
+      French, Other), residence duration (recent $<5$\,yr, settling $5$--$10$\,yr,
+      established $\geq10$\,yr), age group (young adult, prime, established,
+      pre-retirement), income bracket (7 levels, precarious to wealthy),
+      and occupation (cross-border worker, business owner, etc.).
+\item \textbf{Context nodes}: persistent structural facts of the country,
+      always active for all agents (housing affordability crisis, tourism
+      pressure, near-zero unemployment).
+\item \textbf{Constraint edges}: AND-conditions over 2--3 source nodes,
+      each specifying one or more \texttt{FieldConstraint}(path, low, high)
+      tuples.
+\end{itemize}
+
+Representative edges include: Andorran nationals have bonding capital
+bounded to $[0.60, 0.90]$ (dense parish and family networks) and government
+trust to $[0.40, 0.72]$ (personally legible but susceptible to patronage
+perception); recent Portuguese immigrants have government trust $[0.20, 0.50]$
+and price sensitivity $[0.60, 0.90]$ (acute housing affordability concern);
+the composite condition Portuguese~$\times$~recent~$\times$~housing crisis
+activates a financial stress range $[0.72, 0.92]$ that is tighter and higher
+than any single-node constraint.
+
+Constraint ranges from multiple matching edges on the same field are
+intersected (taking the most restrictive range). This prevents conflicting
+constraints from widening the valid range. If an intersection would produce
+a degenerate range (low $\geq$ high), the secondary constraint is skipped
+and the primary range is preserved.
+
+\paragraph{Stratified seed generation for expansion.}
+The expanded population's marginal distributions must match \texttt{ACTIVE\_CONFIG}
+(nationality, income, age) exactly within rounding. The stratification
+algorithm allocates agent counts proportionally (largest-remainder method)
+by nationality, then subdivides each nationality group by income, then by
+age. This produces a seed assignment table with zero systematic drift from
+the target distributions.
+
+\paragraph{Archetype matching.}
+Each population seed is matched to the nearest archetype seed. Nationality
+is a hard preference: same-nationality archetypes are always preferred.
+Among same-nationality candidates, the distance metric is
+
+\begin{equation}
+  d(\text{seed}, \text{arch}) = 0.6\,\frac{|r_\text{inc} - r_\text{arch}|}{6}
+                              + 0.4\,\frac{|a_\text{seed} - a_\text{arch}|}{50},
+  \label{eq:match}
+\end{equation}
+
+where $r_\text{inc}$ is the ordinal income rank (0--6) and $a$ is age in years.
+Income is weighted higher than age because income is more closely linked to
+the behavioral fields in the schema (financial stress, savings orientation,
+loss aversion).
+
+\paragraph{Graph-constrained individual variation.}
+Each agent is generated by sampling within the knowledge graph's field bounds,
+centered on the matched archetype's value. The sampling distribution is a
+truncated Gaussian:
+
+\begin{equation}
+  x_\text{agent} \sim \mathcal{N}\!\left(x_\text{arch},\;
+                       \sigma = \frac{h - l}{4}\right)
+                  \text{ clipped to } [l,\, h],
+  \label{eq:sampling}
+\end{equation}
+
+where $[l, h]$ is the graph-derived valid range for the field and the
+agent's demographic position. The $\sigma = (h - l)/4$ parameterisation
+ensures that the archetype is the modal individual in its group (bell-shaped
+within-group distribution) and that nearly all draws ($\pm 2\sigma$) remain
+within the sociologically valid range. For fields not covered by graph
+bounds, a small Gaussian perturbation ($\sigma \approx 0.08$) around the
+archetype value is applied.
+
+\paragraph{Psychometric correlation enforcement.}
+After primary field values are assigned, seven literature-grounded
+correlation rules propagate primary-field deltas to correlated fields
+(Table~\ref{tab:correlations}). Each rule takes the form
+$\Delta x_\text{target} += c \cdot \Delta x_\text{source} \cdot 0.5$,
+where $c$ is the correlation coefficient and the factor 0.5 damps the
+propagation to avoid over-correction when multiple rules affect the same
+target. All fields are clipped to their schema bounds after propagation.
+
+\begin{table}[H]
+\caption{Psychometric correlation rules enforced during expansion.
+Direction and magnitude are literature-grounded; partial propagation
+(factor 0.5) avoids overcorrection.}
+\label{tab:correlations}
+\begin{tabularx}{\textwidth}{p{4.0cm}p{4.0cm}Xp{3.0cm}}
+\toprule
+\textbf{Source field} & \textbf{Target field} & \textbf{$c$} & \textbf{Reference} \\
+\midrule
+Financial stress      & Loss aversion ($\lambda$)   & $+0.55$ & Shah et al.\ (2012) \\
+Financial stress      & Price sensitivity            & $+0.60$ & Mani et al.\ (2013) \\
+Financial stress      & Savings orientation          & $-0.65$ & Lusardi \& Mitchell (2014) \\
+Financial stress      & Present bias ($\beta$)       & $-0.40$ & Mullainathan \& Shafir (2013) \\
+Neuroticism           & Loss aversion ($\lambda$)   & $+0.45$ & Rustichini et al.\ (2016) \\
+Conscientiousness     & Discount rate ($\delta$)    & $-0.40$ & Shamosh \& Gray (2008) \\
+Agreeableness         & Bridging capital             & $+0.35$ & Putnam (2000); Jost et al.\ (2004) \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Phase 3: Activity-Based Schedule Generation}
+\label{subsec:schedule_generation}
+
+Each agent is assigned one representative weekday schedule comprising
+outbound trips to out-of-home activities and corresponding return-home trips,
+all sorted chronologically.
+
+\paragraph{Home cell assignment.}
+Andorra is tessellated at H3 resolution~9 ($\approx$\,0.1\,km$^2$ per cell).
+Home cells are drawn from nationality-stratified residential prior distributions:
+Andorran nationals are concentrated in Andorra la Vella and Sant Juli\`a de
+L\`oria parishes, Portuguese and Spanish workers in the lower-income valleys,
+and French residents near the northern border. Cells are weighted by estimated
+residential density from population registry data.
+
+\paragraph{Activity count generation (Poisson model).}
+Activity frequencies for four out-of-home types (work, shopping, leisure,
+civic) are drawn from Poisson distributions whose rates $\lambda$ are
+calibrated to HETUS 2010 European averages~\cite{hetus2010} and adjusted
+multiplicatively by profile covariates:
+
+\begin{align}
+\lambda_\text{work}     &= \lambda_0^\text{work}
+                           \cdot \mathbf{1}[\text{agent employed}], \\
+\lambda_\text{shopping} &= \lambda_0^\text{shop}
+                           \cdot \bigl(1 - 0.3\,(p_s - 0.5)\bigr), \\
+\lambda_\text{leisure}  &= \lambda_0^\text{leis}
+                           + c_E\,(e - 0.5)\,\sigma_E, \\
+\lambda_\text{civic}    &= \lambda_0^\text{civic}
+                           \cdot \bigl(c_p / 0.5\bigr),
+\end{align}
+
+where $p_s$ is price sensitivity, $e$ is extraversion, $c_E$ is the
+extraversion--leisure coefficient, $\sigma_E \approx 0.12$ is the
+population SD of extraversion, and $c_p$ is civic participation.
+Employment probability is gated by income bracket. Counts are capped
+at practical maxima (work~$\leq 2$, shopping~$\leq 3$, leisure~$\leq 3$,
+civic~$\leq 2$) to prevent tail draws from producing unrealistic schedules.
+
+\paragraph{Destination assignment (gravity model).}
+Destination H3 cells are drawn from a gravity-weighted distribution over
+all non-home cells. Cell attractiveness is scaled by activity-specific
+weights (commercial density for shopping, park and leisure infrastructure
+for leisure, civic-building locations for civic). Distance deterrence follows
+a negative exponential function. Agents with higher bridging capital have
+wider spatial search radii, consistent with cross-group mobility
+literature~\cite{putnam2000bowling}.
+
+\paragraph{Mode choice (multinomial logit).}
+Transport mode (car, bus, walk) is chosen via a multinomial logit model
+as a function of trip distance, transit coverage at the origin cell, car
+ownership (sampled from income-bracket probabilities), and profile fields
+(transit willingness, car dependency). Mode-specific utility functions are
+parameterised with constants derived from modal shares in comparable
+Alpine micro-territories.
+
+\paragraph{Departure time (truncated Normal).}
+Departure times are sampled from activity-type-specific truncated Normal
+distributions representing typical peak times (e.g., work departures
+centred at 08:00 with $\sigma = 45$\,min; shopping at 11:00 and 16:00
+bimodal). Return trips are scheduled after activity-specific dwell times
+(Table~\ref{tab:dwell}) drawn from HETUS 2010 European averages.
+
+\begin{table}[H]
+\caption{Activity dwell times (time spent at destination before returning home).
+Source: HETUS 2010 European average (proxy); no Andorra-specific
+activity duration data available.}
+\label{tab:dwell}
+\begin{tabularx}{\textwidth}{lXX}
+\toprule
+\textbf{Activity} & \textbf{Mean dwell (min)} & \textbf{SD (min)} \\
+\midrule
+Work     & 480 & 60 \\
+Shopping &  45 & 15 \\
+Leisure  &  90 & 30 \\
+Civic    &  60 & 20 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\paragraph{Road network routing.}
+Raw H3-to-H3 trips are routed on Andorra's full OpenStreetMap road network
+(exported as a GeoJSON LineString feature collection) via Dijkstra's
+algorithm with edge weights equal to travel time (hours):
+
+\begin{equation}
+  w_e = \frac{l_e}{v_e},
+  \label{eq:edge_weight}
+\end{equation}
+
+where $l_e$ is segment length in kilometres and $v_e$ is the OSRM-derived
+speed for the segment's highway type (motorway~110\,km/h, primary~70\,km/h,
+residential~30\,km/h, etc.). Edge endpoints are snapped to a 4-decimal-place
+grid ($\approx11$\,m precision) to merge near-coincident nodes arising from
+floating-point inconsistencies in the source data. A KD-tree provides
+nearest-road-node lookup for H3 cell centroids. Trips for which no network
+path exists (e.g., remote H3 cells not reachable by road) fall back to
+straight-line interpolation.
+
+\subsection{Evaluation Framework}
+\label{subsec:metrics}
+
+Five metrics are computed on both the archetype set and the full population.
+All metrics operate on the 21-dimensional numerical projection of each profile.
+
+\paragraph{Diversity.}
+Average pairwise Euclidean distance across all agents in the normalised
+preference space:
+
+\begin{equation}
+  D = \frac{2}{n(n-1)} \sum_{i < j} \|\mathbf{v}_i - \mathbf{v}_j\|_2.
+  \label{eq:diversity}
+\end{equation}
+
+Higher $D$ indicates that agents differ substantially from one another
+in their preference profiles.
+
+\paragraph{Variance.}
+Mean per-dimension variance of the population vectors:
+
+\begin{equation}
+  V = \frac{1}{d}\sum_{k=1}^{d} \mathrm{Var}(\mathbf{v}_{1:n,k}).
+  \label{eq:variance}
+\end{equation}
+
+Near-zero $V$ indicates central-category bias (all agents collapsed to
+similar values), a failure mode documented in unconstrained LLM
+generation~\cite{argyle2023outstuffing}.
+
+\paragraph{Coherence.}
+Mean absolute Pearson correlation over seven literature-specified pairs
+(Table~\ref{tab:correlations}), counting only correlations with the
+correct sign:
+
+\begin{equation}
+  \text{Coh} = \frac{1}{7}\sum_{(a,b) \in \mathcal{C}}
+               |r_{ab}| \cdot \mathbf{1}[\mathrm{sign}(r_{ab}) = s_{ab}],
+  \label{eq:coherence}
+\end{equation}
+
+where $s_{ab}$ is the expected sign from the literature. $\text{Coh} = 1$
+means all seven pairs are perfectly correlated in the correct direction;
+$\text{Coh} = 0$ means all correlations are violated.
+
+\paragraph{Distribution alignment.}
+Chi-square goodness-of-fit between the synthetic population's nationality
+and income distributions and the \texttt{CountryConfig} ground truth,
+normalised to $[0,1]$:
+
+\begin{equation}
+  \text{DA} = 1 - \frac{\chi^2}{\max(\chi^2, n)},
+  \label{eq:distribution_alignment}
+\end{equation}
+
+where $\chi^2 = \sum_k (O_k - E_k)^2 / E_k$, averaged over nationality
+and income checks. $\text{DA} = 1$ implies perfect marginal matching.
+
+\paragraph{Norm alignment.}
+Deviation of synthetic population means from the cross-national survey
+norms in Table~\ref{tab:norms}, penalised as a Z-score distance
+clamped to $[0,1]$:
+
+\begin{equation}
+  \text{NA} = \frac{1}{|\mathcal{N}|}\sum_{f \in \mathcal{N}}
+              \max\!\left(0,\; 1 - \frac{|\bar{v}_f - \mu_f|}{\sigma_f \cdot 2}\right).
+  \label{eq:norm_align}
+\end{equation}
+
+A diagnostic flag is raised when the Z-score on any benchmarked dimension
+exceeds 1.5.
+
+\begin{table}[H]
+\caption{Cross-national population norms used for norm alignment scoring.
+Big Five: Schmitt et al.\ (2007), Western Europe, $N \approx 3{,}200$.
+Trust: WVS Wave~7, Western Europe reference group.
+Loss aversion: meta-analytic $\lambda \approx 2.25$, normalised to
+$(\lambda - 1)/3.5$~\cite{tversky1992advances}.
+Discount rate: representative Danish sample~\cite{andersen2008eliciting}.}
+\label{tab:norms}
+\begin{tabularx}{\textwidth}{lXXX}
+\toprule
+\textbf{Field} & \textbf{Norm mean} & \textbf{Norm SD} & \textbf{Source} \\
+\midrule
+Openness           & 0.54 & 0.14 & Schmitt (2007) \\
+Conscientiousness  & 0.52 & 0.13 & Schmitt (2007) \\
+Extraversion       & 0.49 & 0.14 & Schmitt (2007) \\
+Agreeableness      & 0.56 & 0.12 & Schmitt (2007) \\
+Neuroticism        & 0.50 & 0.14 & Schmitt (2007) \\
+Government trust   & 0.42 & 0.20 & WVS Wave~7 \\
+Interpersonal trust& 0.46 & 0.18 & WVS Wave~7 \\
+Legal system trust & 0.48 & 0.19 & WVS Wave~7 \\
+Loss aversion ($\lambda$) & 0.357 & 0.14 & Tversky \& Kahneman (1992) \\
+Discount rate ($\delta$)  & 0.280 & 0.12 & Andersen et al.\ (2008) \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Experiments}
+\label{sec:experiments}
+
+\subsection{Experimental Protocol}
+\label{subsec:exp_protocol}
+
+All experiments use Claude Sonnet (claude-sonnet-4-6) as the generation
+model, a fixed random seed (42) for full reproducibility across expansion
+and schedule generation, and the Andorra configuration
+(Section~\ref{subsec:world_context}). Three experiment variants are compared:
+
+\begin{itemize}
+\item \textbf{EXP00 (Baseline):} LLM generates profiles from demographic seed
+      only; no world context.
+\item \textbf{EXP01 (GRAVITY):} Full world context cached in the system
+      prompt; the user message provides the demographic seed and requests
+      grounded generation.
+\item \textbf{EXP02 (HAG):} World context cached in system prompt; per-call
+      user message additionally contains the knowledge graph's explicit
+      field-by-field constraint ranges for the seed's demographic branch.
+\end{itemize}
+
+All three experiments use the same graph-constrained expansion (Phase~2)
+and schedule generation (Phase~3), so differences in population metrics
+reflect differences in archetype quality rather than expansion or scheduling.
+
+The production pipeline (\texttt{run\_population.py}) runs EXP01 with
+$N_\text{arch} = 75$ archetypes and $N_\text{pop} = 90{,}000$ agents.
+
+\subsection{Saturation Analysis}
+\label{subsec:saturation}
+
+To determine the minimum archetype count at which quality metrics plateau,
+we run EXP01 and EXP02 at $N_\text{arch} \in \{5, 10, 20, 35, 50\}$,
+each with $N_\text{pop} = 500$ expanded agents, recording coverage, diversity,
+and distribution alignment. Coverage saturates near $N_\text{arch} = 50$
+for both variants, with diminishing returns above that threshold for
+Andorra's nationality $\times$ income space (5 nationalities
+$\times$ 7 income brackets = 35 cells). At $N_\text{arch} = 75$, coverage
+reaches 84.5\%, capturing the population-weight-dominant cells.
+
+\section{Results}
+\label{sec:results}
+
+\subsection{Archetype and Population Quality Metrics}
+\label{subsec:metrics_results}
+
+Table~\ref{tab:metrics} reports the five quality metrics for both the
+75-archetype set and the full 90,000-agent population.
+
+\begin{table}[H]
+\caption{Quality metrics for the archetype set ($N = 75$) and the full
+synthetic population ($N = 90{,}000$). Higher is better for all metrics.
+Diversity is in the normalised 21-dimensional preference space $[0,1]^{21}$.}
+\label{tab:metrics}
+\begin{tabularx}{\textwidth}{lXX}
+\toprule
+\textbf{Metric}              & \textbf{Archetypes ($N=75$)} & \textbf{Population ($N=90{,}000$)} \\
+\midrule
+Diversity                   & 0.860 & 0.904 \\
+Variance                    & 0.020 & 0.021 \\
+Coherence                   & 0.562 & 0.503 \\
+Distribution alignment      & 0.931 & 0.970 \\
+Norm alignment              & 0.745 & 0.749 \\
+Coverage                    & 0.845 & --- \\
+Diagnostic flags            & 0     & 0     \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Distribution alignment improves from 0.931 at archetype level to 0.970
+in the full population, reflecting that stratified expansion corrects
+any residual demographic skew introduced by the small archetype sample.
+Diversity increases slightly after expansion (from 0.860 to 0.904) because
+stratified sampling introduces agents from underrepresented cells
+(low-weight nationality $\times$ income combinations), adding heterogeneity.
+Coherence decreases modestly from 0.562 to 0.503: the LLM-generated
+archetypes exhibit stronger psychometric correlations than the expanded
+population, where within-group Gaussian variation and the correlation
+propagation factor (0.5 damping) introduce some noise. All seven
+correlation checks pass the correct-sign criterion; the coherence score
+reflects the magnitude of those correlations.
+
+Zero diagnostic flags indicate that no benchmarked dimension deviates
+from its cross-national norm by more than 1.5 standard deviations. This
+validates that the population does not exhibit the central tendency bias
+(uniform compression toward 0.5) or the impulsiveness bias (discount rate
+too high) documented as common LLM generation failure modes.
+
+\subsection{Experiment Variant Comparison}
+\label{subsec:variant_comparison}
+
+Table~\ref{tab:exp_comparison} compares the three experiment variants
+at $N_\text{arch} = 50$, $N_\text{pop} = 500$ (from the saturation study).
+
+\begin{table}[H]
+\caption{Experiment variant comparison at $N_\text{arch} = 50$,
+$N_\text{pop} = 500$ (saturation study). EXP01 (GRAVITY) is the
+production approach.}
+\label{tab:exp_comparison}
+\begin{tabularx}{\textwidth}{lXXXXX}
+\toprule
+\textbf{Variant}  & \textbf{Diversity} & \textbf{Coherence}
+                  & \textbf{Dist.\ align.} & \textbf{Norm align.}
+                  & \textbf{LLM cost} \\
+\midrule
+EXP00 (Baseline) & 0.843 & 0.441 & 0.901 & 0.712 & lower \\
+EXP01 (GRAVITY)  & 0.879 & 0.524 & 0.966 & 0.762 & \$0.60 \\
+EXP02 (HAG)      & 0.871 & 0.581 & 0.948 & 0.751 & \$0.62 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+EXP01 (GRAVITY) achieves the highest diversity and distribution alignment.
+EXP02 (HAG) achieves the highest coherence score because the explicit
+field constraints in the user message enforce psychometric ranges at
+generation time, but this comes at the cost of slightly lower holistic
+diversity: the constraint injection fragments the model's reasoning
+and can cause mechanical satisfaction of the numerical ranges without
+fully integrating them into a coherent character. EXP01's coherence
+(0.524) is achieved through the richer world-context grounding rather
+than explicit constraint enforcement, producing profiles that are both
+diverse and internally consistent.
+
+The production pipeline uses EXP01 because diversity and distribution
+alignment are more critical than marginal coherence improvement for
+a population-scale simulation: individual agent behavior is less
+important than the aggregate distributional properties of the population.
+Coherence is further enforced post-generation by the correlation
+propagation rules in Phase~2 (Section~\ref{subsec:expansion}).
+
+\subsection{Schedule Statistics}
+\label{subsec:schedule_results}
+
+The 90,000-agent population generates 386,324 daily trips in total,
+of which 193,162 (50\%) are outbound and 193,162 return-home trips.
+The mean outbound trip rate is 2.15 trips per agent per day, close to
+the HETUS 2010 European average of 2.10--2.30 out-of-home
+activities per working day~\cite{hetus2010}. Table~\ref{tab:schedule_stats}
+reports the breakdown by activity type.
+
+\begin{table}[H]
+\caption{Daily schedule statistics across all 90,000 agents.
+Mode share refers to outbound trips only.}
+\label{tab:schedule_stats}
+\begin{tabularx}{\textwidth}{lXXX}
+\toprule
+\textbf{Activity type} & \textbf{Total outbound trips} & \textbf{\% of outbound}
+                       & \textbf{Mean per agent} \\
+\midrule
+Work     & 81,210  & 42.0\% & 0.90 \\
+Shopping & 66,500  & 34.4\% & 0.74 \\
+Leisure  & 37,300  & 19.3\% & 0.41 \\
+Civic    &  8,152  &  4.2\% & 0.09 \\
+\midrule
+\textbf{Total outbound} & 193,162 & 100\% & 2.15 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+All trips are successfully routed on Andorra's OSM road network, with
+a fallback rate below 3\% (trips for which the H3 cell centroid has
+no reachable road node within 500\,m). Routed paths use valley highways
+and primary roads as the backbone, consistent with Andorra's topography
+where mountain-pass routes would increase travel time substantially.
+
+\subsection{Demographic Fidelity}
+\label{subsec:demographic_fidelity}
+
+Table~\ref{tab:demographics} reports the synthetic population's realised
+demographic marginals against the SAIG 2023 ground truth. The stratified
+expansion algorithm ensures exact proportional matching by design; the
+small deviations arise from integer rounding in the allocation step.
+
+\begin{table}[H]
+\caption{Synthetic population nationality distribution vs.\ SAIG 2023
+ground truth. Deviations are within rounding error ($\pm$0.1\%) by
+construction of the stratified expansion.}
+\label{tab:demographics}
+\begin{tabularx}{\textwidth}{lXX}
+\toprule
+\textbf{Nationality} & \textbf{Ground truth (SAIG 2023)} & \textbf{Synthetic population} \\
+\midrule
+Andorran   & 35.6\% & 35.6\% \\
+Spanish    & 33.5\% & 33.5\% \\
+Portuguese & 17.1\% & 17.1\% \\
+French     &  6.6\% &  6.6\% \\
+Other      &  7.2\% &  7.2\% \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Discussion}
+\label{sec:discussion}
+
+\subsection{Fitness for Purpose}
+\label{subsec:fitness}
+
+The synthetic population is designed to serve as the behavioral input layer
+of the Andorra Clone Scenario Engine, not as a standalone simulation.
+By this criterion, the results are satisfactory in three respects.
+First, the population is \textbf{demographically faithful}: distribution
+alignment of 0.970 means that nationality, income, and age marginals are
+reproduced to within rounding error from official statistics. Second, the
+population is \textbf{behaviorally diverse}: diversity of 0.904 means that
+agents differ substantially from one another in preference space, enabling
+the simulation to surface heterogeneous responses to the same scenario.
+Third, the population is \textbf{psychometrically grounded}: zero diagnostic
+flags confirm that no dimension systematically deviates from cross-national
+norms, and the coherence score of 0.503 indicates that the correct-sign
+correlations hold at population level.
+
+The modest coherence score (relative to the theoretical maximum of 1.0)
+reflects a genuine tension: the graph-constrained expansion adds
+within-group variation that partially dilutes the LLM-generated
+correlations. For most simulation purposes this is acceptable: the
+correlations are correct in direction, and the magnitude of 0.503
+corresponds to average pair-wise $|r| \approx 0.25$, which is consistent
+with empirical Big Five cross-construct correlations in the
+literature~\cite{mccrae2003personality}.
+
+\subsection{Cost and Scalability}
+\label{subsec:scalability}
+
+The pipeline generates 90,000 behaviorally grounded agents at a total LLM
+cost of approximately \$0.90 (75 archetypes at $\approx$\$0.012 each with
+prompt caching) and a total wall-clock time of under 25 minutes. The
+expansion and schedule generation are CPU-bound and take approximately
+16\,s and 396\,s respectively on a standard laptop. This cost profile is
+orders of magnitude lower than generating one LLM profile per agent
+(which would cost several hundred dollars for 90,000 calls and take
+days). The pipeline scales to any target population size by adjusting
+the expansion parameter; the LLM cost is fixed by the number of
+archetypes, not the population size.
+
+\subsection{Sociological Validity of the Knowledge Graph}
+\label{subsec:kg_validity}
+
+The knowledge graph encodes expert-grounded constraint ranges derived from
+primary sources (SAIG, CASS, IMF Article IV). The hand-authored approach
+is appropriate for Andorra's specific institutional context, where the
+combination of 20-year naturalisation threshold, near-zero unemployment,
+and housing crisis creates interactions not found in generic multi-country
+databases. The graph structure is designed for future automated construction
+via GraphRAG ingestion from policy documents, census PDFs, and news
+corpora~\cite{pan2023unifying}: the country-agnostic node/edge representation
+means that ingesting a document collection for a new country produces a
+new graph without modifying any pipeline code.
+
+\subsection{Activity Model Limitations}
+\label{subsec:activity_limitations}
+
+The activity sub-model uses HETUS 2010 European averages as base trip
+rates for Andorra---a pragmatic choice in the absence of Andorra-specific
+household travel survey data. The main risk is that Andorra's unique
+visitor/resident ratio ($\approx 100:1$) distorts residential activity
+patterns relative to other European countries, as residents may adapt
+their mobility to tourist flows (avoiding peak shopping hours, avoiding
+ski-access roads in winter). These effects are not captured by the current
+model. Similarly, the seasonal variability of trip patterns (ski season
+vs.\ summer vs.\ shoulder) is collapsed into a single ``representative
+weekday'' schedule.
+
+\subsection{Connecting to the Scenario Engine}
+\label{subsec:connection_to_scenarios}
+
+The synthetic population connects to the Andorra Clone Scenario
+Engine~\cite{bartumeu2026andorra} through the shared state vector. Under
+each of the four scenarios (Continuity, Overgrowth, Degrowth, Density),
+the macro-level state vector evolves over 2025--2049. The agent layer can
+be re-conditioned on the scenario state vector at each timestep---for
+example, housing affordability ($A_t$) from the scenario engine modulates
+the financial stress field of agents at that year, which in turn propagates
+to loss aversion and savings orientation via the correlation rules---enabling
+simulation of how behavioral responses evolve as scenarios unfold. Issue
+salience weights in the political sub-schema (housing, environment, economy,
+tourism) provide the primary channel for measuring social acceptance.
+
+\subsection{Limitations}
+\label{subsec:limitations}
+
+\begin{enumerate}
+\item \textbf{Knowledge graph calibration:} constraint ranges are derived
+      from official statistics and literature but not empirically estimated
+      from microdata. Andorra has no representative household panel survey
+      with psychometric variables, so validation against ground-truth
+      behavioral data is not currently possible.
+\item \textbf{Cross-dimensional independence:} the stratified expansion
+      assumes independence across nationality, income, and age. Actual
+      joint distributions (e.g., the over-representation of young
+      Portuguese residents in low-income brackets) are partially captured
+      by the occupation heuristics in seed generation but not fully by
+      the expansion algorithm. Microdata census records would allow
+      replacement of the independence assumption with a joint sample.
+\item \textbf{Static schedule:} the schedule model produces one
+      representative weekday per agent. Weekend patterns, seasonal
+      variation, and tourist-flow interactions are not represented.
+      An event-driven or multi-day extension would require additional
+      activity and temporal sub-model development.
+\item \textbf{Behavioral profile drift:} the preference profile is
+      assigned at population generation time and does not evolve
+      endogenously during simulation. Updating profiles as scenario
+      conditions change requires a feedback mechanism linking the
+      scenario engine state to the agent profile fields.
+\item \textbf{LLM model dependence:} the archetype generation uses
+      Claude Sonnet; different models may produce systematically
+      different coherence or diversity profiles. The evaluation
+      framework is model-agnostic and can be used to benchmark
+      alternative models.
+\end{enumerate}
+
+\section{Conclusions}
+\label{sec:conclusions}
+
+This paper presented a three-phase pipeline for generating behaviorally
+grounded synthetic populations for national-scale digital twin agent-based
+modeling, applied to Andorra's residential population of 90,000. The
+pipeline addresses three fundamental challenges in LLM-based agent generation:
+(i) demographic fidelity---the expanded population matches official nationality,
+income, and age distributions to within rounding error (distribution
+alignment~=~0.970); (ii) behavioral diversity---agents differ substantially
+in their 21-dimensional preference profiles (diversity~=~0.904) and exhibit
+no central tendency compression (zero diagnostic flags); and (iii)
+scalability---90,000 agents are generated at a total LLM cost of under
+\$1.00 through a combination of world-context-cached archetype generation
+(75 LLM calls) and graph-constrained expansion (no LLM calls).
+
+The knowledge graph layer is a methodological contribution in its own right:
+by encoding sociological constraints as AND-condition edges over demographic
+and situational nodes, the graph can represent interactions that flat
+demographic tables cannot capture---such as the intersection of recent
+Portuguese immigrant status and an active housing crisis activating a
+higher financial stress range than either condition alone would imply.
+The graph structure is country-agnostic and designed for future automated
+construction via document ingestion.
+
+The psychometric correlation enforcement in the expansion phase ensures
+that the seven literature-grounded cross-construct relationships are
+preserved at population level (coherence~=~0.503), enabling the behavioral
+profiles to be used in simulation without violating the theoretical
+structure of the underlying frameworks. The activity-based schedule
+generation produces 2.15 outbound trips per agent per day, consistent
+with HETUS 2010 European averages, with all trips routed on the actual
+OSM road network rather than Euclidean straight lines.
+
+Together, these properties make the synthetic population suitable as the
+behavioral input layer of the Andorra Clone Scenario Engine, enabling
+evaluation of social acceptance, perceived wellbeing, and distributional
+burden---signals that aggregate KPI trajectories cannot provide---under
+the four planning scenarios to 2049. Future work will focus on
+(i) multi-timestep profile conditioning on the evolving scenario state
+vector, (ii) automated knowledge graph construction from policy document
+corpora, and (iii) empirical validation against Andorran household survey
+data as it becomes available.
+
+\vspace{6pt}
+
+\section*{Author Contributions}
+Conceptualization, M.B.R. and K.L.; methodology, M.B.R. and L.A.P.;
+software, M.B.R. and A.M.C.; validation, M.B.R., P.A.A. and M.D.;
+formal analysis, M.B.R.; investigation, M.B.R.; resources, K.L. and M.D.;
+data curation, M.B.R.; writing---original draft preparation, M.B.R.;
+writing---review and editing, M.B.R., P.A.A., L.A.P., M.D., A.M.C. and K.L.;
+visualization, M.B.R.; supervision, K.L.; project administration, K.L.;
+funding acquisition, K.L. All authors have read and agreed to the published
+version of the manuscript.
+
+\section*{Funding}
+This research received no external funding.
+
+\section*{Institutional Review Board Statement}
+Not applicable.
+
+\section*{Informed Consent Statement}
+Not applicable.
+
+\section*{Data Availability Statement}
+The pipeline code and configuration files are available at
+\url{https://github.com/marcelbartumeu/ANDORRA-V1.9}. The 90,000-agent
+preference profiles and daily schedules are available upon request from
+the corresponding author due to file size constraints.
+
+\section*{Acknowledgments}
+The authors thank Andorra Research + Innovation (AR+I) for providing
+national statistics and domain expertise. This work is part of the MIT
+Media Lab City Science research program.
+
+\section*{Conflicts of Interest}
+The authors declare no conflicts of interest.
+
+\section*{Abbreviations}
+\noindent
+\begin{tabular}{@{}ll}
+ABM     & Agent-Based Model \\
+CASS    & Caixa Andorrana de Seguretat Social \\
+GRAVITY & Profile-Grounded Synthetic Preferences framework~\cite{gravity2025} \\
+H3      & Hierarchical Geospatial Indexing System (Uber) \\
+HAG     & Hierarchical Demographic tree-based Agent Generation \\
+HETUS   & Harmonised European Time Use Survey \\
+IPF     & Iterative Proportional Fitting \\
+KPI     & Key Performance Indicator \\
+LLM     & Large Language Model \\
+OCEAN   & Openness, Conscientiousness, Extraversion, Agreeableness, Neuroticism \\
+OSM     & OpenStreetMap \\
+OSRM    & Open Source Routing Machine \\
+SAIG    & Servei d'Assessorament i d'Informaci\'o Geoestad\'istica \\
+WVS     & World Values Survey \\
+\end{tabular}
+
+\begin{thebibliography}{99}
+
+\bibitem{bartumeu2026andorra}
+Bartumeu Ramentol, M.; Atchade-Adelomou, P.; Mora-Carrero, A.; Larson, K.;
+Alonso-Pastor, L.; Domenech, M. Andorra Digital Twin: A Data-Grounded Scenario
+Engine for National Development Planning. \textit{Sustainability} \textbf{2026}.
+
+\bibitem{park2023generative}
+Park, J.S.; O'Brien, J.; Cai, C.J.; Morris, M.R.; Liang, P.; Bernstein, M.S.
+Generative agents: Interactive simulacra of human behavior.
+In \textit{Proceedings of the 36th Annual ACM Symposium on User Interface
+Software and Technology}; ACM: New York, NY, USA, 2023; pp.~1--22.
+
+\bibitem{argyle2023outstuffing}
+Argyle, L.P.; Busby, E.C.; Fulda, N.; Gubler, J.R.; Rytting, C.; Wingate, D.
+Out of one, many: Using language models to simulate human samples.
+\textit{Polit.\ Anal.} \textbf{2023}, \textit{31}, 337--351.
+
+\bibitem{adornetto2025generative}
+Adornetto, A.; Bartumeu Ramentol, M.; Atchade-Adelomou, P.
+Generative agents for urban simulation: Toward behaviorally grounded digital
+twins. \textit{arXiv preprint} \textbf{2025}, arXiv:2501.XXXXX.
+
+\bibitem{garcia2025simulating}
+Garcia, D.; et al. Simulating social dynamics with large language model agents.
+\textit{Nat.\ Hum.\ Behav.} \textbf{2025}.
+
+\bibitem{carrero2024integrating}
+Mora-Carrero, A.; Bartumeu Ramentol, M.; Alonso-Pastor, L.
+Integrating knowledge graphs with large language models for structured agent
+generation. \textit{arXiv preprint} \textbf{2024}.
+
+\bibitem{li2025hugagent}
+Li, X.; et al. HUGAgent: Hierarchical Unified Generation of Agents at scale.
+\textit{arXiv preprint} \textbf{2025}.
+
+\bibitem{gravity2025}
+Dey, P.; Rosa, D.; Zheng, W.; Barcklow, D.; Zhao, J.; Ferrara, E.
+GRAVITY: A Framework for Personalized Text Generation via Profile-Grounded
+Synthetic Preferences.
+\textit{arXiv preprint} \textbf{2025}, arXiv:2510.11952.
+\url{https://arxiv.org/abs/2510.11952}
+
+\bibitem{muller2021synthetic}
+M{\"u}ller, K.; Axhausen, K.W. Synthetic population generation for transport
+modeling: A review. \textit{Transp.\ Res.\ Part B Methodol.} \textbf{2021},
+\textit{150}, 56--75.
+
+\bibitem{axhausen2016population}
+Axhausen, K.W.; et al.
+\textit{The Multi-Agent Transport Simulation MATSim}; Ubiquity Press: London,
+UK, 2016.
+
+\bibitem{bhat1999activity}
+Bhat, C.R.; Koppelman, F.S. Activity-based modeling of travel demand.
+In \textit{Handbook of Transportation Science}; Springer: Boston, MA, USA,
+1999; pp.~35--61.
+
+\bibitem{arentze2000albatross}
+Arentze, T.A.; Timmermans, H.J.P. ALBATROSS: A learning-based transportation
+oriented simulation system. \textit{EIRASS}: Eindhoven, The Netherlands, 2000.
+
+\bibitem{deming1940least}
+Deming, W.E.; Stephan, F.F. On a least squares adjustment of a sampled
+frequency table when the expected marginal totals are known.
+\textit{Ann.\ Math.\ Stat.} \textbf{1940}, \textit{11}, 427--444.
+
+\bibitem{costa1992neopersonality}
+Costa, P.T., Jr.; McCrae, R.R.
+\textit{Revised NEO Personality Inventory (NEO PI-R) and NEO Five-Factor
+Inventory (NEO-FFI) Professional Manual}; Psychological Assessment Resources:
+Odessa, FL, USA, 1992.
+
+\bibitem{schmitt2007geographic}
+Schmitt, D.P.; Allik, J.; McCrae, R.R.; Bem{\'a}kov{\'a}-Valk{\"u}nov{\'a}, V.
+The geographic distribution of Big Five personality traits: Patterns and
+profiles of human self-description across 56 nations.
+\textit{J.\ Cross-Cult.\ Psychol.} \textbf{2007}, \textit{38}, 173--212.
+
+\bibitem{schwartz1992universals}
+Schwartz, S.H. Universals in the content and structure of values:
+Theoretical advances and empirical tests in 20 countries.
+\textit{Adv.\ Exp.\ Soc.\ Psychol.} \textbf{1992}, \textit{25}, 1--65.
+
+\bibitem{kahneman1979prospect}
+Kahneman, D.; Tversky, A. Prospect theory: An analysis of decision under risk.
+\textit{Econometrica} \textbf{1979}, \textit{47}, 263--291.
+
+\bibitem{tversky1992advances}
+Tversky, A.; Kahneman, D. Advances in prospect theory: Cumulative
+representation of uncertainty.
+\textit{J.\ Risk Uncertain.} \textbf{1992}, \textit{5}, 297--323.
+
+\bibitem{laibson1997golden}
+Laibson, D. Golden eggs and hyperbolic discounting.
+\textit{Q.\ J.\ Econ.} \textbf{1997}, \textit{112}, 443--477.
+
+\bibitem{andersen2008eliciting}
+Andersen, S.; Harrison, G.W.; Lau, M.I.; Rutstr{\"o}m, E.E. Eliciting risk
+and time preferences.
+\textit{Econometrica} \textbf{2008}, \textit{76}, 583--618.
+
+\bibitem{inglehart2020worldvalues}
+Inglehart, R.; Haerpfer, C.; Moreno, A.; Welzel, C.; Kizilova, K.;
+Diez-Medrano, J.; Lagos, M.; Norris, P.; Ponarin, E.; Puranen, B. (Eds.)
+\textit{World Values Survey Wave 7 (2017--2022) Cross-National Data-Set};
+JD Systems Institute: Madrid, Spain, 2020.
+
+\bibitem{putnam2000bowling}
+Putnam, R.D.
+\textit{Bowling Alone: The Collapse and Revival of American Community};
+Simon and Schuster: New York, NY, USA, 2000.
+
+\bibitem{mccrae2003personality}
+McCrae, R.R.; Costa, P.T., Jr.
+\textit{Personality in Adulthood: A Five-Factor Theory Perspective}, 2nd ed.;
+Guilford Press: New York, NY, USA, 2003.
+
+\bibitem{rustichini2016personality}
+Rustichini, A.; DeYoung, C.G.; Anderson, J.E.; Burks, S.V.
+Toward the integration of personality theory and decision theory in explaining
+economic behavior. \textit{J.\ Behav.\ Exp.\ Econ.} \textbf{2016},
+\textit{64}, 122--137.
+
+\bibitem{shamosh2008intelligence}
+Shamosh, N.A.; Gray, J.R. Delay discounting and intelligence: A meta-analysis.
+\textit{Intelligence} \textbf{2008}, \textit{36}, 289--305.
+
+\bibitem{shah2012some}
+Shah, A.K.; Mullainathan, S.; Shafir, E. Some consequences of having too little.
+\textit{Science} \textbf{2012}, \textit{338}, 682--685.
+
+\bibitem{mullainathan2013scarcity}
+Mullainathan, S.; Shafir, E.
+\textit{Scarcity: Why Having Too Little Means So Much};
+Times Books: New York, NY, USA, 2013.
+
+\bibitem{mani2013poverty}
+Mani, A.; Mullainathan, S.; Shafir, E.; Zhao, J. Poverty impedes cognitive
+function. \textit{Science} \textbf{2013}, \textit{341}, 976--980.
+
+\bibitem{lusardi2014optimal}
+Lusardi, A.; Mitchell, O.S. The economic importance of financial literacy:
+Theory and evidence.
+\textit{J.\ Econ.\ Lit.} \textbf{2014}, \textit{52}, 5--44.
+
+\bibitem{jost2004political}
+Jost, J.T.; Glaser, J.; Kruglanski, A.W.; Sulloway, F.J. Political conservatism
+as motivated social cognition.
+\textit{Psychol.\ Bull.} \textbf{2004}, \textit{129}, 339--375.
+
+\bibitem{ben1985discrete}
+Ben-Akiva, M.; Lerman, S.R.
+\textit{Discrete Choice Analysis: Theory and Application to Travel Demand};
+MIT Press: Cambridge, MA, USA, 1985.
+
+\bibitem{pan2023unifying}
+Pan, S.; Luo, L.; Wang, Y.; Chen, C.; Wang, J.; Wu, X. Unifying large language
+models and knowledge graphs: A roadmap.
+\textit{IEEE Trans.\ Knowl.\ Data Eng.} \textbf{2023}.
+
+\bibitem{hetus2010}
+Eurostat. \textit{Harmonised European Time Use Survey (HETUS)};
+European Commission: Luxembourg, 2010.
+
+\bibitem{roberts2006patterns}
+Roberts, B.W.; Walton, K.E.; Viechtbauer, W. Patterns of mean-level change
+in personality traits across the life course: A meta-analysis of longitudinal
+studies. \textit{Psychol.\ Bull.} \textbf{2006}, \textit{132}, 1--25.
+
+\bibitem{parks2015personality}
+Parks-Leduc, L.; Feldman, G.; Bardi, A. Personality traits and personal values:
+A meta-analysis. \textit{Personal.\ Soc.\ Psychol.\ Rev.} \textbf{2015},
+\textit{19}, 3--29.
+
+\bibitem{berry1997immigration}
+Berry, J.W. Immigration, acculturation, and adaptation.
+\textit{Appl.\ Psychol.} \textbf{1997}, \textit{46}, 5--34.
+
+\end{thebibliography}
+
+\end{document}

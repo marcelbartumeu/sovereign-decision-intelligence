@@ -1,0 +1,30 @@
+{
+  "name": "andorra-dashboard",
+  "private": true,
+  "version": "1.4.0",
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "viz": "cd viz-abm-emotion-main && npx vite preview --port 3001",
+    "start": "concurrently \"npm run dev\" \"npm run viz\""
+  },
+  "dependencies": {
+    "@react-leaflet/core": "^2.1.0",
+    "chart.js": "^4.4.6",
+    "leaflet": "^1.9.4",
+    "react": "^18.3.1",
+    "react-chartjs-2": "^5.2.0",
+    "react-dom": "^18.3.1",
+    "react-leaflet": "^4.2.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "concurrently": "^9.2.1",
+    "vite": "^6.0.1"
+  }
+}

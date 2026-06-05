@@ -54,3 +54,6 @@ yarn-error.log*
 *.wmv
 *.flv
 
+# Allow face animation videos used in the agent analytics panel
+!Front end/dashboard/viz-abm-emotion-main/dist/faces/**/*.mp4
+
