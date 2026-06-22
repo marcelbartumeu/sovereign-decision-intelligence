@@ -102,8 +102,21 @@ export default function MapVisualization({
   // The agent map now shares the same Mapbox base, so it responds to the selector too.
   const styleSelectorVisible = MAPBOX_IDS.includes(visualLayer) || visualLayer === 'agents';
 
+  const activeLabel = (LAYERS.find((l) => l.id === visualLayer)?.label || visualLayer).toUpperCase();
+
   return (
     <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+
+      {/* Heads-up display: reticle, corner brackets, grid-lock + coordinate read-outs */}
+      <div className="map-hud" aria-hidden="true">
+        <span className="map-bracket tl" />
+        <span className="map-bracket tr" />
+        <span className="map-bracket bl" />
+        <span className="map-bracket br" />
+        <div className="reticle"><span className="reticle-ring" /></div>
+        <div className="map-tag tl">GRID LOCK · KEYSTONE · {activeLabel}</div>
+        <div className="coord tr">LAT 42.5078 · LON 1.5211</div>
+      </div>
 
       {/* Map style selector (Dark / Satellite / Light) — only for Mapbox-backed layers */}
       {styleSelectorVisible && (

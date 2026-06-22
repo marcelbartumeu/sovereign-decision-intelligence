@@ -1,3 +1,18 @@
+import { useEffect, useState } from 'react';
+
+// Live UTC mission clock — ticks once a second.
+function useMissionClock() {
+  const [now, setNow] = useState(() => new Date());
+  useEffect(() => {
+    const id = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(id);
+  }, []);
+  const hh = String(now.getUTCHours()).padStart(2, '0');
+  const mm = String(now.getUTCMinutes()).padStart(2, '0');
+  const ss = String(now.getUTCSeconds()).padStart(2, '0');
+  return `${hh}:${mm}:${ss}Z`;
+}
+
 export default function Header({
   selectedYear,
   setSelectedYear,
@@ -5,6 +20,7 @@ export default function Header({
   onArduinoToggle,
   arduinoStatus,
 }) {
+  const clock = useMissionClock();
   const yearRange = { min: 2010, max: 2049 };
   const timeLabels = [];
   for (let y = yearRange.min; y <= yearRange.max; y += 2) timeLabels.push(y);
@@ -16,17 +32,19 @@ export default function Header({
       <div className="container">
         <div className="header-content">
           <div>
-            <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.5rem', marginBottom: '0.2rem' }}>
+            <div className="station-eyebrow">SPECTRE // SOVEREIGN INTELLIGENCE</div>
+            <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.6rem', marginBottom: '0.25rem' }}>
               <h1>Andorra</h1>
               <span style={{
-                fontSize: 10, fontWeight: 500,
-                color: 'rgba(255,255,255,0.28)',
-                background: 'rgba(255,255,255,0.07)',
-                border: '0.5px solid rgba(255,255,255,0.12)',
-                borderRadius: 5, padding: '1px 6px',
-                letterSpacing: '0.02em',
-                fontFamily: 'var(--font)',
+                fontFamily: 'var(--mono)',
+                fontSize: 10, fontWeight: 600,
+                color: 'var(--text2)',
+                background: 'rgba(120,200,220,0.07)',
+                border: '1px solid var(--glass-bdr)',
+                borderRadius: 3, padding: '1px 6px',
+                letterSpacing: '0.08em',
               }}>V2.1</span>
+              <span className="classified-tag">CLASSIFIED</span>
             </div>
             <p>Advanced Scenario Modeling &amp; Impact Assessment</p>
             <button
@@ -41,16 +59,32 @@ export default function Header({
                 marginLeft: '0.5rem',
                 fontSize: '11px',
                 letterSpacing: 0,
-                fontFamily: 'var(--font)',
+                fontFamily: 'var(--mono)',
                 color: arduinoStatus === 'Connected' ? 'var(--sys-green)' : 'var(--lbl)',
               }}>
                 {arduinoStatus}
               </span>
             )}
           </div>
+
+          {/* Mission-control telemetry cluster */}
+          <div className="station-status">
+            <div className="station-readout">
+              <div className="k">Mission Time</div>
+              <div className="v">{clock}</div>
+            </div>
+            <div className="station-readout">
+              <div className="k">Station</div>
+              <div className="v gold">42.5078°N&nbsp;&nbsp;1.5211°E</div>
+            </div>
+            <div className="status-led">
+              <span className="dot" /> Tracking
+            </div>
+          </div>
+
           <div className="time-slider">
             <div className="scenario-info">
-              <p className="label">Year</p>
+              <p className="label">Temporal Index</p>
               <p className="name">{clampedYear}</p>
               <p className="description">{yearRange.min} — {yearRange.max}</p>
             </div>

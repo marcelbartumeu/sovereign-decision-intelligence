@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import MapVisualization from './components/MapVisualization';
+import MapErrorBoundary from './components/MapErrorBoundary';
 
 const SYNC_CHANNEL = 'andorra-dashboard-sync';
 
@@ -80,15 +81,17 @@ export default function ProjectorView() {
 
       {/* ── Full-screen map ──────────────────────────────────────────────────── */}
       <div style={{ flex: 1, overflow: 'hidden', minHeight: 0 }}>
-        <MapVisualization
-          overlayEnabled={overlayEnabled}
-          selectedYear={selectedYear}
-          activeLayer={activeMapLayer}
-          onLayerChange={setActiveMapLayer}
-          simulationOn={false}
-          hoveredAgent={-1}
-          selectedAgent={-1}
-        />
+        <MapErrorBoundary>
+          <MapVisualization
+            overlayEnabled={overlayEnabled}
+            selectedYear={selectedYear}
+            activeLayer={activeMapLayer}
+            onLayerChange={setActiveMapLayer}
+            simulationOn={false}
+            hoveredAgent={-1}
+            selectedAgent={-1}
+          />
+        </MapErrorBoundary>
       </div>
     </div>
   );

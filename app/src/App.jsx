@@ -8,6 +8,8 @@ import NetworkView from './components/NetworkView';
 import MapVisualization from './components/MapVisualization';
 import EarthView from './components/EarthView';
 import SpectreIntro from './components/SpectreIntro';
+import HudFrame from './components/HudFrame';
+import MapErrorBoundary from './components/MapErrorBoundary';
 import { useSerial } from './hooks/useSerial';
 
 // Scenario name → numeric overlay index (matches OVERLAY_SCENARIOS in chartUtils.js)
@@ -168,6 +170,7 @@ export default function App() {
     return (
       <div className="earth-stage" style={{ position: 'fixed', inset: 0 }}>
         <EarthView />
+        <HudFrame />
       </div>
     );
   }
@@ -178,6 +181,7 @@ export default function App() {
   return (
     <div className={`app-shell ${entering ? 'is-entering' : ''}`} style={{ display: 'flex', flexDirection: 'column', height: '100vh', overflow: 'hidden' }}>
       {entering && <div className="enter-veil" />}
+      <HudFrame />
       <Header
         selectedYear={selectedYear}
         setSelectedYear={setSelectedYear}
@@ -212,14 +216,16 @@ export default function App() {
 
         {activeTab === 'map' && (
           <div style={{ position: 'absolute', inset: 0 }}>
-            <MapVisualization
-              overlayEnabled={overlayEnabled}
-              selectedYear={selectedYear}
-              activeLayer={activeMapLayer}
-              onLayerChange={setActiveMapLayer}
-              hoveredAgent={hoveredAgent}
-              selectedAgent={selectedAgent}
-            />
+            <MapErrorBoundary>
+              <MapVisualization
+                overlayEnabled={overlayEnabled}
+                selectedYear={selectedYear}
+                activeLayer={activeMapLayer}
+                onLayerChange={setActiveMapLayer}
+                hoveredAgent={hoveredAgent}
+                selectedAgent={selectedAgent}
+              />
+            </MapErrorBoundary>
           </div>
         )}
 

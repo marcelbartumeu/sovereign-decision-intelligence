@@ -2,6 +2,18 @@
  * Chart.js helpers: getChartType, getChartData, getChartOptions, generateTrendData, buildOverlayDataForKpi
  */
 
+// ── Intelligence-console chart palette (Chart.js can't read CSS vars) ──────────
+const HUD = {
+  grid:    'rgba(120,190,205,0.08)',
+  gridStrong: 'rgba(120,190,205,0.16)',
+  tick:    'rgba(155,182,200,0.65)',
+  label:   'rgba(224,236,244,0.85)',
+  gold:    '#d9b15a',
+  cyan:    '#3fe0e6',
+  panel:   'rgba(6,11,17,0.95)',
+  mono:    "'IBM Plex Mono', 'SF Mono', ui-monospace, monospace",
+};
+
 const SPAIN_TARGETS = {
   Salary: [1878.4, 1897.98, 1886.3, 1887.8, 1883.82, 1904.21, 1898.17, 1900.58, 1916.94, 1954.19, 1903.13, 2020.73, 2112.77, 2212.99, 2296.56],
   GDPpc: [30532, 31678, 28323, 29068, 22780, 23440, 24190, 25160, 25950, 26620, 23850, 26090, 28790, 30980, 32630],
@@ -62,7 +74,7 @@ export function getChartData(data, kpi, activeScenario) {
     case 'radial': {
       const currentValue = values[values.length - 1];
       const percentage = Math.min(100, (currentValue / (kpi.maxValue || 100)) * 100);
-      return { labels: [kpi.title], datasets: [{ data: [percentage, 100 - percentage], backgroundColor: [kpi.color, '#333'], borderWidth: 0 }] };
+      return { labels: [kpi.title], datasets: [{ data: [percentage, 100 - percentage], backgroundColor: [kpi.color, 'rgba(120,190,205,0.10)'], borderWidth: 0 }] };
     }
     case 'pentagon': {
       const last5Years = years.slice(-5);
@@ -124,8 +136,13 @@ export function getChartOptions(chartType, kpi, dataForScale) {
     maintainAspectRatio: false,
     animation: { duration: 600 },
     plugins: {
-      legend: { display: chartType === 'pie' || chartType === 'line', position: 'bottom', labels: { color: '#888', font: { size: 10 }, usePointStyle: true, padding: 15 } },
-      tooltip: { backgroundColor: '#1a1a1a', titleColor: '#fff', bodyColor: '#fff', borderColor: '#333', borderWidth: 1, cornerRadius: 8 },
+      legend: { display: chartType === 'pie' || chartType === 'line', position: 'bottom', labels: { color: HUD.tick, font: { family: HUD.mono, size: 10 }, usePointStyle: true, padding: 15 } },
+      tooltip: {
+        backgroundColor: HUD.panel, titleColor: HUD.gold, bodyColor: HUD.label,
+        borderColor: 'rgba(63,224,230,0.25)', borderWidth: 1, cornerRadius: 4,
+        titleFont: { family: HUD.mono, size: 11 }, bodyFont: { family: HUD.mono, size: 11 },
+        padding: 9,
+      },
       datalabels: false,
     },
     interaction: { mode: (chartType === 'pie' || chartType === 'radial') ? 'nearest' : 'index', intersect: false, axis: (chartType === 'pie' || chartType === 'radial' || chartType === 'pentagon') ? undefined : 'x' },
@@ -138,10 +155,10 @@ export function getChartOptions(chartType, kpi, dataForScale) {
         r: {
           min: 40,
           max: 100,
-          angleLines: { color: '#444' },
-          grid: { color: '#444' },
-          pointLabels: { color: '#ccc', font: { size: 16, weight: '600' }, padding: 25 },
-          ticks: { color: '#888', stepSize: 10, callback: (v) => v + '%' },
+          angleLines: { color: HUD.gridStrong },
+          grid: { color: HUD.grid },
+          pointLabels: { color: HUD.label, font: { family: HUD.mono, size: 14, weight: '600' }, padding: 25 },
+          ticks: { color: HUD.tick, font: { family: HUD.mono }, backdropColor: 'transparent', stepSize: 10, callback: (v) => v + '%' },
         },
       },
       layout: { padding: { top: 30, bottom: 20, left: 30, right: 30 } },
@@ -170,8 +187,8 @@ export function getChartOptions(chartType, kpi, dataForScale) {
     }
   }
   const scales = {
-    x: { display: true, grid: { color: '#333' }, ticks: { color: '#888', font: { size: 10 }, maxRotation: 45 } },
-    y: { display: true, grid: { color: '#333' }, ticks: { color: '#888', font: { size: 10 } }, ...suggested },
+    x: { display: true, grid: { color: HUD.grid }, border: { color: HUD.gridStrong }, ticks: { color: HUD.tick, font: { family: HUD.mono, size: 10 }, maxRotation: 45 } },
+    y: { display: true, grid: { color: HUD.grid }, border: { color: HUD.gridStrong }, ticks: { color: HUD.tick, font: { family: HUD.mono, size: 10 } }, ...suggested },
   };
   const plugins = { ...base.plugins };
   if (isEmploymentRate) {

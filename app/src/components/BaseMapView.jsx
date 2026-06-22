@@ -15,8 +15,10 @@ export default function BaseMapView({ mapStyle = DEFAULT_MAP_STYLE }) {
       <div ref={containerRef} style={{ position: 'absolute', inset: 0, background: '#000' }} />
       <div style={{
         position: 'absolute', bottom: 8, left: 10, zIndex: 600,
-        background: 'rgba(0,0,0,0.6)', borderRadius: 4, padding: '3px 8px',
-        fontSize: '0.68rem', color: 'rgba(200,200,200,0.8)', letterSpacing: '.08em', pointerEvents: 'none',
+        background: 'rgba(4,6,10,0.6)', border: '1px solid rgba(63,224,230,0.18)',
+        borderRadius: 3, padding: '3px 9px',
+        fontFamily: 'var(--mono)', fontSize: '0.64rem', textTransform: 'uppercase',
+        color: 'var(--cyan)', letterSpacing: '.16em', pointerEvents: 'none',
       }}>
         BASE · ANDORRA
       </div>
