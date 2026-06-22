@@ -54,7 +54,7 @@ def choose_mode(
 
     Returns
     ───────
-    One of: "car", "bus", "walk"
+    One of: "car", "bus", "walk", "taxi"
     """
     transit_will = float(profile.get("mobility", {}).get("transit_willingness", 0.5))
     price_sens   = float(profile.get("economic",  {}).get("price_sensitivity",   0.5))
@@ -68,10 +68,9 @@ def choose_mode(
     }
 
     # If nothing is available (no car, no bus coverage, too far to walk),
-    # fall back to car regardless — agent finds a way (taxi, carpool).
-    # This is a known limitation; flagged for future treatment with rideshare mode.
+    # use an explicit taxi/carpool fallback instead of overloading private car.
     if not any(available.values()):
-        return "car"
+        return "taxi"
 
     # ── Utility computation ────────────────────────────────────────────────────
     utils: dict[str, float] = {}
@@ -96,7 +95,7 @@ def choose_mode(
         utils["walk"] -= 0.5 * dist_km
 
     if not utils:
-        return "car"
+        return "taxi"
 
     probs = _softmax(utils)
     modes = list(probs.keys())

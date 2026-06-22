@@ -167,7 +167,7 @@ export function useMap(containerRef) {
         id: 'bus-live-bg', type: 'circle', source: 'bus-live-source',
         layout: { visibility: 'visible' },
         paint: {
-          'circle-radius': ['interpolate', ['linear'], ['zoom'], 9, 5, 13, 8, 16, 12],
+          'circle-radius': ['interpolate', ['linear'], ['zoom'], 9, 10, 13, 16, 16, 24],
           'circle-color':  ['get', 'color'],
           'circle-opacity': 0.92,
           'circle-pitch-alignment': 'map',
@@ -179,7 +179,7 @@ export function useMap(containerRef) {
         layout: {
           visibility: 'visible',
           'text-field': ['slice', ['get', 'ref'], 0, 4],
-          'text-size': ['interpolate', ['linear'], ['zoom'], 9, 7, 13, 9, 16, 11],
+          'text-size': ['interpolate', ['linear'], ['zoom'], 9, 9, 13, 13, 16, 16],
           'text-font': ['DIN Offc Pro Bold', 'Arial Unicode MS Bold'],
           'text-allow-overlap': true,
           'text-ignore-placement': true,

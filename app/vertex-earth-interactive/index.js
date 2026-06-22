@@ -16,13 +16,31 @@ orbitCtrl.enableDamping = true;
 const raycaster = new THREE.Raycaster();
 const pointerPos = new THREE.Vector2();
 const globeUV = new THREE.Vector2();
+let pointerActive = false; // suppress the cursor glow until the user actually moves
+let activeLocation = null; // currently-searched place (drives the on-globe label)
+const _wp = new THREE.Vector3();
+const YAXIS = new THREE.Vector3(0, 1, 0);
+const warp = document.getElementById('warp');
+let fly = null; // active fly-to-location animation state
+const placeLabel       = document.getElementById('place-label');
+const placeLabelName   = document.getElementById('place-label-name');
+const placeLabelCoords = document.getElementById('place-label-coords');
+
+function fmtCoords(lat, lon) {
+  const ns = lat >= 0 ? 'N' : 'S';
+  const ew = lon >= 0 ? 'E' : 'W';
+  return `${Math.abs(lat).toFixed(2)}° ${ns}  ·  ${Math.abs(lon).toFixed(2)}° ${ew}`;
+}
 
 const textureLoader = new THREE.TextureLoader();
+// Reveal the globe only once the night-lights + land-mask textures are ready,
+// so it never flashes as a solid sphere on first load.
+let texReady = 0;
+const onTex = () => { if (++texReady >= 2 && typeof points !== 'undefined') points.visible = true; };
 const starSprite = textureLoader.load("./src/circle.png");
-const otherMap = textureLoader.load("./src/04_rainbow1k.jpg");
-const colorMap = textureLoader.load("./src/00_earthmap1k.jpg");
-const elevMap = textureLoader.load("./src/01_earthbump1k.jpg");
-const alphaMap = textureLoader.load("./src/02_earthspec1k.jpg");
+const elevMap   = textureLoader.load("./src/01_earthbump1k.jpg");
+const alphaMap  = textureLoader.load("./src/02_earthspec1k.jpg", onTex);
+const lightsMap = textureLoader.load("./src/03_earthlights1k.jpg", onTex);
 
 // Three.js IcosahedronGeometry UV: azimuth = atan2(-z,-x), lon=0° sits at x=-1.
 // Correct lat/lon → 3D: x=-cos(lat)cos(lon), y=sin(lat), z=-cos(lat)sin(lon)
@@ -41,14 +59,15 @@ const ANDORRA_UV  = new THREE.Vector2(0.504, 0.264); // V = 0.5 - lat/180
 const ANDORRA_3D  = latLonTo3D(42.5, 1.6);
 
 const globeGroup = new THREE.Group();
+globeGroup.position.y = -0.32; // sit the globe a little lower on screen
 scene.add(globeGroup);
 
 const geo = new THREE.IcosahedronGeometry(1, 16);
-const mat = new THREE.MeshBasicMaterial({ 
-  color: 0x0099ff,
+const mat = new THREE.MeshBasicMaterial({
+  color: 0x2a4a63,
   wireframe: true,
   transparent: true,
-  opacity: 0.1
+  opacity: 0.07
  });
 const globe = new THREE.Mesh(geo, mat);
 globeGroup.add(globe);
@@ -77,7 +96,7 @@ const vertexShader = `
     float zDisp = 0.0;
     float thresh = 0.04;
     if (dist < thresh) {
-      zDisp = (thresh - dist) * 10.0;
+      zDisp = (thresh - dist) * 4.0;
     }
     vDist = dist;
     mvPosition.z += zDisp;
@@ -87,9 +106,8 @@ const vertexShader = `
   }
 `;
 const fragmentShader = `
-  uniform sampler2D colorTexture;
+  uniform sampler2D lightsTexture;
   uniform sampler2D alphaTexture;
-  uniform sampler2D otherTexture;
 
   varying vec2 vUv;
   varying float vVisible;
@@ -97,20 +115,31 @@ const fragmentShader = `
 
   void main() {
     if (floor(vVisible + 0.1) == 0.0) discard;
-    float alpha = 1.0 - texture2D(alphaTexture, vUv).r;
-    vec3 color = texture2D(colorTexture, vUv).rgb;
-    vec3 other = texture2D(otherTexture, vUv).rgb;
-    float thresh = 0.04;
+
+    // Land mask keeps the dotted-continents shape (oceans transparent)
+    float land   = 1.0 - texture2D(alphaTexture, vUv).r;
+    // Night-time city lights
+    float lights = texture2D(lightsTexture, vUv).r;
+    float city   = smoothstep(0.07, 0.55, lights);
+
+    vec3 base = vec3(0.12, 0.16, 0.23);   // faint cool landmass
+    vec3 glow = vec3(1.00, 0.80, 0.42);   // warm city light
+    vec3 color = base + glow * city * 1.4;
+    float alpha = clamp(land + city * 0.45, 0.0, 1.0); // cities pop a little brighter
+
+    // Cool cyan interaction glow under the cursor
+    float thresh = 0.045;
     if (vDist < thresh) {
-      color = mix(color, other, (thresh - vDist) * 50.0);
+      float h = (thresh - vDist) / thresh;
+      color = mix(color, vec3(0.55, 0.86, 1.0), h * 0.9);
+      alpha = max(alpha, h * 0.85);
     }
     gl_FragColor = vec4(color, alpha);
   }
 `;
 const uniforms = {
-  size: { type: "f", value: 4.0 },
-  colorTexture: { type: "t", value: colorMap },
-  otherTexture: { type: "t", value: otherMap },
+  size: { type: "f", value: 3.7 },
+  lightsTexture: { type: "t", value: lightsMap },
   elevTexture: { type: "t", value: elevMap },
   alphaTexture: { type: "t", value: alphaMap },
   mouseUV: { type: "v2", value: new THREE.Vector2(0.0, 0.0) },
@@ -123,7 +152,9 @@ const pointsMat = new THREE.ShaderMaterial({
 });
 
 const points = new THREE.Points(pointsGeo, pointsMat);
+points.visible = false; // shown once textures load (see onTex)
 globeGroup.add(points);
+if (texReady >= 2) points.visible = true; // textures already cached
 
 // Andorra ring marker — pulsing ring + dot, child of globeGroup so it rotates with the globe
 const andorraRingGeo = new THREE.RingGeometry(0.022, 0.034, 32);
@@ -151,6 +182,7 @@ const stars = getStarfield({ numStars:4500, sprite: starSprite });
 scene.add(stars);
 
 function handleRaycast() {
+  if (!pointerActive) { uniforms.mouseUV.value.set(-2, -2); return; }
   raycaster.setFromCamera(pointerPos, camera);
   const intersects = raycaster.intersectObjects([globe], false);
   if (intersects.length > 0) {
@@ -159,9 +191,44 @@ function handleRaycast() {
   uniforms.mouseUV.value = globeUV;
 }
 
+// ── Intro tween: globe settles in (scale + halo + spin easing to steady) ──────
+const INTRO_MS = 2200;
+const introStart = performance.now();
+const easeOutCubic   = (t) => 1 - Math.pow(1 - t, 3);
+const easeInOutCubic = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+
+// ── Fly-to-location: rotate the target to face us, dolly the camera in, fade out ──
+function updateFly() {
+  const k     = Math.min(1, (performance.now() - fly.t0) / fly.dur);
+  const eRot  = easeInOutCubic(Math.min(1, k / 0.5));   // face the target during the first half
+  const eZoom = k * k;                                  // accelerate inward
+  const eFade = Math.max(0, (k - 0.35) / 0.65);         // darken after 35%
+
+  globeGroup.rotation.y = fly.rot0 + (fly.rot1 - fly.rot0) * eRot;
+
+  const aw  = fly.localPt.clone().applyAxisAngle(YAXIS, globeGroup.rotation.y).add(globeGroup.position);
+  const dir = aw.clone().normalize();
+  camera.position.copy(dir.multiplyScalar(aw.length() + (3.4 - 2.3 * eZoom)));
+  camera.lookAt(aw);
+
+  if (warp) warp.style.opacity = Math.min(1, eFade).toFixed(3);
+  if (placeLabel) placeLabel.classList.remove('show');
+
+  if (k >= 1 && !fly.done) {
+    fly.done = true;
+    window.parent.postMessage({ action: 'enterAndorra' }, '*');
+  }
+}
+
 function animate() {
   requestAnimationFrame(animate);
-  globeGroup.rotation.y += 0.002;
+
+  if (fly) { updateFly(); renderer.render(scene, camera); return; }
+
+  const e = easeOutCubic(Math.min(1, (performance.now() - introStart) / INTRO_MS));
+  globeGroup.scale.setScalar(0.84 + 0.16 * e);
+  globeGroup.rotation.y += 0.0016 + 0.026 * (1 - e); // fast at first, eases to steady drift
+
   handleRaycast();
   orbitCtrl.update();
 
@@ -171,6 +238,25 @@ function animate() {
   andorraRing.scale.setScalar(pulse);
   andorraRingMat.opacity = 0.55 + 0.4 * Math.sin(t * 3.5);
 
+  // On-globe place label — follows the marker, hidden when it rotates to the far side
+  if (placeLabel) {
+    if (activeLocation && andorraRing.visible) {
+      andorraRing.getWorldPosition(_wp);
+      const toCam  = camera.position.clone().sub(_wp).normalize();
+      const facing = _wp.clone().normalize().dot(toCam) > 0.12;
+      if (facing) {
+        const p = _wp.clone().project(camera);
+        placeLabel.style.left = ((p.x * 0.5 + 0.5) * window.innerWidth) + 'px';
+        placeLabel.style.top  = ((-p.y * 0.5 + 0.5) * window.innerHeight) + 'px';
+        placeLabel.classList.add('show');
+      } else {
+        placeLabel.classList.remove('show');
+      }
+    } else {
+      placeLabel.classList.remove('show');
+    }
+  }
+
   renderer.render(scene, camera);
 };
 animate();
@@ -178,6 +264,7 @@ animate();
 let hoveringAndorra = false;
 
 window.addEventListener('mousemove', (evt) => {
+  pointerActive = true;
   pointerPos.set(
     (evt.clientX / window.innerWidth) * 2 - 1,
     -(evt.clientY / window.innerHeight) * 2 + 1
@@ -196,9 +283,7 @@ window.addEventListener('mousemove', (evt) => {
 });
 
 window.addEventListener('click', () => {
-  if (hoveringAndorra) {
-    window.parent.postMessage({ action: 'enterAndorra' }, '*');
-  }
+  if (hoveringAndorra) enterSimulation();
 });
 
 // ── Location database ────────────────────────────────────────────────────────
@@ -269,14 +354,20 @@ function placeMarker(lat, lon) {
 // ── Search bar ───────────────────────────────────────────────────────────────
 
 function enterSimulation() {
-  window.parent.postMessage({ action: 'enterAndorra' }, '*');
+  if (fly) return; // already flying in
+  const loc = activeLocation || { lat: 42.5, lon: 1.6 }; // default to Andorra
+  const p = latLonTo3D(loc.lat, loc.lon);                // unit direction, local space
+  const rot0 = globeGroup.rotation.y;
+  let rot1 = Math.atan2(-p.x, p.z);                      // brings the target to face the camera
+  while (rot1 - rot0 >  Math.PI) rot1 -= Math.PI * 2;    // shortest path
+  while (rot1 - rot0 < -Math.PI) rot1 += Math.PI * 2;
+  fly = { t0: performance.now(), dur: 1600, rot0, rot1, localPt: p.multiplyScalar(1.04), done: false };
+  orbitCtrl.enabled = false;
 }
 
 const searchInput      = document.getElementById('search-input');
 const searchSuggestion = document.getElementById('search-suggestion');
 const suggestionName   = document.getElementById('suggestion-name');
-
-let activeLocation = null;
 
 searchInput.addEventListener('input', () => {
   const val = searchInput.value.trim().toLowerCase();
@@ -292,6 +383,8 @@ searchInput.addEventListener('input', () => {
     placeMarker(match.lat, match.lon);
     andorraRing.visible = true;
     andorraDot.visible  = true;
+    if (placeLabelName)   placeLabelName.textContent   = match.display;        // on-globe label
+    if (placeLabelCoords) placeLabelCoords.textContent = fmtCoords(match.lat, match.lon);
   } else {
     searchSuggestion.style.display = 'none';
     andorraRing.visible = false;

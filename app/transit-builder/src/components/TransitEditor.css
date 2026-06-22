@@ -14,19 +14,19 @@
   to   { opacity: 1; transform: translateX(0); }
 }
 
-/* Pencil that protrudes from the white panel on the LEFT side of it */
+/* Pencil that protrudes from the dark panel on the LEFT side of it */
 .transit-pencil {
   position: relative;
   width: 44px;
   height: 44px;
   margin-top: 16px;
-  margin-right: -14px; /* overlap into the white panel */
+  margin-right: -14px; /* overlap into the panel */
   border: none;
   border-radius: 50%;
-  background: #ffffff;
+  background: rgba(40,40,45,0.95);
   box-shadow:
-    0 6px 22px rgba(0,0,0,0.35),
-    0 0 0 1px rgba(0,0,0,0.04);
+    0 6px 22px rgba(0,0,0,0.6),
+    0 0 0 1px rgba(255,255,255,0.08);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -55,20 +55,20 @@
   line-height: 1;
 }
 
-/* The white tab/panel */
+/* The dark tab/panel */
 .transit-panel {
-  background: rgba(255,255,255,0.97);
+  background: rgba(18,18,20,0.96);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-radius: 18px 0 0 18px;
   box-shadow:
-    -6px 6px 30px rgba(0,0,0,0.35),
-    inset 1px 0 0 rgba(0,0,0,0.04);
+    -6px 6px 30px rgba(0,0,0,0.7),
+    inset 1px 0 0 rgba(255,255,255,0.06);
   padding: 18px 18px 18px 26px;
   width: 300px;
   max-height: calc(100vh - 120px);
   overflow-y: auto;
-  color: #1c1c1e;
+  color: rgba(255,255,255,0.9);
 }
 
 .transit-collapse {
@@ -79,8 +79,8 @@
   height: 22px;
   border-radius: 50%;
   border: none;
-  background: rgba(0,0,0,0.06);
-  color: #1c1c1e;
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.7);
   font-size: 14px;
   line-height: 1;
   cursor: pointer;
@@ -90,14 +90,14 @@
   z-index: 3;
   transition: background 0.2s;
 }
-.transit-collapse:hover { background: rgba(0,0,0,0.12); }
+.transit-collapse:hover { background: rgba(255,255,255,0.15); }
 
 .transit-editor.collapsed .transit-panel { display: none; }
 .transit-editor.collapsed .transit-collapse {
   left: auto;
   right: 8px;
-  background: #fff;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+  background: rgba(30,30,33,0.95);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.5);
 }
 
 .transit-header {
@@ -106,18 +106,16 @@
 }
 
 .transit-title {
-  font-size: 15px;
-  font-weight: 700;
-  letter-spacing: -0.3px;
-  color: #1c1c1e;
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.85);
 }
 
 .transit-subtitle {
-  font-size: 11px;
-  font-weight: 500;
-  color: rgba(0,0,0,0.5);
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(255,255,255,0.4);
   margin-top: 3px;
-  letter-spacing: 0.1px;
 }
 
 .transit-lines {
@@ -129,14 +127,14 @@
 
 .transit-empty {
   font-size: 12px;
-  color: rgba(0,0,0,0.4);
+  color: rgba(255,255,255,0.3);
   text-align: center;
   padding: 16px 0;
   font-style: italic;
 }
 
 .transit-line-card {
-  background: rgba(0,0,0,0.04);
+  background: rgba(255,255,255,0.05);
   border-radius: 12px;
   padding: 10px 12px;
   border: 1.5px solid transparent;
@@ -145,11 +143,11 @@
 }
 
 .transit-line-card:hover {
-  background: rgba(0,0,0,0.06);
+  background: rgba(255,255,255,0.08);
 }
 
 .transit-line-card.active {
-  background: rgba(10,132,255,0.08);
+  background: rgba(10,132,255,0.12);
   border-color: rgba(10,132,255,0.45);
 }
 
@@ -171,14 +169,14 @@
   background: transparent;
   border: none;
   font-size: 13px;
-  font-weight: 600;
-  color: #1c1c1e;
+  font-weight: 400;
+  color: rgba(255,255,255,0.85);
   padding: 2px 4px;
   border-radius: 4px;
   outline: none;
   min-width: 0;
 }
-.transit-line-name:focus { background: rgba(255,255,255,0.9); }
+.transit-line-name:focus { background: rgba(255,255,255,0.07); }
 
 .transit-line-delete {
   width: 22px;
@@ -186,7 +184,7 @@
   border: none;
   border-radius: 50%;
   background: transparent;
-  color: rgba(0,0,0,0.35);
+  color: rgba(255,255,255,0.3);
   font-size: 18px;
   line-height: 1;
   cursor: pointer;
@@ -194,7 +192,7 @@
   align-items: center;
   justify-content: center;
 }
-.transit-line-delete:hover { background: rgba(255,69,58,0.12); color: #FF453A; }
+.transit-line-delete:hover { background: rgba(255,69,58,0.18); color: #FF453A; }
 
 .transit-color-row {
   display: flex;
@@ -207,14 +205,14 @@
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  border: 2px solid rgba(255,255,255,0.7);
+  border: 2px solid rgba(255,255,255,0.2);
   cursor: pointer;
   padding: 0;
   transition: transform 0.15s, box-shadow 0.15s;
 }
 .transit-color-swatch:hover { transform: scale(1.15); }
 .transit-color-swatch.selected {
-  box-shadow: 0 0 0 2px rgba(0,0,0,0.6);
+  box-shadow: 0 0 0 2px rgba(255,255,255,0.7);
   transform: scale(1.1);
 }
 
@@ -231,9 +229,9 @@
   font-weight: 500;
   padding: 5px 8px;
   border-radius: 7px;
-  border: 1px solid rgba(0,0,0,0.1);
-  background: #fff;
-  color: #1c1c1e;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.07);
+  color: rgba(255,255,255,0.85);
   cursor: pointer;
   outline: none;
   font-family: inherit;
@@ -243,8 +241,8 @@
   display: flex;
   align-items: center;
   gap: 4px;
-  background: #fff;
-  border: 1px solid rgba(0,0,0,0.1);
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.1);
   border-radius: 7px;
   padding: 4px 8px;
 }
@@ -254,7 +252,7 @@
   outline: none;
   font-size: 11px;
   font-weight: 600;
-  color: #1c1c1e;
+  color: rgba(255,255,255,0.88);
   background: transparent;
   text-align: right;
   font-family: inherit;
@@ -267,14 +265,14 @@
 }
 .transit-freq span {
   font-size: 10px;
-  color: rgba(0,0,0,0.45);
+  color: rgba(255,255,255,0.35);
   font-weight: 500;
 }
 
 .transit-stops-info {
   margin-top: 8px;
   font-size: 10px;
-  color: rgba(0,0,0,0.45);
+  color: rgba(255,255,255,0.35);
   letter-spacing: 0.2px;
   display: flex;
   justify-content: space-between;
@@ -292,7 +290,7 @@
   border-radius: 4px;
   font-family: inherit;
 }
-.transit-clear-stops:hover { background: rgba(255,69,58,0.1); }
+.transit-clear-stops:hover { background: rgba(255,69,58,0.15); }
 
 .transit-add-line {
   width: 100%;
@@ -340,8 +338,8 @@
   transform: translateY(0) scale(0.98);
 }
 .transit-run-edit:disabled {
-  background: rgba(0,0,0,0.1);
-  color: rgba(0,0,0,0.3);
+  background: rgba(255,255,255,0.07);
+  color: rgba(255,255,255,0.25);
   box-shadow: none;
   cursor: not-allowed;
 }
@@ -349,7 +347,7 @@
 /* Scrollbar styling for the panel */
 .transit-panel::-webkit-scrollbar { width: 6px; }
 .transit-panel::-webkit-scrollbar-thumb {
-  background: rgba(0,0,0,0.18);
+  background: rgba(255,255,255,0.15);
   border-radius: 3px;
 }
 .transit-panel::-webkit-scrollbar-track { background: transparent; }

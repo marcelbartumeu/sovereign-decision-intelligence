@@ -21,9 +21,7 @@ from pathlib import Path
 import numpy as np
 from config import ACTIVE_CONFIG
 
-# Place preferences module lives one level up from experiments/
 sys.path.insert(0, str(Path(__file__).parents[1]))
-from place_preferences import compute_place_preferences as _compute_place_preferences
 from graph.andorra import ANDORRA_GRAPH
 from graph import get_constraints
 
@@ -204,6 +202,27 @@ def _graph_bounds(seed: dict) -> dict[str, tuple[float, float]]:
     return bounds
 
 
+def _perturb_place_preferences(
+    archetype_prefs: dict,
+    rng: np.random.Generator,
+    sigma: float = 0.05,
+) -> dict:
+    """
+    Add small Gaussian noise to archetype-level LLM place preferences.
+    Gives each of the 90K expanded agents individual variation while
+    staying close to the archetype's values.  σ=0.05 keeps agents within
+    roughly ±0.10 of the archetype centre (2-sigma), preserving the LLM's
+    demographic and psychographic reasoning.
+    """
+    if not archetype_prefs:
+        return {}
+    return {
+        did: round(float(np.clip(val + rng.normal(0, sigma), 0.01, 0.99)), 3)
+        for did, val in archetype_prefs.items()
+        if val is not None
+    }
+
+
 def _expand_one(
     archetype: dict,
     seed: dict,
@@ -278,8 +297,265 @@ def _expand_one(
         except (KeyError, TypeError):
             pass
 
-    profile["place_preferences"] = _compute_place_preferences(profile)
+    profile["place_preferences"] = _perturb_place_preferences(
+        archetype.get("place_preferences") or {}, rng
+    )
+
+    # ── Employment status & household composition ─────────────────────────────
+    # If the archetype was LLM-generated with these fields, inherit them as-is.
+    # Otherwise (legacy archetypes) assign from demographic distributions.
+    # Source: SAIG Anuari Estadístic 2023 (proxy — no Andorra micro-table published).
+    if "employment_status" not in profile:
+        profile["employment_status"] = _sample_employment_status(
+            seed["age"], seed["income_bracket"], rng
+        )
+    if "household_composition" not in profile:
+        profile["household_composition"] = _sample_household_composition(
+            seed["age"], seed["income_bracket"], rng
+        )
+
+    # ── V2.2 structural fields (config-grounded, no LLM) ──────────────────────
+    profile["role"]            = "adult"
+    profile["is_minor"]        = False
+    profile["gender"]          = seed["gender"]
+    profile["age"]             = seed["age"]
+    profile["years_in_andorra"] = seed.get("years_in_andorra", 0)
+    profile["education_level"] = _sample_education(seed["nationality"], seed["age"], rng)
+    profile["is_cross_border"] = seed.get("occupation") == "cross_border_worker"
+    profile["has_license"]     = _sample_license(seed["age"], seed["income_bracket"], rng)
+    if _employed(profile["employment_status"]):
+        profile["work_sector"] = _sample_sector(seed["nationality"], seed["income_bracket"], rng)
+    else:
+        profile["work_sector"] = None
+    # employer_id, work_h3, school_h3, household_id, home_h3, parish, role-in-hh
+    # are assigned in households.py (needs the H3 grid + assembled households).
+
     return profile
+
+
+# ── Demographic status samplers ───────────────────────────────────────────────
+# Source: SAIG Anuari Estadístic 2023 / EU-SILC 2023 proxy for Andorra.
+# These are population-level distributions, not individual-level predictions.
+# LLM-generated values (from archetype prompt) override these if present.
+
+_EMPLOYMENT_WEIGHTS: dict[str, dict[str, list]] = {
+    # Maps income_bracket → (statuses, weights) for age groups
+    # Format: {income: {age_band: ([statuses], [weights])}}
+    "precarious":   {
+        "youth":  (["unemployed", "student", "part_time"],          [0.35, 0.40, 0.25]),
+        "adult":  (["unemployed", "part_time", "full_time"],         [0.45, 0.35, 0.20]),
+        "senior": (["unemployed", "retired", "part_time"],           [0.30, 0.55, 0.15]),
+    },
+    "low":          {
+        "youth":  (["student", "part_time", "unemployed"],           [0.45, 0.40, 0.15]),
+        "adult":  (["full_time", "part_time", "unemployed"],         [0.50, 0.30, 0.20]),
+        "senior": (["retired", "part_time", "unemployed"],           [0.60, 0.25, 0.15]),
+    },
+    "lower_middle": {
+        "youth":  (["student", "part_time", "full_time"],            [0.40, 0.35, 0.25]),
+        "adult":  (["full_time", "part_time", "self_employed"],      [0.60, 0.25, 0.15]),
+        "senior": (["retired", "part_time", "full_time"],            [0.65, 0.25, 0.10]),
+    },
+    "middle":       {
+        "youth":  (["student", "full_time", "part_time"],            [0.35, 0.40, 0.25]),
+        "adult":  (["full_time", "self_employed", "part_time"],      [0.65, 0.20, 0.15]),
+        "senior": (["retired", "full_time", "part_time"],            [0.70, 0.20, 0.10]),
+    },
+    "upper_middle": {
+        "youth":  (["student", "full_time", "self_employed"],        [0.30, 0.50, 0.20]),
+        "adult":  (["full_time", "self_employed", "part_time"],      [0.60, 0.30, 0.10]),
+        "senior": (["retired", "full_time", "self_employed"],        [0.72, 0.18, 0.10]),
+    },
+    "comfortable":  {
+        "youth":  (["student", "full_time", "self_employed"],        [0.25, 0.50, 0.25]),
+        "adult":  (["full_time", "self_employed", "part_time"],      [0.55, 0.35, 0.10]),
+        "senior": (["retired", "self_employed", "full_time"],        [0.75, 0.15, 0.10]),
+    },
+    "wealthy":      {
+        "youth":  (["student", "self_employed", "full_time"],        [0.30, 0.40, 0.30]),
+        "adult":  (["self_employed", "full_time", "retired"],        [0.45, 0.35, 0.20]),
+        "senior": (["retired", "self_employed", "homemaker"],        [0.80, 0.15, 0.05]),
+    },
+}
+
+_HOUSEHOLD_WEIGHTS: dict[str, dict[str, list]] = {
+    # Source: SAIG 2023 household structure + EU-SILC proxy
+    "precarious":   {
+        "youth":  (["shared_accommodation", "single", "multi_generational"],         [0.45, 0.30, 0.25]),
+        "adult":  (["single", "shared_accommodation", "couple_no_children"],         [0.35, 0.30, 0.25, ]),
+        "senior": (["single", "multi_generational", "couple_no_children"],           [0.40, 0.35, 0.25]),
+    },
+    "low":          {
+        "youth":  (["shared_accommodation", "single", "multi_generational"],         [0.40, 0.35, 0.25]),
+        "adult":  (["couple_with_children", "single", "single_parent"],              [0.40, 0.30, 0.30]),
+        "senior": (["single", "multi_generational", "couple_no_children"],           [0.35, 0.35, 0.30]),
+    },
+    "lower_middle": {
+        "youth":  (["single", "shared_accommodation", "couple_no_children"],         [0.40, 0.35, 0.25]),
+        "adult":  (["couple_with_children", "couple_no_children", "single"],         [0.45, 0.30, 0.25]),
+        "senior": (["couple_no_children", "single", "multi_generational"],           [0.40, 0.35, 0.25]),
+    },
+    "middle":       {
+        "youth":  (["single", "couple_no_children", "shared_accommodation"],         [0.40, 0.35, 0.25]),
+        "adult":  (["couple_with_children", "couple_no_children", "single"],         [0.50, 0.30, 0.20]),
+        "senior": (["couple_no_children", "single", "multi_generational"],           [0.45, 0.35, 0.20]),
+    },
+    "upper_middle": {
+        "youth":  (["couple_no_children", "single", "shared_accommodation"],         [0.40, 0.40, 0.20]),
+        "adult":  (["couple_with_children", "couple_no_children", "single"],         [0.55, 0.30, 0.15]),
+        "senior": (["couple_no_children", "single", "multi_generational"],           [0.50, 0.35, 0.15]),
+    },
+    "comfortable":  {
+        "youth":  (["couple_no_children", "single", "couple_with_children"],         [0.40, 0.40, 0.20]),
+        "adult":  (["couple_with_children", "couple_no_children", "single"],         [0.60, 0.28, 0.12]),
+        "senior": (["couple_no_children", "single", "multi_generational"],           [0.55, 0.35, 0.10]),
+    },
+    "wealthy":      {
+        "youth":  (["single", "couple_no_children", "couple_with_children"],         [0.35, 0.40, 0.25]),
+        "adult":  (["couple_with_children", "couple_no_children", "single"],         [0.60, 0.30, 0.10]),
+        "senior": (["couple_no_children", "single", "multi_generational"],           [0.55, 0.35, 0.10]),
+    },
+}
+
+
+# ── New structural-field samplers (V2.2) ─────────────────────────────────────
+# All config-grounded or clearly-labelled proxies. No LLM. Sampled per agent
+# during expansion so the regeneration adds these fields without extra cost.
+
+# Adult educational attainment by nationality.
+# Proxy: Eurostat edat_lfse_03 (Spain/France attainment) tilted by Andorra's
+# labour-migration structure — Portuguese cohort skews lower-tertiary, Andorran/
+# French higher. Labelled proxy; no Andorra attainment micro-table published.
+_EDUCATION_BY_NAT: dict[str, tuple[list, list]] = {
+    "Andorran":   (["primary", "secondary", "tertiary"], [0.15, 0.40, 0.45]),
+    "French":     (["primary", "secondary", "tertiary"], [0.15, 0.40, 0.45]),
+    "Spanish":    (["primary", "secondary", "tertiary"], [0.20, 0.45, 0.35]),
+    "Portuguese": (["primary", "secondary", "tertiary"], [0.40, 0.45, 0.15]),
+    "Other":      (["primary", "secondary", "tertiary"], [0.20, 0.40, 0.40]),
+}
+
+# Work sector for employed adults. Base shares = ACTIVE_CONFIG.main_sectors;
+# tilted by income (low→hospitality/construction/retail; high→finance/public/
+# real-estate) and nationality (Portuguese→construction/hospitality;
+# Andorran→public admin/finance/real estate). Grounded in config sector shares.
+_SECTORS = [
+    "Tourism & hospitality", "Retail & commerce", "Finance",
+    "Real estate", "Public administration", "Construction", "Other",
+]
+_SECTOR_BASE = [0.30, 0.25, 0.15, 0.12, 0.10, 0.05, 0.03]  # config.main_sectors
+
+
+def _employed(status: str) -> bool:
+    return status in ("employed_full_time", "employed_part_time", "self_employed",
+                      "full_time", "part_time")
+
+
+def _sample_education(nat: str, age: int, rng: np.random.Generator) -> str:
+    labels, w = _EDUCATION_BY_NAT.get(nat, _EDUCATION_BY_NAT["Other"])
+    w = np.array(w, dtype=float)
+    return labels[int(rng.choice(len(labels), p=w / w.sum()))]
+
+
+def _sample_sector(nat: str, income: str, rng: np.random.Generator) -> str:
+    w = np.array(_SECTOR_BASE, dtype=float)
+    rank = INCOME_RANK.get(income, 3)
+    if rank <= 1:        # precarious/low → manual/service sectors
+        w = w * np.array([1.4, 1.3, 0.5, 0.6, 0.6, 1.6, 1.0])
+    elif rank >= 4:      # upper_middle+ → finance/public/real estate
+        w = w * np.array([0.7, 0.8, 1.8, 1.5, 1.4, 0.5, 1.0])
+    if nat == "Portuguese":
+        w = w * np.array([1.3, 1.0, 0.5, 0.7, 0.5, 2.0, 1.0])
+    elif nat == "Andorran":
+        w = w * np.array([0.8, 0.9, 1.3, 1.4, 1.8, 0.6, 1.0])
+    return _SECTORS[int(rng.choice(len(_SECTORS), p=w / w.sum()))]
+
+
+def _sample_license(age: int, income: str, rng: np.random.Generator) -> bool:
+    if age < 18:
+        return False
+    base = 0.88
+    rank = INCOME_RANK.get(income, 3)
+    if rank <= 1:
+        base = 0.70
+    elif rank >= 5:
+        base = 0.96
+    return bool(rng.random() < base)
+
+
+def _school_stage(age: int) -> str:
+    if age < 3:
+        return "nursery"
+    if age < 6:
+        return "preschool"        # maternal (3–5)
+    if age < 12:
+        return "primary"          # primera ensenyança (6–11)
+    return "lower_secondary"      # segona ensenyança (12–14)
+
+
+# Child place-preference subset (the 26-layer dict is kept uniform so downstream
+# code never special-cases keys; child-irrelevant layers sit near the floor).
+_CHILD_PREF_BASE = {
+    "D5": 0.85, "D8": 0.10, "D15": 0.20, "D16": 0.45, "D19": 0.0,
+    "D25": 0.55, "D27": 0.35,
+}
+
+
+def _child_place_preferences(age: int, rng: np.random.Generator) -> dict:
+    from place_layers import ALL_LAYER_IDS
+    prefs = {did: round(float(np.clip(rng.normal(0.03, 0.01), 0.01, 0.99)), 3)
+             for did in ALL_LAYER_IDS}
+    base = dict(_CHILD_PREF_BASE)
+    # education only for school-age; daycare only for nursery/preschool
+    base["D5"]  = 0.90 if age >= 3 else 0.10
+    base["D19"] = 0.80 if age < 6 else 0.05
+    for did, v in base.items():
+        if did in prefs:
+            prefs[did] = round(float(np.clip(v + rng.normal(0, 0.04), 0.01, 0.99)), 3)
+    return prefs
+
+
+def _make_child(seed: dict, agent_id: str, rng: np.random.Generator) -> dict:
+    """Minimal child agent (0–14). No adult psychometrics. Household-level fields
+    (home_h3, household_id, parish, guardian_ids, school_h3) are set in households.py."""
+    age = seed["age"]
+    return {
+        "agent_id":              agent_id,
+        "role":                  "child",
+        "is_minor":              True,
+        "age":                   age,
+        "gender":                seed["gender"],
+        "nationality":           seed["nationality"],
+        "income_bracket":        seed["income_bracket"],   # household income context
+        "household_composition": None,                     # set by household assembly
+        "school_stage":          _school_stage(age),
+        "place_preferences":     _child_place_preferences(age, rng),
+    }
+
+
+def _age_band(age: int) -> str:
+    if age < 30:
+        return "youth"
+    if age < 60:
+        return "adult"
+    return "senior"
+
+
+def _sample_employment_status(age: int, income_bracket: str, rng: np.random.Generator) -> str:
+    band  = _age_band(age)
+    row   = _EMPLOYMENT_WEIGHTS.get(income_bracket, _EMPLOYMENT_WEIGHTS["middle"])
+    statuses, weights = row[band]
+    w = np.array(weights, dtype=float)
+    idx = int(rng.choice(len(statuses), p=w / w.sum()))
+    return statuses[idx]
+
+
+def _sample_household_composition(age: int, income_bracket: str, rng: np.random.Generator) -> str:
+    band  = _age_band(age)
+    row   = _HOUSEHOLD_WEIGHTS.get(income_bracket, _HOUSEHOLD_WEIGHTS["middle"])
+    comps, weights = row[band]
+    w = np.array(weights, dtype=float)
+    idx = int(rng.choice(len(comps), p=w / w.sum()))
+    return comps[idx]
 
 
 # ── Public API ────────────────────────────────────────────────────────────────
@@ -307,9 +583,17 @@ def expand(
     pop_seeds = _stratified_seeds(population_size, rng)
 
     population = []
+    n_child = 0
     for i, seed in enumerate(pop_seeds):
-        arch_idx = _match(seed, archetype_seeds)
-        profile  = _expand_one(archetypes[arch_idx], seed, f"POP-{i:05d}", rng)
-        population.append(profile)
+        if seed["age"] < 15:
+            # Child (0–14): minimal schema, no archetype psychometrics.
+            child = _make_child(seed, f"CH-{n_child:05d}", rng)
+            population.append(child)
+            n_child += 1
+        else:
+            arch_idx = _match(seed, archetype_seeds)
+            profile  = _expand_one(archetypes[arch_idx], seed, f"POP-{i:05d}", rng)
+            profile["archetype_id"] = archetypes[arch_idx].get("agent_id", f"ARCH-{arch_idx:03d}")
+            population.append(profile)
 
     return population

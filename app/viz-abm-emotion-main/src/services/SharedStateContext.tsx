@@ -12,7 +12,11 @@ export interface TripAgent {
   color:   [number, number, number];  // RGB derived from emotion
   path:    [number, number][];        // [lon, lat] waypoints
   ts:      number[];                  // minutes from midnight, one per waypoint
+  bounds?: number[];                  // start index of each trip segment in path
 }
+
+// Rich per-agent profile (agent_profiles_*.json). Loose-typed — see export_profiles.py.
+export type AgentProfile = Record<string, any>;
 
 export interface EmotionCounts {
   ANGER:    number;
@@ -30,6 +34,11 @@ interface SharedState {
   totalAgents:   number;
   emotionCounts: EmotionCounts;
   natCounts:     Record<string, number>;
+
+  // Rich profiles (lazy) + precomputed dashboard aggregates
+  profiles:        Map<string, AgentProfile> | null;
+  profilesLoading: boolean;
+  aggregates:      Record<string, any> | null;
 
   // Playback
   isPlaying:      boolean;
@@ -60,6 +69,7 @@ interface SharedStateContextType {
   setYear:        (y: number) => void;
   setMapLayer:    (l: MapLayerId) => void;
   loadSimulationData: () => Promise<void>;
+  loadProfiles:   () => Promise<void>;
 }
 
 const EMPTY_EMOTIONS: EmotionCounts = {
@@ -71,9 +81,12 @@ const initialState: SharedState = {
   totalAgents:    0,
   emotionCounts:  { ...EMPTY_EMOTIONS },
   natCounts:      {},
+  profiles:        null,
+  profilesLoading: false,
+  aggregates:      null,
   isPlaying:      new URLSearchParams(window.location.search).has('embed'),
   currentTimeMin: 420,   // start at 07:00
-  playSpeed:      1,     // 1 sim-min per real second — a 15-min commute takes 15 real seconds
+  playSpeed:      20,    // 20 sim-min per real second — full day loops in ~72s, commutes clearly visible
   natFilter:      null,
   emotionFilter:  null,
   followedAgentId:null,
@@ -163,6 +176,10 @@ export function SharedStateProvider({ children }: { children: ReactNode }) {
       );
       const agents: TripAgent[] = ([] as TripAgent[]).concat(...chunks);
 
+      // Precomputed dashboard aggregates (tiny — load alongside trips)
+      const aggregates = await fetch('/model/agent_aggregates.json')
+        .then(r => (r.ok ? r.json() : null)).catch(() => null);
+
       // Compute static summary stats from profiles
       const emotionCounts = { ...EMPTY_EMOTIONS };
       const natCounts: Record<string, number> = {};
@@ -181,6 +198,7 @@ export function SharedStateProvider({ children }: { children: ReactNode }) {
         totalAgents:   agents.length,
         emotionCounts,
         natCounts,
+        aggregates,
       }));
 
       tabSyncService.broadcast({ type: 'SIMULATION_LOADED', data: { totalAgents: agents.length } });
@@ -190,6 +208,31 @@ export function SharedStateProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => { loadSimulationData(); }, []);
+
+  // Lazily load the rich per-agent profiles (~140 MB, 6 chunks) — only when the
+  // Agent Analytics tab needs them, not on the initial map load.
+  const loadProfiles = useCallback(async () => {
+    if (stateRef.current.profiles || stateRef.current.profilesLoading) return;
+    setState(p => ({ ...p, profilesLoading: true }));
+    try {
+      const CHUNKS = 6;
+      const chunks = await Promise.all(
+        Array.from({ length: CHUNKS }, (_, i) =>
+          fetch(`/model/agent_profiles_${i}.json`).then(r => {
+            if (!r.ok) throw new Error(`HTTP ${r.status} on profile chunk ${i}`);
+            return r.json() as Promise<AgentProfile[]>;
+          })
+        )
+      );
+      const profiles = new Map<string, AgentProfile>();
+      for (const chunk of chunks) for (const rec of chunk) profiles.set(rec.id, rec);
+      console.log(`Loaded ${profiles.size.toLocaleString()} agent profiles.`);
+      setState(p => ({ ...p, profiles, profilesLoading: false }));
+    } catch (err) {
+      console.error('Failed to load agent_profiles:', err);
+      setState(p => ({ ...p, profilesLoading: false }));
+    }
+  }, []);
 
   // ── Public actions ─────────────────────────────────────────────────────────
   const updateState = (s: Partial<SharedState>) => setState(p => ({ ...p, ...s }));
@@ -232,7 +275,7 @@ export function SharedStateProvider({ children }: { children: ReactNode }) {
     <SharedStateContext.Provider value={{
       state, updateState, togglePlayback,
       setNatFilter, setEmotionFilter, setFollowedAgent,
-      setScenario, setYear, setMapLayer, loadSimulationData,
+      setScenario, setYear, setMapLayer, loadSimulationData, loadProfiles,
     }}>
       {children}
     </SharedStateContext.Provider>

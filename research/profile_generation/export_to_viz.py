@@ -20,7 +20,7 @@ Format per agent:
     "ts":       [minutes, ...]      // one timestamp per path point (0–1440 min)
   }
 
-schedules_routed.json is 7.8 GB — loaded with ijson streaming (one agent at a time)
+schedules_routed.json can be large — loaded with ijson streaming (one agent at a time)
 to avoid out-of-memory. Output is written incrementally.
 """
 
@@ -34,9 +34,14 @@ from scipy.spatial import KDTree
 
 ROOT          = Path(__file__).parents[2]
 POP_DIR       = Path(__file__).parent / "results" / "andorra_population"
-GEOJSON_PATH  = ROOT / "Front end" / "dashboard" / "public" / "model" / "accessibility_population.geojson"
-STREETS_PATH  = ROOT / "Front end" / "dashboard" / "public" / "model" / "accessibility_streets.geojson"
-OUT_PATH      = ROOT / "Front end" / "dashboard" / "public" / "model" / "andorra_trips.json"
+# V2.2: the Vercel root dir was renamed "Front end/dashboard" → "app".
+MODEL_DIR     = ROOT / "app" / "public" / "model"
+GEOJSON_PATH  = MODEL_DIR / "accessibility_population.geojson"
+STREETS_PATH  = MODEL_DIR / "accessibility_streets.geojson"
+OUT_PATH      = MODEL_DIR / "andorra_trips.json"
+# The viz fetches CHUNKS chunked files (andorra_trips_{i}.json); keep in sync with
+# SharedStateContext.tsx CHUNKS.
+CHUNKS        = 6
 
 MAX_PTS_PER_TRIP = 40   # subsample routed paths to keep JSON browser-friendly
 MAX_SNAP_KM      = 1.5  # same threshold used by route_trips.py
@@ -240,14 +245,21 @@ def convert(rng_seed: int = 42) -> None:
 
                 full_path: list[list[float]] = []
                 full_ts:   list[float]       = []
+                bounds:    list[int]         = []   # start index of each trip in full_path
 
-                for trip_idx, trip in enumerate(trips):
+                # Trips do NOT always chain (dest_i != origin_{i+1}) and can overlap
+                # in time, so they cannot be flattened into one continuous path.
+                # Sort by departure and keep each trip as its OWN segment (recorded
+                # in `bounds`); the viz renders/animates each trip separately rather
+                # than drawing straight teleport lines between them.
+                rps    = list(routed_paths) + [None] * max(0, len(trips) - len(routed_paths))
+                paired = sorted(zip(trips, rps), key=lambda tr: tr[0].get("departure_min", 0.0))
+
+                for trip, routed in paired:
                     o_h3 = trip.get("origin_h3",  "")
                     d_h3 = trip.get("dest_h3",    "")
                     dep  = trip.get("departure_min", 0.0)
                     dur  = trip.get("duration_min",  5.0)
-
-                    routed = routed_paths[trip_idx] if trip_idx < len(routed_paths) else None
 
                     if routed and len(routed) >= 2:
                         raw_pts = [tuple(c) for c in routed]
@@ -261,11 +273,7 @@ def convert(rng_seed: int = 42) -> None:
                         pts   = interpolate_path(origin, dest, n_pts, rng)
 
                     ts = np.linspace(dep, dep + dur, len(pts)).tolist()
-
-                    if full_path:
-                        pts = pts[1:]
-                        ts  = ts[1:]
-
+                    bounds.append(len(full_path))
                     full_path.extend([list(p) for p in pts])
                     full_ts.extend(ts)
 
@@ -284,6 +292,7 @@ def convert(rng_seed: int = 42) -> None:
                     "color":   color,
                     "path":    full_path,
                     "ts":      full_ts,
+                    "bounds":  bounds,
                 }
                 if not first_written:
                     out_f.write(",")
@@ -302,5 +311,34 @@ def convert(rng_seed: int = 42) -> None:
     print("Done.")
 
 
+def split_into_chunks(n_chunks: int = CHUNKS) -> None:
+    """Stream the single andorra_trips.json into n_chunks round-robin chunk files
+    (andorra_trips_{i}.json) — the format the viz actually fetches
+    (SharedStateContext.tsx, CHUNKS). Uses ijson so memory stays flat."""
+    print(f"\nSplitting {OUT_PATH.name} → {n_chunks} chunks...")
+    chunk_paths = [MODEL_DIR / f"andorra_trips_{c}.json" for c in range(n_chunks)]
+    files = [open(p, "w") for p in chunk_paths]
+    first = [True] * n_chunks
+    for cf in files:
+        cf.write("[")
+    n = 0
+    try:
+        with open(OUT_PATH, "rb") as f:
+            for rec in ijson.items(f, "item", use_float=True):
+                c = n % n_chunks
+                if not first[c]:
+                    files[c].write(",")
+                files[c].write(json.dumps(rec, separators=(",", ":")))
+                first[c] = False
+                n += 1
+    finally:
+        for cf in files:
+            cf.write("]")
+            cf.close()
+    total_mb = sum(p.stat().st_size for p in chunk_paths) / 1e6
+    print(f"  {n:,} agents → {n_chunks} chunks ({total_mb:.1f} MB) in {MODEL_DIR}")
+
+
 if __name__ == "__main__":
     convert()
+    split_into_chunks()

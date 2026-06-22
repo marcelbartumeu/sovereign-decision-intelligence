@@ -1,0 +1,62 @@
+{
+  "nationality": {
+    "col": "nationality",
+    "map": {
+      "andorran": "Andorran",
+      "spanish": "Spanish",
+      "portuguese": "Portuguese",
+      "french": "French",
+      "other": "Other"
+    }
+  },
+  "income_bracket": {
+    "col": "income_bracket"
+  },
+  "age": {
+    "col": "age"
+  },
+  "big5.O": {
+    "col": "openness",
+    "scale": [1, 5]
+  },
+  "big5.C": {
+    "col": "conscientiousness",
+    "scale": [1, 5]
+  },
+  "big5.E": {
+    "col": "extraversion",
+    "scale": [1, 5]
+  },
+  "big5.A": {
+    "col": "agreeableness",
+    "scale": [1, 5]
+  },
+  "big5.N": {
+    "col": "neuroticism",
+    "scale": [1, 5]
+  },
+  "trust.govt": {
+    "col": "trust_government",
+    "scale": [1, 4]
+  },
+  "trust.legal": {
+    "col": "trust_legal_system",
+    "scale": [1, 4]
+  },
+  "trust.people": {
+    "col": "trust_people",
+    "scale": [1, 4]
+  },
+  "econ.stress": {
+    "col": "financial_stress",
+    "scale": [1, 5]
+  },
+  "social.civic": {
+    "col": "civic_participation",
+    "scale": [1, 5]
+  },
+  "mob.transit": {
+    "col": "transit_willingness",
+    "scale": [1, 5]
+  }
+}

@@ -5,46 +5,109 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>points Earth</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
     body { margin: 0; background-color: black; overflow: hidden; }
     #ui {
       position: fixed; inset: 0; pointer-events: none;
-      font-family: Helvetica, Arial, sans-serif;
+      font-family: 'Syne', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    /* SPECTRE brand mark — fills the top of the globe screen so it doesn't feel empty */
+    #brand {
+      position: absolute; top: 40px; left: 50%; transform: translateX(-50%);
+      text-align: center; pointer-events: none;
+    }
+    #brand-mark {
+      font-family: 'Syne', sans-serif; font-weight: 700;
+      font-size: 30px; letter-spacing: 0.2em; padding-left: 0.2em; line-height: 1;
+      background: linear-gradient(177deg, #ffffff 0%, #dee4ee 38%, #ffffff 52%, #b7bfce 76%, #eaeef4 100%);
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent; color: transparent;
+    }
+    #brand-sub {
+      margin-top: 7px;
+      font-family: 'Syne', sans-serif; font-weight: 500;
+      font-size: 9.5px; letter-spacing: 0.34em; padding-left: 0.34em;
+      text-transform: uppercase; color: rgba(255,255,255,0.28);
     }
     #search-container {
-      position: absolute; top: 48px; left: 50%; transform: translateX(-50%);
-      pointer-events: all; width: 520px;
+      position: absolute; top: 132px; left: 50%; transform: translateX(-50%);
+      pointer-events: all; width: 480px; max-width: calc(100vw - 2.5rem);
     }
+    /* On-globe place label — borderless, white with a subtle neon glow */
+    #place-label {
+      position: absolute; pointer-events: none;
+      transform: translate(-50%, calc(-100% - 14px));
+      text-align: center; white-space: nowrap;
+      opacity: 0; transition: opacity 0.25s ease;
+    }
+    #place-label.show { opacity: 1; }
+    #place-label-name {
+      font-family: 'Syne', sans-serif; font-weight: 700;
+      font-size: 19px; letter-spacing: 0.04em; color: #ffffff; line-height: 1.1;
+      text-shadow: 0 0 2px rgba(255,255,255,0.9), 0 0 9px rgba(125,195,255,0.85), 0 0 20px rgba(95,165,255,0.55);
+    }
+    #place-label-coords {
+      margin-top: 4px;
+      font-family: 'Syne', sans-serif; font-weight: 500;
+      font-size: 11px; letter-spacing: 0.14em; color: rgba(214,232,255,0.72);
+      text-shadow: 0 0 8px rgba(110,175,255,0.5);
+    }
+    /* Apple liquid glass — matches the KPI grid / buttons in the main app */
     #search-box {
       display: flex; align-items: center;
-      background: rgba(10,10,10,0.78); border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 14px; padding: 0 28px; gap: 16px;
-      backdrop-filter: blur(12px);
+      background: rgba(22,22,28,0.55);
+      border: 0.5px solid rgba(255,255,255,0.12);
+      border-radius: 18px; padding: 4px 24px; gap: 14px;
+      backdrop-filter: blur(28px) saturate(1.7);
+      -webkit-backdrop-filter: blur(28px) saturate(1.7);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.14), 0 12px 40px rgba(0,0,0,0.5);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
-    #search-icon { color: rgba(255,255,255,0.35); font-size: 26px; line-height: 1; }
+    #search-box:focus-within {
+      border-color: rgba(255,255,255,0.22);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.18), 0 14px 46px rgba(0,0,0,0.55), 0 0 0 4px rgba(120,160,210,0.10);
+    }
+    #search-icon { color: rgba(255,255,255,0.42); font-size: 22px; line-height: 1; }
     #search-input {
       flex: 1; background: none; border: none; outline: none;
-      color: white; font-family: Helvetica, Arial, sans-serif;
-      font-size: 22px; font-weight: 300; padding: 24px 0;
+      color: #fff; font-family: inherit;
+      font-size: 19px; font-weight: 500; letter-spacing: 0.005em;
+      padding: 19px 0;
     }
-    #search-input::placeholder { color: rgba(255,255,255,0.28); }
+    #search-input::placeholder { color: rgba(255,255,255,0.30); font-weight: 500; }
     #search-suggestion {
-      margin-top: 8px; background: rgba(10,10,10,0.88);
-      border: 1px solid rgba(255,255,255,0.13); border-radius: 14px;
-      overflow: hidden; backdrop-filter: blur(12px);
+      margin-top: 10px;
+      background: rgba(22,22,28,0.55);
+      border: 0.5px solid rgba(255,255,255,0.12);
+      border-radius: 16px; overflow: hidden;
+      backdrop-filter: blur(28px) saturate(1.7);
+      -webkit-backdrop-filter: blur(28px) saturate(1.7);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 12px 40px rgba(0,0,0,0.5);
     }
     #suggestion-item {
-      display: flex; align-items: center; gap: 16px;
-      padding: 20px 28px; cursor: pointer;
-      font-size: 19px; font-weight: 400; color: rgba(255,255,255,0.8);
+      display: flex; align-items: center; gap: 14px;
+      padding: 16px 24px; cursor: pointer;
+      font-family: inherit; font-size: 17px; font-weight: 500;
+      color: rgba(255,255,255,0.86);
       transition: background 0.15s;
     }
     #suggestion-item:hover { background: rgba(255,255,255,0.08); }
-    #suggestion-arrow { margin-left: auto; color: rgba(255,255,255,0.3); font-size: 20px; }
+    #suggestion-arrow { margin-left: auto; color: rgba(255,255,255,0.32); font-size: 18px; }
     #hint {
-      position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
-      font-size: 12px; font-weight: 300; letter-spacing: 0.1em;
+      position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
+      font-family: 'Syne', sans-serif;
+      font-size: 11px; font-weight: 500; letter-spacing: 0.22em;
+      text-transform: uppercase;
       color: rgba(255,255,255,0.22); white-space: nowrap;
+    }
+    /* Fly-to-Andorra fade overlay */
+    #warp {
+      position: fixed; inset: 0; z-index: 1000; pointer-events: none;
+      background: radial-gradient(circle at 50% 46%, #0c1622 0%, #000000 72%);
+      opacity: 0;
     }
     </style>
     <script type="importmap">
@@ -58,6 +121,10 @@
     </head>
     <body>
     <div id="ui">
+      <div id="brand">
+        <div id="brand-mark">SPECTRE</div>
+        <div id="brand-sub">Sovereign Decision Intelligence</div>
+      </div>
       <div id="search-container">
         <div id="search-box">
           <span id="search-icon">⌕</span>
@@ -71,7 +138,12 @@
           </div>
         </div>
       </div>
+      <div id="place-label">
+        <div id="place-label-name"></div>
+        <div id="place-label-coords"></div>
+      </div>
       <div id="hint">Drag to rotate &nbsp;·&nbsp; Scroll to zoom</div>
     </div>
+    <div id="warp"></div>
     <script type="module" src="index.js"></script>
 </body></html>

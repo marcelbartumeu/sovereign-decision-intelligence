@@ -43,7 +43,9 @@ def sample_departure(
 
     Parameters
     ──────────
-    activity : "work" | "shopping" | "leisure" | "civic"
+    activity : one of the 8 activity types from place_layers.ACTIVITY_LAYER_MAP
+               ("work" | "grocery" | "shopping" | "education" |
+                "leisure_indoor" | "leisure_outdoor" | "healthcare" | "civic")
     outbound : True for the outbound trip, False for the return-home trip.
                Only work trips distinguish outbound vs return; all others
                use a single distribution.

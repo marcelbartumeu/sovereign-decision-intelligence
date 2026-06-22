@@ -1,9 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
-import L from 'leaflet';
-import { addAndorraBoundary } from '../utils/andorraBoundary';
-import MapMask from './MapMask';
-
-const PROJECTION_BOUNDS = [[42.394176, 1.393847], [42.697242, 1.803713]];
+import { useEffect, useRef, useState, useCallback } from 'react';
+import { useLockedMapbox } from '../hooks/useLockedMapbox';
+import { addDataLayer, attachHoverPopup, whenStyleReady, DEFAULT_MAP_STYLE } from '../utils/mapboxBase';
+import 'mapbox-gl/dist/mapbox-gl.css';
 
 const LAYER_BTNS = [
   { key: 'ski',         label: 'Ski Resorts' },
@@ -20,6 +18,16 @@ const INIT_VIS = {
   btt: false, cycling: false, corona: false,
 };
 
+const FILES = [
+  { key: 'ski',         url: '/tourism_ski_areas.geojson' },
+  { key: 'peaks',       url: '/tourism_peaks.geojson' },
+  { key: 'refuges',     url: '/tourism_refuges.geojson' },
+  { key: 'attractions', url: '/tourism_attractions.geojson' },
+  { key: 'btt',         url: '/tourism_btt.geojson' },
+  { key: 'cycling',     url: '/tourism_cycling.geojson' },
+  { key: 'corona',      url: '/tourism_corona_llacs.geojson' },
+];
+
 const STAGE_COLORS = ['#f59e0b', '#10b981', '#3b82f6', '#ec4899', '#a855f7'];
 
 const SKI_COLORS = {
@@ -28,31 +36,18 @@ const SKI_COLORS = {
   'Ordino Arcalís':         { fill: '#fde68a', stroke: '#fbbf24' },
   'Naturland':              { fill: '#fdba74', stroke: '#fb923c' },
 };
+const SKI_DEFAULT = { fill: '#93c5fd', stroke: '#60a5fa' };
 
-function mkPeakIcon(altitude) {
-  const label = altitude ? `${altitude}m` : '▲';
-  return L.divIcon({
-    html: `<div style="display:flex;flex-direction:column;align-items:center;pointer-events:none;">
-      <div style="width:0;height:0;border-left:7px solid transparent;border-right:7px solid transparent;border-bottom:12px solid rgba(255,255,255,0.92);filter:drop-shadow(0 1px 3px rgba(0,0,0,0.7));"></div>
-      <div style="margin-top:2px;background:rgba(15,23,42,0.82);color:#e2e8f0;font-size:8.5px;font-weight:600;font-family:IBM Plex Mono,monospace;padding:1px 4px;border-radius:3px;white-space:nowrap;border:1px solid rgba(255,255,255,0.18);backdrop-filter:blur(2px);">${label}</div>
-    </div>`,
-    className: '', iconSize: [46, 32], iconAnchor: [23, 12],
-  });
-}
-
-function mkRefugeIcon() {
-  return L.divIcon({
-    html: `<div style="width:10px;height:10px;border-radius:50%;background:rgba(180,83,9,0.90);box-shadow:0 1px 4px rgba(0,0,0,0.6);border:1.5px solid rgba(255,200,100,0.6);pointer-events:none;"></div>`,
-    className: '', iconSize: [10, 10], iconAnchor: [5, 5],
-  });
-}
-
-function mkAttractionIcon() {
-  return L.divIcon({
-    html: `<div style="width:10px;height:10px;border-radius:50%;background:rgba(109,40,217,0.88);box-shadow:0 1px 4px rgba(0,0,0,0.6);border:1.5px solid rgba(196,181,253,0.55);pointer-events:none;"></div>`,
-    className: '', iconSize: [10, 10], iconAnchor: [5, 5],
-  });
-}
+// Mapbox layer ids per logical key (for visibility toggling).
+const LAYER_IDS = {
+  ski:         ['tr-ski-fill', 'tr-ski-line'],
+  peaks:       ['tr-peaks-dot', 'tr-peaks-label'],
+  refuges:     ['tr-refuges'],
+  attractions: ['tr-attractions'],
+  btt:         ['tr-btt'],
+  cycling:     ['tr-cycling'],
+  corona:      ['tr-corona'],
+};
 
 function stripHoles(geojson) {
   return {
@@ -67,191 +62,135 @@ function stripHoles(geojson) {
   };
 }
 
-function buildLayer(key, data, skiRendererRef) {
-  if (key === 'ski') {
-    const renderer = L.canvas({ padding: 0.5 });
-    skiRendererRef.current = renderer;
-    return L.geoJSON(stripHoles(data), {
-      renderer,
-      style: feat => {
-        const cfg = SKI_COLORS[feat.properties.name] || { fill: '#93c5fd', stroke: '#60a5fa' };
-        return { fillColor: cfg.fill, fillOpacity: 1, fillRule: 'nonzero', color: 'transparent', weight: 0, smoothFactor: 1 };
-      },
-      onEachFeature: (f, lyr) => {
-        const p   = f.properties;
-        const cfg = SKI_COLORS[p.name] || { fill: '#93c5fd', stroke: '#60a5fa' };
-        lyr.on('mouseover', function () { this.setStyle({ color: cfg.stroke, weight: 2 }); });
-        lyr.on('mouseout',  function () { this.setStyle({ color: 'transparent', weight: 0 }); });
-        lyr.bindTooltip(
-          `<div style="font-family:monospace;font-size:11px;line-height:1.7"><b style="color:${cfg.fill}">${p.name}</b><br/>${p.pistes_km} km of pistes<br/>${p.min_alt}–${p.max_alt} m<br/><span style="color:#9ca3af">${p.sectors}</span></div>`,
-          { sticky: true, opacity: 0.97 }
-        );
-      },
-    });
-  }
+const tip = (html) => `<div style="font-family:monospace;font-size:11px;line-height:1.7">${html}</div>`;
 
-  if (key === 'peaks') {
-    return L.geoJSON(data, {
-      pointToLayer: (f, ll) => L.marker(ll, { icon: mkPeakIcon(f.properties.altitude) }),
-      onEachFeature: (f, lyr) => {
-        const p = f.properties;
-        lyr.bindTooltip(
-          `<div style="font-family:monospace;font-size:11px;line-height:1.7"><b style="color:#d1d5db">${p.name || '—'}</b><br/>${p.altitude ? `${p.altitude} m` : ''}${p.refugi ? `<br/><span style="color:#fcd34d">${p.refugi}</span>` : ''}</div>`,
-          { sticky: true, opacity: 0.97 }
-        );
-      },
-    });
-  }
-
-  if (key === 'refuges') {
-    return L.geoJSON(data, {
-      pointToLayer: (f, ll) => L.marker(ll, { icon: mkRefugeIcon() }),
-      onEachFeature: (f, lyr) => {
-        const p = f.properties;
-        lyr.bindTooltip(
-          `<div style="font-family:monospace;font-size:11px;line-height:1.7"><b style="color:#fcd34d">${p.name}</b><br/>${p.tipus || ''} ${p.altitude ? `· ${p.altitude} m` : ''}<br/>${p.calendari ? `<span style="color:#9ca3af">${p.calendari}</span>` : ''}</div>`,
-          { sticky: true, opacity: 0.97 }
-        );
-      },
-    });
-  }
-
-  if (key === 'attractions') {
-    return L.geoJSON(data, {
-      pointToLayer: (f, ll) => L.marker(ll, { icon: mkAttractionIcon() }),
-      onEachFeature: (f, lyr) => {
-        const p = f.properties;
-        lyr.bindTooltip(
-          `<div style="font-family:monospace;font-size:11px;line-height:1.7"><b style="color:#c4b5fd">${p.name}</b><br/><span style="color:#9ca3af">${p.parish || ''}</span></div>`,
-          { sticky: true, opacity: 0.97 }
-        );
-      },
-    });
-  }
-
-  if (key === 'btt') {
-    return L.geoJSON(data, {
-      style: { color: '#f97316', weight: 2, opacity: 0.75 },
-      onEachFeature: (f, lyr) => {
-        lyr.bindTooltip(
-          `<div style="font-family:monospace;font-size:11px"><b style="color:#fb923c">${f.properties.name || 'BTT trail'}</b></div>`,
-          { sticky: true, opacity: 0.97 }
-        );
-      },
-    });
-  }
-
-  if (key === 'cycling') {
-    return L.geoJSON(data, {
-      style: { color: '#06b6d4', weight: 2, opacity: 0.75 },
-      onEachFeature: (f, lyr) => {
-        lyr.bindTooltip(
-          `<div style="font-family:monospace;font-size:11px"><b style="color:#22d3ee">${f.properties.name || 'Cycling route'}</b></div>`,
-          { sticky: true, opacity: 0.97 }
-        );
-      },
-    });
-  }
-
-  if (key === 'corona') {
-    return L.geoJSON(data, {
-      style: feat => ({ color: STAGE_COLORS[(feat.properties.stage || 1) - 1] || '#f59e0b', weight: 3, opacity: 0.85 }),
-      onEachFeature: (f, lyr) => {
-        lyr.bindTooltip(
-          `<div style="font-family:monospace;font-size:11px"><b style="color:#fcd34d">${f.properties.name || `Etapa ${f.properties.stage}`}</b><br/><span style="color:#9ca3af">Corona de Llacs · Stage ${f.properties.stage}</span></div>`,
-          { sticky: true, opacity: 0.97 }
-        );
-      },
-    });
-  }
-
-  return L.geoJSON(data);
-}
-
-export default function TourismMapView() {
-  const mapRef         = useRef(null);
-  const instanceRef    = useRef(null);
-  const skiRendererRef = useRef(null);
-  const layersRef      = useRef({});
-
+export default function TourismMapView({ mapStyle = DEFAULT_MAP_STYLE }) {
+  const containerRef = useRef(null);
+  const dataRef      = useRef({});            // key → geojson
+  const visRef       = useRef({ ...INIT_VIS });
   const [vis, setVis] = useState(INIT_VIS);
 
-  useEffect(() => {
-    if (!mapRef.current || instanceRef.current) return;
+  const vy = (key) => (visRef.current[key] ? 'visible' : 'none');
 
-    const map = L.map(mapRef.current, {
-      center: [42.545709, 1.598780], zoom: 11,
-      zoomSnap: 0, zoomControl: false, attributionControl: false,
-      scrollWheelZoom: false, doubleClickZoom: false,
-      touchZoom: false, boxZoom: false, keyboard: false, dragging: false,
-    });
-    instanceRef.current = map;
-    map.fitBounds(PROJECTION_BOUNDS, { padding: [0, 0] });
-    map.on('resize', () => { map.invalidateSize(); map.fitBounds(PROJECTION_BOUNDS, { padding: [0, 0] }); });
+  const addKey = useCallback((map, key) => {
+    const data = dataRef.current[key];
+    if (!data) return;
+    const srcId = `tr-src-${key}`;
+    if (map.getSource(srcId)) return;
 
-    L.tileLayer(
-      'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-      { maxZoom: 18 }
-    ).addTo(map);
-    L.tileLayer(
-      'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
-      { maxZoom: 18, opacity: 0.6 }
-    ).addTo(map);
+    if (key === 'ski') {
+      const prepared = stripHoles(data);
+      prepared.features.forEach(f => {
+        const cfg = SKI_COLORS[f.properties?.name] || SKI_DEFAULT;
+        f.properties._fill = cfg.fill;
+        f.properties._stroke = cfg.stroke;
+      });
+      map.addSource(srcId, { type: 'geojson', data: prepared });
+      addDataLayer(map, { id: 'tr-ski-fill', type: 'fill', source: srcId, layout: { visibility: vy('ski') },
+        paint: { 'fill-color': ['get', '_fill'], 'fill-opacity': 0.72 } });
+      addDataLayer(map, { id: 'tr-ski-line', type: 'line', source: srcId, layout: { visibility: vy('ski') },
+        paint: { 'line-color': ['get', '_stroke'], 'line-width': 1, 'line-opacity': 0.6 } });
+      attachHoverPopup(map, 'tr-ski-fill', (f) => {
+        const p = f.properties || {};
+        return tip(`<b style="color:${p._fill}">${p.name}</b><br/>${p.pistes_km} km of pistes<br/>${p.min_alt}–${p.max_alt} m<br/><span style="color:#9ca3af">${p.sectors || ''}</span>`);
+      });
+      return;
+    }
 
-    addAndorraBoundary(map);
-    [
-      [42.694543, 1.393847], [42.697242, 1.801074],
-      [42.394176, 1.39849],  [42.396861, 1.803713],
-    ].forEach(([lat, lon]) => {
-      L.circleMarker([lat, lon], { radius: 5, fillColor: '#ff3333', color: '#ffffff', weight: 2, fillOpacity: 1 }).addTo(map);
-    });
+    if (key === 'peaks') {
+      const prepared = { ...data, features: data.features.map(f => ({
+        ...f, properties: { ...f.properties, _label: `▲\n${f.properties?.altitude ? `${f.properties.altitude}m` : ''}` },
+      })) };
+      map.addSource(srcId, { type: 'geojson', data: prepared });
+      addDataLayer(map, { id: 'tr-peaks-dot', type: 'circle', source: srcId, layout: { visibility: vy('peaks') },
+        paint: { 'circle-radius': 2.5, 'circle-color': '#ffffff', 'circle-opacity': 0.9 } });
+      addDataLayer(map, { id: 'tr-peaks-label', type: 'symbol', source: srcId,
+        layout: {
+          visibility: vy('peaks'),
+          'text-field': ['get', '_label'], 'text-size': 9.5, 'text-anchor': 'bottom',
+          'text-offset': [0, -0.2], 'text-allow-overlap': false, 'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Regular'],
+        },
+        paint: { 'text-color': '#e2e8f0', 'text-halo-color': 'rgba(0,0,0,0.85)', 'text-halo-width': 1.2 } });
+      attachHoverPopup(map, 'tr-peaks-dot', (f) => {
+        const p = f.properties || {};
+        return tip(`<b style="color:#d1d5db">${p.name || '—'}</b><br/>${p.altitude ? `${p.altitude} m` : ''}${p.refugi ? `<br/><span style="color:#fcd34d">${p.refugi}</span>` : ''}`);
+      });
+      return;
+    }
 
-    const files = [
-      { key: 'ski',         url: '/tourism_ski_areas.geojson' },
-      { key: 'peaks',       url: '/tourism_peaks.geojson' },
-      { key: 'refuges',     url: '/tourism_refuges.geojson' },
-      { key: 'attractions', url: '/tourism_attractions.geojson' },
-      { key: 'btt',         url: '/tourism_btt.geojson' },
-      { key: 'cycling',     url: '/tourism_cycling.geojson' },
-      { key: 'corona',      url: '/tourism_corona_llacs.geojson' },
-    ];
+    if (key === 'refuges' || key === 'attractions') {
+      const color  = key === 'refuges' ? 'rgba(180,83,9,0.9)' : 'rgba(109,40,217,0.88)';
+      const stroke = key === 'refuges' ? 'rgba(255,200,100,0.6)' : 'rgba(196,181,253,0.55)';
+      const lid = LAYER_IDS[key][0];
+      map.addSource(srcId, { type: 'geojson', data });
+      addDataLayer(map, { id: lid, type: 'circle', source: srcId, layout: { visibility: vy(key) },
+        paint: { 'circle-radius': 5, 'circle-color': color, 'circle-stroke-color': stroke, 'circle-stroke-width': 1.5 } });
+      attachHoverPopup(map, lid, (f) => {
+        const p = f.properties || {};
+        if (key === 'refuges') return tip(`<b style="color:#fcd34d">${p.name}</b><br/>${p.tipus || ''} ${p.altitude ? `· ${p.altitude} m` : ''}<br/>${p.calendari ? `<span style="color:#9ca3af">${p.calendari}</span>` : ''}`);
+        return tip(`<b style="color:#c4b5fd">${p.name}</b><br/><span style="color:#9ca3af">${p.parish || ''}</span>`);
+      });
+      return;
+    }
 
-    files.forEach(({ key, url }) => {
-      fetch(url)
-        .then(r => r.json())
-        .then(data => {
-          const layer = buildLayer(key, data, skiRendererRef);
-          layersRef.current[key] = layer;
-          if (INIT_VIS[key]) layer.addTo(map);
-          if (key === 'ski') {
-            requestAnimationFrame(() => {
-              const canvas = skiRendererRef.current?._container;
-              if (canvas) canvas.style.opacity = '0.72';
-            });
-          }
-        })
-        .catch(err => console.warn(`tourism ${key}:`, err));
-    });
+    if (key === 'btt' || key === 'cycling') {
+      const color = key === 'btt' ? '#f97316' : '#06b6d4';
+      const lid = LAYER_IDS[key][0];
+      map.addSource(srcId, { type: 'geojson', data });
+      addDataLayer(map, { id: lid, type: 'line', source: srcId, layout: { visibility: vy(key), 'line-cap': 'round', 'line-join': 'round' },
+        paint: { 'line-color': color, 'line-width': 2, 'line-opacity': 0.75 } });
+      attachHoverPopup(map, lid, (f) => tip(`<b style="color:${key === 'btt' ? '#fb923c' : '#22d3ee'}">${f.properties?.name || (key === 'btt' ? 'BTT trail' : 'Cycling route')}</b>`));
+      return;
+    }
 
-    return () => { map.remove(); instanceRef.current = null; };
+    if (key === 'corona') {
+      const prepared = { ...data, features: data.features.map(f => ({
+        ...f, properties: { ...f.properties, _color: STAGE_COLORS[((f.properties?.stage || 1) - 1)] || '#f59e0b' },
+      })) };
+      map.addSource(srcId, { type: 'geojson', data: prepared });
+      addDataLayer(map, { id: 'tr-corona', type: 'line', source: srcId, layout: { visibility: vy('corona'), 'line-cap': 'round', 'line-join': 'round' },
+        paint: { 'line-color': ['get', '_color'], 'line-width': 3, 'line-opacity': 0.85 } });
+      attachHoverPopup(map, 'tr-corona', (f) => {
+        const p = f.properties || {};
+        return tip(`<b style="color:#fcd34d">${p.name || `Etapa ${p.stage}`}</b><br/><span style="color:#9ca3af">Corona de Llacs · Stage ${p.stage}</span>`);
+      });
+    }
   }, []);
 
-  useEffect(() => {
-    const map = instanceRef.current;
-    if (!map) return;
-    Object.entries(vis).forEach(([key, show]) => {
-      const layer = layersRef.current[key];
-      if (!layer) return;
-      if (show) layer.addTo(map);
-      else      map.removeLayer(layer);
-    });
-  }, [vis]);
+  const addOverlays = useCallback((map) => {
+    Object.keys(dataRef.current).forEach(key => addKey(map, key));
+  }, [addKey]);
 
-  const toggle = key => setVis(v => ({ ...v, [key]: !v[key] }));
+  const { mapRef } = useLockedMapbox(containerRef, mapStyle, addOverlays);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    FILES.forEach(({ key, url }) => {
+      fetch(url, { signal: controller.signal })
+        .then(r => r.json())
+        .then(data => {
+          dataRef.current[key] = data;
+          whenStyleReady(mapRef.current, () => addKey(mapRef.current, key));
+        })
+        .catch(err => { if (err.name !== 'AbortError') console.warn(`tourism ${key}:`, err); });
+    });
+    return () => controller.abort();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const toggle = (key) => {
+    const next = { ...visRef.current, [key]: !visRef.current[key] };
+    visRef.current = next;
+    setVis(next);
+    const map = mapRef.current;
+    if (!map) return;
+    (LAYER_IDS[key] || []).forEach(lid => {
+      if (map.getLayer(lid)) map.setLayoutProperty(lid, 'visibility', next[key] ? 'visible' : 'none');
+    });
+  };
 
   return (
     <div style={{ position: 'relative', height: '100%' }}>
-
       {/* Controls pill */}
       <div style={{
         position: 'absolute', top: 12, left: '50%', transform: 'translateX(-50%)',
@@ -269,9 +208,7 @@ export default function TourismMapView() {
         ))}
       </div>
 
-      {/* Map */}
-      <div ref={mapRef} style={{ position: 'absolute', inset: 0, background: '#0d0d0d' }} />
-      <MapMask mapInstance={instanceRef} />
+      <div ref={containerRef} style={{ position: 'absolute', inset: 0, background: '#000' }} />
 
       {/* Legend */}
       <div className="acc-map-legend" style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 36, zIndex: 1000, flexWrap: 'nowrap', overflow: 'hidden', background: 'rgba(0,0,0,0.72)', backdropFilter: 'blur(6px)' }}>

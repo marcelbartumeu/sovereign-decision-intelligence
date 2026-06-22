@@ -10,14 +10,16 @@ once regardless of weight.
 import numpy as np
 from config import ACTIVE_CONFIG
 
-# Age group midpoints (used to derive a concrete age value from a group label)
-_AGE_MIDPOINTS = {
-    "0–14":  7,
-    "15–24": 20,
-    "25–39": 32,
-    "40–54": 47,
-    "55–64": 60,
-    "65+":   70,
+# Age group ranges (lo, hi). A concrete age is sampled WITHIN the band so that
+# each cohort keeps its real ages — critically, the 0–14 band stays 0–14 instead
+# of being floored to 15 (the V2.1 clip bug that eliminated all children).
+_AGE_RANGES = {
+    "0–14":  (0,  14),
+    "15–24": (15, 24),
+    "25–39": (25, 39),
+    "40–54": (40, 54),
+    "55–64": (55, 64),
+    "65+":   (65, 90),
 }
 
 # Typical years_in_andorra by nationality (sampled from these ranges)
@@ -85,11 +87,17 @@ def generate_seeds(n: int, rng_seed: int = 42) -> list[dict]:
 
 
 def _make_seed(nat: str, age_group: str, income: str, rng: np.random.Generator) -> dict:
-    midpoint = _AGE_MIDPOINTS.get(age_group, 35)
-    age = int(np.clip(rng.normal(midpoint, 4), 15, 85))
+    a_lo, a_hi = _AGE_RANGES.get(age_group, (25, 39))
+    midpoint   = (a_lo + a_hi) / 2.0
+    sigma      = max((a_hi - a_lo) / 4.0, 1.5)   # spread within the band
+    age = int(np.clip(rng.normal(midpoint, sigma), a_lo, a_hi))
 
     lo, hi = _YEARS_RANGES.get(nat, (1, 10))
     years = int(np.clip(rng.integers(lo, hi + 1), 0, age))
+
+    # Gender: ~50/50 with the slight male skew of Andorra's labour-migrant
+    # working-age cohort (SAIG 2023 sex ratio ≈ 1.02). Children ~51% male at birth.
+    gender = "male" if rng.random() < 0.51 else "female"
 
     return {
         "nationality":       nat,
@@ -97,5 +105,6 @@ def _make_seed(nat: str, age_group: str, income: str, rng: np.random.Generator) 
         "age_group":         age_group,
         "income_bracket":    income,
         "years_in_andorra":  years,
+        "gender":            gender,
         "occupation":        _occupation(nat, income, rng),
     }

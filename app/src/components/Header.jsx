@@ -26,7 +26,7 @@ export default function Header({
                 borderRadius: 5, padding: '1px 6px',
                 letterSpacing: '0.02em',
                 fontFamily: 'var(--font)',
-              }}>V1.9</span>
+              }}>V2.1</span>
             </div>
             <p>Advanced Scenario Modeling &amp; Impact Assessment</p>
             <button

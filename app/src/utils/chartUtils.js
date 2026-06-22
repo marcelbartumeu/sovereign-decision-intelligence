@@ -9,6 +9,11 @@ const SPAIN_TARGETS = {
   Emp: [61.1, 62.1, 63.2, 64.5, 66.2, 67.3, 65.8, 67.0, 68.6, 70.0, 71.4],
 };
 
+function dotEvery5(years, radius = 2.5
+) {
+  return years.map((y) => parseInt(y, 10) % 3 === 0 ? radius : 0);
+}
+
 export function getChartType(chartType) {
   const mapping = { area: 'line', bar: 'bar', pie: 'pie', radial: 'doughnut', line: 'line', pentagon: 'radar' };
   return mapping[chartType] || 'line';
@@ -63,18 +68,18 @@ export function getChartData(data, kpi, activeScenario) {
       const last5Years = years.slice(-5);
       const last5Values = values.slice(-5);
       const last5Targets = targets.slice(-5);
-      const pentagonDatasets = [{ label: 'Actual', data: last5Values, borderColor: kpi.color, backgroundColor: kpi.color + '20', borderWidth: 2, pointRadius: 4, pointBackgroundColor: kpi.color }];
+      const pentagonDatasets = [{ label: 'Actual', data: last5Values, borderColor: kpi.color, backgroundColor: kpi.color + '20', borderWidth: 2, pointRadius: 0, pointHoverRadius: 4, pointBackgroundColor: kpi.color }];
       if (kpi.title === 'Employment Rate' && activeScenario === 0) {
-        pentagonDatasets.push({ label: 'Spain', data: last5Targets, borderColor: kpi.secondaryColor, backgroundColor: kpi.secondaryColor + '10', borderWidth: 2, borderDash: [5, 5], pointRadius: 4, pointBackgroundColor: kpi.secondaryColor });
+        pentagonDatasets.push({ label: 'Spain', data: last5Targets, borderColor: kpi.secondaryColor, backgroundColor: kpi.secondaryColor + '10', borderWidth: 2, borderDash: [5, 5], pointRadius: 0, pointHoverRadius: 4, pointBackgroundColor: kpi.secondaryColor });
       }
       return { labels: last5Years, datasets: pentagonDatasets };
     }
     case 'bar':
       return { labels: years, datasets: [{ label: 'Value', data: values, backgroundColor: kpi.color + '80', borderColor: kpi.color, borderWidth: 2, borderRadius: 4, borderSkipped: false }] };
     case 'area': {
-      const areaDatasets = [{ label: 'Actual', data: values, borderColor: kpi.color, backgroundColor: 'transparent', borderWidth: 2, fill: false, tension: 0.4, pointRadius: 4 }];
+      const areaDatasets = [{ label: 'Actual', data: values, borderColor: kpi.color, backgroundColor: 'transparent', borderWidth: 3, fill: false, tension: 0.4, pointRadius: dotEvery5(years), pointHoverRadius: 5, pointBackgroundColor: kpi.color }];
       if (kpi.title === 'GDP per Capita' && activeScenario === 0) {
-        areaDatasets.push({ label: 'Spain', data: targets, borderColor: kpi.secondaryColor, backgroundColor: 'transparent', borderWidth: 2, borderDash: [5, 5], fill: false, tension: 0.4, pointRadius: 4 });
+        areaDatasets.push({ label: 'Spain', data: targets, borderColor: kpi.secondaryColor, backgroundColor: 'transparent', borderWidth: 3, borderDash: [5, 5], fill: false, tension: 0.4, pointRadius: dotEvery5(years), pointHoverRadius: 5, pointBackgroundColor: kpi.secondaryColor });
       }
       return { labels: years, datasets: areaDatasets };
     }
@@ -86,10 +91,10 @@ export function getChartData(data, kpi, activeScenario) {
         borderColor: kpi.color,
         backgroundColor: isEmployment ? kpi.color + '18' : 'transparent',
         fill: isEmployment,
-        borderWidth: isEmployment ? 2.5 : 2,
-        tension: 0.35,
-        pointRadius: isEmployment ? 5 : 4,
-        pointHoverRadius: isEmployment ? 7 : 5,
+        borderWidth: isEmployment ? 3.5 : 3,
+        tension: 0.4,
+        pointRadius: dotEvery5(years),
+        pointHoverRadius: 5,
         pointBackgroundColor: kpi.color,
         pointBorderColor: '#1a1a1a',
         pointBorderWidth: 1,
@@ -100,11 +105,11 @@ export function getChartData(data, kpi, activeScenario) {
           data: targets,
           borderColor: kpi.secondaryColor,
           backgroundColor: 'transparent',
-          borderWidth: 2,
+          borderWidth: 3,
           borderDash: [5, 5],
-          tension: 0.35,
-          pointRadius: 4,
-          pointHoverRadius: 6,
+          tension: 0.4,
+          pointRadius: dotEvery5(years),
+          pointHoverRadius: 5,
           pointBackgroundColor: kpi.secondaryColor,
         });
       }
@@ -121,6 +126,7 @@ export function getChartOptions(chartType, kpi, dataForScale) {
     plugins: {
       legend: { display: chartType === 'pie' || chartType === 'line', position: 'bottom', labels: { color: '#888', font: { size: 10 }, usePointStyle: true, padding: 15 } },
       tooltip: { backgroundColor: '#1a1a1a', titleColor: '#fff', bodyColor: '#fff', borderColor: '#333', borderWidth: 1, cornerRadius: 8 },
+      datalabels: false,
     },
     interaction: { mode: (chartType === 'pie' || chartType === 'radial') ? 'nearest' : 'index', intersect: false, axis: (chartType === 'pie' || chartType === 'radial' || chartType === 'pentagon') ? undefined : 'x' },
   };
@@ -155,8 +161,12 @@ export function getChartOptions(chartType, kpi, dataForScale) {
     if (values.length > 0) {
       const minV = Math.min(...values);
       const maxV = Math.max(...values);
-      const padding = (maxV - minV) * 0.1 || (minV || 1) * 0.05;
-      suggested = { suggestedMin: Math.max(0, minV - padding), suggestedMax: maxV + padding };
+      const padding = (maxV - minV) * 0.15 || (maxV || 1) * 0.1;
+      if (chartType === 'bar') {
+        suggested = { suggestedMin: 0, suggestedMax: maxV + padding };
+      } else {
+        suggested = { suggestedMin: Math.max(0, minV - padding), suggestedMax: maxV + padding };
+      }
     }
   }
   const scales = {
@@ -217,10 +227,11 @@ export function buildOverlayDataForKpi(kpiIndex, activeTab, overlayEnabled, getK
       data,
       borderColor: cfg?.color ?? '#888',
       backgroundColor: 'transparent',
-      borderWidth: 2,
+      borderWidth: 3,
       fill: false,
       tension: 0.4,
-      pointRadius: 3,
+      pointRadius: dotEvery5(labels),
+      pointHoverRadius: 4,
       pointBackgroundColor: cfg?.color ?? '#888',
     });
   }

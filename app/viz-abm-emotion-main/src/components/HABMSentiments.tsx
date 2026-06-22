@@ -110,13 +110,13 @@ type EkmanEmotion = typeof EKMAN_EMOTIONS[number];
 
 // Define emotion colors — must stay in sync with EKMAN_COLORS in AgentAnalyticsView.tsx
 const emotionColors = {
-  ANGER:    new THREE.Color('#f87171'),  // rose
-  CONTEMPT: new THREE.Color('#c084fc'),  // violet
-  DISGUST:  new THREE.Color('#fbbf24'),  // amber
-  ENJOYMENT:new THREE.Color('#34d399'),  // emerald
-  FEAR:     new THREE.Color('#fb923c'),  // amber-orange
-  SADNESS:  new THREE.Color('#60a5fa'),  // sky blue
-  SURPRISE: new THREE.Color('#f472b6'),  // pink
+  ANGER:    new THREE.Color('#FF453A'),  // sys-red
+  CONTEMPT: new THREE.Color('#BF5AF2'),  // sys-purple
+  DISGUST:  new THREE.Color('#FFD60A'),  // sys-yellow
+  ENJOYMENT:new THREE.Color('#30D158'),  // sys-green
+  FEAR:     new THREE.Color('#FF9F0A'),  // sys-orange
+  SADNESS:  new THREE.Color('#0A84FF'),  // sys-blue
+  SURPRISE: new THREE.Color('#64D2FF'),  // sys-teal
 };
 
 // Define cluster centers - fixed positions for stability
@@ -129,6 +129,14 @@ const clusterCenters = {
   SADNESS: new THREE.Vector3(0, -8, 0),
   SURPRISE: new THREE.Vector3(0, 0, 8)
 };
+
+// Placeholder agents so all 7 emotion clusters populate when no live simulation
+// mood data is present (frontend placeholder for visualisation).
+const PLACEHOLDER_AGENTS = Array.from({ length: 350 }, (_, i) => {
+  const dom = i % 7;
+  const mood = Array.from({ length: 7 }, (_, j) => (j === dom ? 0.6 + Math.random() * 0.4 : Math.random() * 0.25));
+  return { agent_id: `PH-${i}`, mood_vector: [mood] };
+});
 
 // Interface for tracking particle positions and movement
 interface ParticleState {
@@ -377,8 +385,11 @@ function HABMSentiments({ agents = [] }: HABMSentimentsProps) {
 
   // Update particle targets based on simulation data
   const updateParticleTargets = useCallback(() => {
-    if (!state.simulationData?.agents || state.simulationData.agents.length === 0) return;
-    
+    const simAgents = (state.simulationData?.agents && state.simulationData.agents.length)
+      ? state.simulationData.agents
+      : PLACEHOLDER_AGENTS;
+    const step = (state as any).currentStep ?? 0;
+
     // Track which agent IDs we've processed
     const processedIds = new Set<string | number>();
     
@@ -396,9 +407,9 @@ function HABMSentiments({ agents = [] }: HABMSentimentsProps) {
     let totalAgents = 0;
     
     // Update existing particles and create new ones as needed
-    state.simulationData.agents.forEach(agent => {
+    simAgents.forEach(agent => {
       // Get current mood vector based on the current step
-      const currentStep = Math.min(state.currentStep, agent.mood_vector.length - 1);
+      const currentStep = Math.min(step, agent.mood_vector.length - 1);
       const moodVector = agent.mood_vector[currentStep];
       
       if (!moodVector) return; // Skip if no mood data available
@@ -656,10 +667,11 @@ function HABMSentiments({ agents = [] }: HABMSentimentsProps) {
     };
   }, [initScene, animate, handleResize]);
 
-  // Update visualization when simulation data or step changes, but only every 10 steps
+  // Update visualization when simulation data or step changes (every 10 steps),
+  // OR once on mount when there is no live data (placeholder mode).
   useEffect(() => {
-    // Check if simulationData exists and currentStep is a multiple of 10
-    if (state.simulationData && state.currentStep % 10 === 0) {
+    const noLive = !(state as any).simulationData;
+    if (noLive || ((state as any).currentStep ?? 0) % 10 === 0) {
       updateParticleTargets();
     }
   }, [state.simulationData, state.currentStep, updateParticleTargets]);

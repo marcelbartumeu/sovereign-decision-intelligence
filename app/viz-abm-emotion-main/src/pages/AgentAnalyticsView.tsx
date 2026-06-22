@@ -21,6 +21,7 @@ import { ScatterplotLayer, BitmapLayer, PathLayer } from '@deck.gl/layers';
 import { TileLayer } from '@deck.gl/geo-layers';
 import type { MapViewState } from '@deck.gl/core';
 import { useSharedState } from '../services/SharedStateContext';
+import { AgentProfile, AgentJourney, EmotionState, PopulationDashboards } from './AgentAnalyticsPanels';
 import HABMSentiments from '../components/HABMSentiments';
 import AgentVisualizationToggle from '../components/AgentVisualizationToggle';
 import RealTimeChat from '../components/RealTimeChat';
@@ -30,13 +31,13 @@ const DeckGLAny: any = DeckGL;
 // ── Constants ─────────────────────────────────────────────────────────────────
 
 const EKMAN_COLORS: Record<string, string> = {
-  ANGER:    '#f87171',  // rose
-  CONTEMPT: '#c084fc',  // violet
-  DISGUST:  '#fbbf24',  // amber
-  ENJOYMENT:'#34d399',  // emerald
-  FEAR:     '#fb923c',  // amber-orange
-  SADNESS:  '#60a5fa',  // sky blue
-  SURPRISE: '#f472b6',  // pink
+  ANGER:    '#FF453A',  // sys-red
+  CONTEMPT: '#BF5AF2',  // sys-purple
+  DISGUST:  '#FFD60A',  // sys-yellow
+  ENJOYMENT:'#30D158',  // sys-green
+  FEAR:     '#FF9F0A',  // sys-orange
+  SADNESS:  '#0A84FF',  // sys-blue
+  SURPRISE: '#64D2FF',  // sys-teal
 };
 
 const EKMAN_ORDER = ['ANGER','CONTEMPT','DISGUST','ENJOYMENT','FEAR','SADNESS','SURPRISE'];
@@ -128,20 +129,24 @@ function getFakeOccupation(agentId: string): string {
 // ── Design tokens (Apple dark mode) ──────────────────────────────────────────
 
 const BG    = '#000000';
+const BG_GRADIENT = 'linear-gradient(180deg, #000000 0%, #1D1D22 100%)'; // matches main app --bg-gradient (KPI grid)
 const SURF  = '#1c1c1e';
 const SURF2 = '#2c2c2e';
 const BDR   = 'rgba(255,255,255,0.08)';
 const LBL   = 'rgba(255,255,255,0.32)';
+const TXT2  = 'rgba(255,255,255,0.55)';
 const TXT   = 'rgba(255,255,255,0.86)';
 const ACT   = '#ffffff';
-const FONT  = `-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Inter', 'Helvetica Neue', Arial, sans-serif`;
+const FONT  = `'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif`;
+const TITLE = `'Syne', 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif`;
 
 const Wrapper = styled.div`
   display: flex;
   height: 100vh;
   width: 100%;
   overflow: hidden;
-  background: ${BG};
+  background: ${BG_GRADIENT};
+  background-attachment: fixed;
   font-family: ${FONT};
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -155,7 +160,7 @@ const LeftPane = styled.div`
   flex-direction: column;
   height: 100%;
   overflow: hidden;
-  background: ${BG};
+  background: transparent;
   font-family: ${FONT};
   color: ${TXT};
   border-right: 0.5px solid ${BDR};
@@ -168,8 +173,9 @@ const LeftHeader = styled.div`
   height: 44px;
   border-bottom: 0.5px solid ${BDR};
   flex-shrink: 0;
-  font-size: 12px;
-  font-weight: 500;
+  font-family: ${TITLE};
+  font-size: 13px;
+  font-weight: 600;
   letter-spacing: 0;
   color: ${TXT};
   gap: 1rem;
@@ -231,7 +237,7 @@ const RightPane = styled.div`
   flex-direction: column;
   height: 100%;
   overflow: hidden;
-  background: ${BG};
+  background: transparent;
   font-family: ${FONT};
   color: ${TXT};
 `;
@@ -244,8 +250,9 @@ const RightHeader = styled.div`
   height: 44px;
   border-bottom: 0.5px solid ${BDR};
   flex-shrink: 0;
-  font-size: 12px;
-  font-weight: 500;
+  font-family: ${TITLE};
+  font-size: 13px;
+  font-weight: 600;
   letter-spacing: 0;
   color: ${TXT};
 `;
@@ -266,7 +273,7 @@ const ListSidebar = styled.div`
   flex-direction: column;
   border-right: 0.5px solid ${BDR};
   overflow: hidden;
-  background: ${BG};
+  background: transparent;
 `;
 
 const SidebarHeader = styled.div`
@@ -344,7 +351,7 @@ const DetailPane = styled.div`
   flex-direction: column;
   overflow: hidden;
   min-width: 0;
-  background: ${BG};
+  background: transparent;
 `;
 
 const DetailScroll = styled.div`
@@ -352,29 +359,50 @@ const DetailScroll = styled.div`
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 0.5px;
-  background: ${BDR};
+  gap: 1rem;
+  padding: 1rem;
+  background: transparent;
   scrollbar-width: thin;
   scrollbar-color: rgba(255,255,255,0.1) transparent;
 `;
 
+// Liquid glass on the KPI card's exact fill (rgba(28,28,30,0.82)) — same color
+// and opacity as the dashboard KPI cards, with a bright specular top edge, heavy
+// blur + saturation, and layered shadows for depth.
 const Block = styled.div`
-  background: ${BG};
-  padding: 12px 16px;
+  background: rgba(28,28,30,0.82);
+  border: 0.5px solid rgba(255,255,255,0.12);
+  border-radius: var(--r-lg, 16px);
+  padding: 1.25rem;
+  box-shadow:
+    0 1px 2px rgba(0,0,0,0.5),
+    0 12px 32px rgba(0,0,0,0.28),
+    inset 0 0.5px 0 rgba(255,255,255,0.18);
+  backdrop-filter: blur(30px) saturate(1.8);
+  -webkit-backdrop-filter: blur(30px) saturate(1.8);
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  gap: 0.45rem;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  &:hover {
+    border-color: rgba(255,255,255,0.20);
+    box-shadow:
+      0 1px 2px rgba(0,0,0,0.5),
+      0 16px 40px rgba(0,0,0,0.32),
+      inset 0 0.5px 0 rgba(255,255,255,0.24);
+  }
 `;
 
 const BlockTitle = styled.div`
-  font-size: 11px;
+  font-family: ${TITLE};
+  font-size: 12px;
   font-weight: 500;
   letter-spacing: 0;
-  color: ${LBL};
-  border-bottom: 0.5px solid ${BDR};
-  padding-bottom: 6px;
-  margin-bottom: 2px;
+  color: ${TXT2};
+  margin-bottom: 4px;
   flex-shrink: 0;
+  display: flex;
+  align-items: baseline;
 `;
 
 const ProfileRow = styled.div`
@@ -598,42 +626,115 @@ function FollowMap() {
 
 // ── Left panel ────────────────────────────────────────────────────────────────
 
-function VisualizationLeft() {
-  const { state } = useSharedState();
-  const [currentEmotion, setCurrentEmotion] = useState('happy');
+// ── LEFT: who they are (agent selector + profile) ───────────────────────────
 
-  const followedAgent = useMemo(() =>
+function AgentProfilePane() {
+  const { state, setFollowedAgent } = useSharedState();
+  const agents = state.agents;
+
+  const [encoderHoverIdx, setEncoderHoverIdx] = useState(-1);
+  const agentListRef = useRef<HTMLDivElement>(null);
+  const handleFollow = (id: string) => setFollowedAgent(state.followedAgentId === id ? null : id);
+
+  // sync hover/select coming from the main-app map iframe
+  const msgHandlerRef = useRef<((e: MessageEvent) => void) | null>(null);
+  msgHandlerRef.current = (e: MessageEvent) => {
+    if (!agents.length) return;
+    const wrap = (n: number) => ((n % agents.length) + agents.length) % agents.length;
+    if (e.data?.type === 'AGENT_HOVER') setEncoderHoverIdx(wrap(e.data.pos as number));
+    else if (e.data?.type === 'AGENT_SELECT') { setEncoderHoverIdx(-1); handleFollow(agents[wrap(e.data.pos as number)].id); }
+  };
+  useEffect(() => {
+    const handler = (e: MessageEvent) => msgHandlerRef.current?.(e);
+    window.addEventListener('message', handler);
+    return () => window.removeEventListener('message', handler);
+  }, []);
+  useEffect(() => {
+    if (encoderHoverIdx < 0 || !agentListRef.current) return;
+    const cards = agentListRef.current.querySelectorAll('[data-agent-card]');
+    (cards[encoderHoverIdx] as HTMLElement | undefined)?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  }, [encoderHoverIdx]);
+
+  const f = useMemo(() =>
+    state.followedAgentId ? agents.find(a => a.id === state.followedAgentId) ?? null : null,
+  [state.followedAgentId, agents]);
+  const profile = f ? state.profiles?.get(f.id) : null;
+  const eColor = f ? (EKMAN_COLORS[f.emotion] || '#9ca3af') : ACT;
+  const pickRandom = () => { if (agents.length) setFollowedAgent(agents[Math.floor(Math.random() * agents.length)].id); };
+
+  return (
+    <LeftPane>
+      <LeftHeader>
+        Agent Profile
+        {f && <span style={{ color: eColor, fontWeight: 500 }}>→ {getFakeName(f.id)}</span>}
+        <span style={{ marginLeft: 'auto', color: LBL, fontSize: 11 }}>{agents.length.toLocaleString()} agents</span>
+      </LeftHeader>
+
+      <RightBody>
+        <ListSidebar>
+          <SidebarHeader>Select Agent</SidebarHeader>
+          {!agents.length ? (
+            <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: LBL, fontSize: '11px', padding: '8px' }}>Loading…</div>
+          ) : (
+            <AgentList ref={agentListRef}>
+              {agents.slice(0, 300).map((agent, listIdx) => {
+                const aColor   = EKMAN_COLORS[agent.emotion] ?? '#9ca3af';
+                const selected = state.followedAgentId === agent.id;
+                const encHover = encoderHoverIdx === listIdx;
+                return (
+                  <AgentCard key={agent.id} $selected={selected} $color={aColor} $hovered={encHover} data-agent-card onClick={() => handleFollow(agent.id)}>
+                    <AgentDot $color={aColor} />
+                    <span style={{ flex: 1, fontSize: '11px', color: selected ? '#e5e7eb' : '#9ca3af', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{getFakeName(agent.id)}</span>
+                    <span style={{ fontSize: '10px', color: aColor, flexShrink: 0 }}>{agent.emotion.slice(0, 3)}</span>
+                  </AgentCard>
+                );
+              })}
+            </AgentList>
+          )}
+          <div style={{ padding: '8px 10px', borderTop: `0.5px solid ${BDR}`, flexShrink: 0 }}>
+            <SelectBtn onClick={pickRandom} style={{ width: '100%' }}>Random agent</SelectBtn>
+          </div>
+        </ListSidebar>
+
+        <DetailPane>
+          <DetailScroll>
+            {!f ? (
+              <Block><PopulationDashboards agg={state.aggregates} /></Block>
+            ) : (
+              <Block>
+                <BlockTitle>
+                  {getFakeName(f.id)}
+                  <span style={{ marginLeft: 'auto', fontSize: 10, color: LBL, fontWeight: 400 }}>{f.id}</span>
+                </BlockTitle>
+                {state.profilesLoading && !state.profiles
+                  ? <div style={{ color: LBL, fontSize: 11, padding: 12 }}>Loading profile…</div>
+                  : <AgentProfile profile={profile} accent={eColor} />}
+                <ReleaseBtn onClick={() => setFollowedAgent(null)}>Release agent</ReleaseBtn>
+              </Block>
+            )}
+          </DetailScroll>
+        </DetailPane>
+      </RightBody>
+    </LeftPane>
+  );
+}
+
+// ── Right panel ───────────────────────────────────────────────────────────────
+
+// ── RIGHT: what they're living (map + journey + emotion + conversations) ────
+
+function AgentLifePane() {
+  const { state, setFollowedAgent } = useSharedState();
+  const t = state.currentTimeMin;
+
+  const f = useMemo(() =>
     state.followedAgentId ? state.agents.find(a => a.id === state.followedAgentId) ?? null : null,
   [state.followedAgentId, state.agents]);
+  const profile = f ? state.profiles?.get(f.id) : null;
+  const emotion = f?.emotion ?? null;
+  const eColor  = emotion ? (EKMAN_COLORS[emotion] || '#9ca3af') : '#9ca3af';
 
-  const displayEmotion = followedAgent?.emotion ?? 'ENJOYMENT';
-  const followedColor  = EKMAN_COLORS[displayEmotion] ?? '#9ca3af';
-
-  // Update face video emotion when followed agent's dominant emotion changes
-  useEffect(() => {
-    if (!followedAgent) return;
-    const e = followedAgent.emotion;
-    const mapped = e === 'ENJOYMENT' || e === 'SURPRISE' ? 'happy'
-      : e === 'ANGER' || e === 'FEAR' || e === 'DISGUST' ? 'angry'
-      : 'sad';
-    setCurrentEmotion(mapped);
-  }, [followedAgent?.emotion]);
-
-  const videoPath = useMemo(() => {
-    const agentId = followedAgent?.id || 'Carlos';
-    return `/andorra/faces/${agentId}/${currentEmotion}.mp4`;
-  }, [currentEmotion, followedAgent]);
-
-  const agentDetails = useMemo(() => {
-    if (!followedAgent) return { id: 'None', age: '—', personality: '—', occupation: '—' };
-    return {
-      id:          followedAgent.id,
-      age:         getFakeAge(followedAgent.id),
-      personality: getFakePersonality(followedAgent.id),
-      occupation:  getFakeOccupation(followedAgent.id),
-    };
-  }, [followedAgent]);
-
+  // Population emotion mapping for the existing 7-shape Ekman cluster viz.
   const habmAgents = useMemo(() =>
     state.agents.slice(0, 500).map(a => ({
       id: a.id,
@@ -647,229 +748,64 @@ function VisualizationLeft() {
     })),
   [state.agents]);
 
-  const fakeName = followedAgent ? getFakeName(followedAgent.id) : null;
-
-  return (
-    <LeftPane>
-      <LeftHeader>
-        Agent Analytics
-        {fakeName && <span style={{ color: followedColor, fontWeight: 500 }}>→ {fakeName}</span>}
-        {followedAgent && <span style={{ color: followedColor, marginLeft: 'auto', fontSize: 11 }}>{displayEmotion}</span>}
-      </LeftHeader>
-
-      <TopContainer>
-        <LeftPanel>
-          <PanelLabel>Agent Profile</PanelLabel>
-          <InfoRow>
-            <span>NAME</span>
-            <span style={{ color: followedColor || '#e5e7eb' }}>{fakeName ?? '—'}</span>
-          </InfoRow>
-          <InfoRow><span>ID</span><span>{agentDetails.id}</span></InfoRow>
-          <InfoRow><span>AGE</span><span>{agentDetails.age}</span></InfoRow>
-          <InfoRow><span>PERSONALITY</span><span>{agentDetails.personality}</span></InfoRow>
-          <InfoRow><span>OCCUPATION</span><span>{agentDetails.occupation}</span></InfoRow>
-          {followedAgent && (
-            <>
-              <InfoRow><span>NATIONALITY</span><span>{followedAgent.nat}</span></InfoRow>
-              <InfoRow><span>INCOME</span><span>{followedAgent.inc}</span></InfoRow>
-              <InfoRow>
-                <span>EMOTION</span>
-                <span style={{ color: followedColor }}>{displayEmotion}</span>
-              </InfoRow>
-            </>
-          )}
-        </LeftPanel>
-        <AgentVisualizationToggle
-          videoPath={videoPath}
-          emotion={currentEmotion}
-          moodVector={undefined}
-        />
-      </TopContainer>
-
-      <BottomContainer>
-        <RealTimeChat />
-        <LeftPanel>
-          <PanelLabel>Population Emotion Distribution</PanelLabel>
-          <div style={{ flex: 1, minHeight: 0, overflow: 'hidden' }}>
-            <HABMSentiments agents={habmAgents} />
-          </div>
-        </LeftPanel>
-      </BottomContainer>
-    </LeftPane>
-  );
-}
-
-// ── Right panel ───────────────────────────────────────────────────────────────
-
-function FollowAgentRight() {
-  const { state, setFollowedAgent } = useSharedState();
-  const agents = state.agents;
-  const t      = state.currentTimeMin;
-
-  const [encoderHoverIdx, setEncoderHoverIdx] = useState(-1);
-  const agentListRef = useRef<HTMLDivElement>(null);
-
-  const handleFollow = (agentId: string) => {
-    setFollowedAgent(state.followedAgentId === agentId ? null : agentId);
-  };
-
-  const msgHandlerRef = useRef<((e: MessageEvent) => void) | null>(null);
-  msgHandlerRef.current = (e: MessageEvent) => {
-    if (!agents.length) return;
-    if (e.data?.type === 'AGENT_HOVER') {
-      const idx = ((e.data.pos as number % agents.length) + agents.length) % agents.length;
-      setEncoderHoverIdx(idx);
-    } else if (e.data?.type === 'AGENT_SELECT') {
-      const idx = ((e.data.pos as number % agents.length) + agents.length) % agents.length;
-      setEncoderHoverIdx(-1);
-      handleFollow(agents[idx].id);
-    }
-  };
-
-  useEffect(() => {
-    const handler = (e: MessageEvent) => msgHandlerRef.current?.(e);
-    window.addEventListener('message', handler);
-    return () => window.removeEventListener('message', handler);
-  }, []);
-
-  useEffect(() => {
-    if (encoderHoverIdx < 0 || !agentListRef.current) return;
-    const cards = agentListRef.current.querySelectorAll('[data-agent-card]');
-    (cards[encoderHoverIdx] as HTMLElement | undefined)?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-  }, [encoderHoverIdx]);
-
-  const followedAgent = useMemo(() =>
-    state.followedAgentId ? agents.find(a => a.id === state.followedAgentId) ?? null : null,
-  [state.followedAgentId, agents]);
-
   const pathProgress = useMemo(() => {
-    if (!followedAgent) return 0;
-    const tStart = followedAgent.ts[0] ?? 0;
-    const tEnd   = followedAgent.ts[followedAgent.ts.length - 1] ?? 1440;
-    return Math.min(1, Math.max(0, (t - tStart) / (tEnd - tStart || 1)));
-  }, [followedAgent, t]);
-
-  const timeStr = useMemo(() => {
-    const h = Math.floor(t / 60).toString().padStart(2, '0');
-    const m = Math.floor(t % 60).toString().padStart(2, '0');
-    return `${h}:${m}`;
-  }, [t]);
-
-  const pickRandom = () => {
-    if (!agents.length) return;
-    setFollowedAgent(agents[Math.floor(Math.random() * agents.length)].id);
-  };
-
-  const f            = followedAgent;
-  const currentEkman = f?.emotion ?? null;
-  const emotionColor = currentEkman ? (EKMAN_COLORS[currentEkman] || '#9ca3af') : '#9ca3af';
+    if (!f) return 0;
+    const s = f.ts[0] ?? 0, e = f.ts[f.ts.length - 1] ?? 1440;
+    return Math.min(1, Math.max(0, (t - s) / (e - s || 1)));
+  }, [f, t]);
+  const timeStr = `${Math.floor(t / 60).toString().padStart(2, '0')}:${Math.floor(t % 60).toString().padStart(2, '0')}`;
 
   return (
     <RightPane>
       <RightHeader>
-        Follow Agent
-        {f && <span style={{ color: emotionColor, fontWeight: 500 }}>→ {f.id}</span>}
-        <span style={{ marginLeft: 'auto', color: LBL, fontSize: 11 }}>{agents.length.toLocaleString()} agents</span>
+        Daily life &amp; state
+        {f
+          ? <span style={{ marginLeft: 'auto', color: eColor, fontWeight: 500 }}>{emotion} · {timeStr}</span>
+          : <span style={{ marginLeft: 'auto', color: LBL, fontSize: 11 }}>{timeStr}</span>}
       </RightHeader>
 
-      <RightBody>
-        {/* ── Agent list sidebar ── */}
-        <ListSidebar>
-          <SidebarHeader>Select Agent</SidebarHeader>
-          {!agents.length ? (
-            <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: LBL, fontSize: '11px', padding: '8px' }}>
-              Loading…
-            </div>
-          ) : (
-            <AgentList ref={agentListRef}>
-              {agents.slice(0, 300).map((agent, listIdx) => {
-                const aColor   = EKMAN_COLORS[agent.emotion] ?? '#9ca3af';
-                const selected = state.followedAgentId === agent.id;
-                const encHover = encoderHoverIdx === listIdx;
-                return (
-                  <AgentCard key={agent.id} $selected={selected} $color={aColor} $hovered={encHover}
-                    data-agent-card
-                    onClick={() => handleFollow(agent.id)}
-                  >
-                    <AgentDot $color={aColor} />
-                    <span style={{ flex: 1, fontSize: '11px', color: selected ? '#e5e7eb' : '#9ca3af', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                      {getFakeName(agent.id)}
-                    </span>
-                    <span style={{ fontSize: '10px', color: aColor, flexShrink: 0 }}>{agent.emotion.slice(0, 3)}</span>
-                  </AgentCard>
-                );
-              })}
-            </AgentList>
-          )}
-          <div style={{ padding: '8px 10px', borderTop: `0.5px solid ${BDR}`, flexShrink: 0, display: 'flex', flexDirection: 'column', gap: 6 }}>
-            <div style={{ fontSize: '9px', color: LBL, letterSpacing: '0.04em', textTransform: 'uppercase', marginBottom: 2 }}>Emotion</div>
-            {[
-              { color: '#34d399', label: 'ENJOYMENT' },
-              { color: '#f87171', label: 'ANGER' },
-              { color: '#fb923c', label: 'FEAR' },
-              { color: '#60a5fa', label: 'SADNESS' },
-              { color: '#c084fc', label: 'CONTEMPT' },
-              { color: '#fbbf24', label: 'DISGUST' },
-              { color: '#22d3ee', label: 'SURPRISE' },
-            ].map(({ color, label }) => (
-              <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                <div style={{ width: 7, height: 7, borderRadius: '50%', background: color, flexShrink: 0 }} />
-                <span style={{ fontSize: '9px', color: LBL, letterSpacing: '0.06em' }}>{label}</span>
-              </div>
-            ))}
-            <div style={{ fontSize: '10px', color: LBL, marginTop: 3 }}>{agents.length.toLocaleString()} agents</div>
-          </div>
-        </ListSidebar>
-
-        {/* ── Detail pane ── */}
-        <DetailPane>
+      {!f ? (
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 12, color: LBL, fontSize: 12, textAlign: 'center', padding: 20 }}>
+          <div style={{ fontSize: '1.4rem', opacity: 0.15 }}>◎</div>
+          <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)' }}>No agent selected</div>
+          <div style={{ maxWidth: 220, lineHeight: 1.7 }}>Select an agent on the left to follow their day, conversations and emotional state.</div>
+        </div>
+      ) : (
+        <DetailScroll>
+          {/* Movement map */}
           <FollowMap />
-          {!f ? (
-            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 12, color: LBL, fontSize: '12px', letterSpacing: '0.06em', textAlign: 'center', padding: '20px' }}>
-              <div style={{ fontSize: '1.4rem', opacity: 0.15 }}>◎</div>
-              <div style={{ fontSize: 13, fontWeight: 500, color: 'rgba(255,255,255,0.5)' }}>No agent selected</div>
-              <div style={{ color: LBL, fontSize: '11px', maxWidth: 200, lineHeight: 1.7 }}>
-                Click an agent in the list to begin tracking
-              </div>
-              <SelectBtn onClick={pickRandom}>Random agent</SelectBtn>
+
+          {/* Day progress */}
+          <Block>
+            <div style={{ fontSize: 10, color: LBL, letterSpacing: '0.04em', textTransform: 'uppercase', marginBottom: 4 }}>Day progress · {timeStr}</div>
+            <div style={{ height: 3, borderRadius: 999, background: 'rgba(255,255,255,0.08)', overflow: 'hidden' }}>
+              <div style={{ height: '100%', borderRadius: 999, background: eColor, width: `${(pathProgress * 100).toFixed(1)}%`, transition: 'width 0.3s ease' }} />
             </div>
-          ) : (
-            <DetailScroll>
-              <Block>
-                <BlockTitle>
-                  Followed Agent
-                  <span style={{ marginLeft: 8, color: emotionColor, fontWeight: 700 }}>{getFakeName(f.id)}</span>
-                </BlockTitle>
-                <ProfileRow><span>NAME</span><span style={{ color: '#e5e7eb' }}>{getFakeName(f.id)}</span></ProfileRow>
-                <ProfileRow><span>AGE</span><span>{getFakeAge(f.id)}</span></ProfileRow>
-                <ProfileRow><span>PERSONALITY</span><span>{getFakePersonality(f.id)}</span></ProfileRow>
-                <ProfileRow><span>OCCUPATION</span><span>{getFakeOccupation(f.id)}</span></ProfileRow>
-                <ProfileRow><span>NATIONALITY</span><span>{f.nat}</span></ProfileRow>
-                <ProfileRow><span>INCOME</span><span>{f.inc}</span></ProfileRow>
-                <ProfileRow><span>EMOTION</span><span style={{ color: emotionColor }}>{currentEkman}</span></ProfileRow>
-                <ProfileRow><span>TIME</span><span style={{ color: '#a3e635' }}>{timeStr}</span></ProfileRow>
+          </Block>
 
-                <div>
-                  <div style={{ fontSize: 10, color: LBL, letterSpacing: '0.04em', textTransform: 'uppercase', marginBottom: 4 }}>Day Progress</div>
-                  <div style={{ height: 3, borderRadius: 999, background: 'rgba(255,255,255,0.08)', overflow: 'hidden' }}>
-                    <div style={{
-                      height: '100%', borderRadius: 999,
-                      background: emotionColor,
-                      width: `${(pathProgress * 100).toFixed(1)}%`,
-                      transition: 'width 0.3s ease',
-                    }} />
-                  </div>
-                  <div style={{ fontSize: 11, color: LBL, marginTop: 3, textAlign: 'right' }}>
-                    {(pathProgress * 100).toFixed(0)}%
-                  </div>
-                </div>
+          {/* Daily journey */}
+          <Block><AgentJourney profile={profile} t={t} /></Block>
 
-                <ReleaseBtn onClick={() => setFollowedAgent(null)}>Release agent</ReleaseBtn>
-              </Block>
-            </DetailScroll>
-          )}
-        </DetailPane>
-      </RightBody>
+          {/* Ekman 3D emotion bubble + felt state */}
+          <Block>
+            <BlockTitle>Emotional state <span style={{ marginLeft: 'auto', color: eColor, fontWeight: 700 }}>{emotion}</span></BlockTitle>
+            <div style={{ position: 'relative', height: 280, borderRadius: 12, overflow: 'hidden', marginBottom: 10 }}>
+              <HABMSentiments agents={habmAgents} />
+            </div>
+            <EmotionState profile={profile} emotion={emotion} emotionColor={eColor} />
+          </Block>
+
+          {/* Conversations */}
+          <Block>
+            <BlockTitle>Conversations</BlockTitle>
+            <div style={{ minHeight: 160 }}><RealTimeChat /></div>
+          </Block>
+
+          <Block>
+            <ReleaseBtn onClick={() => setFollowedAgent(null)}>Release agent</ReleaseBtn>
+          </Block>
+        </DetailScroll>
+      )}
     </RightPane>
   );
 }
@@ -877,7 +813,10 @@ function FollowAgentRight() {
 // ── Root ──────────────────────────────────────────────────────────────────────
 
 export default function AgentAnalyticsView() {
-  const { state, setFollowedAgent } = useSharedState();
+  const { state, setFollowedAgent, loadProfiles } = useSharedState();
+
+  // Lazily pull the rich profiles when this tab mounts
+  useEffect(() => { loadProfiles(); }, [loadProfiles]);
 
   // Auto-follow a random agent when data arrives
   useEffect(() => {
@@ -887,8 +826,8 @@ export default function AgentAnalyticsView() {
 
   return (
     <Wrapper>
-      <VisualizationLeft />
-      <FollowAgentRight />
+      <AgentProfilePane />
+      <AgentLifePane />
     </Wrapper>
   );
 }

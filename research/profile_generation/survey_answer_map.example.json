@@ -1,0 +1,30 @@
+{
+  "housing_affordability": {
+    "human_col": "Q_housing_affordability",
+    "synthetic_col": "Q_housing_affordability",
+    "type": "likert",
+    "scale": [1, 5]
+  },
+  "trust_government": {
+    "human_col": "Q_trust_government",
+    "synthetic_col": "Q_trust_government",
+    "type": "likert",
+    "scale": [1, 4]
+  },
+  "tourism_saturation": {
+    "human_col": "Q_tourism_saturation",
+    "synthetic_col": "Q_tourism_saturation",
+    "type": "likert",
+    "scale": [1, 5]
+  },
+  "preferred_transport_mode": {
+    "human_col": "Q_transport_mode",
+    "synthetic_col": "Q_transport_mode",
+    "type": "categorical"
+  },
+  "vote_intention": {
+    "human_col": "Q_vote_intention",
+    "synthetic_col": "Q_vote_intention",
+    "type": "categorical"
+  }
+}

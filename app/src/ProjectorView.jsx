@@ -6,7 +6,7 @@ const SYNC_CHANNEL = 'andorra-dashboard-sync';
 const initialOverlay = { 0: true, 1: true, 2: true, 3: true, 4: true };
 
 export default function ProjectorView() {
-  const [activeTab,      setActiveTab]      = useState('earth');
+  const [activeTab,      setActiveTab]      = useState('map');
   const [selectedYear,   setSelectedYear]   = useState(2024);
   const [overlayEnabled, setOverlayEnabled] = useState(initialOverlay);
   const [activeMapLayer, setActiveMapLayer] = useState('growth');
@@ -35,21 +35,6 @@ export default function ProjectorView() {
     if (rxRef.current.activeMapLayer === activeMapLayer) return;
     channelRef.current?.postMessage({ activeMapLayer });
   }, [activeMapLayer]);
-
-  // Dark waiting screen until the main dashboard enters the simulation
-  if (activeTab === 'earth') {
-    return (
-      <div style={{
-        width: '100vw', height: '100vh', background: '#0a0a0a',
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        fontFamily: "'IBM Plex Mono', monospace",
-      }}>
-        <div style={{ textAlign: 'center', color: 'rgba(255,255,255,0.15)', letterSpacing: '0.2em', fontSize: 11 }}>
-          WAITING FOR SIMULATION
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div style={{
@@ -89,7 +74,7 @@ export default function ProjectorView() {
         </div>
 
         <div style={{ marginLeft: 'auto', color: '#555', fontSize: 9 }}>
-          ANDORRA V1.4 · PROJECTOR
+          ANDORRA V2.1 · PROJECTOR
         </div>
       </div>
 

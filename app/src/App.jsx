@@ -4,8 +4,10 @@ import TabNav from './components/TabNav';
 import OverlayBadges from './components/OverlayBadges';
 import KpiGrid from './components/KpiGrid';
 import AgentAnalyticsPanel from './components/AgentAnalyticsPanel';
+import NetworkView from './components/NetworkView';
 import MapVisualization from './components/MapVisualization';
 import EarthView from './components/EarthView';
+import SpectreIntro from './components/SpectreIntro';
 import { useSerial } from './hooks/useSerial';
 
 // Scenario name → numeric overlay index (matches OVERLAY_SCENARIOS in chartUtils.js)
@@ -17,17 +19,34 @@ const initialOverlay = { 0: true, 1: true, 2: true, 3: true, 4: true };
 
 const SYNC_CHANNEL = 'andorra-dashboard-sync';
 
+// KPI-grid tabs (each shows its own KPI dashboard, no map behind it).
+const KPI_TABS = ['main', 'economic', 'social', 'environmental', 'infrastructure'];
+
+// ── Per-tab session ("hard reset" detection) ────────────────────────────────
+// A normal refresh keeps sessionStorage → skip the SPECTRE intro + globe search and
+// land back in the dashboard. A new tab / reopened browser clears it → full boot again.
+const SESSION_KEY = 'spectre_session_v1';
+const TAB_KEY     = 'spectre_tab';
+const hasSession  = () => { try { return sessionStorage.getItem(SESSION_KEY) === '1'; } catch { return false; } };
+
 export default function App() {
-  const [activeTab,       setActiveTab]       = useState('earth');
+  const [phase,           setPhase]           = useState(() => (hasSession() ? 'app' : 'intro')); // intro | earth | app
+  const [activeTab,       setActiveTab]       = useState(() => {
+    try { return (hasSession() && sessionStorage.getItem(TAB_KEY)) || 'main'; } catch { return 'main'; }
+  });
   const [selectedYear,    setSelectedYear]    = useState(2024);
   const [overlayEnabled,  setOverlayEnabled]  = useState(initialOverlay);
   const [activeMapLayer,  setActiveMapLayer]  = useState('base');
-  const prevMapLayerRef   = useRef('base'); // remembers the layer before agents tab
   const mapLayerTimerRef  = useRef(null);   // debounce timer for map layer changes
   const [simulationOn,    setSimulationOn]    = useState(false);
   const [hoveredAgent,    setHoveredAgent]    = useState(-1);
   const [selectedAgent,   setSelectedAgent]   = useState(-1);
-  const [kpiOpen,         setKpiOpen]         = useState(true);
+  const [entering,        setEntering]        = useState(false); // globe → dashboard reveal
+
+  // Persist the active tab so a refresh restores it.
+  useEffect(() => {
+    try { sessionStorage.setItem(TAB_KEY, activeTab); } catch (_) {}
+  }, [activeTab]);
 
   // ── BroadcastChannel sync (dual-screen) ─────────────────────────────────────
 
@@ -48,7 +67,6 @@ export default function App() {
     return () => ch.close();
   }, []);
 
-  // Broadcast whenever state changes locally (skip if the value came from the channel)
   useEffect(() => {
     if (rxRef.current.selectedYear   === selectedYear)   return;
     channelRef.current?.postMessage({ selectedYear });
@@ -69,36 +87,35 @@ export default function App() {
     channelRef.current?.postMessage({ activeMapLayer });
   }, [activeMapLayer]);
 
-  // ── Arduino callbacks ────────────────────────────────────────────────────────
+  // ── Boot / navigation ───────────────────────────────────────────────────────
 
-  const handleYearChange = useCallback((year) => {
-    setSelectedYear(year);
+  const enterApp = useCallback(() => {
+    try { sessionStorage.setItem(SESSION_KEY, '1'); } catch (_) {}
+    setActiveTab('main');
+    setEntering(true);
+    setPhase('app');
+    setTimeout(() => setEntering(false), 1200);
   }, []);
 
   const handleTabChange = useCallback((tabId) => {
     setActiveTab(tabId);
     window.scrollTo({ top: 0, behavior: 'instant' });
-    if (tabId === 'agents') {
-      prevMapLayerRef.current = activeMapLayer;
-      setActiveMapLayer('agents');
-    } else if (activeMapLayer === 'agents') {
-      setActiveMapLayer('base');
-    }
-  }, [activeMapLayer]);
+  }, []);
 
-  // ── Listen for Andorra click from the Earth globe iframe ────────────────────
+  // ── Listen for Andorra entry from the Earth globe iframe ────────────────────
 
   useEffect(() => {
     const handler = (event) => {
-      if (event.data?.action === 'enterAndorra') {
-        handleTabChange('main');
-      }
+      if (event.data?.action === 'enterAndorra') enterApp();
     };
     window.addEventListener('message', handler);
     return () => window.removeEventListener('message', handler);
-  }, [handleTabChange]);
+  }, [enterApp]);
 
-  // Toggle sends scenario name + explicit boolean state (not just a flip)
+  // ── Arduino callbacks ────────────────────────────────────────────────────────
+
+  const handleYearChange = useCallback((year) => setSelectedYear(year), []);
+
   const handleOverlayChange = useCallback((scenario, state) => {
     const idx = SCENARIO_INDEX[scenario];
     if (idx === undefined) return;
@@ -107,24 +124,16 @@ export default function App() {
 
   const handleMapLayerChange = useCallback((layerId) => {
     // Debounce: only switch after the controller holds the same position for 400ms.
-    // Prevents crashes when the Arduino encoder sweeps through positions quickly.
     if (mapLayerTimerRef.current) clearTimeout(mapLayerTimerRef.current);
     mapLayerTimerRef.current = setTimeout(() => {
       setActiveMapLayer(layerId);
+      setActiveTab('map'); // hardware layer changes surface the map tab
     }, 400);
   }, []);
 
-  const handleSimulationToggle = useCallback(() => {
-    setSimulationOn((v) => !v);
-  }, []);
-
-  const handleAgentHover = useCallback((index) => {
-    setHoveredAgent(index);
-  }, []);
-
-  const handleAgentSelect = useCallback((index) => {
-    setSelectedAgent(index);
-  }, []);
+  const handleSimulationToggle = useCallback(() => setSimulationOn((v) => !v), []);
+  const handleAgentHover  = useCallback((index) => setHoveredAgent(index), []);
+  const handleAgentSelect = useCallback((index) => setSelectedAgent(index), []);
 
   // ── Web Serial connection ────────────────────────────────────────────────────
 
@@ -150,18 +159,25 @@ export default function App() {
     .map(Number)
     .find((i) => overlayEnabled[i]) ?? null;
 
-  // ── Full-page globe — no header, no tab bar ─────────────────────────────────
-  if (activeTab === 'earth') {
+  // ── Boot screens ─────────────────────────────────────────────────────────────
+  if (phase === 'intro') {
+    return <SpectreIntro onComplete={() => setPhase('earth')} />;
+  }
+
+  if (phase === 'earth') {
     return (
-      <div style={{ position: 'fixed', inset: 0 }}>
+      <div className="earth-stage" style={{ position: 'fixed', inset: 0 }}>
         <EarthView />
       </div>
     );
   }
 
   // ── Simulation dashboard ──────────────────────────────────────────────────
+  const isKpiTab = KPI_TABS.includes(activeTab);
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', overflow: 'hidden' }}>
+    <div className={`app-shell ${entering ? 'is-entering' : ''}`} style={{ display: 'flex', flexDirection: 'column', height: '100vh', overflow: 'hidden' }}>
+      {entering && <div className="enter-veil" />}
       <Header
         selectedYear={selectedYear}
         setSelectedYear={setSelectedYear}
@@ -171,51 +187,41 @@ export default function App() {
       />
 
       {/* ── Tab nav bar ── */}
-      <div style={{
-        flexShrink: 0, zIndex: 20,
-        background: 'rgba(0,0,0,0.88)',
-        backdropFilter: 'blur(24px) saturate(1.8)',
-        WebkitBackdropFilter: 'blur(24px) saturate(1.8)',
-        borderBottom: '0.5px solid rgba(255,255,255,0.08)',
-      }}>
+      <div className="subnav" style={{ flexShrink: 0, zIndex: 20 }}>
         <div className="container" style={{ paddingTop: '0.75rem', paddingBottom: '0.75rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-              <button
-                onClick={() => handleTabChange('earth')}
-                style={{
-                  background: 'rgba(255,255,255,0.07)',
-                  border: '0.5px solid rgba(255,255,255,0.12)',
-                  borderRadius: 980, padding: '5px 14px', cursor: 'pointer',
-                  fontFamily: 'var(--font)', fontSize: 12, fontWeight: 400,
-                  color: 'rgba(255,255,255,0.5)',
-                  whiteSpace: 'nowrap', flexShrink: 0,
-                }}
-              >
-                ← Back
+              <button className="glass-pill-btn" onClick={() => setPhase('earth')}>
+                ← Globe
               </button>
               <TabNav activeTab={activeTab} setActiveTab={handleTabChange} />
             </div>
+            {/* Map is a view mode, kept separate from the dashboard section tabs */}
             <button
-              onClick={() => setKpiOpen(v => !v)}
-              style={{
-                background: 'rgba(255,255,255,0.07)',
-                border: '0.5px solid rgba(255,255,255,0.12)',
-                borderRadius: 980, padding: '5px 14px', cursor: 'pointer',
-                fontFamily: 'var(--font)', fontSize: 12, fontWeight: 400,
-                color: 'rgba(255,255,255,0.5)',
-                whiteSpace: 'nowrap', flexShrink: 0,
-              }}
+              className={`glass-pill-btn ${activeTab === 'map' ? 'active' : ''}`}
+              onClick={() => handleTabChange('map')}
             >
-              {kpiOpen ? '▲ Hide' : '▼ Show'}
+              ◳ Map
             </button>
           </div>
         </div>
       </div>
 
       {/* ── Content area ── */}
-      <div style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', inset: 0, background: '#0a0a0a' }} />
+      <div className="content-area" style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
+
+        {activeTab === 'map' && (
+          <div style={{ position: 'absolute', inset: 0 }}>
+            <MapVisualization
+              overlayEnabled={overlayEnabled}
+              selectedYear={selectedYear}
+              activeLayer={activeMapLayer}
+              onLayerChange={setActiveMapLayer}
+              hoveredAgent={hoveredAgent}
+              selectedAgent={selectedAgent}
+            />
+          </div>
+        )}
 
         {activeTab === 'agents' && (
           <div style={{ position: 'absolute', inset: 0 }}>
@@ -223,44 +229,28 @@ export default function App() {
           </div>
         )}
 
-        {activeTab !== 'agents' && (
+        {activeTab === 'network' && (
           <div style={{ position: 'absolute', inset: 0 }}>
-            <MapVisualization
-              overlayEnabled={overlayEnabled}
-              selectedYear={selectedYear}
-              activeLayer={activeMapLayer}
-              onLayerChange={handleMapLayerChange}
-              hoveredAgent={hoveredAgent}
-              selectedAgent={selectedAgent}
-            />
+            <NetworkView />
           </div>
         )}
 
-        {activeTab !== 'agents' && (
-          <div style={{
-            position: 'absolute', top: 0, left: 0, right: 0, zIndex: 10,
-            background: kpiOpen ? 'rgba(0,0,0,0.88)' : 'transparent',
-            backdropFilter: kpiOpen ? 'blur(24px) saturate(1.8)' : 'none',
-            WebkitBackdropFilter: kpiOpen ? 'blur(24px) saturate(1.8)' : 'none',
-            borderBottom: kpiOpen ? '0.5px solid rgba(255,255,255,0.08)' : 'none',
-            transition: 'background 0.2s cubic-bezier(0.25, 0.1, 0.25, 1)',
-          }}>
-            {kpiOpen && (
-              <div className="container" style={{ paddingTop: '0.75rem', paddingBottom: '1rem', maxHeight: 'calc(100vh - 160px)', overflowY: 'auto' }}>
-                <OverlayBadges
-                  overlayEnabled={overlayEnabled}
-                  setOverlayEnabled={setOverlayEnabled}
-                  onToggle={handleOverlayToggle}
-                />
-                <KpiGrid
-                  activeScenario={primaryScenario}
-                  activeTab={activeTab}
-                  selectedYear={selectedYear}
-                  overlayEnabled={overlayEnabled}
-                  onOverlayToggle={handleOverlayToggle}
-                />
-              </div>
-            )}
+        {isKpiTab && (
+          <div className="kpi-dashboard" style={{ position: 'absolute', inset: 0, overflowY: 'auto' }}>
+            <div className="container" style={{ paddingTop: '1.25rem', paddingBottom: '2rem' }}>
+              <OverlayBadges
+                overlayEnabled={overlayEnabled}
+                setOverlayEnabled={setOverlayEnabled}
+                onToggle={handleOverlayToggle}
+              />
+              <KpiGrid
+                activeScenario={primaryScenario}
+                activeTab={activeTab}
+                selectedYear={selectedYear}
+                overlayEnabled={overlayEnabled}
+                onOverlayToggle={handleOverlayToggle}
+              />
+            </div>
           </div>
         )}
       </div>

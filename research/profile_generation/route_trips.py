@@ -2,15 +2,19 @@
 Route all agent trips through Andorra's road network.
 
 Edge weight: travel time (hours) = segment_length_km / speed_kmh
-  Speed limits follow OSRM's car profile defaults by highway type.
+  Speeds are approximate legal limits by OSM highway class (NOT exact OSRM
+  profile values; they are of the right order and monotonic in road class).
   This makes Dijkstra choose the fastest route (like Google Maps) rather than
   the shortest geometric distance, so agents use highways through valleys
   instead of short mountain-pass residential roads.
 
 Graph construction
 ──────────────────
-Each LineString feature becomes one undirected edge.
-Endpoints are rounded to 4 decimal places (~11 m) to snap nearby nodes.
+Each LineString is split into one undirected edge PER CONSECUTIVE VERTEX PAIR,
+so interior vertices and mid-segment intersections become graph nodes. (Edging
+only the two endpoints would leave roads that meet at an interior vertex
+disconnected, fragmenting the network into hundreds of components.)
+Vertices are rounded to 4 decimal places (~11 m) to snap nearby/shared nodes.
 When two parallel edges exist between the same nodes, keep the faster one.
 
 Output: results/andorra_population/schedules_routed.json
@@ -32,8 +36,11 @@ import numpy as np
 import networkx as nx
 from scipy.spatial import KDTree
 
+from artifact_metadata import refresh_run_meta
+
 ROOT         = Path(__file__).parents[2]
-STREETS_FILE = ROOT / "Front end" / "dashboard" / "public" / "model" / "accessibility_streets.geojson"
+# V2.2: Vercel root dir renamed "Front end/dashboard" → "app".
+STREETS_FILE = ROOT / "app" / "public" / "model" / "accessibility_streets.geojson"
 POP_DIR      = Path(__file__).parent / "results" / "andorra_population"
 OUT_FILE     = POP_DIR / "schedules_routed.json"
 
@@ -47,9 +54,11 @@ MODE_ACCESS = {
     "car":  {"bus/car"},
     "bus":  {"bus/car"},
     "walk": {"bus/car"},
+    "taxi": {"bus/car"},
 }
 
-# Speed limits (km/h) by OSM highway type — matches OSRM car profile defaults.
+# Approximate legal speed limits (km/h) by OSM highway class — NOT exact OSRM
+# car-profile values, but of the right magnitude and monotonic in road class.
 # Higher-class roads get higher speeds → Dijkstra on travel time naturally
 # prefers highways through valleys over short mountain residential roads.
 HIGHWAY_SPEEDS: dict[str, float] = {
@@ -87,25 +96,9 @@ def haversine_km(lon1: float, lat1: float, lon2: float, lat2: float) -> float:
     return R * 2 * math.asin(math.sqrt(a))
 
 
-def seg_travel_time(coords: list, highway: str) -> float:
-    """Travel time in hours along a coordinate sequence."""
-    dist_km = sum(
-        haversine_km(coords[i][0], coords[i][1], coords[i+1][0], coords[i+1][1])
-        for i in range(len(coords) - 1)
-    )
-    speed = HIGHWAY_SPEEDS.get(highway, _DEFAULT_SPEED)
-    return dist_km / speed
-
-
-def seg_length_km(coords: list) -> float:
-    """Total length in km (stored on edge for reference, not used as weight)."""
-    return sum(
-        haversine_km(coords[i][0], coords[i][1], coords[i+1][0], coords[i+1][1])
-        for i in range(len(coords) - 1)
-    )
-
-
 def build_graph(streets: list[dict], allowed_access: set[str]) -> nx.Graph:
+    """Build a routable graph by splitting every LineString into per-vertex
+    segments, so interior vertices and mid-segment intersections become nodes."""
     G = nx.Graph()
     for feat in streets:
         if feat["properties"].get("accessibility") not in allowed_access:
@@ -113,18 +106,22 @@ def build_graph(streets: list[dict], allowed_access: set[str]) -> nx.Graph:
         coords = feat["geometry"]["coordinates"]
         if len(coords) < 2:
             continue
-        highway  = feat["properties"].get("highway", "")
-        u        = snap(coords[0])
-        v        = snap(coords[-1])
-        travel_t = seg_travel_time(coords, highway)
-        length   = seg_length_km(coords)
-        if G.has_edge(u, v):
-            if travel_t < G[u][v]["time"]:
-                G[u][v].update({"time": travel_t, "length": length,
-                                "geometry": coords, "highway": highway})
-        else:
-            G.add_edge(u, v, time=travel_t, length=length,
-                       geometry=coords, highway=highway)
+        highway = feat["properties"].get("highway", "")
+        speed   = HIGHWAY_SPEEDS.get(highway, _DEFAULT_SPEED)
+        for a, b in zip(coords[:-1], coords[1:]):
+            u = snap(a)
+            v = snap(b)
+            if u == v:                       # zero-length after snapping
+                continue
+            length   = haversine_km(a[0], a[1], b[0], b[1])
+            travel_t = length / speed
+            if G.has_edge(u, v):
+                if travel_t < G[u][v]["time"]:
+                    G[u][v].update({"time": travel_t, "length": length,
+                                    "geometry": [list(a), list(b)], "highway": highway})
+            else:
+                G.add_edge(u, v, time=travel_t, length=length,
+                           geometry=[list(a), list(b)], highway=highway)
     return G
 
 
@@ -182,16 +179,23 @@ def main():
         "car":  build_graph(streets, MODE_ACCESS["car"]),
         "bus":  build_graph(streets, MODE_ACCESS["bus"]),
         "walk": build_graph(streets, MODE_ACCESS["walk"]),
+        "taxi": build_graph(streets, MODE_ACCESS["taxi"]),
     }
     for mode, G in graphs.items():
         print(f"\n  {mode}: {len(G.nodes):,} nodes, {len(G.edges):,} edges", end="")
 
-    # Trim to largest connected component — all routing stays within one component
+    # Trim to largest connected component — all routing stays within one component.
+    # Report how much is dropped so coverage loss is explicit, not silent.
     for mode in graphs:
         G     = graphs[mode]
         comps = sorted(nx.connected_components(G), key=len, reverse=True)
+        n_before = G.number_of_nodes()
         graphs[mode] = G.subgraph(comps[0]).copy()
-    print(f"\n  (trimmed to largest connected component)")
+        n_after = graphs[mode].number_of_nodes()
+        print(f"\n  {mode}: {len(comps)} components; kept largest "
+              f"({n_after:,}/{n_before:,} nodes = {n_after/n_before:.1%}, "
+              f"dropped {n_before - n_after:,})", end="")
+    print()
 
     kds = {mode: make_kd(G) for mode, G in graphs.items()}
 
@@ -288,14 +292,20 @@ def main():
                   f"cache={len(route_cache):,}  eta={eta:.0f}s", end="\r")
 
     elapsed = time.time() - t0
+    total_trips = n_routed + n_failed
+    pct = 100.0 * n_routed / total_trips if total_trips else 0.0
     print(f"\n  Done in {elapsed:.1f}s")
-    print(f"  Routed: {n_routed:,}  Failed (fallback to linear): {n_failed:,}")
+    print(f"  Trips on real road network: {n_routed:,}/{total_trips:,} = {pct:.1f}%")
+    print(f"  Fallback to straight-line interpolation: {n_failed:,} "
+          f"({100.0 - pct:.1f}%)  — these are NOT real-network routes")
     print(f"  Unique routes cached: {len(route_cache):,}")
 
     print(f"Saving {OUT_FILE}...", end=" ", flush=True)
     with open(OUT_FILE, "w") as f:
         json.dump(schedules, f, separators=(",", ":"))
     print(f"{OUT_FILE.stat().st_size / 1e6:.1f} MB")
+    refresh_run_meta(POP_DIR)
+    print("Updated run_meta.json with routing metrics.")
     print("Done. Run: python export_to_viz.py")
 
 

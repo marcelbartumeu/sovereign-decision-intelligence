@@ -93,10 +93,68 @@ OUTPUT_SCHEMA = """
     "network_density":    "sparse | moderate | dense"
   },
 
+  "employment_status": "string",
+  // One of: employed_full_time | employed_part_time | self_employed |
+  //         unemployed | retired | student | homemaker
+  // Must be consistent with income_bracket and age provided in the prompt.
+  // Rationale: narratively grounds the agent's daily schedule structure.
+
+  "household_composition": "string",
+  // One of: single | couple_no_children | couple_with_children |
+  //         single_parent | multi_generational | shared_accommodation
+  // Must reflect realistic housing patterns for the agent's nationality,
+  // income, and age in Andorra.
+
   "goals": {
     "short_term":  ["string", "string"],  // 1–2 year horizon
     "long_term":   ["string", "string"],  // 5–10 year horizon
     "primary_fear":"string"               // single most salient threat to their life plan
+  },
+
+  "place_preferences": {
+    // Weekly likelihood of visiting each destination type: float in [0.01, 0.99].
+    // Baselines are Eurostat population averages for Andorra (HETUS/Eurobarometer/EHIS/Pew).
+    // Reason from this agent's full profile — adjust each baseline up or down
+    // based on their personality, values, age, income, employment, and household.
+    //
+    // Hard demographic rules — you MUST follow these:
+    //   D8 + D17 (healthcare/pharmacy): increase sharply with age; agents 65+ should be 2–3× baseline
+    //   D7  (religious):  tradition or conformity values → higher; secular agents → near-zero
+    //   D23 (bar):        youth (18–35) only; agents over 55 should be near 0.02–0.05
+    //   D5  (education):  students and youth only; near-zero for retired agents
+    //   D13 (executive housing): only above 0.25 for wealthy or comfortable income
+    //   D12 (affordable housing): only above 0.30 for precarious or low income
+    //   D11 (senior housing): only above 0.20 for agents aged 60+
+    //   D19 (daycare): only above 0.15 for agents with couple_with_children or single_parent household
+    //   D27 (mountain/outdoor): Andorra-specific; baseline is already higher than W. European average
+    //   D15 (grocery): near-universal — keep close to baseline unless very unusual profile
+    //
+    "D3":  0.01-0.99,  // Retail Store          [baseline 0.52]  income↑ price_sensitivity↓
+    "D4":  0.01-0.99,  // Commercial/Work zone  [baseline 0.55]  employed adults; employment_security↑
+    "D5":  0.01-0.99,  // Education             [baseline 0.22]  students and youth; near-zero retired
+    "D6":  0.01-0.99,  // General Housing       [baseline 0.50]  housing issue salience; financial_stress↑
+    "D7":  0.01-0.99,  // Religious             [baseline 0.12]  tradition/conformity values; age↑
+    "D8":  0.01-0.99,  // Healthcare            [baseline 0.09]  age↑ neuroticism↑ financial_stress↑
+    "D9":  0.01-0.99,  // Government/Civic      [baseline 0.06]  civic_participation↑ local_engagement↑
+    "D10": 0.01-0.99,  // Mid-Career Housing    [baseline 0.42]  working-age middle income
+    "D11": 0.01-0.99,  // Senior Housing        [baseline 0.11]  age 60+ only
+    "D12": 0.01-0.99,  // Affordable Housing    [baseline 0.38]  precarious/low income; financial_stress↑
+    "D13": 0.01-0.99,  // Executive Housing     [baseline 0.11]  wealthy/comfortable only
+    "D14": 0.01-0.99,  // Headquarter Office    [baseline 0.38]  professional/managerial workers
+    "D15": 0.01-0.99,  // Grocery Market        [baseline 0.85]  near-universal; price_sensitivity mild↑
+    "D16": 0.01-0.99,  // Recreation/Fitness    [baseline 0.38]  active adults; declines sharply 65+
+    "D17": 0.01-0.99,  // Pharmacy              [baseline 0.12]  age↑ neuroticism↑
+    "D18": 0.01-0.99,  // Career Training       [baseline 0.08]  youth; achievement/self_direction values
+    "D19": 0.01-0.99,  // Daycare               [baseline 0.14]  parents with young children only
+    "D20": 0.01-0.99,  // Coworking Office      [baseline 0.22]  self_employed; bridging_capital↑
+    "D21": 0.01-0.99,  // Restaurant            [baseline 0.38]  income↑ hedonism/stimulation values
+    "D22": 0.01-0.99,  // Café                  [baseline 0.42]  broad appeal; bridging_capital↑ openness↑
+    "D23": 0.01-0.99,  // Bar                   [baseline 0.20]  youth only; near-zero 55+
+    "D24": 0.01-0.99,  // Pub                   [baseline 0.22]  bonding_capital↑; broader age than bar
+    "D25": 0.01-0.99,  // Park                  [baseline 0.48]  environment salience↑ walking_radius↑
+    "D26": 0.01-0.99,  // Cultural Venue        [baseline 0.12]  openness↑ income↑ achievement values
+    "D27": 0.01-0.99,  // Mountain/Outdoor      [baseline 0.30]  Andorra-specific; active youth/adults
+    "D28": 0.01-0.99   // Personal Services     [baseline 0.22]  working-age; conscientiousness↑
   }
 }
 """

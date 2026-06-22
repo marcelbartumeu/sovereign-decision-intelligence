@@ -1,0 +1,47 @@
+{
+  "n_agents": 90000,
+  "edges": {
+    "household": 154850,
+    "workplace": 137315,
+    "school": 47223,
+    "community": 246633
+  },
+  "attr_planes": [
+    "age",
+    "nationality",
+    "income",
+    "employment",
+    "household"
+  ],
+  "nationalities": [
+    "Andorran",
+    "Spanish",
+    "Portuguese",
+    "French",
+    "Other"
+  ],
+  "incomes": [
+    "precarious",
+    "low",
+    "lower_middle",
+    "middle",
+    "upper_middle",
+    "comfortable",
+    "wealthy"
+  ],
+  "employments": [
+    "employed_full_time",
+    "employed_part_time",
+    "self_employed",
+    "student",
+    "retired",
+    "minor"
+  ],
+  "households": [
+    "single",
+    "couple_no_children",
+    "couple_with_children",
+    "shared_accommodation",
+    "multi_generational"
+  ]
+}

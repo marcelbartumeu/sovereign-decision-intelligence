@@ -4,6 +4,7 @@ const TABS = [
   { id: 'social',         label: 'Social' },
   { id: 'environmental',  label: 'Environment' },
   { id: 'infrastructure', label: 'Infrastructure' },
+  { id: 'network',        label: 'Network' },
   { id: 'agents',         label: 'Agents' },
 ];
 

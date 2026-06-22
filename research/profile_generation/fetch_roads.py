@@ -51,7 +51,8 @@ PAVED_HIGHWAY_TYPES = [
 DEFAULT_BBOX = "42.42,1.40,42.66,1.79"
 
 ROOT     = Path(__file__).parents[2]
-OUT_PATH = ROOT / "Front end" / "dashboard" / "public" / "model" / "accessibility_streets.geojson"
+# V2.2: Vercel root dir renamed "Front end/dashboard" → "app" (matches route_trips.py).
+OUT_PATH = ROOT / "app" / "public" / "model" / "accessibility_streets.geojson"
 
 
 def build_query(bbox: str) -> str:
