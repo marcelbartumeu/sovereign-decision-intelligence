@@ -1108,6 +1108,44 @@ planning priorities. The results reveal four dominant trade-offs:
       preservation and per-capita provision.
 \end{itemize}
 
+\subsection{Binding Constraints and Early-Warning Thresholds}
+\label{subsec:constraints}
+
+Beyond endpoint values, the decision-relevant output of the engine is \emph{which
+constraints bind, and when}. Two model-endogenous constraints dominate
+(Table~\ref{tab:constraints}). The housing-affordability brake is the earliest and
+most pervasive: the rent-to-income ratio reaches the 30\% threshold by 2025 in every
+growth pathway, activating the in-migration brake, and is never breached only in
+Degrowth. This identifies housing affordability---not absolute population---as the
+primary early-warning indicator and the first binding constraint a planner would
+encounter. The tourism carrying-capacity ceiling binds next (2026--2030) and, notably,
+earliest in the pathways with constrained built stock (Degrowth and Density), where
+lower accommodation capacity lowers the absolute ceiling even as arrivals fall.
+Infrastructure requirements (hospital beds, electricity) instead scale approximately
+linearly with population and are reported as capacity-planning quantities in
+Tables~\ref{tab:scenarios_2049}--\ref{tab:results_2049} rather than as endogenous
+thresholds; the water-security index relies on a placeholder safe-yield and is reported
+only qualitatively.
+
+\begin{table}[H]
+\caption{First year each model-endogenous constraint binds, by scenario (``--'' = does
+not bind before 2049).}
+\label{tab:constraints}
+\begin{tabularx}{\textwidth}{Xcccc}
+\toprule
+\textbf{Binding constraint} & \textbf{Continuity} & \textbf{Overgrowth}
+                            & \textbf{Degrowth} & \textbf{Density} \\
+\midrule
+Housing-affordability brake ($\geq$30\% of income) & 2025 & 2025 & -- & 2025 \\
+Tourism carrying capacity ($\geq$85\% utilisation) & 2030 & 2030 & 2026 & 2026 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+These activation years are the engine's principal planning signals: they translate the
+scenario trajectories into dated decision points---when to act on housing supply, when
+to introduce tourism demand management---rather than single 2049 endpoints.
+
 \subsection{Validation, Benchmarking, and Sensitivity}
 \label{subsec:validation}
 
@@ -1226,6 +1264,57 @@ near-threshold) dynamics largely unchanged.
 \end{threeparttable}
 \end{table}
 
+\subsection{Spatial Allocation of Scenario Growth}
+\label{subsec:spatial}
+
+Although the state vector is national, the engine includes a spatial allocation layer
+that distributes each scenario's population change across $10{,}299$ buildable
+hexagonal cells (H3) using a suitability model combining topography
+($\exp(-\text{slope}/15)$ with an altitude decay), local population gravity, and
+scenario-specific infill rules; protected areas, slopes above $37^\circ$, and
+altitudes above 2400\,m are excluded as unbuildable. The allocation produces distinct
+\emph{spatial signatures}, not merely different totals (Table~\ref{tab:spatial},
+Figure~\ref{fig:spatial}). Density accommodates growth purely by infill---no previously
+unsettled cell is occupied---preserving the built footprint, whereas Overgrowth expands
+onto more than a thousand new cells, the largest land take of the four pathways.
+Degrowth is the spatial mirror image: population contracts across some $3{,}700$
+peripheral, low-gravity cells while no cell grows, reproducing the documented
+hollowing-out of Andorra's high-valley periphery. Across all expansion pathways new
+growth remains on comparable valley-adjacent terrain (mean slope $\sim$13$^\circ$,
+altitude $\sim$1130\,m), indicating the suitability model keeps development on
+physically appropriate land rather than on marginal slopes. These territorial
+differences---infill versus sprawl versus peripheral depopulation---are material for
+planning yet invisible in the national aggregates.
+
+\begin{table}[H]
+\caption{Spatial signature of each scenario's 2024--2049 growth allocation across
+buildable H3 cells. ``New cells'' are previously unsettled cells that gain population
+(a sprawl indicator); ``contracting cells'' lose population.}
+\label{tab:spatial}
+\begin{tabularx}{\textwidth}{Xcccc}
+\toprule
+\textbf{Spatial indicator} & \textbf{Continuity} & \textbf{Overgrowth}
+                           & \textbf{Degrowth} & \textbf{Density} \\
+\midrule
+Cells gaining population         & 4{,}477 & 5{,}013 & 0       & 3{,}513 \\
+New (previously unsettled) cells & 611     & 1{,}083 & 0       & 0 \\
+Contracting cells                & 0       & 0       & 3{,}745 & 0 \\
+Infill share of growth (\%)      & 99.6    & 99.6    & ---     & 100.0 \\
+Top-decile concentration (\%)    & 77.7    & 79.7    & ---     & 76.2 \\
+Mean slope of new growth ($^\circ$) & 13.0 & 13.0    & ---     & 12.2 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{figure}[H]
+\includegraphics[width=\linewidth]{spatial_growth_2049}
+\caption{Spatial allocation of 2024--2049 population change by scenario (per-cell
+$\Delta$ population; blues indicate gains, reds losses). Density infills existing
+cores, Overgrowth expands the settled footprint, and Degrowth depopulates the
+periphery, while all pathways concentrate along the buildable Valira valley network.}
+\label{fig:spatial}
+\end{figure}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Discussion}
 \label{sec:discussion}
@@ -1275,7 +1364,7 @@ Wellbeing indices and selected environmental proxies should be treated as
 elasticity, while consistent with published estimates, is estimated from a short
 and partially coincident time series; structural breaks (e.g., post-COVID
 labour-market reorganization) could shift it materially. The 2049 horizon
-amplifies all compounding errors relative to the original 2049 projection range.
+amplifies all compounding errors relative to nearer-term projections.
 
 \subsection{Comparison with Alternative Methodologies}
 
@@ -1336,7 +1425,12 @@ management.
       covers parametric uncertainty in $g_\text{TFP}$, $\gamma_2$, and $a_1$
       only; structural uncertainty and deep uncertainty over exogenous shocks
       lie outside the present scope. The extended 2049 horizon amplifies these
-      gaps relative to the original 2049 projections.
+      gaps relative to nearer-term projections.
+\item \textbf{Spatial allocation layer:} the spatial growth layer
+      (Section~\ref{subsec:spatial}) is a separate suitability-based module; its
+      cell-level totals are approximately, not exactly, reconciled with the macro
+      state vector, so it should be read for distributional pattern (infill vs.\
+      sprawl vs.\ peripheral depopulation) rather than precise per-cell headcounts.
 \end{enumerate}
 
 \subsection{Next Steps}

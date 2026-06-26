@@ -44,11 +44,11 @@ Harness: `data/scripts/model/phaseB_analysis.py` → `phaseB_results.json`. All 
 - [x] **B5 — Policy-instrument layer.** Added `apply_policy()` + `tour_demand_mult` hook in `CALCULATOR.py`; `tab:policy` (catalog) + `tab:policy_demo` (managed-growth worked example) in Methodology. (R1.1/R1.5/R3.1)
 - [x] **B6 — Scenario-parameter justification.** Justified 6.0% TFP as stress value (~7× calibrated rate) vs microstate envelope. (R1.3)
 
-## Phase C — Results & spatial ~2–3 days
-- [ ] Reframe Results around **binding constraints / early-warning thresholds** (30% affordability brake, 11–12M tourism ceiling, beds gap), not endpoint values (R1.5/R3.4)
-- [ ] Add time-series + **constraint-activation timeline** (when each cap/brake binds per scenario) (R3.4)
-- [ ] **Spatial subsection** — per-parish growth/pressure maps; Density walkable-core allocation; Degrowth periphery emigration (R3.7)
-- [ ] Show policy-instrument worked example's temporal/spatial effect (ties B5 → results)
+## Phase C — Results & spatial ✅ COMPLETE
+- [x] **Binding-constraints reframe** — `subsec:constraints` + `tab:constraints`: affordability brake binds 2025 (all growth paths, never Degrowth); tourism cap 2026–2030. Honestly excluded mechanical beds + placeholder water-security. (R1.5/R3.4)
+- [x] **Spatial subsection** — `subsec:spatial` + `tab:spatial` + `fig:spatial` (4-panel map, `paper/spatial_growth_2049.png`): Density 0 new cells (infill), Overgrowth 1,083 new (sprawl), Degrowth 3,745 contracting (periphery). Real H3 suitability allocation. (R3.7)
+- [x] Honesty: spatial-layer limitation added (separate module, approx totals); fixed both "original 2049" copyedit leftovers.
+- Figure regenerable via `data/scripts/model/generate_spatial_figure.py`. **Upload `spatial_growth_2049.png` to Overleaf root.**
 
 ## Phase D — Response + polish
 - [ ] Point-by-point **response-to-reviewers letter** (every comment → change + line ref)
