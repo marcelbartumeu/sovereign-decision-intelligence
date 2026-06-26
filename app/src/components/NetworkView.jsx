@@ -326,12 +326,12 @@ export default function NetworkView() {
 
   // ── UI ────────────────────────────────────────────────────────────────────
   const card = {
-    background: 'var(--glass-strong)',
-    border: '1px solid var(--glass-bdr)',
+    background: 'rgba(28,28,30,0.85)',
+    border: '0.5px solid var(--bdr)',
     borderRadius: 'var(--r-lg)',
-    boxShadow: 'var(--glass-shadow), var(--glass-hi)',
-    backdropFilter: 'var(--glass-blur)',
-    WebkitBackdropFilter: 'var(--glass-blur)',
+    boxShadow: 'var(--shadow-xs)',
+    backdropFilter: 'blur(24px) saturate(1.4)',
+    WebkitBackdropFilter: 'blur(24px) saturate(1.4)',
   };
 
   return (
@@ -348,29 +348,18 @@ export default function NetworkView() {
       {/* Subtle ambient glow, same recipe as the agent-graph cards */}
       <div style={{
         position: 'absolute', inset: 0, pointerEvents: 'none',
-        background: 'radial-gradient(circle at 20% 10%, rgba(63,224,230,.05) 0, transparent 40%), radial-gradient(circle at 80% 90%, rgba(217,177,90,.04) 0, transparent 45%)',
+        background: 'radial-gradient(circle at 20% 10%, rgba(255,255,255,.05) 0, transparent 40%), radial-gradient(circle at 80% 90%, rgba(255,255,255,.03) 0, transparent 45%)',
       }} />
-      {/* Cinematic scanning sweep */}
-      <div className="scan-sweep" />
-      {/* Feed identity tag */}
-      <div style={{
-        position: 'absolute', top: '1rem', left: '50%', transform: 'translateX(-50%)',
-        fontFamily: 'var(--mono)', fontSize: 9.5, letterSpacing: '0.2em', textTransform: 'uppercase',
-        color: 'var(--cyan)', padding: '3px 10px', border: '1px solid var(--cyan-line)',
-        borderRadius: 3, background: 'rgba(4,6,10,0.5)', pointerEvents: 'none', textShadow: '0 1px 4px #000',
-      }}>
-        ◳ SIGINT · RELATIONAL GRAPH · 90,000 NODES
-      </div>
 
       {status === 'loading' && (
         <div style={{
           position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column',
           alignItems: 'center', justifyContent: 'center', gap: '0.5rem',
         }}>
-          <div style={{ fontFamily: 'var(--mono)', fontSize: 13, fontWeight: 600, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--cyan)' }}>
-            ▸ Establishing relational graph<span className="caret">_</span>
+          <div style={{ fontFamily: 'var(--font-title)', fontSize: 14, fontWeight: 600, color: 'var(--text)' }}>
+            Loading social network
           </div>
-          <div style={{ fontFamily: 'var(--mono)', fontSize: 11, letterSpacing: '0.1em', color: 'var(--lbl)' }}>
+          <div style={{ fontSize: 11, color: 'var(--lbl)', fontFeatureSettings: "'tnum'" }}>
             90,000 agents · 586,021 social ties
           </div>
         </div>

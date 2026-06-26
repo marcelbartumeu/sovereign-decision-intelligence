@@ -1,94 +1,75 @@
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap');
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
-  /* ════════════════════════════════════════════════════════════════════
-     INTELLIGENCE CONSOLE — obsidian base · ice-cyan HUD · SPECTRE gold ·
-     crimson alert. A cinematic blend of cold tactical HUD, Bond-villain
-     luxe, and mission-control density. Token NAMES are preserved so the
-     entire component tree re-skins from this single block.
-     ════════════════════════════════════════════════════════════════════ */
+  /* Apple dark mode system colors */
+  --bg:     #000000;
+  --bg1:    #0a0a0a;
+  /* Full-opacity depth gradient: pure black at the top → charcoal at the bottom */
+  --bg-gradient: linear-gradient(180deg, #000000 0%, #1D1D22 100%);
 
-  /* Obsidian base */
-  --bg:     #04060a;
-  --bg1:    #070b11;
-  /* Cool depth: a faint top-glow over near-black obsidian */
-  --bg-gradient: radial-gradient(135% 105% at 50% -12%, #0c1722 0%, #06090f 46%, #03050a 100%);
+  /* Apple "liquid glass" tokens */
+  --glass:        rgba(28,28,30,0.55);
+  --glass-strong: rgba(22,22,26,0.72);
+  --glass-bdr:    rgba(255,255,255,0.10);
+  --glass-hi:     inset 0 1px 0 rgba(255,255,255,0.12);
+  --glass-shadow: 0 8px 30px rgba(0,0,0,0.55), 0 2px 8px rgba(0,0,0,0.4);
+  --glass-blur:   blur(28px) saturate(1.7);
+  --surf:   #1c1c1e;
+  --surf2:  #2c2c2e;
+  --surf3:  #3a3a3c;
+  --bdr:    rgba(255,255,255,0.08);
+  --bdr2:   rgba(255,255,255,0.14);
+  --text:   rgba(255,255,255,0.86);
+  --text2:  rgba(255,255,255,0.55);
+  --lbl:    rgba(255,255,255,0.32);
+  --muted:  rgba(255,255,255,0.28);
+  --active: #ffffff;
 
-  /* ── HUD accent system ── */
-  --gold:      #d9b15a;   /* SPECTRE luxe — primary highlight, titles, active */
-  --gold-hi:   #f1d488;
-  --gold-dim:  rgba(217,177,90,0.55);
-  --cyan:      #3fe0e6;   /* tactical HUD — data, structure, "online" */
-  --cyan-dim:  rgba(63,224,230,0.45);
-  --cyan-line: rgba(63,224,230,0.13);
-  --alert:     #ff3b30;   /* crimson — alerts / classified / negative */
-  --alert-dim: rgba(255,59,48,0.5);
-  --hud-grid:  rgba(70,150,165,0.06);
-  --scanline:  rgba(0,0,0,0.22);
-
-  /* Liquid-glass tokens — cool blue-black tint, cyan-lit edges */
-  --glass:        rgba(9,15,22,0.60);
-  --glass-strong: rgba(6,11,17,0.80);
-  --glass-bdr:    rgba(120,190,205,0.16);
-  --glass-hi:     inset 0 1px 0 rgba(130,205,225,0.10);
-  --glass-shadow: 0 12px 44px rgba(0,0,0,0.62), 0 2px 10px rgba(0,0,0,0.5);
-  --glass-blur:   blur(22px) saturate(1.25);
-  --surf:   #0a0f16;
-  --surf2:  #111a26;
-  --surf3:  #1b2737;
-  --bdr:    rgba(120,190,205,0.12);
-  --bdr2:   rgba(125,200,220,0.24);
-  --text:   rgba(224,236,244,0.88);
-  --text2:  rgba(155,182,200,0.62);
-  --lbl:    rgba(135,165,185,0.45);
-  --muted:  rgba(115,145,165,0.30);
-  --active: #f1f7fb;
-
-  /* Semantic status colors — tuned toward the HUD palette but kept readable */
-  --sys-blue:   #2f9bff;
-  --sys-green:  #2fe6a8;
-  --sys-red:    #ff3b30;
-  --sys-yellow: #ffd60a;
-  --sys-orange: #ff9f0a;
-  --sys-purple: #bf5af2;
-  --sys-teal:   #3fe0e6;
+  /* System accent colors (iOS/macOS dark mode) */
+  --sys-blue:   #0A84FF;
+  --sys-green:  #30D158;
+  --sys-red:    #FF453A;
+  --sys-yellow: #FFD60A;
+  --sys-orange: #FF9F0A;
+  --sys-purple: #BF5AF2;
+  --sys-teal:   #64D2FF;
 
   /* Legacy aliases — keep for components that reference them */
   --red:    var(--sys-red);
-  --redh:   #ff6b64;
+  --redh:   #FF6B64;
   --background:       var(--bg);
   --foreground:       var(--active);
   --card:             var(--surf);
-  --primary:          var(--gold);
+  --primary:          var(--active);
   --secondary:        var(--surf2);
   --muted-foreground: var(--text2);
   --accent:           var(--surf2);
   --destructive:      var(--sys-red);
   --border:           var(--bdr);
   --panel-border:     var(--bdr);
-  --gradient-panel:   linear-gradient(145deg, rgba(14,22,32,0.92), rgba(3,5,10,0.7));
-  --shadow-panel:     0 4px 24px rgba(0,0,0,0.55), 0 0 0 0.5px rgba(120,190,205,0.08);
+  --gradient-panel:   linear-gradient(145deg, rgba(28,28,30,0.9), rgba(0,0,0,0.6));
+  --shadow-panel:     0 4px 24px rgba(0,0,0,0.5), 0 0 0 0.5px rgba(255,255,255,0.06);
   --transition-smooth: all 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
 
-  /* Typography — Syne for luxe titles, IBM Plex Mono for tactical data */
+  /* Typography */
   --font: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
   --font-title: 'Syne', 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
-  --mono: 'IBM Plex Mono', 'SF Mono', 'SFMono-Regular', ui-monospace, Menlo, monospace;
+  --mono: 'SF Mono', 'SFMono-Regular', ui-monospace, Menlo, monospace;
 
-  /* Radii — crisper, instrument-panel corners */
-  --r-xs: 3px;
-  --r-sm: 4px;
-  --r:    6px;
-  --r-lg: 9px;
-  --r-xl: 12px;
+  /* Radii */
+  --r-xs: 6px;
+  --r-sm: 8px;
+  --r:    12px;
+  --r-lg: 16px;
+  --r-xl: 20px;
 
   /* Shadows */
-  --shadow-xs: 0 1px 3px rgba(0,0,0,0.5), 0 0 0 0.5px rgba(120,190,205,0.06);
-  --shadow-sm: 0 2px 8px rgba(0,0,0,0.5), 0 0 0 0.5px rgba(120,190,205,0.07);
-  --shadow:    0 4px 24px rgba(0,0,0,0.55), 0 0 0 0.5px rgba(120,190,205,0.08);
-  --shadow-lg: 0 8px 40px rgba(0,0,0,0.7), 0 0 0 0.5px rgba(120,190,205,0.07);
+  --shadow-xs: 0 1px 3px rgba(0,0,0,0.4), 0 0 0 0.5px rgba(255,255,255,0.04);
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.45), 0 0 0 0.5px rgba(255,255,255,0.05);
+  --shadow:    0 4px 24px rgba(0,0,0,0.5), 0 0 0 0.5px rgba(255,255,255,0.06);
+  --shadow-lg: 0 8px 40px rgba(0,0,0,0.65), 0 0 0 0.5px rgba(255,255,255,0.05);
 
   --ease: cubic-bezier(0.25, 0.1, 0.25, 1);
   --ease-out: cubic-bezier(0, 0, 0.2, 1);
@@ -1066,433 +1047,3 @@ body {
 .mapboxgl-ctrl-bottom-left .mapboxgl-ctrl-logo,
 .mapboxgl-ctrl-attrib { opacity: 0.3; }
 .mapboxgl-canvas { outline: none; }
-
-/* ════════════════════════════════════════════════════════════════════════════
-   ▓▓ INTELLIGENCE CONSOLE — HUD chrome, telemetry panels, tactical controls ▓▓
-   Layered on top of the base sheet. A cohesive blend of cold tactical HUD,
-   SPECTRE luxe (gold), and mission-control telemetry.
-   ════════════════════════════════════════════════════════════════════════════ */
-
-/* ── Global background texture: fine tactical grid baked into the body ───────── */
-body {
-  background:
-    repeating-linear-gradient(0deg,   transparent 0 39px, var(--hud-grid) 39px 40px),
-    repeating-linear-gradient(90deg,  transparent 0 39px, var(--hud-grid) 39px 40px),
-    var(--bg-gradient);
-  background-attachment: fixed;
-}
-
-/* ── Global HUD overlay frame (rendered once by <HudFrame/>) ─────────────────── */
-.hud-frame {
-  position: fixed; inset: 0; z-index: 9000;
-  pointer-events: none;
-  /* keep above maps/iframes but never intercept input */
-}
-/* Scanlines — faint horizontal interlace for a surveillance-monitor feel */
-.hud-scan {
-  position: absolute; inset: 0;
-  background: repeating-linear-gradient(180deg, transparent 0 2px, var(--scanline) 2px 3px);
-  opacity: 0.35;
-  mix-blend-mode: multiply;
-}
-/* Cinematic edge vignette */
-.hud-vignette {
-  position: absolute; inset: 0;
-  background: radial-gradient(120% 90% at 50% 45%, transparent 55%, rgba(0,0,0,0.45) 100%);
-}
-/* Hairline inner frame */
-.hud-edge {
-  position: absolute; inset: 9px;
-  border: 1px solid rgba(120,190,205,0.10);
-  border-radius: 4px;
-}
-/* Corner brackets — the signature intelligence-software accent */
-.hud-bracket {
-  position: absolute; width: 26px; height: 26px;
-  border: 1.5px solid var(--gold);
-  opacity: 0.78;
-  filter: drop-shadow(0 0 4px rgba(217,177,90,0.35));
-}
-.hud-bracket.tl { top: 14px; left: 14px;  border-right: none;  border-bottom: none; }
-.hud-bracket.tr { top: 14px; right: 14px; border-left: none;   border-bottom: none; }
-.hud-bracket.bl { bottom: 14px; left: 14px;  border-right: none; border-top: none; }
-.hud-bracket.br { bottom: 14px; right: 14px; border-left: none;  border-top: none; }
-
-/* ── Header → station command bar ───────────────────────────────────────────── */
-.header {
-  background: linear-gradient(180deg, rgba(6,11,17,0.86), rgba(6,11,17,0.5));
-  border-bottom: 1px solid var(--glass-bdr);
-  box-shadow: 0 1px 0 rgba(217,177,90,0.10), 0 10px 30px rgba(0,0,0,0.45);
-}
-.header h1 {
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--active);
-}
-/* SPECTRE eyebrow above the wordmark */
-.station-eyebrow {
-  font-family: var(--mono);
-  font-size: 9px;
-  font-weight: 600;
-  letter-spacing: 0.42em;
-  text-transform: uppercase;
-  color: var(--gold);
-  margin-bottom: 3px;
-  display: flex; align-items: center; gap: 7px;
-}
-.station-eyebrow::before {
-  content: '';
-  width: 14px; height: 1px; background: var(--gold); opacity: 0.7;
-}
-.header p {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--text2);
-}
-.header button {
-  font-family: var(--mono);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-size: 10px;
-  border-radius: var(--r-sm);
-  border: 1px solid var(--bdr2);
-}
-
-/* Live mission-control telemetry cluster (right of title) */
-.station-status {
-  display: flex; align-items: center; gap: 18px;
-  font-family: var(--mono);
-}
-.station-readout { text-align: left; line-height: 1.25; }
-.station-readout .k {
-  font-size: 8.5px; letter-spacing: 0.22em; text-transform: uppercase;
-  color: var(--lbl);
-}
-.station-readout .v {
-  font-size: 13px; font-weight: 600; letter-spacing: 0.06em;
-  color: var(--cyan);
-  font-variant-numeric: tabular-nums;
-}
-.station-readout .v.gold { color: var(--gold); }
-.status-led {
-  display: inline-flex; align-items: center; gap: 6px;
-  font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
-  color: var(--sys-green);
-}
-.status-led .dot {
-  width: 7px; height: 7px; border-radius: 50%;
-  background: var(--sys-green);
-  box-shadow: 0 0 8px var(--sys-green);
-  animation: hud-blink 2.2s steps(1,end) infinite;
-}
-.status-led.rec { color: var(--alert); }
-.status-led.rec .dot { background: var(--alert); box-shadow: 0 0 8px var(--alert); animation-duration: 1.3s; }
-.classified-tag {
-  font-family: var(--mono);
-  font-size: 9px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase;
-  color: var(--alert);
-  border: 1px solid var(--alert-dim);
-  border-radius: 3px;
-  padding: 2px 7px;
-  background: rgba(255,59,48,0.06);
-}
-
-/* The big year readout in the header — gold, monospaced like a console figure */
-.scenario-info .label {
-  font-family: var(--mono);
-  letter-spacing: 0.22em;
-  color: var(--lbl);
-}
-.scenario-info .name {
-  font-family: var(--font-title);
-  color: var(--gold);
-  text-shadow: 0 0 24px rgba(217,177,90,0.25);
-}
-.scenario-info .description {
-  font-family: var(--mono);
-  letter-spacing: 0.1em;
-  color: var(--lbl);
-}
-
-/* Temporal scrubber (year slider) — gold thumb on a cyan-lit rail */
-.slider { background: var(--surf3); height: 2px; }
-.slider::-webkit-slider-thumb {
-  background: var(--gold);
-  box-shadow: 0 0 0 3px rgba(217,177,90,0.18), 0 0 12px rgba(217,177,90,0.5);
-}
-.slider::-webkit-slider-thumb:hover {
-  box-shadow: 0 0 0 4px rgba(217,177,90,0.22), 0 0 16px rgba(217,177,90,0.7);
-}
-.slider-labels span { font-family: var(--mono); letter-spacing: 0.04em; }
-.slider-labels span.active { color: var(--gold); }
-
-/* ── Subnav + tactical tabs ─────────────────────────────────────────────────── */
-.subnav {
-  background: linear-gradient(180deg, rgba(6,11,17,0.66), rgba(6,11,17,0.32));
-  border-bottom: 1px solid var(--glass-bdr);
-  box-shadow: inset 0 -1px 0 rgba(217,177,90,0.06);
-}
-.tab-button {
-  font-family: var(--mono);
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  border-radius: var(--r-sm);
-}
-.tab-button::after { background: var(--gold); height: 2px; width: 18px; }
-.tab-button:hover { background: rgba(120,200,220,0.07); color: var(--text); }
-.tab-button.active {
-  background: rgba(217,177,90,0.12);
-  color: var(--gold-hi);
-  box-shadow: inset 0 0 0 1px rgba(217,177,90,0.25);
-}
-.tab-button.active::after { background: var(--gold); box-shadow: 0 0 8px var(--gold); }
-
-/* ── Glass pill buttons → tactical command buttons ──────────────────────────── */
-.glass-pill-btn {
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  border-radius: var(--r-sm);
-  border: 1px solid var(--glass-bdr);
-}
-.glass-pill-btn:hover { background: rgba(120,200,220,0.10); color: var(--text); border-color: var(--cyan-dim); }
-.glass-pill-btn.active {
-  background: rgba(217,177,90,0.14);
-  border-color: var(--gold-dim);
-  color: var(--gold-hi);
-}
-
-/* ── KPI telemetry panels ───────────────────────────────────────────────────── */
-.kpi-card {
-  position: relative;
-  border-radius: var(--r-lg);
-  border: 1px solid var(--glass-bdr);
-  background:
-    linear-gradient(180deg, rgba(120,200,220,0.025), transparent 38%),
-    var(--glass);
-  box-shadow: var(--glass-shadow), var(--glass-hi);
-  overflow: hidden;
-}
-/* top status rule + faint scanline sheen */
-.kpi-card::before {
-  content: '';
-  position: absolute; top: 0; left: 0; right: 0; height: 2px;
-  background: linear-gradient(90deg, var(--gold) 0%, transparent 60%);
-  opacity: 0.55;
-}
-.kpi-card::after {
-  content: '';
-  position: absolute; inset: 0; pointer-events: none;
-  background: repeating-linear-gradient(180deg, transparent 0 3px, rgba(0,0,0,0.06) 3px 4px);
-  opacity: 0.4;
-}
-.kpi-card:hover { border-color: var(--bdr2); box-shadow: var(--glass-shadow), var(--glass-hi), 0 0 0 1px rgba(63,224,230,0.12); }
-.kpi-card .title {
-  font-family: var(--mono);
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--text2);
-  display: flex; align-items: center; gap: 8px;
-}
-.kpi-card .title::before {
-  content: '▸';
-  color: var(--cyan);
-  font-size: 9px;
-}
-.kpi-card .value {
-  font-family: var(--font-title);
-  font-weight: 700;
-  color: var(--active);
-  letter-spacing: -0.03em;
-}
-.kpi-card .unit { font-family: var(--mono); letter-spacing: 0.06em; color: var(--text2); }
-.kpi-card .trend { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; }
-.trend.up   { color: var(--sys-green); }
-.trend.down { color: var(--alert); }
-
-/* Active (hover-zoom) KPI card gets a gold target lock */
-.kpi-grid.is-hovering .kpi-card.is-active {
-  border-color: var(--gold-dim);
-  box-shadow: var(--glass-shadow), 0 0 0 1px var(--gold-dim), 0 0 36px rgba(217,177,90,0.18);
-}
-
-/* Scenario image panel → framed reconnaissance feed */
-.scenario-image {
-  border-radius: var(--r-lg);
-  border: 1px solid var(--glass-bdr);
-  box-shadow: var(--glass-shadow);
-}
-.scenario-image::after {
-  content: 'RECON FEED · LIVE';
-  position: absolute; bottom: 12px; left: 12px; z-index: 3;
-  font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em;
-  color: var(--cyan); text-shadow: 0 1px 4px #000;
-  padding: 3px 8px;
-  border: 1px solid var(--cyan-dim);
-  border-radius: 3px;
-  background: rgba(4,6,10,0.55);
-}
-.scenario-image::before {
-  content: '';
-  position: absolute; inset: 0; z-index: 2; pointer-events: none;
-  box-shadow: inset 0 0 90px rgba(0,0,0,0.55);
-  background: repeating-linear-gradient(180deg, transparent 0 3px, rgba(0,0,0,0.10) 3px 4px);
-}
-
-/* ── Overlay badges → signal toggles ────────────────────────────────────────── */
-.overlay-header h2 {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--gold);
-}
-.overlay-header h2::before { content: '// '; color: var(--text2); }
-.overlay-header p { font-family: var(--mono); font-size: 10px; letter-spacing: 0.06em; color: var(--lbl); }
-.overlay-layer-badge {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  border-radius: var(--r-sm);
-  border: 1px solid var(--glass-bdr);
-}
-.overlay-layer-badge.active {
-  background: rgba(217,177,90,0.10);
-  border-color: var(--gold-dim);
-  color: var(--gold-hi);
-}
-.overlay-layer-badge .dot { box-shadow: 0 0 7px currentColor; }
-
-/* ── Accessibility / population panels ──────────────────────────────────────── */
-.acc-stat-value, .acc-donut-total { font-family: var(--font-title); color: var(--active); }
-.acc-stat-label, .acc-card-header { font-family: var(--mono); letter-spacing: 0.12em; }
-.acc-layer-btn { font-family: var(--mono); letter-spacing: 0.08em; text-transform: uppercase; border-radius: var(--r-sm); }
-.acc-layer-btn.active { background: rgba(217,177,90,0.12); color: var(--gold-hi); border-color: var(--gold-dim); }
-.acc-legend-item { font-family: var(--mono); letter-spacing: 0.06em; text-transform: uppercase; }
-.acc-dot { box-shadow: 0 0 6px currentColor; }
-.acc-stat-card.acc-walk  { border-top-color: var(--sys-green); }
-.acc-stat-card.acc-bike  { border-top-color: var(--gold); }
-.acc-stat-card.acc-car   { border-top-color: var(--alert); }
-
-/* ── Map HUD overlay ────────────────────────────────────────────────────────── */
-.map-style-pill, .map-layer-pill {
-  background: var(--glass-strong);
-  border: 1px solid var(--glass-bdr);
-  border-radius: var(--r);
-  box-shadow: var(--glass-shadow), var(--glass-hi);
-}
-.map-style-btn, .map-layer-pill .tab-button {
-  font-family: var(--mono);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-.map-style-btn.active { background: rgba(217,177,90,0.16); color: var(--gold-hi); }
-
-/* Reticle + coordinate read-outs that frame any map view */
-.map-hud { position: absolute; inset: 0; z-index: 15; pointer-events: none; }
-.map-hud .reticle {
-  position: absolute; top: 50%; left: 50%;
-  width: 50px; height: 50px;
-  transform: translate(-50%, -50%);
-  opacity: 0.45;
-}
-.map-hud .reticle::before, .map-hud .reticle::after {
-  content: ''; position: absolute; background: var(--cyan);
-  box-shadow: 0 0 6px var(--cyan-dim);
-}
-.map-hud .reticle::before { top: 50%; left: 0; right: 0; height: 1px; transform: translateY(-50%); }
-.map-hud .reticle::after  { left: 50%; top: 0; bottom: 0; width: 1px; transform: translateX(-50%); }
-.map-hud .reticle-ring {
-  position: absolute; top: 50%; left: 50%; width: 22px; height: 22px;
-  transform: translate(-50%,-50%); border: 1px solid var(--cyan-dim); border-radius: 50%;
-}
-.map-hud .coord, .map-hud .map-tag {
-  position: absolute;
-  font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.14em;
-  color: var(--cyan); text-shadow: 0 1px 4px #000; text-transform: uppercase;
-  padding: 3px 8px; border: 1px solid var(--cyan-line); border-radius: 3px;
-  background: rgba(4,6,10,0.5);
-  white-space: nowrap;
-}
-.map-hud .coord.tr { top: 62px; right: 18px; }
-.map-hud .map-tag.tl {
-  top: 18px; left: 18px;
-  color: var(--gold); border-color: var(--gold-dim);
-  display: flex; align-items: center; gap: 6px;
-}
-.map-hud .map-tag.tl::before {
-  content: ''; width: 6px; height: 6px; border-radius: 50%;
-  background: var(--sys-green); box-shadow: 0 0 7px var(--sys-green);
-  animation: hud-blink 2.2s steps(1,end) infinite;
-}
-.map-hud .map-bracket {
-  position: absolute; width: 22px; height: 22px;
-  border: 1.5px solid var(--cyan); opacity: 0.55;
-}
-.map-hud .map-bracket.tl { top: 52px; left: 16px; border-right: none; border-bottom: none; }
-.map-hud .map-bracket.tr { top: 52px; right: 16px; border-left: none; border-bottom: none; }
-.map-hud .map-bracket.bl { bottom: 70px; left: 16px; border-right: none; border-top: none; }
-.map-hud .map-bracket.br { bottom: 70px; right: 16px; border-left: none; border-top: none; }
-
-/* Mapbox popups → tactical readout cards */
-.mapboxgl-popup.mb-hover-popup .mapboxgl-popup-content {
-  background: rgba(6,11,17,0.92);
-  border: 1px solid var(--cyan-line);
-  border-radius: var(--r-sm);
-  box-shadow: 0 8px 28px rgba(0,0,0,0.7), 0 0 0 1px rgba(63,224,230,0.08);
-  font-family: var(--mono);
-  letter-spacing: 0.04em;
-}
-
-/* ── Network / iframe panels → framed feeds ─────────────────────────────────── */
-.intel-feed-frame { position: relative; width: 100%; height: 100%; }
-.intel-feed-frame > .map-bracket-set { position: absolute; inset: 0; z-index: 5; pointer-events: none; }
-.feed-tag {
-  position: absolute; top: 16px; left: 18px; z-index: 6; pointer-events: none;
-  font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.2em; text-transform: uppercase;
-  color: var(--cyan); padding: 3px 9px; border: 1px solid var(--cyan-line); border-radius: 3px;
-  background: rgba(4,6,10,0.55); text-shadow: 0 1px 4px #000;
-}
-
-/* ── Scrollbars ─────────────────────────────────────────────────────────────── */
-.kpi-dashboard::-webkit-scrollbar-thumb { background: rgba(217,177,90,0.22); }
-.kpi-dashboard::-webkit-scrollbar-thumb:hover { background: rgba(217,177,90,0.38); }
-
-/* ── SPECTRE boot — push toward access-terminal ─────────────────────────────── */
-.spectre-subtitle { font-family: var(--mono); color: var(--gold); }
-.spectre-hint { font-family: var(--mono); color: var(--cyan-dim); }
-.boot-terminal {
-  margin: 2.4rem auto 0;
-  max-width: 430px;
-  font-family: var(--mono);
-  font-size: 11px; line-height: 1.95;
-  letter-spacing: 0.06em;
-  color: var(--cyan);
-  text-align: left;
-  min-height: 120px;
-  text-shadow: 0 0 8px rgba(63,224,230,0.25);
-}
-.boot-terminal > div { animation: spectre-rise 0.5s var(--ease-out) both; }
-.boot-terminal .ok { color: var(--sys-green); }
-.caret { animation: hud-blink 1s steps(1,end) infinite; color: var(--gold); }
-
-/* ── Animations ─────────────────────────────────────────────────────────────── */
-@keyframes hud-blink { 0%, 60% { opacity: 1; } 61%, 100% { opacity: 0.15; } }
-@keyframes hud-sweep { 0% { transform: translateY(-100%); } 100% { transform: translateY(100%); } }
-
-/* Subtle scanning sweep used on framed feeds + intro */
-.scan-sweep {
-  position: absolute; left: 0; right: 0; height: 38%;
-  background: linear-gradient(180deg, transparent, rgba(63,224,230,0.05) 60%, transparent);
-  animation: hud-sweep 6.5s linear infinite;
-  pointer-events: none;
-}

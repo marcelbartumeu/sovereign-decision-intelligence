@@ -176,9 +176,9 @@ export function AgentProfile({ profile, accent = ACCENT }: { profile: any; accen
 
       {!p.minor && p.becon && (
         <Section title="Behavioral economics">
-          <Bar01 label="Loss aversion" value={Math.min(1, (p.becon[0] ?? 0) / 4)} color="#f59e0b" fmt={() => (p.becon[0] ?? 0).toFixed(1) + '×'} />
-          <Bar01 label="Present bias" value={p.becon[2]} color="#f59e0b" />
-          <Bar01 label="Discount rate" value={p.becon[1]} color="#f59e0b" />
+          <Bar01 label="Loss aversion" value={Math.min(1, (p.becon[0] ?? 0) / 4)} color="#9ca3af" fmt={() => (p.becon[0] ?? 0).toFixed(1) + '×'} />
+          <Bar01 label="Present bias" value={p.becon[2]} color="#9ca3af" />
+          <Bar01 label="Discount rate" value={p.becon[1]} color="#9ca3af" />
         </Section>
       )}
 

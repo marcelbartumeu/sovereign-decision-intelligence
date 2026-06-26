@@ -113,9 +113,9 @@ export function addFrame(map, boundaryData) {
       type: 'line',
       source: FRAME.boundary,
       paint: {
-        'line-color': '#3fe0e6',
-        'line-width': 1.6,
-        'line-opacity': 0.6,
+        'line-color': '#ffffff',
+        'line-width': 2,
+        'line-opacity': 0.55,
         'line-dasharray': [2, 3],
       },
     });
@@ -156,9 +156,9 @@ export function addFrame(map, boundaryData) {
       source: FRAME.corners,
       paint: {
         'circle-radius': 5,
-        'circle-color': '#d9b15a',
-        'circle-stroke-color': '#3fe0e6',
-        'circle-stroke-width': 1.6,
+        'circle-color': '#ff3333',
+        'circle-stroke-color': '#ffffff',
+        'circle-stroke-width': 2,
       },
     });
   } else {

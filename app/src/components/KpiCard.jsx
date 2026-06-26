@@ -90,8 +90,8 @@ export default function KpiCard({ kpi, activeScenario, selectedYear, overlayData
           }},
           datalabels: {
             anchor: 'end', align: 'end',
-            color: 'rgba(155,182,200,0.85)',
-            font: { family: "'IBM Plex Mono', ui-monospace, monospace", size: 10 },
+            color: '#aaa',
+            font: { size: 10 },
             formatter: (v) => typeof v === 'number' ? v.toLocaleString(undefined, { maximumFractionDigits: 0 }) : v,
           },
         },
@@ -101,7 +101,7 @@ export default function KpiCard({ kpi, activeScenario, selectedYear, overlayData
       ...base,
       plugins: {
         ...base.plugins,
-        legend: useOverlay ? { display: true, position: 'bottom', labels: { color: 'rgba(155,182,200,0.65)', font: { family: "'IBM Plex Mono', ui-monospace, monospace", size: 10 }, usePointStyle: true, padding: 10 } } : base.plugins.legend,
+        legend: useOverlay ? { display: true, position: 'bottom', labels: { color: '#888', font: { size: 10 }, usePointStyle: true, padding: 10 } } : base.plugins.legend,
       },
     };
   }, [kpi, scaleData, useOverlay, isBarOverlay]);
