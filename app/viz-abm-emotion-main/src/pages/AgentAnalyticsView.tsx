@@ -366,30 +366,27 @@ const DetailScroll = styled.div`
   scrollbar-color: rgba(255,255,255,0.1) transparent;
 `;
 
-// Liquid glass on the KPI card's exact fill (rgba(28,28,30,0.82)) — same color
-// and opacity as the dashboard KPI cards, with a bright specular top edge, heavy
-// blur + saturation, and layered shadows for depth.
+// Liquid glass matching the dashboard KPI cards exactly (--glass tokens from
+// app/src/index.css): rgba(28,28,30,0.55) fill, 0.10 white border, layered drop
+// shadows + inset specular top edge, blur(28px) saturate(1.7), and the same
+// border-color lift on hover.
 const Block = styled.div`
-  background: rgba(28,28,30,0.82);
-  border: 0.5px solid rgba(255,255,255,0.12);
+  background: rgba(28,28,30,0.55);
+  border: 0.5px solid rgba(255,255,255,0.10);
   border-radius: var(--r-lg, 16px);
   padding: 1.25rem;
   box-shadow:
-    0 1px 2px rgba(0,0,0,0.5),
-    0 12px 32px rgba(0,0,0,0.28),
-    inset 0 0.5px 0 rgba(255,255,255,0.18);
-  backdrop-filter: blur(30px) saturate(1.8);
-  -webkit-backdrop-filter: blur(30px) saturate(1.8);
+    0 8px 30px rgba(0,0,0,0.55),
+    0 2px 8px rgba(0,0,0,0.4),
+    inset 0 1px 0 rgba(255,255,255,0.12);
+  backdrop-filter: blur(28px) saturate(1.7);
+  -webkit-backdrop-filter: blur(28px) saturate(1.7);
   display: flex;
   flex-direction: column;
   gap: 0.45rem;
-  transition: border-color 0.15s, box-shadow 0.15s;
+  transition: border-color 0.15s;
   &:hover {
-    border-color: rgba(255,255,255,0.20);
-    box-shadow:
-      0 1px 2px rgba(0,0,0,0.5),
-      0 16px 40px rgba(0,0,0,0.32),
-      inset 0 0.5px 0 rgba(255,255,255,0.24);
+    border-color: rgba(255,255,255,0.14);
   }
 `;
 

@@ -14,10 +14,13 @@ const TXT2 = 'rgba(255,255,255,0.55)';
 const TXT = 'rgba(255,255,255,0.86)';
 const BDR = 'rgba(255,255,255,0.08)';
 const BDR2 = 'rgba(255,255,255,0.14)';
-const CARD = 'rgba(28,28,30,0.82)';
+// Liquid-glass tokens mirrored from the dashboard KPI cards (--glass* in app/src/index.css)
+const CARD = 'rgba(28,28,30,0.55)';            // --glass fill
+const GLASS_BDR = 'rgba(255,255,255,0.10)';    // --glass-bdr
+const GLASS_SHADOW = '0 8px 30px rgba(0,0,0,0.55), 0 2px 8px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.12)'; // --glass-shadow + --glass-hi
+const GLASS_BLUR = 'blur(28px) saturate(1.7)'; // --glass-blur
 const ACCENT = '#0A84FF';   // sys-blue — data accent
 const TITLE = `'Syne', 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif`;
-const SHADOW_XS = '0 1px 3px rgba(0,0,0,0.4), 0 0 0 0.5px rgba(255,255,255,0.04)';
 
 // Ekman emotion palette (Apple system colors), order:
 // [ANGER, CONTEMPT, DISGUST, ENJOYMENT, FEAR, SADNESS, SURPRISE]
@@ -106,12 +109,15 @@ export function placeholderMoodVector(profile: any, emotion: string | null): num
 // Bipolar OCEAN traits as labeled bars — far easier to read exact scores than a
 // radar. Each bar carries the pole word it leans toward and a faint tick at 50%
 // (the population midpoint) so a score reads as "above / below average" at a glance.
+// Aligned with the scenario palette (src/utils/chartUtils.js OVERLAY_SCENARIOS):
+// Openness↔Continuity blue, Conscientiousness↔Degrowth green, Extraversion↔Density
+// yellow, Neuroticism↔Overgrowth red, Agreeableness in the same deep shade, purple.
 const BIG5_TRAITS = [
-  { name: 'Openness',          color: '#0A84FF', lo: 'Consistent',  hi: 'Curious' },
-  { name: 'Conscientiousness', color: '#30D158', lo: 'Spontaneous', hi: 'Organized' },
-  { name: 'Extraversion',      color: '#FFD60A', lo: 'Reserved',    hi: 'Outgoing' },
-  { name: 'Agreeableness',     color: '#BF5AF2', lo: 'Frank',       hi: 'Warm' },
-  { name: 'Neuroticism',       color: '#FF453A', lo: 'Calm',        hi: 'Sensitive' },
+  { name: 'Openness',          color: '#294daf', lo: 'Consistent',  hi: 'Curious' },
+  { name: 'Conscientiousness', color: '#076f37', lo: 'Spontaneous', hi: 'Organized' },
+  { name: 'Extraversion',      color: '#eab308', lo: 'Reserved',    hi: 'Outgoing' },
+  { name: 'Agreeableness',     color: '#6b21a8', lo: 'Frank',       hi: 'Warm' },
+  { name: 'Neuroticism',       color: '#bd0638', lo: 'Calm',        hi: 'Sensitive' },
 ];
 
 function Big5Bars({ values }: { values: number[] }) {
@@ -262,7 +268,7 @@ export function EmotionState({ profile, emotion, emotionColor }:
         {emotion && <span style={{ marginLeft: 'auto', color: emotionColor, fontWeight: 600, fontSize: 12 }}>{emotion}</span>}
       </div>
       {drivers.length > 0
-        ? drivers.slice(0, 4).map(d => <Bar01 key={d.driver} label={d.driver} value={d.weight} color={emotionColor} />)
+        ? drivers.slice(0, 4).map(d => <Bar01 key={d.driver} label={d.driver} value={d.weight} color="#9ca3af" />)
         : <div style={{ fontSize: 11, color: LBL }}>No psychometric drivers (minor).</div>}
     </div>
   );
@@ -326,8 +332,8 @@ const ChartBox = ({ data, color = ACCENT, height = 90 }: { data: { name: string;
 
 const DashCard = ({ title, children }: any) => (
   <div style={{
-    background: CARD, border: `0.5px solid ${BDR}`, borderRadius: 16, padding: 16, boxShadow: SHADOW_XS,
-    backdropFilter: 'blur(24px) saturate(1.4)', WebkitBackdropFilter: 'blur(24px) saturate(1.4)',
+    background: CARD, border: `0.5px solid ${GLASS_BDR}`, borderRadius: 16, padding: 16, boxShadow: GLASS_SHADOW,
+    backdropFilter: GLASS_BLUR, WebkitBackdropFilter: GLASS_BLUR,
   }}>
     <div style={{ fontFamily: TITLE, fontSize: 12, fontWeight: 500, color: TXT2, marginBottom: 12 }}>{title}</div>
     {children}
