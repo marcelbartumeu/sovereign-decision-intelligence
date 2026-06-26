@@ -212,6 +212,20 @@ def computeAllInfrastructureScenarios(config=None):
 def clamp(x, a, b): return max(a, min(b, x))
 def growth(curr, prev): return 0.0 if prev == 0 else (curr - prev) / prev
 
+def _resolve_scenario_config(name):
+    """Locate a scenario config JSON, tolerant of project reorganisation.
+    Checks the legacy conf/ path and the repo-root scenarios/ directory."""
+    here = Path(__file__).resolve().parent
+    candidates = [
+        here.parent.parent / "conf" / "scenarios" / f"{name.lower()}.json",
+        here.parents[2] / "scenarios" / f"{name.lower()}.json",
+        here / "scenarios" / f"{name.lower()}.json",
+    ]
+    for c in candidates:
+        if c.exists():
+            return c
+    return None
+
 def get(d, key, default):
     v = d.get(key, default)
     return default if v is None else v
@@ -281,6 +295,9 @@ def step_next(baseline):
     Tour_t1 = Tour_target if force_tour else Tour_t
     B_t1    = B_target if force_build else B_t
 
+    # Policy lever: tourism demand management (tax/quota). Default 1.0 = no-op.
+    Tour_t1 = Tour_t1 * p("tour_demand_mult", 1.0)
+
     # P4 — Tourism capacity constraint (logistic ceiling).
     # Carrying capacity is anchored to 2024 sustainable load (9,646,656 visitors at 85%
     # utilization) and scaled by building stock (B^0.4, proxy for accommodation/service
@@ -289,12 +306,19 @@ def step_next(baseline):
     #   Tour_constrained = cap×0.85 + excess × exp(−3 × excess_fraction)
     # This implements Butler (1980) TALC saturation phase; elasticity from
     # Peeters et al. (2019) Tourism Management 72:48–56.
-    Tour_cap = (9646656.0 / 0.85) * ((B_t1 / 10645.0) ** 0.4) * ((Pop_t1 / 87097.0) ** 0.2)
+    # Carrying-capacity parameters (exposed for provenance/sensitivity; defaults reproduce
+    # the original hardcoded values). tour_exp_B/_P: infrastructure & workforce elasticities;
+    # tour_util_crit: critical utilisation; tour_friction: saturation friction coefficient.
+    tour_exp_B    = p("tour_exp_B",    0.4)
+    tour_exp_P    = p("tour_exp_P",    0.2)
+    tour_util_crit = p("tour_util_crit", 0.85)
+    tour_friction = p("tour_friction", 3.0)
+    Tour_cap = (9646656.0 / tour_util_crit) * ((B_t1 / 10645.0) ** tour_exp_B) * ((Pop_t1 / 87097.0) ** tour_exp_P)
     if Tour_cap > 0:
         _util = Tour_t1 / Tour_cap
-        if _util > 0.85:
-            _excess = _util - 0.85
-            Tour_t1 = Tour_cap * 0.85 + (Tour_t1 - Tour_cap * 0.85) * math.exp(-3.0 * _excess)
+        if _util > tour_util_crit:
+            _excess = _util - tour_util_crit
+            Tour_t1 = Tour_cap * tour_util_crit + (Tour_t1 - Tour_cap * tour_util_crit) * math.exp(-tour_friction * _excess)
             Tour_t1 = max(0.0, Tour_t1)
 
     # ── Research-based GDP → Population model ──────────────────────────────────
@@ -317,7 +341,8 @@ def step_next(baseline):
 
     # Housing-affordability migration feedback
     beta_afford = p("beta_afford", 0.10)
-    afford_migration_effect = -beta_afford * max(0.0, Afford_t / 100.0 - 0.30) * Pop_t
+    afford_threshold = p("afford_threshold", 0.30)  # rent-burden share above which migration is suppressed
+    afford_migration_effect = -beta_afford * max(0.0, Afford_t / 100.0 - afford_threshold) * Pop_t
 
     # Natural demographic change: −0.1%/yr (deaths > births in Andorra; fertility ~0.8–1.5)
     gnat = p("gnat", -0.001)
@@ -873,11 +898,10 @@ def calculate_dynamic_parameters(scenario_name, current_state, existing_params=N
                      the hardcoded priors while scenario-specific adjustments remain active.
     """
     
-    # Load scenario assumptions
-    here = Path(__file__).resolve().parent
-    scenario_path = here.parent.parent / "conf" / "scenarios" / f"{scenario_name.lower()}.json"
-    
-    if scenario_path.exists():
+    # Load scenario assumptions (tolerant of project reorganisation)
+    scenario_path = _resolve_scenario_config(scenario_name)
+
+    if scenario_path is not None:
         with scenario_path.open("r") as f:
             scenario_config = json.load(f)
         assumptions = scenario_config.get("assumptions", {})
@@ -1048,6 +1072,32 @@ def calculate_dynamic_parameters(scenario_name, current_state, existing_params=N
 
     return params
 
+# ========== policy-instrument layer ==========
+# Each instrument maps a normalized intensity in [0,1] to overrides on existing
+# model parameters (its transmission mechanism). An empty policy reproduces the
+# unmanaged scenario. Use via simulate_path(..., param_overrides=apply_policy(policy)).
+POLICY_INSTRUMENTS = {
+    "immigration_restriction": "pop_elasticity_factor  (caps GDP->migration response)",
+    "land_protection":         "LandProtect            (reduces building permits)",
+    "housing_program":         "Perm_phi0              (raises construction / supply)",
+    "tourism_management":      "tour_demand_mult       (reduces effective arrivals)",
+}
+
+def apply_policy(policy):
+    """Translate a policy dict {instrument: intensity in [0,1]} into parameter
+    overrides via documented transmission coefficients (illustrative magnitudes)."""
+    policy = policy or {}
+    ov = {}
+    if policy.get("immigration_restriction"):
+        ov["pop_elasticity_factor"] = max(0.0, 1.0 - policy["immigration_restriction"])
+    if policy.get("land_protection"):
+        ov["LandProtect"] = 5.0 * policy["land_protection"]
+    if policy.get("housing_program"):
+        ov["Perm_phi0"] = 40.0 * (1.0 + 4.0 * policy["housing_program"])
+    if policy.get("tourism_management"):
+        ov["tour_demand_mult"] = max(0.0, 1.0 - 0.3 * policy["tourism_management"])
+    return ov
+
 # ========== scenario builders (targets only) ==========
 def scenario_targets(current_state, scenario_name):
     """Return (GDPpc_T, Tour_T, B_target_fn, alpha_fb).
@@ -1062,12 +1112,11 @@ def scenario_targets(current_state, scenario_name):
     ppb0  = (Pop0 / B0) if B0 > 0 else 0.0
     tourists_per_person_2024 = Tour0 / max(Pop0, 1e-9)
 
-    # Load gdp_growth_rate from the scenario config JSON
-    here = Path(__file__).resolve().parent
-    scenario_path = here.parent.parent / "conf" / "scenarios" / f"{scenario_name.lower()}.json"
+    # Load gdp_growth_rate from the scenario config JSON (tolerant of reorganisation)
+    scenario_path = _resolve_scenario_config(scenario_name)
     gdp_growth_rate = 0.025  # fallback: continuity
     pop_elasticity_factor = 1.0
-    if scenario_path.exists():
+    if scenario_path is not None:
         with scenario_path.open("r") as f:
             cfg = json.load(f)
         gdp_growth_rate       = cfg.get("assumptions", {}).get("gdp_growth_rate", gdp_growth_rate)
