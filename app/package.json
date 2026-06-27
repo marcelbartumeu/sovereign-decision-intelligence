@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:all": "mkdir -p public/andorra && cp -r viz-abm-emotion-main/dist/. public/andorra/ && mkdir -p public/earth && cp -r vertex-earth-interactive/. public/earth/ && cd transit-builder && npm install && npm run build && cd .. && mkdir -p public/transit-builder && cp -r transit-builder/dist/. public/transit-builder/ && npm run build",
     "preview": "vite preview",
     "viz": "cd viz-abm-emotion-main && npx vite preview --port 3001",
     "start": "concurrently \"npm run dev\" \"npm run viz\""
