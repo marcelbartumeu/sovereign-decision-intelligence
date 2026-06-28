@@ -68,3 +68,9 @@ app/dist/
 # never commit (a Mapbox token gets baked into the bundle). Kept on disk for local dev.
 app/transit-builder/dist/
 
+# Kept on local disk only, out of the (public) repo:
+# Research manuscript — not for collaborators / not published:
+paper/
+# Unity physical-model server — not used by the web app:
+unity/
+
