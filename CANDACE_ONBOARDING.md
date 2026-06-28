@@ -1,6 +1,6 @@
-# Onboarding — Narrative Scrollytelling Landing Page
+# Candace — Onboarding: Narrative Scrollytelling Landing Page
 
-Welcome! This branch (`scrollytelling-landing`) is yours to build the narrative
+Welcome, Candace! This branch (`scrollytelling-landing`) is yours to build the narrative
 scrollytelling landing page for the Andorra project, per the plan
 (*Andorra Narrative Data Visualization Plan*). This doc points you to the exact
 data and components you'll plug into so you don't have to reverse-engineer the repo.
