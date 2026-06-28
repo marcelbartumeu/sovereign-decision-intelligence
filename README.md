@@ -1,4 +1,4 @@
-# Andorra V1.9
+# Andorra V2.1
 
 An interactive scenario modeling and visualization system for Andorra, simulating different future development paths through an agent-based model (ABM) and a real-time web dashboard. Optionally controlled via Arduino hardware.
 
