@@ -7,6 +7,40 @@ const ANDORRA_CENTER = [1.598, 42.547]
 const ANDORRA_ZOOM   = 11
 const MAPBOX_STYLE   = 'mapbox://styles/mapbox/dark-v11'
 
+// Keystone projection — must match app/src/utils/mapboxBase.js (NW→NE→SE→SW, [lng,lat]).
+// When embedded in the dashboard (iframe loaded with ?embed) the accessibility map is
+// locked to these 4 corners + masked, exactly like the other map layers. Standalone it
+// stays interactive at the default Andorra center/zoom.
+const PROJECTION_CORNERS = [
+  [1.393847, 42.694543],
+  [1.801074, 42.697242],
+  [1.803713, 42.396861],
+  [1.39849,  42.394176],
+]
+const PROJECTION_BOUNDS = [[1.393847, 42.394176], [1.803713, 42.697242]]
+const EMBED = typeof window !== 'undefined' && new URLSearchParams(window.location.search).has('embed')
+
+// Black keystone mask (huge polygon with the quad punched out) + corner markers, on top
+// of all data so anything outside the keystone is clipped. Matches mapboxBase.addFrame.
+function addKeystoneFrame(map) {
+  map.fitBounds(PROJECTION_BOUNDS, { padding: 0, animate: false })
+  if (!map.getSource('keystone-mask')) {
+    const outer = [[-20, 30], [25, 30], [25, 55], [-20, 55], [-20, 30]]
+    const hole  = [...PROJECTION_CORNERS, PROJECTION_CORNERS[0]]
+    map.addSource('keystone-mask', { type: 'geojson',
+      data: { type: 'Feature', geometry: { type: 'Polygon', coordinates: [outer, hole] } } })
+    map.addLayer({ id: 'keystone-mask', type: 'fill', source: 'keystone-mask',
+      paint: { 'fill-color': '#000000', 'fill-opacity': 1 } })
+  }
+  if (!map.getSource('keystone-corners')) {
+    map.addSource('keystone-corners', { type: 'geojson',
+      data: { type: 'FeatureCollection', features: PROJECTION_CORNERS.map(c => ({
+        type: 'Feature', geometry: { type: 'Point', coordinates: c }, properties: {} })) } })
+    map.addLayer({ id: 'keystone-corners', type: 'circle', source: 'keystone-corners',
+      paint: { 'circle-radius': 4, 'circle-color': '#ffffff', 'circle-stroke-color': '#ffffff', 'circle-stroke-width': 2 } })
+  }
+}
+
 // ── Layer paint definitions ───────────────────────────────────────────────────
 
 const STREETS_PAINT = {
@@ -110,14 +144,17 @@ export function useMap(containerRef) {
     const map = new mapboxgl.Map({
       container: containerRef.current,
       style: MAPBOX_STYLE,
-      center: ANDORRA_CENTER,
-      zoom: ANDORRA_ZOOM,
       pitch: 0,
       bearing: 0,
       antialias: true,
+      ...(EMBED
+        ? { bounds: PROJECTION_BOUNDS, fitBoundsOptions: { padding: 0, animate: false },
+            dragPan: false, scrollZoom: false, boxZoom: false, dragRotate: false,
+            keyboard: false, doubleClickZoom: false, touchZoomRotate: false, touchPitch: false }
+        : { center: ANDORRA_CENTER, zoom: ANDORRA_ZOOM }),
     })
 
-    map.addControl(new mapboxgl.NavigationControl({ visualizePitch: false }), 'bottom-right')
+    if (!EMBED) map.addControl(new mapboxgl.NavigationControl({ visualizePitch: false }), 'bottom-right')
 
     map.on('load', () => {
 
@@ -202,6 +239,10 @@ export function useMap(containerRef) {
         paint: TRANSIT_STOP_HALO_PAINT })
       map.addLayer({ id: 'transit-edit-stops-layer', type: 'circle', source: 'transit-edit-stops',
         paint: TRANSIT_STOP_CIRCLE_PAINT })
+
+      // Lock to the keystone frame when embedded — mask + corners on top of all data so
+      // the accessibility layer matches the 4 corners / zoom / position of the other maps.
+      if (EMBED) addKeystoneFrame(map)
 
       // ── Map interaction: click to add stop ────────────────────────────────
       map.on('click', (e) => {
