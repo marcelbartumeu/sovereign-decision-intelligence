@@ -26,6 +26,7 @@ import { useState, useRef, useCallback } from 'react';
 
 // Must match LAYERS order in MapVisualization.jsx
 const MAP_LAYERS = ['base', 'agents', 'growth', 'tourism', 'accessibility', 'population'];
+const AGENTS_IDX = MAP_LAYERS.indexOf('agents');
 
 export function useSerial(
   onYearChange,
@@ -41,16 +42,14 @@ export function useSerial(
   const portRef                   = useRef(null);
   const readerRef                 = useRef(null);
 
-  // Track encoder positions so we can derive layer / agent index from absolute pos
-  const enc1PosRef = useRef(0);
-  const enc2PosRef = useRef(0);
-  // Tracks the ENC1 position received on connect. null = not connected yet.
-  // While the encoder sits at that position (even across repeated messages), we
-  // ignore it so the Arduino's resting position never overrides the 'base' default.
-  // Once the encoder actually moves away from the initial position, we clear this
-  // guard and process all future messages normally.
-  const enc1InitPosRef = useRef(null);
-  const enc1MovedRef   = useRef(false);
+  // ENC1 steps the map layer RELATIVE to the current layer (by rotation delta) rather
+  // than mapping its absolute position, so a layer stays re-selectable regardless of the
+  // physical knob position or any ENC2-driven override to 'agents'.
+  //   enc1LastPosRef — last absolute ENC1 position (null until the connect snapshot)
+  //   layerIdxRef    — current index into MAP_LAYERS (0 = 'base')
+  const enc2PosRef     = useRef(0);
+  const enc1LastPosRef = useRef(null);
+  const layerIdxRef    = useRef(0);
 
   // ── Message dispatcher ──────────────────────────────────────────────────────
 
@@ -82,30 +81,24 @@ export function useSerial(
         if (Number.isNaN(pos)) break;
 
         if (msg.id === 1) {
-          // ENC1 → cycle map layers
-          enc1PosRef.current = pos;
-
-          if (enc1InitPosRef.current === null) {
-            // First message on this connect: record the physical resting position.
-            // Don't dispatch a layer change — keeps 'base' as the startup default.
-            enc1InitPosRef.current = pos;
+          // ENC1 → step map layers RELATIVE to the current layer (by rotation delta),
+          // so re-selecting a layer always works no matter the absolute knob position or
+          // a prior ENC2 override.
+          if (enc1LastPosRef.current === null) {
+            enc1LastPosRef.current = pos;   // connect snapshot — keeps 'base' as the default
             break;
           }
-          if (!enc1MovedRef.current) {
-            if (pos === enc1InitPosRef.current) {
-              // Encoder is still at its initial position (repeated startup message).
-              break;
-            }
-            // Encoder has moved away from initial position — unlock all future messages.
-            enc1MovedRef.current = true;
-          }
-
-          const idx = ((pos % MAP_LAYERS.length) + MAP_LAYERS.length) % MAP_LAYERS.length;
-          onMapLayerChange?.(MAP_LAYERS[idx]);
+          const delta = pos - enc1LastPosRef.current;
+          enc1LastPosRef.current = pos;
+          if (delta === 0) break;
+          const N = MAP_LAYERS.length;
+          layerIdxRef.current = (((layerIdxRef.current + delta) % N) + N) % N;
+          onMapLayerChange?.(MAP_LAYERS[layerIdxRef.current]);
         } else if (msg.id === 2) {
           // ENC2 → hover agents; pass raw position, consumer handles agent-count wrapping
           enc2PosRef.current = pos;
           onAgentHover?.(pos);
+          layerIdxRef.current = AGENTS_IDX;  // keep the layer knob in sync after this override
           onMapLayerChange?.('agents');
         }
         break;
@@ -118,6 +111,7 @@ export function useSerial(
         } else if (msg.id === 2) {
           // ENC2 push → select currently hovered agent + ensure agents view is active
           onAgentSelect?.(enc2PosRef.current);
+          layerIdxRef.current = AGENTS_IDX;
           onMapLayerChange?.('agents');
         }
         break;
@@ -145,8 +139,8 @@ export function useSerial(
       const port = await navigator.serial.requestPort();
       await port.open({ baudRate: 115200 });
       portRef.current = port;
-      enc1InitPosRef.current = null;  // reset guards on each new connection
-      enc1MovedRef.current   = false;
+      enc1LastPosRef.current = null;  // re-snapshot ENC1 on each new connection
+      layerIdxRef.current    = 0;     // back to the 'base' default
       setConnected(true);
       setStatus('Connected');
 
