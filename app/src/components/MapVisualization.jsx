@@ -16,7 +16,7 @@ const LAYERS = [
 
 const IFRAME_LAYERS = {
   agents:        '/andorra/map?embed',
-  accessibility: '/transit-builder/',
+  accessibility: '/transit-builder/?embed',
 };
 
 // Layers backed by the shared Mapbox stack (respond to the style selector).
@@ -151,7 +151,7 @@ export default function MapVisualization({
             {everSeen[id] && (
               id === 'base'    ? <BaseMapView mapStyle={mapStyle} /> :
               id === 'growth'  ? <GrowthMapView overlayEnabled={overlayEnabled} selectedYear={selectedYear} visible={visualLayer === 'growth'} mapStyle={mapStyle} /> :
-              id === 'tourism' ? <TourismMapView mapStyle={mapStyle} /> :
+              id === 'tourism' ? <TourismMapView mapStyle={mapStyle} visible={visualLayer === 'tourism'} /> :
                                  <PopulationMapView mapStyle={mapStyle} />
             )}
           </div>

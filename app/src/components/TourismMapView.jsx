@@ -64,7 +64,7 @@ function stripHoles(geojson) {
 
 const tip = (html) => `<div style="font-family:monospace;font-size:11px;line-height:1.7">${html}</div>`;
 
-export default function TourismMapView({ mapStyle = DEFAULT_MAP_STYLE }) {
+export default function TourismMapView({ mapStyle = DEFAULT_MAP_STYLE, visible = true }) {
   const containerRef = useRef(null);
   const dataRef      = useRef({});            // key → geojson
   const visRef       = useRef({ ...INIT_VIS });
@@ -177,6 +177,16 @@ export default function TourismMapView({ mapStyle = DEFAULT_MAP_STYLE }) {
     return () => controller.abort();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // When the layer becomes visible, resize (the map may have initialized while the
+  // container was hidden) and re-run the overlays so any data that missed the initial
+  // style-load gets added. Mirrors GrowthMapView; addKey is idempotent (getSource guard).
+  useEffect(() => {
+    if (!visible) return;
+    const map = mapRef.current;
+    if (!map) return;
+    whenStyleReady(map, () => { map.resize(); addOverlays(map); });
+  }, [visible, addOverlays, mapRef]);
 
   const toggle = (key) => {
     const next = { ...visRef.current, [key]: !visRef.current[key] };
