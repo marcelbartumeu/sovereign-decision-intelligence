@@ -659,6 +659,24 @@ function AgentProfilePane() {
   const eColor = f ? (EKMAN_COLORS[f.emotion] || '#9ca3af') : ACT;
   const pickRandom = () => { if (agents.length) setFollowedAgent(agents[Math.floor(Math.random() * agents.length)].id); };
 
+  // The playback tick re-renders this pane via the shared context ~20x/sec. Memoize the
+  // heavy subtrees (300-card list, recharts dashboards, profile panels) so they only
+  // re-render when their real inputs change — not on every clock tick.
+  const agentCards = useMemo(() => agents.slice(0, 300).map((agent, listIdx) => {
+    const aColor   = EKMAN_COLORS[agent.emotion] ?? '#9ca3af';
+    const selected = state.followedAgentId === agent.id;
+    const encHover = encoderHoverIdx === listIdx;
+    return (
+      <AgentCard key={agent.id} $selected={selected} $color={aColor} $hovered={encHover} data-agent-card onClick={() => handleFollow(agent.id)}>
+        <AgentDot $color={aColor} />
+        <span style={{ flex: 1, fontSize: '11px', color: selected ? '#e5e7eb' : '#9ca3af', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{getFakeName(agent.id)}</span>
+        <span style={{ fontSize: '10px', color: aColor, flexShrink: 0 }}>{agent.emotion.slice(0, 3)}</span>
+      </AgentCard>
+    );
+  }), [agents, state.followedAgentId, encoderHoverIdx]); // eslint-disable-line react-hooks/exhaustive-deps
+  const popDash = useMemo(() => <PopulationDashboards agg={state.aggregates} />, [state.aggregates]);
+  const profilePanel = useMemo(() => <AgentProfile profile={profile} accent={eColor} />, [profile, eColor]);
+
   return (
     <LeftPane>
       <LeftHeader>
@@ -674,18 +692,7 @@ function AgentProfilePane() {
             <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: LBL, fontSize: '11px', padding: '8px' }}>Loading…</div>
           ) : (
             <AgentList ref={agentListRef}>
-              {agents.slice(0, 300).map((agent, listIdx) => {
-                const aColor   = EKMAN_COLORS[agent.emotion] ?? '#9ca3af';
-                const selected = state.followedAgentId === agent.id;
-                const encHover = encoderHoverIdx === listIdx;
-                return (
-                  <AgentCard key={agent.id} $selected={selected} $color={aColor} $hovered={encHover} data-agent-card onClick={() => handleFollow(agent.id)}>
-                    <AgentDot $color={aColor} />
-                    <span style={{ flex: 1, fontSize: '11px', color: selected ? '#e5e7eb' : '#9ca3af', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{getFakeName(agent.id)}</span>
-                    <span style={{ fontSize: '10px', color: aColor, flexShrink: 0 }}>{agent.emotion.slice(0, 3)}</span>
-                  </AgentCard>
-                );
-              })}
+              {agentCards}
             </AgentList>
           )}
           <div style={{ padding: '8px 10px', borderTop: `0.5px solid ${BDR}`, flexShrink: 0 }}>
@@ -696,7 +703,7 @@ function AgentProfilePane() {
         <DetailPane>
           <DetailScroll>
             {!f ? (
-              <Block><PopulationDashboards agg={state.aggregates} /></Block>
+              <Block>{popDash}</Block>
             ) : (
               <Block>
                 <BlockTitle>
@@ -705,7 +712,7 @@ function AgentProfilePane() {
                 </BlockTitle>
                 {state.profilesLoading && !state.profiles
                   ? <div style={{ color: LBL, fontSize: 11, padding: 12 }}>Loading profile…</div>
-                  : <AgentProfile profile={profile} accent={eColor} />}
+                  : profilePanel}
                 <ReleaseBtn onClick={() => setFollowedAgent(null)}>Release agent</ReleaseBtn>
               </Block>
             )}
@@ -752,6 +759,11 @@ function AgentLifePane() {
   }, [f, t]);
   const timeStr = `${Math.floor(t / 60).toString().padStart(2, '0')}:${Math.floor(t % 60).toString().padStart(2, '0')}`;
 
+  // This pane re-renders per tick for the clock/map; keep the heavy, time-independent
+  // children (population emotion cluster + chat) from re-rendering with it.
+  const habmViz = useMemo(() => <HABMSentiments agents={habmAgents} />, [habmAgents]);
+  const chat = useMemo(() => <RealTimeChat />, []);
+
   return (
     <RightPane>
       <RightHeader>
@@ -787,7 +799,7 @@ function AgentLifePane() {
           <Block>
             <BlockTitle>Emotional state <span style={{ marginLeft: 'auto', color: eColor, fontWeight: 700 }}>{emotion}</span></BlockTitle>
             <div style={{ position: 'relative', height: 280, borderRadius: 12, overflow: 'hidden', marginBottom: 10 }}>
-              <HABMSentiments agents={habmAgents} />
+              {habmViz}
             </div>
             <EmotionState profile={profile} emotion={emotion} emotionColor={eColor} />
           </Block>
@@ -795,7 +807,7 @@ function AgentLifePane() {
           {/* Conversations */}
           <Block>
             <BlockTitle>Conversations</BlockTitle>
-            <div style={{ minHeight: 160 }}><RealTimeChat /></div>
+            <div style={{ minHeight: 160 }}>{chat}</div>
           </Block>
 
           <Block>
