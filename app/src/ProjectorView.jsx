@@ -5,6 +5,13 @@ const SYNC_CHANNEL = 'andorra-dashboard-sync';
 
 const initialOverlay = { 0: true, 1: true, 2: true, 3: true, 4: true };
 
+// Demo knob: shrink the projected map to fit the throw. ?projector&scale=0.8 renders
+// the map at 80% (centered, black margin). Default 1 keeps the physical-model fit.
+const MAP_SCALE = (() => {
+  const raw = parseFloat(new URLSearchParams(window.location.search).get('scale'));
+  return Number.isFinite(raw) ? Math.min(1, Math.max(0.2, raw)) : 1;
+})();
+
 export default function ProjectorView() {
   const [activeTab,      setActiveTab]      = useState('map');
   const [selectedYear,   setSelectedYear]   = useState(2024);
@@ -78,17 +85,22 @@ export default function ProjectorView() {
         </div>
       </div>
 
-      {/* ── Full-screen map ──────────────────────────────────────────────────── */}
-      <div style={{ flex: 1, overflow: 'hidden', minHeight: 0 }}>
-        <MapVisualization
-          overlayEnabled={overlayEnabled}
-          selectedYear={selectedYear}
-          activeLayer={activeMapLayer}
-          onLayerChange={setActiveMapLayer}
-          simulationOn={false}
-          hoveredAgent={-1}
-          selectedAgent={-1}
-        />
+      {/* ── Full-screen map (scaled to fit the projector throw via ?scale=) ────── */}
+      <div style={{
+        flex: 1, overflow: 'hidden', minHeight: 0, background: '#000',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+      }}>
+        <div style={{ width: `${MAP_SCALE * 100}%`, height: `${MAP_SCALE * 100}%` }}>
+          <MapVisualization
+            overlayEnabled={overlayEnabled}
+            selectedYear={selectedYear}
+            activeLayer={activeMapLayer}
+            onLayerChange={setActiveMapLayer}
+            simulationOn={false}
+            hoveredAgent={-1}
+            selectedAgent={-1}
+          />
+        </div>
       </div>
     </div>
   );
