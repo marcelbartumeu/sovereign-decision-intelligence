@@ -142,16 +142,24 @@ export function SharedStateProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!state.isPlaying) return;
     let lastTs: number | null = null;
+    let accumMs = 0;            // time accrued since the last state update
+    const STEP_MS = 50;        // commit state at ~20fps, not every frame — the RAF still
+                               // runs at 60fps so timing stays accurate, but we re-render
+                               // the (heavy) React tree 3x less often.
     let rafId: number;
 
     const tick = (now: number) => {
       if (lastTs !== null) {
-        const dtSec = (now - lastTs) / 1000;
-        setState(p => {
-          const next = (p.currentTimeMin + dtSec * p.playSpeed) % 1440;
-          tabSyncService.broadcast({ type: 'STEP_UPDATE', data: { currentTimeMin: next } });
-          return { ...p, currentTimeMin: next };
-        });
+        accumMs += now - lastTs;
+        if (accumMs >= STEP_MS) {
+          const dtSec = accumMs / 1000;
+          accumMs = 0;
+          setState(p => {
+            const next = (p.currentTimeMin + dtSec * p.playSpeed) % 1440;
+            tabSyncService.broadcast({ type: 'STEP_UPDATE', data: { currentTimeMin: next } });
+            return { ...p, currentTimeMin: next };
+          });
+        }
       }
       lastTs = now;
       rafId = requestAnimationFrame(tick);
