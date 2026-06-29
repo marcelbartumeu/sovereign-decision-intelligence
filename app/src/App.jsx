@@ -52,6 +52,7 @@ export default function App() {
 
   const channelRef = useRef(null);
   const rxRef      = useRef({});  // tracks last value received from channel to break echo loops
+  const mapLayerBroadcastReady = useRef(false); // skip the mount broadcast (see below)
 
   useEffect(() => {
     const ch = new BroadcastChannel(SYNC_CHANNEL);
@@ -83,6 +84,10 @@ export default function App() {
   }, [overlayEnabled]);
 
   useEffect(() => {
+    // Don't broadcast the default 'base' on mount — that would override the map-only
+    // screen's own default layer (ProjectorView starts on 'growth'). Only relay real
+    // changes (i.e. the rotary switch), so the projector shows growth until moved.
+    if (!mapLayerBroadcastReady.current) { mapLayerBroadcastReady.current = true; return; }
     if (rxRef.current.activeMapLayer === activeMapLayer) return;
     channelRef.current?.postMessage({ activeMapLayer });
   }, [activeMapLayer]);
@@ -123,11 +128,14 @@ export default function App() {
   }, []);
 
   const handleMapLayerChange = useCallback((layerId) => {
-    // Debounce: only switch after the controller holds the same position for 400ms.
+    // Debounce: only act after the rotary holds the same position for 400ms.
+    // The rotary controls the MAP only — it must not change the dashboard's active
+    // tab. activeMapLayer is broadcast to the map-only screen (ProjectorView at
+    // ?projector), which renders the layer; the dashboard stays on whatever tab the
+    // buttons selected. (Open the on-screen "Map" tab to preview the map here.)
     if (mapLayerTimerRef.current) clearTimeout(mapLayerTimerRef.current);
     mapLayerTimerRef.current = setTimeout(() => {
       setActiveMapLayer(layerId);
-      setActiveTab('map'); // hardware layer changes surface the map tab
     }, 400);
   }, []);
 
