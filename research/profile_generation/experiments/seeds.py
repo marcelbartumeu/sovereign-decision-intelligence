@@ -98,6 +98,21 @@ def _make_seed(nat: str, age_group: str, income: str, rng: np.random.Generator) 
     # Gender: ~50/50 with the slight male skew of Andorra's labour-migrant
     # working-age cohort (SAIG 2023 sex ratio ≈ 1.02). Children ~51% male at birth.
     gender = "male" if rng.random() < 0.51 else "female"
+    # Household structure: type (from real config), marital status (derived), children count
+    hh_labels = list(ACTIVE_CONFIG.household_type_distribution.keys())
+    hh_weights = _normalize(list(ACTIVE_CONFIG.household_type_distribution.values()))
+    household_type = rng.choice(hh_labels, p=hh_weights)
+    marital_status = "married" if household_type.startswith("couple") else "single"
+    if "with_children" in household_type:
+        child_labels = [k for k in ACTIVE_CONFIG.children_distribution.keys() if k != "0"]
+        if child_labels:
+            child_weights = _normalize([ACTIVE_CONFIG.children_distribution[k] for k in child_labels])
+            child_choice = rng.choice(child_labels, p=child_weights)
+            num_children = 3 if child_choice == "3+" else int(child_choice)
+        else:
+            num_children = 1
+    else:
+        num_children = 0
 
     return {
         "nationality":       nat,
@@ -107,4 +122,7 @@ def _make_seed(nat: str, age_group: str, income: str, rng: np.random.Generator) 
         "years_in_andorra":  years,
         "gender":            gender,
         "occupation":        _occupation(nat, income, rng),
+        "household_type":  household_type,
+        "marital_status":  marital_status,
+        "num_children":    num_children,
     }
