@@ -69,6 +69,17 @@ class CountryConfig:
     median_age: float
     working_age_pct: float  # 15–64 as % of total
 
+    # — Household structure (PLACEHOLDER - replace with EPF/SAIG 2023 + Registre Civil data)
+    household_type_distribution: dict[str, float]
+    # Format: {household_type: proportion}, must sum to 1.0
+    # Categories: couple_with_children, couple_no_children, single_with_children, single_no_children
+
+    children_distribution: dict[str, float]
+    # Format: {"0": proportion, "1": proportion, "2": proportion, "3+": proportion}
+
+    marital_rate: float
+    # Overall proportion of adults currently married. Source: Registre Civil d'Andorra (TODO)
+
     # ── Economic indicators ───────────────────────────────────────────────────
     gdp_per_capita_ppp: int      # current int'l $
     gdp_growth_pct: float
@@ -143,6 +154,13 @@ class CountryConfig:
         lines += ["", "Nationality composition:"]
         for label, share in sorted(self.nationality_distribution.items(), key=lambda x: -x[1]):
             lines.append(f"  {label}: {share*100:.1f}%")
+        lines += ["", "Household composition:"]
+        for label, share in sorted(self.household_type_distribution.items(), key=lambda x: -x[1]):
+            lines.append(f"  {label}: {share*100:.1f}%")
+        lines.append(f"Overall marital rate: {self.marital_rate*100:.1f}% of adults currently married.")
+        lines += ["", "Children per household:"]
+        for label, share in sorted(self.children_distribution.items()):
+            lines.append(f"  {label} children: {share*100:.1f}%")
 
         lines += [
             "",
@@ -334,6 +352,20 @@ ANDORRA = CountryConfig(
     rent_range=(900, 1800),
     purchase_price_m2=(2500, 5500),
     naturalisation_years=20,
+    # — Household structure (PLACEHOLDER - replace with EPF/SAIG 2023 + Registre Civil data)
+    household_type_distribution={
+        "couple_with_children": 0.25,
+        "couple_no_children": 0.25,
+        "single_with_children": 0.10,
+        "single_no_children": 0.40,
+    },
+    children_distribution={
+        "0": 0.55,
+        "1": 0.25,
+        "2": 0.15,
+        "3+": 0.05,
+    },
+    marital_rate=0.45,
 
     # ── Governance ────────────────────────────────────────────────────────────
     # Source: World Bank WGI 2022 (wgi.worldbank.org)
