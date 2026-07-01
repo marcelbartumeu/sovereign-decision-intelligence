@@ -43,6 +43,8 @@ class DemographicProfile:
     occupation: str
     income_bracket: str         # precarious | low | lower_middle | middle | upper_middle | comfortable | wealthy
     household_type: str
+    marital_status: str                # single | married
+    num_children: int                  # number of dependent children in household
     h3_cell: str | None         # assigned H3 cell (if spatial placement is done)
     years_in_aoi: float         # years of residence in the AOI
     education_level: str        # no_formal | primary | secondary | tertiary | postgrad
@@ -54,6 +56,7 @@ class DemographicProfile:
             f"Age: {self.age}, Gender: {self.gender}, Nationality: {self.nationality}, "
             f"Occupation: {self.occupation}, Income: {self.income_bracket}, "
             f"Household: {self.household_type}, Years in AOI: {self.years_in_aoi:.1f}, "
+            f"Marital status: {self.marital_status}, Children: {self.num_children}, "
             f"Education: {self.education_level}"
         )
 
@@ -196,11 +199,15 @@ class PopulationSynthesizer:
         age_sex_structure,
         occupation_by_nat: dict[str, dict[str, float]] | None = None,
         rng_seed: int = 42,
+        household_dist: dict[str, float] | None = None,
+        children_dist: dict[str, float] | None = None,
     ):
         self.nat_dist = nationality_dist
         self.age_sex = age_sex_structure
         self.occ_by_nat = occupation_by_nat or OCCUPATION_BY_NATIONALITY
         self.rng = np.random.default_rng(rng_seed)
+        self.household_dist = household_dist or {h: p for h, p in HOUSEHOLD_TYPES}
+        self.children_dist = children_dist or {"0": 1.0}
 
     def _sample_nationality(self) -> str:
         nats = list(self.nat_dist.keys())
@@ -216,17 +223,36 @@ class PopulationSynthesizer:
         return self.rng.choice(occs, p=np.array(probs) / sum(probs))
 
     def _sample_household(self, age: int, nationality: str) -> str:
-        types = [h for h, _ in HOUSEHOLD_TYPES]
-        probs = [p for _, p in HOUSEHOLD_TYPES]
-        # Adjust for age — older agents less likely to be in shared housing
-        if age > 55:
-            idx = types.index("shared_housing")
-            probs[idx] *= 0.1
-        if age < 28:
-            idx = types.index("couple_with_child")
+        types = list(self.household_dist.keys())
+        probs = list(self.household_dist.values())
+        # Adjust for age - older agents less likely to have young children
+        if age > 55 and "single_with_children" in types:
+            idx = types.index("single_with_children")
+            probs[idx] *= 0.2
+        if age > 55 and "couple_with_children" in types:
+            idx = types.index("couple_with_children")
+            probs[idx] *= 0.2
+        if age < 25 and "couple_with_children" in types:
+            idx = types.index("couple_with_children")
             probs[idx] *= 0.3
         probs = np.array(probs) / sum(probs)
         return self.rng.choice(types, p=probs)
+
+    def _sample_marital_status(self, household_type: str) -> str:
+        """Derive marital status directly from household type."""
+        return "married" if household_type.startswith("couple") else "single"
+
+    def _sample_num_children(self, household_type: str) -> int:
+        """Sample number of children, only for household types that include children."""
+        if "with_children" not in household_type:
+            return 0
+        keys = [k for k in self.children_dist.keys() if k != "0"]
+        if not keys:
+            return 1
+        probs = [self.children_dist[k] for k in keys]
+        probs = np.array(probs) / sum(probs)
+        choice = self.rng.choice(keys, p=probs)
+        return 3 if choice == "3+" else int(choice)
 
     def _sample_education(self, age: int) -> str:
         if age < 35:
@@ -267,6 +293,8 @@ class PopulationSynthesizer:
             occ = self._sample_occupation(nat)
             income = INCOME_BY_OCCUPATION.get(occ, "lower_middle")
             household = self._sample_household(age, nat)
+            marital_status = self._sample_marital_status(household)
+            num_children = self._sample_num_children(household)
             education = self._sample_education(age)
             years = self._sample_years_in_aoi(nat, age)
 
@@ -285,6 +313,8 @@ class PopulationSynthesizer:
                 occupation=occ,
                 income_bracket=income,
                 household_type=household,
+                marital_status=marital_status,
+                num_children=num_children,
                 h3_cell=cell,
                 years_in_aoi=round(years, 1),
                 education_level=education,
